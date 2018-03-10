@@ -275,7 +275,6 @@ Plug 'scrooloose/nerdtree',      { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
     \ && b:NERDTree.isTabTree()) | q | endif
 
-  "Leader + Leader opens nerd tree.
   nnoremap <leader>nn :NERDTreeToggle<cr>
   nnoremap <leader>nb :NERDTreeFromBookmark<Space>
   nnoremap <leader>nf :NERDTreeFind<CR>
@@ -420,14 +419,13 @@ Plug 'bluz71/vim-moonfly-colors'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'justinmk/vim-dirvish'
 Plug 'tyrannicaltoucan/vim-quantum'
-Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'morhetz/gruvbox'
 
 Plug 'Yggdroot/indentLine'
   let g:indentLine_color_term = 8
   let g:indentLine_char = '│'
 
-" Bottom bar with all settings
+" Bottom bar with all settings wombat
 Plug 'itchyny/lightline.vim'
   let g:lightline = {
     \ 'colorscheme': 'wombat',
@@ -480,7 +478,7 @@ Plug 'zchee/deoplete-jedi'         " source for Python
 Plug 'pbogut/deoplete-elm',         { 'for': 'elm' }
   let g:deoplete#enable_at_startup = 1 " Enable deoplete on startup.
   let g:deoplete#enable_smart_case = 1
-  let g:deoplete#keyword_patterns = {}
+  let g:deoplete#keyword_patterns  = {}
   let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 
   let g:deoplete#sources#go#gocode_binary    = $GOPATH.'/bin/gocode'
@@ -543,8 +541,6 @@ let g:two_firewatch_italics = 1
 let g:quantum_black = 1
 silent! colorscheme quantum
 
-let g:deepspace_italics=1
-" colorscheme deep-space
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
