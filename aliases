@@ -1,3 +1,4 @@
+# ** [ GIT ALIASES ] ******************
 # git fetch pull
 gfpull () { git fetch && git checkout $1 && git pull origin $1; }
 
@@ -10,4 +11,9 @@ gt () { git checkout -b $1 -t origin/$1; }
 # git version (tag and branch at a specific deploy point)
 gv () { git tag v$1 && git checkout -b $1 && git push origin v$1 && git push origin $1; }
 
-alias dm:reload='eval $(docker-machine env default)'
+# ** [ DOCKER ALIASES ] ******************
+alias dk='docker'
+alias dki='docker image'
+alias dkc='docker container'
+alias dkm='docker-machine'
+alias dkm:reload='eval $(docker-machine env default)'

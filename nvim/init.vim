@@ -785,6 +785,7 @@ augroup END
 augroup rainbow_lisp
   autocmd!
   autocmd FileType lisp,clojure,scheme RainbowParentheses
+  nnoremap <leader>rp :RainbowParentheses<CR>
 augroup END
 
 augroup markdown
