@@ -318,12 +318,12 @@ Plug 'w0rp/ale'
   let g:ale_fixers = {
   \  'javascript': ['prettier', 'eslint'],
   \ }
-
-  let g:ale_fix_on_save       = 1
-  let g:ale_sign_error        = '△' " could use emoji or 'X'
-  let g:ale_sign_warning      = '✕' " could use emoji '?'
-  let g:ale_echo_msg_format   = '[%linter%] %s [%severity%]'
-  let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
+  let g:ale_completion_enabled = 1
+  let g:ale_fix_on_save        = 1
+  let g:ale_sign_error         = '△' " could use emoji or 'X'
+  let g:ale_sign_warning       = '✕' " could use emoji '?'
+  let g:ale_echo_msg_format    = '[%linter%] %s [%severity%]'
+  let g:ale_statusline_format  = ['⨉ %d', '⚠ %d', '⬥ ok']
   let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5'
 
 " Git Plugins
