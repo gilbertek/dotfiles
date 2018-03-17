@@ -83,7 +83,7 @@ Plug 'elmcast/elm-vim',             { 'for': [ 'elm' ] }
   let g:elm_make_show_warnings      = 1
   let g:elm_setup_keybindings       = 1
 
-  Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
   let g:polyglot_disabled = ['elm', 'go', 'clojure']
 
   "js configs
@@ -326,7 +326,7 @@ Plug 'w0rp/ale'
   let g:ale_statusline_format  = ['⨉ %d', '⚠ %d', '⬥ ok']
   let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5'
 
-" Git Plugins
+  " Git Plugins
 " ---------------
 " git support from dat tpope
 Plug 'tpope/vim-fugitive'
@@ -413,11 +413,8 @@ Plug 'ajh17/Spacegray.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'KeitaNakamura/neodark.vim'
-Plug 'raphamorim/lucario'
 Plug 'rakr/vim-two-firewatch'
-Plug 'bluz71/vim-moonfly-colors'
 Plug 'NLKNguyen/papercolor-theme'
-Plug 'justinmk/vim-dirvish'
 Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'morhetz/gruvbox'
 
@@ -476,6 +473,7 @@ Plug 'mhartington/nvim-typescript'
 Plug 'carlitux/deoplete-ternjs',    { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'zchee/deoplete-jedi'         " source for Python
 Plug 'pbogut/deoplete-elm',         { 'for': 'elm' }
+" Plug 'yoru/deoplete-crystal',       { 'for': 'crystal' }
   let g:deoplete#enable_at_startup = 1 " Enable deoplete on startup.
   let g:deoplete#enable_smart_case = 1
   let g:deoplete#keyword_patterns  = {}
@@ -516,15 +514,12 @@ let g:hybrid_reduced_contrast = 1
 """ Spacegray Color Scheme settings
 " colorscheme spacegray
 
-""" lucario Color Scheme settings
-" colorscheme lucario
-
 """ base16-vim Color Scheme settings
 let base16colorspace=256
 " colorscheme base16-eighties
 
 """ codedark Color Scheme settings
-" colorscheme codedark
+colorscheme codedark
 
 """ Two_firewatch Color Scheme settings
 let g:two_firewatch_italics = 1
@@ -533,13 +528,10 @@ let g:two_firewatch_italics = 1
 """ Neodark Color Scheme settings
 " colorscheme neodark
 
-""" Moonfly Color Scheme Settings
-" colorscheme moonfly
-
 " colorscheme PaperColor
 
 let g:quantum_black = 1
-silent! colorscheme quantum
+" silent! colorscheme quantum
 
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
