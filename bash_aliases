@@ -44,3 +44,8 @@ alias dki='docker image'
 alias dkc='docker container'
 alias dkm='docker-machine'
 alias dkm:reload='eval $(docker-machine env default)'
+
+
+# ** [ ELIXIR ALIASES ] ******************
+alias mps="[ -d assets ] && iex -S mix phx.server || iex -S mix phoenix.server"
+
