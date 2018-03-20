@@ -316,7 +316,7 @@ Plug 'w0rp/ale'
   \ }
 
   let g:ale_fixers = {
-  \  'javascript': ['prettier', 'eslint'],
+  \  'javascript': ['prettier'],
   \ }
   let g:ale_completion_enabled = 1
   let g:ale_fix_on_save        = 1
@@ -334,7 +334,7 @@ Plug 'tpope/vim-fugitive'
   nnoremap <leader>gd :Gdiff<CR>
   nnoremap <leader>gs :Gstatus<CR>
   nnoremap <leader>gc :Gcommit -v<CR>
-  nnoremap <leader>gca :Gcommit --amen -v<CR>
+  nnoremap <leader>gca :Gcommit --amend -v<CR>
   nnoremap <leader>gp :Git push<cr>
   nnoremap <leader>gl :Glog<cr>
 
@@ -564,7 +564,6 @@ nnoremap <leader>l :tabnext<cr>
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
 
 " switching buffers
 nnoremap <silent> [b :bprevious<CR>
@@ -614,9 +613,6 @@ nnoremap <leader>x :wq<cr>
 nnoremap <leader>s :update<cr>  " Save
 nnoremap <Leader>w :w<CR>       " Save
 
-" Open
-nnoremap <Leader>o :Files<CR>
-
 " find merge conflict markers
 nnoremap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 
@@ -642,7 +638,6 @@ nnoremap P P=`]<C-o>
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
 " Pressing ,ss will toggle spell checking
 noremap <leader>ss :setlocal spell!<cr>
@@ -698,10 +693,6 @@ augroup general
 
   " EmmetInstall
   autocmd FileType html,css EmmetInstall
-
-  " Use Tab for everything!
-  au FileType css,scss,javascript let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
-  au FileType css let g:ale_fix_on_save = 1
 
   " vue files need special handling because of their
   " mix of different languages in one file
