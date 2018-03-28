@@ -206,6 +206,9 @@ Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Has
 " Plug 'vim-scripts/dbext.vim'
 Plug 'tpope/vim-db'
 
+" Plugins for Jupyter notebooks
+Plug 'vyzyv/vimpyter'
+
 """" 2.2) Utilities #utilities
 " Automatically match any brackets, parentheses or quotes
 Plug 'jiangmiao/auto-pairs'
