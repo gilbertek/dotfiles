@@ -699,6 +699,7 @@ augroup general
   autocmd FileType vue syntax sync fromstart
 
   autocmd BufWritePre,BufLeave,FocusLost * StripWhitespace
+  autocmd Filetype gitcommit setlocal spell textwidth=72
 augroup END
 
 augroup cursorline
@@ -773,9 +774,7 @@ augroup END
 
 augroup markdown
   autocmd!
-  autocmd BufRead *.md setlocal spell
-  autocmd FileType markdown setlocal textwidth=80
-  autocmd BufNewFile,BufReadPost *.{md,markdown,mdown,mkd,mkdn} set ft=markdown
+  autocmd BufNewFile,BufReadPost *.{md,markdown,mdown,mkd,mkdn} set local spell ft=markdown textwidth=80
 augroup END
 
 augroup viml
