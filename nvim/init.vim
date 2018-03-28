@@ -788,6 +788,7 @@ augroup viml
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew ~/.config/nvim/init.vim
   command! Loadrc source ~/.config/nvim/init.vim
+  command! PU PlugClean <bar> PlugUpdate <bar> PlugUpgrade
 augroup END
 
 augroup perl
