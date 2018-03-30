@@ -165,7 +165,7 @@ Plug 'markwoodhall/vim-aurepl'
 " HTML / CSS
 Plug 'mattn/emmet-vim'
   let g:user_emmet_mode='a'           " Only enable Insert mode functions.
-  let g:user_emmet_leader_key='<Tab>' " Using Tab to expand
+  let g:user_emmet_leader_key='<tab>' " Using Tab to expand
 
   " enable jsx completions
   let g:user_emmet_settings = {
@@ -207,7 +207,7 @@ Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Has
 Plug 'tpope/vim-db'
 
 " Plugins for Jupyter notebooks
-Plug 'vyzyv/vimpyter'
+" Plug 'vyzyv/vimpyter'
 
 """" 2.2) Utilities #utilities
 " Automatically match any brackets, parentheses or quotes
@@ -459,9 +459,6 @@ if has('ultisnips')
   let g:UltiSnipsExpandTrigger       = '<tab>'
   let g:UltiSnipsJumpForwardTrigger  = '<tab>'
   let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-
-  " let g:UltiSnipsExpandTrigger="<C-j>"
-  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"  " Tab completion.
 endif
 
 " Autocompletion Engine (neovim) Autocompletion Engine (neovim)
@@ -490,8 +487,6 @@ Plug 'pbogut/deoplete-elm',         { 'for': 'elm' }
   let g:deoplete#sources#clang#libclang_path = $BREW_PATH.'/Cellar/llvm/5.0.1/lib/libclang.dylib'
   let g:deoplete#sources#clang#clang_header  = $BREW_PATH.'/opt/llvm/bin/clang'
 
-  " deoplete tab-complete
-  inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 """" 2.4) End Code completion & Navigation #code-navigation
 call plug#end()
 "" Plugin configuration that has to run after plug#end
@@ -683,6 +678,9 @@ xmap <s-tab> <
 "Grep for current word in git
 noremap <c-g> :Ggrep <cword><CR>
 
+" Use tab for completion
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
 " Select all text
 nnoremap vA ggVG
 """" 4.2) End Mappings
@@ -777,7 +775,7 @@ augroup END
 
 augroup markdown
   autocmd!
-  autocmd BufNewFile,BufReadPost *.{md,markdown,mdown,mkd,mkdn} set local spell ft=markdown textwidth=80
+  autocmd BufNewFile,BufReadPost *.{md,markdown,mdown,mkd,mkdn} set local spell ft=markdown
 augroup END
 
 augroup viml
