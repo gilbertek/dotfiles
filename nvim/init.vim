@@ -763,8 +763,8 @@ augroup javascript
 
   " Log out the word under the cursor
   nmap <leader>d yiwoconsole.log('<c-r>"', <c-r>");<esc>^
-  autocmd FileType javascript set formatprg=prettier\ --stdin\ --single-quote\ --trailing-comma\ es5
-  autocmd BufWritePre *.{jsx,elm,css,scss,json,hs,sql} undojoin | Neoformat
+  autocmd FileType javascript set formatprg=prettier\ --stdin\ --single-quote\ es5
+  autocmd BufWritePre *.{js,jsx,elm,css,scss,json,hs,sql} undojoin | Neoformat
 augroup END
 
 augroup rainbow_lisp
@@ -775,14 +775,11 @@ augroup END
 
 augroup markdown
   autocmd!
-  autocmd BufNewFile,BufReadPost *.{md,markdown,mdown,mkd,mkdn} set local spell ft=markdown
+  autocmd BufNewFile,BufReadPost *.{md,mdown,mkd,mkdn} set spell ft=markdown
 augroup END
 
 augroup viml
   autocmd!
-  autocmd FileType vim setlocal textwidth=80
-  autocmd Filetype vim setlocal foldmethod=marker
-
   autocmd BufWinEnter,WinEnter term://* startinsert
 
   " Reload & easy edit Neovim configuration
