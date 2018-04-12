@@ -163,22 +163,9 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'markwoodhall/vim-aurepl'
 
 " HTML / CSS
-Plug 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim', { 'for': ['javascript', 'javascript.jsx', 'html'] }
   let g:user_emmet_mode='a'           " Only enable Insert mode functions.
   let g:user_emmet_leader_key='<tab>' " Using Tab to expand
-
-  " enable jsx completions
-  let g:user_emmet_settings = {
-        \  'javascript' : {
-        \      'extends' : 'jsx',
-        \  },
-        \  'javascript.jsx' : {
-        \      'extends' : 'jsx',
-        \  },
-        \  'typescript.jsx' : {
-        \      'extends' : 'jsx',
-        \  },
-        \}
 
 Plug 'ap/vim-css-color'
 Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']} " Autocompletes tags.
@@ -270,7 +257,6 @@ Plug 'scrooloose/nerdtree',      { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
     \ '^_build$',
     \ '^dist$'
     \ ]
-  let g:NERDTreeWinSize       = 22
   let g:NERDTreeMinimalUI     = 1
   let g:NERDTreeChDirMode     = 2     " keep working directory set to NERD's root
   let g:NERDTreeBookmarksFile = $HOME . '/.config/nvim/NERDTreeBookmarks'
@@ -278,9 +264,9 @@ Plug 'scrooloose/nerdtree',      { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
     \ && b:NERDTree.isTabTree()) | q | endif
 
-  nnoremap <leader>nn :NERDTreeToggle<cr>
+  nnoremap <leader>n :NERDTreeToggle<cr>
   nnoremap <leader>nb :NERDTreeFromBookmark<Space>
-  nnoremap <leader>nf :NERDTreeFind<CR>
+  nnoremap <leader>f :NERDTreeFind<CR>
 
 " Move blocks of code with ALT+j/k
 Plug 'matze/vim-move'
@@ -319,7 +305,7 @@ Plug 'w0rp/ale'
   \ }
 
   let g:ale_fixers = {
-  \  'javascript': ['prettier'],
+  \  'javascript': ['eslint', 'prettier'],
   \ }
   let g:ale_completion_enabled = 1
   let g:ale_fix_on_save        = 1
@@ -416,10 +402,8 @@ Plug 'ajh17/Spacegray.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'KeitaNakamura/neodark.vim'
-Plug 'rakr/vim-two-firewatch'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'tyrannicaltoucan/vim-quantum'
-Plug 'morhetz/gruvbox'
 
 Plug 'Yggdroot/indentLine'
   let g:indentLine_color_term = 8
@@ -517,11 +501,7 @@ let base16colorspace=256
 " colorscheme base16-eighties
 
 """ codedark Color Scheme settings
-colorscheme codedark
-
-""" Two_firewatch Color Scheme settings
-let g:two_firewatch_italics = 1
-" colorscheme two-firewatch
+" colorscheme codedark
 
 """ Neodark Color Scheme settings
 " colorscheme neodark
@@ -529,8 +509,7 @@ let g:two_firewatch_italics = 1
 " colorscheme PaperColor
 
 let g:quantum_black = 1
-" silent! colorscheme quantum
-
+silent! colorscheme quantum
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
