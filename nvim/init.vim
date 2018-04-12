@@ -671,9 +671,6 @@ augroup general
   autocmd BufLeave,FocusLost * :silent! wall
   autocmd CursorHold * silent! checktime
 
-  " EmmetInstall
-  autocmd FileType html,css EmmetInstall
-
   " vue files need special handling because of their
   " mix of different languages in one file
   autocmd FileType vue syntax sync fromstart
