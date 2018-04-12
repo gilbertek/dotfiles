@@ -110,8 +110,7 @@ Plug 'c-brenn/phoenix.vim'
 Plug 'tpope/vim-projectionist'    " required for some navigation features
 
 " Markdown Preview
-" npm install -g livedown
-Plug 'shime/vim-livedown'
+Plug 'shime/vim-livedown',     { 'do': 'npm install -g livedown' }
 
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' } " Distraction free
 Plug 'junegunn/limelight.vim' " To accompany goyo
@@ -163,9 +162,9 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'markwoodhall/vim-aurepl'
 
 " HTML / CSS
-Plug 'mattn/emmet-vim', { 'for': ['javascript', 'javascript.jsx', 'html'] }
-  let g:user_emmet_mode='a'           " Only enable Insert mode functions.
-  let g:user_emmet_leader_key='<tab>' " Using Tab to expand
+Plug 'mattn/emmet-vim',       { 'for': ['javascript', 'javascript.jsx', 'html'] }
+  let g:user_emmet_mode       = 'a'     " Only enable Insert mode functions.
+  let g:user_emmet_leader_key = '<tab>' " Using Tab to expand
 
 Plug 'ap/vim-css-color'
 Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']} " Autocompletes tags.
@@ -733,13 +732,14 @@ augroup END
 
 augroup javascript
   autocmd!
-  autocmd BufNewFile,BufRead *.es6.erb setlocal filetype=javascript
-  autocmd BufNewFile,BufRead .{eslintrc,babelrc} setlocal filetype=json
-  " autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
-
   " Log out the word under the cursor
   nmap <leader>d yiwoconsole.log('<c-r>"', <c-r>");<esc>^
-  autocmd FileType javascript set formatprg=prettier\ --stdin\ --single-quote\ es5
+
+  autocmd FileType javascript setlocal formatprg=prettier\
+                                             \--stdin\
+                                             \--print-width\ 80\
+                                             \--single-quote\
+                                             \--trailing-comma\ es5
   autocmd BufWritePre *.{js,jsx,elm,css,scss,json,hs,sql} undojoin | Neoformat
 augroup END
 
