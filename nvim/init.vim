@@ -53,7 +53,6 @@ set mouse=a                     " Enable use of the mouse in all modes.
 set lazyredraw                  " macros don't update display
 set winfixwidth                 " Keep Nerdtree window fixed between toggles
 set inccommand=nosplit          " Search and substitutions
-set confirm
 set clipboard+=unnamedplus      " +p paste OS clipboard
 set t_Co=256                    " Enable 256-color mode for status line in Tmux & iTerm.
 
@@ -247,7 +246,6 @@ Plug 'scrooloose/nerdtree',      { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
   let g:NERDTreeIgnore = [
     \ '\~$',
     \ '\.o$',
-    \ '\.rbc$',
     \ '\.pyc$',
     \ '^\.DS_Store$',
     \ '\.db$',
@@ -299,8 +297,8 @@ Plug 'junegunn/vim-easy-align'
 Plug 'w0rp/ale'
   let g:ale_javascript_prettier_use_local_config = 1
   let g:ale_linters = {
-  \ 'javascript': ['eslint', 'flow'],
-  \ 'go':         ['gometalinter'],
+  \ 'javascript': ['eslint'],
+  \ 'go':         ['gofmt', 'gometalinter'],
   \ }
 
   let g:ale_fixers = {
@@ -403,6 +401,7 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'tyrannicaltoucan/vim-quantum'
+Plug 'rakr/vim-one'
 
 Plug 'Yggdroot/indentLine'
   let g:indentLine_color_term = 8
@@ -508,7 +507,9 @@ let base16colorspace=256
 " colorscheme PaperColor
 
 let g:quantum_black = 1
-silent! colorscheme quantum
+" silent! colorscheme quantum
+
+colorscheme one
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -657,7 +658,7 @@ xmap <s-tab> <
 noremap <c-g> :Ggrep <cword><CR>
 
 " Use tab for completion
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr> <Tab>  pumvisible() ? "\<C-n>" : "\<Tab>"
 
 " Select all text
 nnoremap vA ggVG
@@ -747,11 +748,6 @@ augroup rainbow_lisp
   autocmd!
   autocmd FileType lisp,clojure,scheme RainbowParentheses
   nnoremap <leader>rp :RainbowParentheses<CR>
-augroup END
-
-augroup markdown
-  autocmd!
-  autocmd BufNewFile,BufReadPost *.{md,mdown,mkd,mkdn} set spell ft=markdown
 augroup END
 
 augroup viml
