@@ -199,6 +199,8 @@ Plug 'tpope/vim-db'
 Plug 'jiangmiao/auto-pairs'
 Plug 'machakann/vim-highlightedyank'
 
+Plug 'eraserhd/parinfer-rust'
+
 " Cycle through deopletes auto-completion with the tab key
 Plug 'ervandew/supertab'
 Plug 'christoomey/vim-tmux-navigator'
@@ -787,23 +789,23 @@ augroup ruby
   " " ...yeah, current release is a beta, which won't auto-install
   "
   " " Annotate every line
-  autocmd FileType ruby nmap <leader>b :%!seeing_is_believing --timeout 12
+  autocmd FileType ruby nmap <leader>bb :%!seeing_is_believing --timeout 12
     \ --line-length 500 --number-of-captures 300
     \ --alignment-strategy chunk<CR>;
 
   "  " Annotate marked lines
-  autocmd FileType ruby nmap <leader>n :%.!seeing_is_believing --timeout 12
+  autocmd FileType ruby nmap <leader>bn :%.!seeing_is_believing --timeout 12
     \ --line-length 500 --number-of-captures 300
     \ --alignment-strategy chunk --xmpfilter-style<CR>;
 
   "  " Remove annotations
-  autocmd FileType ruby nmap <leader>c :%.!seeing_is_believing --clean<CR>;
+  autocmd FileType ruby nmap <leader>bc :%.!seeing_is_believing --clean<CR>;
 
   "  " Mark the current line for annotation
-  autocmd FileType ruby nmap <leader>m A
+  autocmd FileType ruby nmap <leader>bm A
 
   "  " Mark the highlighted lines for annotation
-  autocmd FileType ruby vmap <leader>m :norm A
+  autocmd FileType ruby vmap <leader>bm :norm A
 augroup END
 
 augroup python
