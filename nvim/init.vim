@@ -199,7 +199,7 @@ Plug 'tpope/vim-db'
 Plug 'jiangmiao/auto-pairs'
 Plug 'machakann/vim-highlightedyank'
 
-Plug 'eraserhd/parinfer-rust'
+" Plug 'eraserhd/parinfer-rust'
 
 " Cycle through deopletes auto-completion with the tab key
 Plug 'ervandew/supertab'
@@ -312,7 +312,7 @@ Plug 'w0rp/ale'
   let g:ale_sign_warning       = '✕' " could use emoji '?'
   let g:ale_echo_msg_format    = '[%linter%] %s [%severity%]'
   let g:ale_statusline_format  = ['⨉ %d', '⚠ %d', '⬥ ok']
-  let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5'
+  let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
 
   " Git Plugins
 " ---------------
@@ -735,6 +735,9 @@ augroup END
 
 augroup javascript
   autocmd!
+  autocmd BufNewFile,BufRead .babelrc setlocal filetype=json
+  autocmd BufNewFile,BufRead .eslintrc setlocal filetype=json
+
   " Log out the word under the cursor
   nmap <leader>d yiwoconsole.log('<c-r>"', <c-r>");<esc>^
 
