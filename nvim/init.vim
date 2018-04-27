@@ -54,7 +54,6 @@ set lazyredraw                  " macros don't update display
 set winfixwidth                 " Keep Nerdtree window fixed between toggles
 set inccommand=nosplit          " Search and substitutions
 set clipboard+=unnamedplus      " +p paste OS clipboard
-set t_Co=256                    " Enable 256-color mode for status line in Tmux & iTerm.
 
 """" 1.5) Searching #Searching
 set ignorecase                  " Ignore case when searching
