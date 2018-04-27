@@ -304,7 +304,8 @@ Plug 'w0rp/ale'
   \ }
 
   let g:ale_fixers = {
-  \  'javascript': ['eslint', 'prettier'],
+  \ 'javascript': ['eslint', 'prettier'],
+  \ 'python':     ['isort'],
   \ }
   let g:ale_completion_enabled = 1
   let g:ale_fix_on_save        = 1
@@ -358,8 +359,7 @@ Plug 'majutsushi/tagbar'
   nnoremap <F8> :TagbarToggle<CR>
 
 " fzf fuzzy finder
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
   let g:fzf_layout = { 'down': '40%' }
 
   " Search all files, e.g. node_modules/
@@ -368,6 +368,8 @@ Plug 'junegunn/fzf.vim'
   nnoremap <silent> <C-P> :FZF<cr>
   nnoremap <silent> <leader>a :Ag<cr>
   nnoremap <leader>b :Buffers<cr>
+  nmap <leader>h :History<cr>
+  nmap <leader>f :Files<cr>
 
   nmap <leader><tab> <plug>(fzf-maps-n)
   xmap <leader><tab> <plug>(fzf-maps-x)
@@ -524,6 +526,9 @@ map <Down>  :echo "no!"<cr>
 " Terminal Mode Configuration
 tnoremap <Esc> <C-\><C-n>
 nnoremap <silent> <bslash> :vsplit term://$SHELL<bar>startinsert<CR>
+
+" Open in TeXShop
+nnoremap <leader>tx :!open -a TeXShop %<cr><cr>
 
 " Navigate terminal with C-h,j,k,l
 tnoremap <C-h> <C-\><C-n><C-w>h
