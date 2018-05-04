@@ -1,16 +1,22 @@
 #!/usr/bin/env ruby
 
+# Repository Command Executer (RCE)
+# Find git repositories in a directory
+# Execute given command on them.
+# Usage:
+#   chmod +x bin/rce
+#   rce
+#   <CMD>
+#   Ctrl+D to break out of the loop.
+
 # for each git repo in a subdirectory ...
 dirs = Dir['**/.git'].map { |gd| File.dirname(gd) }
-
-puts dirs.size
 
 def prompt
   print '>> '
   gets
 end
 
-# (press Ctrl+D to break out of the loop)
 
 # ... execute a command given on STDIN
 while command = prompt
