@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+# for each git repo in a subdirectory ...
+dirs = Dir['**/.git'].map { |gd| File.dirname(gd) }
+
+puts dirs.size
+
+def prompt
+  print '>> '
+  gets
+end
+
+# (press Ctrl+D to break out of the loop)
+
+# ... execute a command given on STDIN
+while command = prompt
+  dirs.each do |dir|
+    begin
+      Dir.chdir(dir) do
+        puts "~ #{dir}:"
+        system command
+      end
+    rescue Errno::ENOENT => e
+      $stderr.warns e.message
+    end
+  end
+end
+
+
+
+
