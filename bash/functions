@@ -1,0 +1,131 @@
+# Create a new directory and enter it
+function mkd() {
+	mkdir -p "$@" && cd "$_";
+}
+
+# find shorthand
+function f() {
+  find . -name "$1"
+}
+
+# `o` with no arguments opens the current directory, otherwise opens the given
+# location
+function o() {
+	if [ $# -eq 0 ]; then
+		open .;
+	else
+		open "$@";
+	fi;
+}
+
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+function tre() {
+	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+}
+
+function parse_git_dirty {
+  [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working directory clean" ]] && echo "*"
+}
+function parse_git_branch {
+    git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
+
+    # git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+function pid_on() {
+  lsof -i tcp:$1
+}
+
+
+# Change to and list contents of a directory
+function cdl { cd $1; ls; }
+
+# Remove a direcory and its files
+function rmd() {
+    rm -rf "$@"
+}
+
+function random-word {
+  ruby -e "puts File.readlines('/usr/share/dict/words').shuffle.take(${1-1})"
+}
+
+# Use Git’s colored diff when available
+hash git &>/dev/null;
+if [ $? -eq 0 ]; then
+	function diff() {
+		git diff --no-index --color-words "$@";
+	}
+fi;
+
+# Create a data URL from a file
+function dataurl() {
+	local mimeType=$(file -b --mime-type "$1");
+	if [[ $mimeType == text/* ]]; then
+		mimeType="${mimeType};charset=utf-8";
+	fi
+	echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
+}
+
+# git tag and push
+# gtp <tag>
+gtp() {
+  command git tag -am "$1" $1 && \
+  command git push --tags && \
+  command git push
+}
+
+# find shorthand
+function f() {
+  find . -name "$1"
+}
+
+# clones git repository and cd's into it
+function gc() { git clone "$1" && cd `echo "'$1'" | cut -d/ -f2 | cut -d. -f1`; }
+
+# Start an HTTP server from a directory, optionally specifying the port
+function server() {
+	local port="${1:-8000}";
+	sleep 1 && open "http://localhost:${port}/" &
+	# Set the default Content-Type to `text/plain` instead of `application/octet-stream`
+	# And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
+	python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port";
+}
+
+# Start a PHP server from a directory, optionally specifying the port
+# (Requires PHP 5.4.0+.)
+function phpserver() {
+	local port="${1:-4000}";
+	local ip=$(ipconfig getifaddr en1);
+	sleep 1 && open "http://${ip}:${port}/" &
+	php -S "${ip}:${port}";
+}
+
+# Does git word nicely
+function gdw () {
+  if [[ -n "$1" ]]; then
+    git diff --word-diff=color $1 | less -r
+  else
+    git diff --word-diff=color
+  fi
+}
+
+function gdv() {
+  git diff -w "$@" | view -
+}
+
+# Change to and list contents of a directory
+function cdl { cd $1; ls; }
+
+function clear_log() {
+  echo > $1 > /dev/null 2>&1
+}
+
+function clear_dev_log() {
+  echo > log/bullet.log > /dev/null 2>&1
+  echo > log/development.log > /dev/null 2>&1
+  echo > log/test.log > /dev/null 2>&1
+	echo > log/newrelic_agent.log > /dev/null 2>&1
+}
