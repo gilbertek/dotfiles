@@ -1,0 +1,144 @@
+# Hello Messsage
+echo -e "Kernel Information: " `uname -smr`
+echo -e "${BROWN}`bash --version`"
+echo -ne "${BLUE}Uptime: "; uptime
+echo -ne "${BLUE}Server time is: "; date
+
+# Motivation reminder
+# echo "2017 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); print "There are " int(dt/86400/7) " weeks left until the year ends. What will you do?";}';
+
+# Load the shell dotfiles, and then some:
+for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
+  [ -r "$file" ] && [ -f "$file" ] && . "$file";
+done;
+unset file;
+
+# Add `~/bin` to the `$PATH`
+export PATH=$HOME/bin:$PATH
+
+# Homebrew
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+
+# GO Path setups
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+export GOPATH=$HOME/Projects/GOAPPS
+export PATH=$PATH:$GOPATH/bin
+export GOAPPS=$GOPATH/src/github.com/gilbertek
+
+# Groovy Home path setup
+export GROOVY_HOME=/usr/local/opt/groovy/libexec
+
+export JAVA_HOME
+JAVA_HOME=$(/usr/libexec/java_home)
+
+# Haskell/hdevtools Home path setup
+export PATH=~/.local/bin:$PATH
+
+# PHP CLI
+# export PATH="$(brew --prefix homebrew/php/php70)/bin:$PATH"
+export PATH="/usr/local/opt/php@5.6/bin:$PATH"
+
+# Mysql
+export PATH="/usr/local/opt/mysql@5.6/bin:$PATH"
+
+# Persistent history in Elixir repl IEx
+export ERL_AFLAGS="-kernel shell_history enabled"
+
+if which brew  > /dev/null 2>&1
+then
+  BREW_PATH=/usr/local # $(brew --prefix) for faster load
+else
+  BREW_PATH=""
+fi
+
+export EDITOR=nvim
+export VISUAL=nvim
+
+#Ignore duplicate commands, space-prefixed, and misc boring cmds.
+export HISTIGNORE="&:[ ]*:exit:gs:gl"
+# Massive main .bash_history...
+export HISTFILESIZE=10000
+# Larger session histories...
+export HISTSIZE=1000
+
+# Disable Homebrew analytics
+export HOMEBREW_NO_ANALYTICS=1
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+# Case-insensitive globbing (used in pathname expansion)
+shopt -s nocaseglob;
+
+# Append to the Bash history file, rather than overwriting it
+shopt -s histappend;
+
+# Autocorrect typos in path names when using `cd`
+shopt -s cdspell;
+
+# Always enable colored `grep` output
+# export GREP_OPTIONS='--color=always'
+
+# Visible cucumber step locations
+export CUCUMBER_COLORS=comment=cyan
+
+export PROJECT_HOME=$HOME/Projects
+
+export CLICOLOR='true'
+
+export TERM=xterm-256color
+
+# Elixir Version information
+export ELIXIR_VERSION=$(elixir -v | grep -o 'Elixir \d.\d.\d' | grep -o '\d.\d.\d')
+
+### Foreground Colours #######################################################
+     YELLOW="\\[\\033[0;33m\\]"
+      GREEN="\\[\\e[0;32m\\]"
+       BLUE="\\033[0;34m"
+       CYAN="\\[\\e[1;36m\\]"
+      GRAY="\\[\\e[0;37m\\]"
+      BROWN="\033[0;33m"
+
+
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWSTASHSTATE=1
+export GIT_PS1_SHOWUNTRACKEDFILES=1
+
+# PS1="$CYAN[$GREEN"Gilbert" $CYAN\W$YELLOW\$(parse_git_branch)$CYAN] λ \[\e[0m\]"
+
+# PS1="\[\e[0;37m\]┌─[${root}\u\[\e[0;37m\]][\[\e[0;96m\]\h\[\e[0;37m\]][\[\e[0;32m\]\w\[\e[0;37m\]]\n\[\e[0;37m\]└──╼ \[\e[0m\]"
+
+PS1="$GRAY[\${root}\\u$GRAY][$GREEN\\W\$(parse_git_branch)$GRAY] λ \\[\\e[0m\\]"
+
+# For a ipython notebook and pyspark integration
+if which pyspark > /dev/null; then
+  export SPARK_HOME="$(brew --prefix apache-spark)/libexec"
+  export PYSPARK_SUBMIT_ARGS="--master local[2]"
+  export PYSPARK_DRIVER=python3
+  export PYSPARK_DRIVER_PYTHON=jupyter
+  export PYSPARK_DRIVER_PYTHON_OPTS=notebook
+fi
+
+# bash completion from Homebrew
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+  source $(brew --prefix)/etc/bash_completion
+fi
+
+if [ -f ~/.config/exercism/exercism_completion.bash ]; then
+  . ~/.config/exercism/exercism_completion.bash
+fi
+
+eval "$(hub alias -s)"
+
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+# Motivation reminder
+# echo "2017 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); print "There are " int(dt/86400/7) " weeks left until the year ends. What will you do?";}'
+
+source "$HOME/.asdf/asdf.sh"
+
+source "$HOME/.asdf/completions/asdf.bash"
+
+export PATH="/usr/local/opt/elasticsearch@2.4/bin:$PATH"
+
+# OPAM configuration
+source ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
