@@ -22,7 +22,7 @@ error() {
 }
 
 
-DOTFILE_ROOT="$HOME/dotfiles"
+DOTFILE_ROOT="$HOME/dotfiles/bash"
 DOTFILES='functions aliases bash_profile tmux.conf'
 
 cd "$DOTFILE_ROOT" || return
@@ -50,7 +50,7 @@ create_symlinks() {
       msg ""
 
       if [[ ! $REPLY ]] || [[ $REPLY =~ ^[Yy]$ ]]; then
-        create_link "$DOTFILE_ROOT/bash/$file" "$HOME/.$file"
+        create_link "$DOTFILE_ROOT/$file" "$HOME/.$file"
       fi
     else
       ln -s "$DOTFILE_ROOT/$file" "$HOME/.$file"
