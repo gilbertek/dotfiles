@@ -1,14 +1,13 @@
-# Hello Messsage
-echo -e "Kernel Information: " `uname -smr`
-echo -e "${BROWN}`bash --version`"
-echo -ne "${BLUE}Uptime: "; uptime
-echo -ne "${BLUE}Server time is: "; date
+# Case-Insensitive Auto Completion
+bind "set completion-ignore-case on"
 
 # Motivation reminder
-# echo "2017 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); print "There are " int(dt/86400/7) " weeks left until the year ends. What will you do?";}';
+# echo "2017 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); \
+# print "There are " int(dt/86400/7) " weeks left until the year ends. \
+# What will you do?";}';
 
 # Load the shell dotfiles, and then some:
-for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
+for file in ~/.{aliases,functions}; do
   [ -r "$file" ] && [ -f "$file" ] && . "$file";
 done;
 unset file;
@@ -38,9 +37,6 @@ export PATH=~/.local/bin:$PATH
 # PHP CLI
 # export PATH="$(brew --prefix homebrew/php/php70)/bin:$PATH"
 export PATH="/usr/local/opt/php@5.6/bin:$PATH"
-
-# Mysql
-export PATH="/usr/local/opt/mysql@5.6/bin:$PATH"
 
 # Persistent history in Elixir repl IEx
 export ERL_AFLAGS="-kernel shell_history enabled"
@@ -75,9 +71,6 @@ shopt -s histappend;
 # Autocorrect typos in path names when using `cd`
 shopt -s cdspell;
 
-# Always enable colored `grep` output
-# export GREP_OPTIONS='--color=always'
-
 # Visible cucumber step locations
 export CUCUMBER_COLORS=comment=cyan
 
@@ -91,23 +84,21 @@ export TERM=xterm-256color
 export ELIXIR_VERSION=$(elixir -v | grep -o 'Elixir \d.\d.\d' | grep -o '\d.\d.\d')
 
 ### Foreground Colours #######################################################
-     YELLOW="\\[\\033[0;33m\\]"
-      GREEN="\\[\\e[0;32m\\]"
-       BLUE="\\033[0;34m"
-       CYAN="\\[\\e[1;36m\\]"
-      GRAY="\\[\\e[0;37m\\]"
-      BROWN="\033[0;33m"
+ATTRIBUTE_BOLD='\[\e[1m\]'
+ATTRIBUTE_RESET='\[\e[0m\]'
+COLOR_DEFAULT='\[\e[39m\]'
+COLOR_RED='\[\e[31m\]'
+COLOR_GREEN='\[\e[32m\]'
+COLOR_YELLOW='\[\e[33m\]'
+COLOR_BLUE='\[\e[34m\]'
+COLOR_MAGENTA='\[\e[35m\]'
+COLOR_CYAN='\[\e[36m\]'
 
+# ♥ ☆ ⚡ λ ❯ ▸ → - Keeping some cool ASCII Characters for reference
+# Define the prompt character
+CHAR="⚡"
 
-export GIT_PS1_SHOWDIRTYSTATE=1
-export GIT_PS1_SHOWSTASHSTATE=1
-export GIT_PS1_SHOWUNTRACKEDFILES=1
-
-# PS1="$CYAN[$GREEN"Gilbert" $CYAN\W$YELLOW\$(parse_git_branch)$CYAN] λ \[\e[0m\]"
-
-# PS1="\[\e[0;37m\]┌─[${root}\u\[\e[0;37m\]][\[\e[0;96m\]\h\[\e[0;37m\]][\[\e[0;32m\]\w\[\e[0;37m\]]\n\[\e[0;37m\]└──╼ \[\e[0m\]"
-
-PS1="$GRAY[\${root}\\u$GRAY][$GREEN\\W\$(parse_git_branch)$GRAY] λ \\[\\e[0m\\]"
+PS1="${COLOR_BLUE}[${COLOR_CYAN}\\u ${COLOR_GREEN}in ${COLOR_YELLOW}\W${COLOR_CYAN}\$(parse_git_branch)${COLOR_BLUE}]❯${COLOR_DEFAULT} "
 
 # For a ipython notebook and pyspark integration
 if which pyspark > /dev/null; then
@@ -119,8 +110,8 @@ if which pyspark > /dev/null; then
 fi
 
 # bash completion from Homebrew
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  source $(brew --prefix)/etc/bash_completion
+if [ -f ${BREW_PATH}/etc/bash_completion ]; then
+  source ${BREW_PATH}/etc/bash_completion
 fi
 
 if [ -f ~/.config/exercism/exercism_completion.bash ]; then
@@ -129,16 +120,29 @@ fi
 
 eval "$(hub alias -s)"
 
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
+if which rbenv >/dev/null 2>&1
+then
+    eval "$(rbenv init -)"
+fi
 # Motivation reminder
 # echo "2017 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); print "There are " int(dt/86400/7) " weeks left until the year ends. What will you do?";}'
 
-source "$HOME/.asdf/asdf.sh"
-
-source "$HOME/.asdf/completions/asdf.bash"
-
-export PATH="/usr/local/opt/elasticsearch@2.4/bin:$PATH"
+# asdf package manager
+if [ -f $BREW_PATH/opt/asdf/asdf.sh ]; then
+  source $BREW_PATH/opt/asdf/asdf.sh
+fi
 
 # OPAM configuration
 source ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+
+if [ -f ~/.bash_aliases ]; then
+  source ~/.bash_aliases
+fi
+
+if [ -f ~/.aliases ]; then
+source ~/.aliases
+fi
+
+if [ -f ~/.functions ]; then
+source ~/.functions
+fi
