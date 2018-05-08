@@ -135,10 +135,7 @@ fi
 # OPAM configuration
 source ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
-if [ -f ~/.bash_aliases ]; then
-  source ~/.bash_aliases
-fi
 
-if [ -f ~/.functions ]; then
-source ~/.functions
-fi
+[[ -s $HOME/.aliases ]]               && source $HOME/.aliases
+[[ -s $HOME/.functions ]]             && source $HOME/.functions
+

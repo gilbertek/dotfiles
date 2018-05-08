@@ -1,3 +1,15 @@
+# ** [ Folder Navigation ] *************
+alias ..="cd .."
+alias ...="cd ../.."
+
+# ** [ Some Conveniences ] *************
+alias mkdir='mkdir -p'
+alias pathes='echo -e ${PATH//:/\\n}' # Pretty-print of some PATH variables
+alias rmr="rm -rf"
+alias ports="lsof -i -P"
+alias tree='tree -C'
+alias c='clear'
+
 # ** [ LS ALIASES ] ****************
 alias ll='ls -l'
 alias la='ls -A'
@@ -48,3 +60,14 @@ alias dkm:reload='eval $(docker-machine env default)'
 # ** [ ELIXIR ALIASES ] ******************
 alias mps="[ -d assets ] && iex -S mix phx.server || iex -S mix phoenix.server"
 
+# ** [ C++ ALIASES ] ******************
+alias cppcompile='c++ -std=c++11 -stdlib=libc++'
+
+# ** [ TMUX ALIASES ] ******************
+alias tml="tmux list-sessions"
+alias tma="tmux attach-session -t $1"
+alias tmk="tmux kill-session -t $1"
+
+# ** [ SOME SHORTCUTS ] ******************
+alias work='cd ~/Projects'
+alias trash="sudo rm -rvf ~/.Trash/*"
