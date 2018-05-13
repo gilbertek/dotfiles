@@ -10,11 +10,13 @@ alias ports="lsof -i -P"
 alias tree='tree -C'
 alias c='clear'
 
-# ** [ LS ALIASES ] ****************
+# ** [ BASH ALIASES ] ****************
 alias ll='ls -l'
 alias la='ls -A'
 alias l='ls -CF'
 alias halt='halt -p'
+alias v='nvim'
+alias s='source ~/.bash_profile'
 
 # ** [ GIT ALIASES ] ******************
 alias gf='git fetch'
