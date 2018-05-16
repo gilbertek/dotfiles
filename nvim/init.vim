@@ -147,7 +147,7 @@ Plug 'fatih/vim-go',                   { 'for': 'go' }
   let g:go_echo_command_info = 1
 
 " LSP client
-Plug 'autozimu/LanguageClient-neovim'
+" Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh', }
 
 " Clojure plugins
 Plug 'junegunn/rainbow_parentheses.vim'
@@ -459,6 +459,11 @@ Plug 'zchee/deoplete-go',           { 'do': 'make'}
 Plug 'clojure-vim/async-clj-omni'
 Plug 'mhartington/nvim-typescript'
 Plug 'carlitux/deoplete-ternjs',    { 'for': ['javascript', 'javascript.jsx'] }
+  let g:deoplete#sources#ternjs#types = 1
+  let g:deoplete#sources#ternjs#docs  = 1
+  let g:tern#command = ['tern']
+  let g:tern#arguments = ['--persistent']
+
 Plug 'zchee/deoplete-jedi'         " source for Python
 Plug 'pbogut/deoplete-elm',         { 'for': 'elm' }
 " Plug 'yoru/deoplete-crystal',       { 'for': 'crystal' }
@@ -764,7 +769,7 @@ augroup END
 
 augroup viml
   autocmd!
-  autocmd BufWinEnter,WinEnter term://* startinsert
+  autocmd BufWinEnter,WinEnter term://* startinsert | setlocal norelativenumber nonumber
 
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew ~/.config/nvim/init.vim
