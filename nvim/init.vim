@@ -223,7 +223,9 @@ Plug 'ludovicchabant/vim-gutentags'
         \ 'node_modules',
         \ 'dist',
         \ 'vendor',
-        \ 'bower_components'
+        \ 'bower_components',
+        \ 'coverage',
+        \ '.git'
         \ ]
 
 " calendar application
@@ -391,6 +393,13 @@ Plug 'sbdchd/neoformat'
   let g:neoformat_basic_format_align = 1 " Enable alignment
   let g:neoformat_basic_format_retab = 1 " Enable tab to spaces conversion
   let g:neoformat_basic_format_trim  = 1 " Enable trimmming of trailing whitespace
+  let g:neoformat_enabled_javascript = ['prettier']
+
+  " let g:neoformat_javascript_prettier = {
+  "   \ 'exe': 'prettier',
+  "   \ 'args': ['--stdin', '--semi', '--single-quote'],
+  "   \ 'stdin': 1,
+  "   \ }
 
 Plug 'easymotion/vim-easymotion'
 
@@ -691,6 +700,7 @@ augroup general
 
   autocmd BufWritePre,BufLeave,FocusLost * StripWhitespace
   autocmd Filetype gitcommit setlocal spell textwidth=72
+  autocmd InsertLeave * set nopaste
 augroup END
 
 augroup cursorline
@@ -752,12 +762,6 @@ augroup javascript
 
   " Log out the word under the cursor
   nmap <leader>d yiwoconsole.log('<c-r>"', <c-r>");<esc>^
-
-  autocmd FileType javascript setlocal formatprg=prettier\
-                                             \--stdin\
-                                             \--print-width\ 80\
-                                             \--single-quote\
-                                             \--trailing-comma\ es5
   autocmd BufWritePre *.{js,jsx,elm,css,scss,json,hs,sql} undojoin | Neoformat
 augroup END
 
