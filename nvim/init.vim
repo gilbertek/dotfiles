@@ -268,8 +268,9 @@ Plug 'scrooloose/nerdtree',      { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
   nnoremap <leader>nb :NERDTreeFromBookmark<Space>
   nnoremap <leader>f :NERDTreeFind<CR>
 
-" Move blocks of code with ALT+j/k
-Plug 'matze/vim-move'
+  " Move blocks of code with ALT+j/k
+  Plug 'matze/vim-move'
+    let g:move_key_modifier = 'C' " Use Control instead
 
 " Global search
 Plug 'eugen0329/vim-esearch'
@@ -393,13 +394,6 @@ Plug 'sbdchd/neoformat'
   let g:neoformat_basic_format_align = 1 " Enable alignment
   let g:neoformat_basic_format_retab = 1 " Enable tab to spaces conversion
   let g:neoformat_basic_format_trim  = 1 " Enable trimmming of trailing whitespace
-  let g:neoformat_enabled_javascript = ['prettier']
-
-  " let g:neoformat_javascript_prettier = {
-  "   \ 'exe': 'prettier',
-  "   \ 'args': ['--stdin', '--semi', '--single-quote'],
-  "   \ 'stdin': 1,
-  "   \ }
 
 Plug 'easymotion/vim-easymotion'
 
@@ -568,6 +562,14 @@ map <leader>tc :tabclose<cr>
 " switching buffers
 nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
+
+" Navigate location
+nnoremap ]l :lnext<cr>
+nnoremap [l :lprevious<cr>
+
+" Navigate quicklist
+nnoremap ]q :cnext<cr>
+nnoremap [q :cprevious<cr>
 
 " map tab navigation to Cmd-1 to 9.
 map <silent> <D-1> :tabn 1<cr>
@@ -762,6 +764,12 @@ augroup javascript
 
   " Log out the word under the cursor
   nmap <leader>d yiwoconsole.log('<c-r>"', <c-r>");<esc>^
+
+  autocmd FileType javascript setlocal formatprg=prettier\
+                                                \--stdin\
+                                                \--print-width\ 80\
+                                                \--single-quote\
+                                                \--trailing-comma\ es5
   autocmd BufWritePre *.{js,jsx,elm,css,scss,json,hs,sql} undojoin | Neoformat
 augroup END
 
@@ -776,6 +784,7 @@ augroup viml
   autocmd BufWinEnter,WinEnter term://* startinsert | setlocal norelativenumber nonumber
 
   " Reload & easy edit Neovim configuration
+  autocmd BufWritePost init.vim source %
   command! Editrc tabnew ~/.config/nvim/init.vim
   command! Loadrc source ~/.config/nvim/init.vim
   command! PU PlugClean <bar> PlugUpdate <bar> PlugUpgrade
