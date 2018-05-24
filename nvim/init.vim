@@ -559,17 +559,12 @@ map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 
-" switching buffers
-nnoremap <silent> [b :bprevious<CR>
-nnoremap <silent> ]b :bnext<CR>
-
-" Navigate location
-nnoremap ]l :lnext<cr>
-nnoremap [l :lprevious<cr>
-
-" Navigate quicklist
-nnoremap ]q :cnext<cr>
-nnoremap [q :cprevious<cr>
+nnoremap <silent> [b :bprevious<CR>   " Move to the previous buffer
+nnoremap <silent> ]b :bnext<CR>       " Move to the next buffer
+nnoremap ]l :lnext<cr>                " Move to the next loclist
+nnoremap [l :lprevious<cr>            " Move to the previous loclist
+nnoremap ]q :cnext<cr>                " Move to the next quickfix
+nnoremap [q :cprevious<cr>            " Move to the previous quickfix
 
 " map tab navigation to Cmd-1 to 9.
 map <silent> <D-1> :tabn 1<cr>
