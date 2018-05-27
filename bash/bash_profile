@@ -88,17 +88,22 @@ ATTRIBUTE_BOLD='\[\e[1m\]'
 ATTRIBUTE_RESET='\[\e[0m\]'
 COLOR_DEFAULT='\[\e[39m\]'
 COLOR_RED='\[\e[31m\]'
-COLOR_GREEN='\[\e[32m\]'
+COLOR_GREEN='\[\[\033[32m\]'
 COLOR_YELLOW='\[\e[33m\]'
-COLOR_BLUE='\[\e[34m\]'
 COLOR_MAGENTA='\[\e[35m\]'
 COLOR_CYAN='\[\e[36m\]'
+COLOR_CYAN_LIGHT="\[\033[1;36m\]"
+COLOR_BLUE='\[\033[38;5;75m\]'
+COLOR_DARK_BLUE="\[\033[0;34m\]"
+COLOR_PURPLE="\[\033[0;35m\]"
+COLOR_LIGHT_GRAY="\[\033[0;37m\]"
 
 # ♥ ☆ ⚡ λ ❯ ▸ → - Keeping some cool ASCII Characters for reference
 # Define the prompt character
 CHAR="⚡"
 
-PS1="${COLOR_BLUE}[${COLOR_CYAN}\\u ${COLOR_GREEN}in ${COLOR_YELLOW}\W${COLOR_CYAN}\$(parse_git_branch)${COLOR_BLUE}]❯${COLOR_DEFAULT} "
+PS1="${COLOR_BLUE}[${COLOR_CYAN}\\u ${COLOR_GREEN}in ${COLOR_YELLOW}\
+\W${COLOR_CYAN}\$(parse_git_branch)${COLOR_BLUE}]❯${COLOR_DEFAULT} "
 
 # For a ipython notebook and pyspark integration
 if which pyspark > /dev/null; then
