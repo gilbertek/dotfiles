@@ -147,7 +147,14 @@ Plug 'fatih/vim-go',                   { 'for': 'go' }
   let g:go_echo_command_info = 1
 
 " LSP client
+" Plug 'reasonml-editor/vim-reason-plus'
 " Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh', }
+  " let g:LanguageClient_serverCommands = {
+  "     \ 'javascript': ['javascript-typescript-stdio'],
+  "     \ 'reason': ['ocaml-language-server', '--stdio'],
+  "     \ 'ocaml': ['ocaml-language-server', '--stdio'],
+  "     \ 'python': ['pyls']
+  "     \ }
 
 " Clojure plugins
 Plug 'junegunn/rainbow_parentheses.vim'
@@ -779,7 +786,6 @@ augroup viml
   autocmd BufWinEnter,WinEnter term://* startinsert | setlocal norelativenumber nonumber
 
   " Reload & easy edit Neovim configuration
-  autocmd BufWritePost init.vim source %
   command! Editrc tabnew ~/.config/nvim/init.vim
   command! Loadrc source ~/.config/nvim/init.vim
   command! PU PlugClean <bar> PlugUpdate <bar> PlugUpgrade
