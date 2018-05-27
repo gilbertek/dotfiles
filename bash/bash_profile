@@ -100,10 +100,10 @@ COLOR_LIGHT_GRAY="\[\033[0;37m\]"
 
 # ♥ ☆ ⚡ λ ❯ ▸ → - Keeping some cool ASCII Characters for reference
 # Define the prompt character
-CHAR="⚡"
+CHAR='❯'
 
 PS1="${COLOR_BLUE}[${COLOR_CYAN}\\u ${COLOR_GREEN}in ${COLOR_YELLOW}\
-\W${COLOR_CYAN}\$(parse_git_branch)${COLOR_BLUE}]❯${COLOR_DEFAULT} "
+\W${COLOR_CYAN}\$(parse_git_branch)${COLOR_BLUE}]${CHAR}${COLOR_DEFAULT} "
 
 # For a ipython notebook and pyspark integration
 if which pyspark > /dev/null; then
