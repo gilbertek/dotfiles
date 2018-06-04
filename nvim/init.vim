@@ -102,6 +102,7 @@ Plug 'vim-erlang/vim-erlang-compiler'
 
 " Perl
 Plug 'vim-perl/vim-perl6', { 'for': 'perl6' }
+  let g:perl6_unicode_abbrevs = 1
 
 " Phoenix
 Plug 'c-brenn/phoenix.vim'
@@ -148,7 +149,9 @@ Plug 'fatih/vim-go',                   { 'for': 'go' }
 
 " LSP client
 " Plug 'reasonml-editor/vim-reason-plus'
-" Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh', }
+" Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
+" let g:LanguageClient_autoStart = 0 " Automatically start language servers
+" let g:LanguageClient_trace = 'verbose'
   " let g:LanguageClient_serverCommands = {
   "     \ 'javascript': ['javascript-typescript-stdio'],
   "     \ 'reason': ['ocaml-language-server', '--stdio'],
@@ -324,6 +327,9 @@ Plug 'w0rp/ale'
   let g:ale_statusline_format  = ['⨉ %d', '⚠ %d', '⬥ ok']
   let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
 
+  " Run autoformatter
+  nnoremap <leader>= :ALEFix<cr>
+
   " Git Plugins
 " ---------------
 " git support from dat tpope
@@ -365,7 +371,7 @@ Plug 'majutsushi/tagbar'
   let g:tagbar_autofocus   = 1
   let g:tagbar_autoshowtag = 1
   let g:tagbar_width       = 25
-  nnoremap <F8> :TagbarToggle<CR>
+  nnoremap <Space>t :TagbarToggle<CR>
 
 " fzf fuzzy finder
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'

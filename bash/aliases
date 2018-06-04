@@ -9,6 +9,20 @@ alias rmr="rm -rf"
 alias ports="lsof -i -P"
 alias tree='tree -C'
 alias c='clear'
+alias e='$EDITOR'
+alias v='$VISUAL'
+alias h='history'
+alias nom="rm -rf node_modules; npm cache clean; npm i"
+alias yom="rm -rf node_modules; yarn"
+
+# Reload the shell (i.e. invoke as a login shell)
+alias reload="exec $SHELL -l"
+
+# JavaScriptCore REPL
+jscbin="/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc";
+[ -e "${jscbin}" ] && alias jsc="${jscbin}";
+unset jscbin;
+
 
 # ** [ BASH ALIASES ] ****************
 alias ll='ls -alF'
@@ -26,19 +40,27 @@ alias grb='git rebase -i $(git log --all --graph --oneline --decorate | fzf --re
 alias gm='git merge --no-ff $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
 alias gp='git push'
 
+alias gaa='git add --all'
 alias ga='git add -p'
 alias gci='git commit'
+alias gca='git commit --amend --date="$(date)"'
+alias wip='gaa && gca -m "WIP"'
 alias gst='git stash'
 
 alias gsl='git stash list'
 alias gs='git status'
-alias gsh='git show'
+alias gsh='git show HEAD'
 alias gd='git diff'
+alias grev='git diff master'
 alias gh='git history'
 alias gha='git history --all'
 alias gl='git log'
 alias gb='git branch -a'
 alias gmt='git mergetool'
+
+alias gsu='git submodule foreach git pull origin master'
+alias changelog='git log --format="%h %ai %an %s"'
+alias ggpull='git pull --rebase'
 
 # git fetch pull
 gfpull () { git fetch && git checkout $1 && git pull origin $1; }
@@ -59,6 +81,10 @@ alias dkc='docker container'
 alias dkm='docker-machine'
 alias dkm:reload='eval $(docker-machine env default)'
 
+# ** [ RUBY ALIASES ] ******************
+alias web='ruby -run -e httpd . -p 5000'
+
+
 # ** [ ELIXIR ALIASES ] ******************
 alias mps="[ -d assets ] && iex -S mix phx.server || iex -S mix phoenix.server"
 
@@ -69,6 +95,7 @@ alias cppcompile='c++ -std=c++11 -stdlib=libc++'
 alias tml="tmux list-sessions"
 alias tma="tmux attach-session -t $1"
 alias tmk="tmux kill-session -t $1"
+alias mux='tmuxinator'
 
 # ** [ SOME SHORTCUTS ] ******************
 alias work='cd ~/Projects'
