@@ -138,3 +138,17 @@ function ip {
   echo "Airport:  $(ifconfig en1 | grep netmask | awk '{print $2}')"
   echo "Ethernet: $(ifconfig en0 | grep netmask | awk '{print $2}')"
 }
+
+# Blogging
+# Usage post:new title post
+create_post() {
+  if [[ -n "$1" ]]; then
+    local file_name="$(echo $@ | tr ' ' '-' | tr '[A-Z]' '[a-z]').md"
+    # local file_name="$(date +%Y-%m-%d)-$(echo $@ | tr ' ' '-' | tr '[A-Z]' '[a-z]').md"
+    hugo new posts/$file_name
+    nvim posts/$file_name
+  else
+    echo "Please provide a post title"
+  fi
+}
+alias @post=create_post
