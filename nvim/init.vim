@@ -564,9 +564,12 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" Navigate tabs with leader+h,l
-nnoremap <leader>h :tabprev<cr>
-nnoremap <leader>l :tabnext<cr>
+" use <tab> to change navigate on tabs
+nmap <tab> :tabnext<CR>
+
+" use <shift> + <tab> to go to the previous tab
+nmap <S-tab> :tabprevious<CR>
+
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
