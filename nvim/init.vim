@@ -246,12 +246,12 @@ Plug 'itchyny/calendar.vim'
 Plug 'vimwiki/vimwiki'
   let g:vimwiki_global_ext = 0
   let g:vimwiki_list = [{
-  \ 'path': '~/Dropbox/Personal/notes/',
-  \ 'syntax': 'markdown',
-  \ 'index': 'home',
-  \ 'ext': '.md',
-  \ 'auto_tags': 1
-  \ }]
+    \ 'path': '~/Dropbox/Personal/notes/',
+    \ 'syntax': 'markdown',
+    \ 'index': 'home',
+    \ 'ext': '.md',
+    \ 'auto_tags': 1
+    \ }]
 
 autocmd BufWritePost ~/Dropbox/Personal/notes/* call AutoCommit()
 
@@ -274,9 +274,9 @@ Plug 'scrooloose/nerdtree',      { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
     \ && b:NERDTree.isTabTree()) | q | endif
 
-  nnoremap <leader>n :NERDTreeToggle<cr>
+  nnoremap <leader>nn :NERDTreeToggle<cr>
   nnoremap <leader>nb :NERDTreeFromBookmark<Space>
-  nnoremap <leader>f :NERDTreeFind<CR>
+  nnoremap <leader>nf :NERDTreeFind<CR>
 
   " Move blocks of code with ALT+j/k
   Plug 'matze/vim-move'
@@ -319,12 +319,12 @@ Plug 'w0rp/ale'
   \ 'javascript': ['eslint', 'prettier'],
   \ 'python':     ['isort'],
   \ }
-  let g:ale_completion_enabled = 1
-  let g:ale_fix_on_save        = 1
-  let g:ale_sign_error         = '△' " could use emoji or 'X'
-  let g:ale_sign_warning       = '✕' " could use emoji '?'
-  let g:ale_echo_msg_format    = '[%linter%] %s [%severity%]'
-  let g:ale_statusline_format  = ['⨉ %d', '⚠ %d', '⬥ ok']
+  let g:ale_completion_enabled          = 1
+  let g:ale_fix_on_save                 = 1
+  let g:ale_sign_error                  = '△' " could use emoji or 'X'
+  let g:ale_sign_warning                = '✕' " could use emoji '?'
+  let g:ale_echo_msg_format             = '[%linter%] %s [%severity%]'
+  let g:ale_statusline_format           = ['⨉ %d', '⚠ %d', '⬥ ok']
   let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
 
   " Run autoformatter
@@ -473,19 +473,18 @@ Plug 'fishbullet/deoplete-ruby'
 Plug 'zchee/deoplete-jedi'          " source for Python
 Plug 'zchee/deoplete-go',           { 'do': 'make'}
 Plug 'clojure-vim/async-clj-omni'
-Plug 'mhartington/nvim-typescript'
 Plug 'carlitux/deoplete-ternjs',    { 'for': ['javascript', 'javascript.jsx'] }
   let g:deoplete#sources#ternjs#types = 1
   let g:deoplete#sources#ternjs#docs  = 1
   let g:tern#command = ['tern']
   let g:tern#arguments = ['--persistent']
 
-Plug 'zchee/deoplete-jedi'         " source for Python
-Plug 'pbogut/deoplete-elm',         { 'for': 'elm' }
-" Plug 'yoru/deoplete-crystal',       { 'for': 'crystal' }
-  let g:deoplete#enable_at_startup = 1 " Enable deoplete on startup.
-  let g:deoplete#enable_smart_case = 1
-  let g:deoplete#keyword_patterns  = {}
+Plug 'zchee/deoplete-jedi'                   " source for Python
+Plug 'pbogut/deoplete-elm',                  { 'for': 'elm' }
+" Plug 'yoru/deoplete-crystal',              { 'for': 'crystal' }
+  let g:deoplete#enable_at_startup           = 1 " Enable deoplete on startup.
+  let g:deoplete#enable_smart_case           = 1
+  let g:deoplete#keyword_patterns            = {}
   let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 
   let g:deoplete#sources#go#gocode_binary    = $GOPATH.'/bin/gocode'

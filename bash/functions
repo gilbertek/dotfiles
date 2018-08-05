@@ -152,3 +152,155 @@ create_post() {
   fi
 }
 alias @post=create_post
+
+
+# Show Battery Percentage
+battery() {
+	pmset -g batt | egrep "([0-9]+\%).*" -o --colour=auto | cut -f1 -d';'
+}
+
+# Show Wi-Fi Network Passwords
+# Exchange SSID with the SSID of the access point you wish to query the password from.
+wifipass() {
+	security find-generic-password -D "AirPort network password" -a "$@" -gw
+}
+
+# Turn on Wi-Fi Adapter
+offwifi() {
+	networksetup -setairportpower en0 on
+}
+
+gcap() {
+		git add . && git ci -m "$*" && gp
+}
+
+
+# FIX.
+gfix() {
+	gcap "🐛 FIX: $@"
+}
+
+# RELEASE.
+grlz() {
+	gcap "🚀 RELEASE: $@"
+}
+
+# DOC.
+gdoc() {
+	gcap "📖 DOC: $@"
+}
+
+# TEST.
+function gtst() {
+	gcap "✅ TEST: $@"
+}
+
+####.#### ———————————————————————————————————————————— Todolist http://todolist.site/ ———————————————————————————————————————————— ####.####
+# Alias it all.
+function td() {
+	todolist "$@"
+}
+
+# Init.
+alias tdi="todolist init"
+
+# Add.
+function tda() {
+	todolist add "$@"
+}
+
+# List.
+function tdl() {
+	todolist list "$@"
+}
+
+# List by priority.
+alias tdgc="todolist l p"
+
+# Due.
+function tdld() {
+	todolist list due "$@"
+}
+
+# Edit.
+function tde() {
+	todolist e "$@"
+}
+
+# Complete.
+function tdc() {
+	todolist c "$@"
+}
+
+# Archive Complete.
+function tdac() {
+	todolist ac "$@"
+}
+
+# Prioritize.
+function tdp() {
+	todolist p "$@"
+}
+
+# Delete.
+function tdd() {
+	todolist d "$@"
+}
+
+# Expanding existing todos.
+function tdex() {
+	todolist ex "$@"
+}
+
+# Archived todos will only show up when running.
+alias tdla="todolist list archived"
+
+# The web view.
+alias tdla="todolist web"
+
+# Garbage Collection. Deletes all archived todos.
+alias tdgc="todolist gc"
+
+# Todo Dir.
+alias tdir="cd ~ && cd tdir"
+
+
+# Bitly short URL
+# @link https://github.com/specious/bitly-client
+# @usage surl http://url.com/file/
+function surl() {
+  bitly-client --domain ahmda.ws "$@"
+}
+
+# RSYNC FTP type server trasnfer.
+# @usage rsyncsendy local_path IP server_path
+# @usage rsyncserver local_path IP server_path
+function rsyncsendy() {
+  rsync -chavz --partial --progress --stats "$1" root@"$2":"$3"
+}
+function rsyncserver() {
+  rsync -chavz --partial --progress --stats "$1" root@"$2":"$3"
+}
+
+
+# Record terminal.
+function recterm() {
+	asciinema rec
+}
+
+
+# Find the CNAMEs
+alias thecname="dig $* +nostats +nocomments +nocmd"
+
+
+# Lock the screen (when going AFK)
+alias lock="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+
+
+# git add commit and then fix an issue on github
+# usage: gifix 5
+# Where 5 is the issue number
+function gifix() {
+	issue=$* ;
+	git add . && git ci -m "ISSUE: Fixes #$(echo -e "$issue")" && git push
+}
