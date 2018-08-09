@@ -160,14 +160,18 @@ Plug 'fatih/vim-go',                   { 'for': 'go' }
   "     \ }
 
 " Clojure plugins
+Plug 'guns/vim-sexp',                   { 'for': 'clojure' }
+Plug 'clojure-vim/acid.nvim',           { 'for': 'clojure' }
+Plug 'clojure-vim/async-clj-omni'
+Plug 'fholiveira/vim-clojure-static',   { 'for': 'clojure' }
+Plug 'clojure-vim/async-clj-highlight', { 'for': 'clojure', 'branch': 'acid-autocmd' }
 Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'clojure-vim/acid.nvim'
 Plug 'tpope/vim-fireplace'
-Plug 'guns/vim-sexp'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'markwoodhall/vim-aurepl'
+
+
+Plug 'tpope/vim-repeat'
 
 " HTML / CSS
 Plug 'mattn/emmet-vim',       { 'for': ['javascript', 'javascript.jsx', 'html'] }
