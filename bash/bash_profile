@@ -74,9 +74,6 @@ export CLICOLOR='true'
 
 export TERM=xterm-256color
 
-# Elixir Version information
-export ELIXIR_VERSION=$(elixir -v | grep -o 'Elixir \d.\d.\d' | grep -o '\d.\d.\d')
-
 ### Foreground Colours #######################################################
 ATTRIBUTE_BOLD='\[\e[1m\]'
 ATTRIBUTE_RESET='\[\e[0m\]'
@@ -133,8 +130,9 @@ if [ -f ~/.config/exercism/exercism_completion.bash ]; then
   . ~/.config/exercism/exercism_completion.bash
 fi
 
-[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
-
+if [ -f /usr/local/etc/bash_completion ]; then
+  . /usr/local/etc/bash_completion
+fi
 # Enable tab completion for `g` by marking it as an alias for `git`
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
   complete -o default -o nospace -F _git g;
@@ -156,9 +154,9 @@ fi
 # OPAM configuration
 source ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
-[[ -s $HOME/.bashrc ]]                && source $HOME/.bashrc
-[[ -s $HOME/.bashrc.local ]]          && source $HOME/.bashrc.local
-[[ -s $HOME/.aliases ]]               && source $HOME/.aliases
-[[ -f ~/.aliases.local ]]             && source ~/.aliases.local
-[[ -s $HOME/.functions ]]             && source $HOME/.functions
+[[ -s $HOME/.bashrc ]]            && source $HOME/.bashrc
+[[ -s $HOME/.bashrc.local ]]      && source $HOME/.bashrc.local
+[[ -s $HOME/.aliases ]]           && source $HOME/.aliases
+[[ -f $HOME/.aliases.local ]]     && source $HOME/.aliases.local
+[[ -s $HOME/.functions ]]         && source $HOME/.functions
 

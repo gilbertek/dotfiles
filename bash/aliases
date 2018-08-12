@@ -63,6 +63,8 @@ alias gsu='git submodule foreach git pull origin master'
 alias changelog='git log --format="%h %ai %an %s"'
 alias ggpull='git pull --rebase'
 
+alias gmu='git fetch origin -v; git fetch upstream -v; git merge upstream/master'
+
 # git fetch pull
 gfpull () { git fetch && git checkout $1 && git pull origin $1; }
 
@@ -85,6 +87,13 @@ alias dkm:reload='eval $(docker-machine env default)'
 # ** [ RUBY ALIASES ] ******************
 alias web='ruby -run -e httpd . -p 5000'
 
+alias b='bundle'
+alias bi="b install --path vendor/bundle --binstubs vendor/bundle/bin"
+alias be="bundle exec"
+alias binit="bi && b package && echo 'vendor/bundle' >> .gitignore && echo 'vendor/cache' >> .gitignore"
+alias rails_best='rails_best_practices -e "db/migrate,vendor" -f html .'
+alias cop='rubocop'
+alias devlog='tail -f log/development.log'
 
 # ** [ ELIXIR ALIASES ] ******************
 alias mps="[ -d assets ] && iex -S mix phx.server || iex -S mix phoenix.server"
@@ -101,3 +110,8 @@ alias mux='tmuxinator'
 # ** [ SOME SHORTCUTS ] ******************
 alias work='cd ~/Projects'
 alias trash="sudo rm -rvf ~/.Trash/*"
+
+
+
+# ** [ MACOS SHORTCUTS ] ******************
+alias mac-clean-logs='sudo rm -rf /private/var/log/asl/*.asl'
