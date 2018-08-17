@@ -35,13 +35,6 @@ export PATH="/usr/local/opt/php@5.6/bin:$PATH"
 # Persistent history in Elixir repl IEx
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-if which brew > /dev/null 2>&1
-then
-  BREW_PATH=/usr/local # $(brew --prefix) for faster load
-else
-  BREW_PATH=""
-fi
-
 export EDITOR=nvim
 export VISUAL=nvim
 
@@ -130,9 +123,6 @@ if [ -f ~/.config/exercism/exercism_completion.bash ]; then
   . ~/.config/exercism/exercism_completion.bash
 fi
 
-if [ -f /usr/local/etc/bash_completion ]; then
-  . /usr/local/etc/bash_completion
-fi
 # Enable tab completion for `g` by marking it as an alias for `git`
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
   complete -o default -o nospace -F _git g;
@@ -147,16 +137,14 @@ fi
 # echo "2017 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); print "There are " int(dt/86400/7) " weeks left until the year ends. What will you do?";}'
 
 # asdf package manager
-if [ -f $BREW_PATH/opt/asdf/asdf.sh ]; then
-  source $BREW_PATH/opt/asdf/asdf.sh
-fi
+[ -f /usr/local/opt/asdf/asdf.sh ] && . /usr/local/opt/asdf/asdf.sh
+
 
 # OPAM configuration
 source ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
-[[ -s $HOME/.bashrc ]]            && source $HOME/.bashrc
-[[ -s $HOME/.bashrc.local ]]      && source $HOME/.bashrc.local
-[[ -s $HOME/.aliases ]]           && source $HOME/.aliases
-[[ -f $HOME/.aliases.local ]]     && source $HOME/.aliases.local
-[[ -s $HOME/.functions ]]         && source $HOME/.functions
-
+[ -s ~/.bashrc ]            && ". ~/.bashrc"
+[ -s ~/.bashrc.local ]      && ". ~/.bashrc.local"
+[ -s ~/.aliases ]           && ". ~/.aliases"
+[ -f ~/.aliases.local ]     && ". ~/.aliases.local"
+[ -s ~/.functions ]         && ". ~/.functions"

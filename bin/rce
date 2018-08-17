@@ -17,7 +17,6 @@ def prompt
   gets
 end
 
-
 # ... execute a command given on STDIN
 while command = prompt
   dirs.each do |dir|
@@ -31,7 +30,3 @@ while command = prompt
     end
   end
 end
-
-
-
-

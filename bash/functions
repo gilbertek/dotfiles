@@ -323,3 +323,6 @@ function digga() {
   dig +nocmd "$1" any +multiline +noall +answer
 }
 
+function dssh() {
+docker exec -i -t $1 bash
+}

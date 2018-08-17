@@ -82,10 +82,10 @@ Plug 'elmcast/elm-vim',             { 'for': [ 'elm' ] }
   let g:elm_setup_keybindings       = 1
 
 Plug 'sheerun/vim-polyglot'
-  let g:polyglot_disabled = ['elm', 'go', 'clojure']
+  let g:polyglot_disabled           = ['elm', 'go', 'clojure']
 
   "js configs
-  let g:jsx_ext_required               = 0
+  let g:jsx_ext_required            = 0
 
 " Elixir
 Plug 'elixir-lang/vim-elixir'
@@ -148,16 +148,25 @@ Plug 'fatih/vim-go',                   { 'for': 'go' }
   let g:go_echo_command_info = 1
 
 " LSP client
-" Plug 'reasonml-editor/vim-reason-plus'
-" Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
-" let g:LanguageClient_autoStart = 0 " Automatically start language servers
-" let g:LanguageClient_trace = 'verbose'
-  " let g:LanguageClient_serverCommands = {
-  "     \ 'javascript': ['javascript-typescript-stdio'],
-  "     \ 'reason': ['ocaml-language-server', '--stdio'],
-  "     \ 'ocaml': ['ocaml-language-server', '--stdio'],
-  "     \ 'python': ['pyls']
-  "     \ }
+Plug 'reasonml-editor/vim-reason-plus'
+
+" This language client actually makes use of a binary, hence the `install.sh`.
+" We also need the `next` branch in order to specify
+" a language server's TCP port at the time of writing
+Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
+  let g:LanguageClient_autoStart = 1 " Automatically start language servers
+  let g:LanguageClient_trace = 'verbose'
+  " Debugging
+  " let g:LanguageClient_loggingLevel = 'DEBUG'
+  " let g:LanguageClient_diagnosticsEnable = 1
+
+  let g:LanguageClient_serverCommands = {
+      \ 'javascript': ['javascript-typescript-stdio'],
+      \ 'reason': ['ocaml-language-server', '--stdio'],
+      \ 'ocaml': ['ocaml-language-server', '--stdio'],
+      \ 'python': ['pyls'],
+      \ 'ruby': ['solargraph', 'stdio']
+      \ }
 
 " Clojure plugins
 Plug 'guns/vim-sexp',                   { 'for': 'clojure' }
@@ -473,7 +482,7 @@ endif
 Plug 'Shougo/deoplete.nvim',        { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-clang'
 Plug 'sebastianmarkow/deoplete-rust'
-Plug 'fishbullet/deoplete-ruby'
+" Plug 'fishbullet/deoplete-ruby'
 Plug 'zchee/deoplete-jedi'          " source for Python
 Plug 'zchee/deoplete-go',           { 'do': 'make'}
 Plug 'clojure-vim/async-clj-omni'
@@ -699,6 +708,8 @@ noremap <c-g> :Ggrep <cword><CR>
 " Use tab for completion
 inoremap <expr> <Tab>  pumvisible() ? "\<C-n>" : "\<Tab>"
 
+nnoremap 0 ^ " Set 0 as begining of line
+
 " Select all text
 nnoremap vA ggVG
 """" 4.2) End Mappings
@@ -727,6 +738,13 @@ augroup cursorline
   autocmd InsertLeave,WinEnter * setlocal relativenumber nocursorline
 augroup END
 
+augroup language_server
+  autocmd!
+  nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+  nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+  nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+augroup END
+
 " Vim-Alchemist Mappings
 augroup elixir
   autocmd!
@@ -738,6 +756,7 @@ augroup elixir
   " autocmd BufReadPost *.html.eex set syntax=html
 
   autocmd FileType elixir nnoremap <leader>d orequire IEx; IEx.pry<ESC>:w<CR>
+  autocmd FileType elixir nnoremap <leader>i i\|>IO.inspect<ESC>:w<CR>
 
   " open iex with current file compiled
   " :!iex %
@@ -818,6 +837,9 @@ augroup ruby
   " Add pry to debug
   autocmd FileType ruby nnoremap <leader>d obinding.pry<esc>:w<CR>
   autocmd FileType ruby nmap <Leader>r :RuboCop<CR>
+
+  " Configure ruby omni-completion to use the language client:
+  autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
 
   " Migrate and rollback
   autocmd FileType ruby nnoremap <leader>dbm :!bin/rake db:migrate<CR>
