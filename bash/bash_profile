@@ -143,8 +143,8 @@ fi
 # OPAM configuration
 source ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
 
-[ -s ~/.bashrc ]            && ". ~/.bashrc"
-[ -s ~/.bashrc.local ]      && ". ~/.bashrc.local"
-[ -s ~/.aliases ]           && ". ~/.aliases"
-[ -f ~/.aliases.local ]     && ". ~/.aliases.local"
-[ -s ~/.functions ]         && ". ~/.functions"
+[ -f ~/.bashrc ]            && . ~/.bashrc
+[ -f ~/.bashrc.local ]      && . ~/.bashrc.local
+[ -f ~/.aliases ]           && . ~/.aliases
+[ -f ~/.aliases.local ]     && . ~/.aliases.local
+[ -f ~/.functions ]         && . ~/.functions

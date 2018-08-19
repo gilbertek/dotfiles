@@ -169,15 +169,16 @@ Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.s
       \ }
 
 " Clojure plugins
-Plug 'guns/vim-sexp',                   { 'for': 'clojure' }
-Plug 'clojure-vim/acid.nvim',           { 'for': 'clojure' }
-Plug 'clojure-vim/async-clj-omni'
-Plug 'fholiveira/vim-clojure-static',   { 'for': 'clojure' }
-Plug 'clojure-vim/async-clj-highlight', { 'for': 'clojure', 'branch': 'acid-autocmd' }
+Plug 'guns/vim-sexp',                   { 'for': [ 'clojure', 'clojurescript'] }
+Plug 'clojure-vim/acid.nvim',           { 'for': [ 'clojure', 'clojurescript' ] }
+Plug 'clojure-vim/async-clj-omni',      { 'for': [ 'clojure', 'clojurescript' ] }
+Plug 'fholiveira/vim-clojure-static',   { 'for': [ 'clojure', 'clojurescript' ] }
+Plug 'clojure-vim/async-clj-highlight', { 'for': [ 'clojure', 'clojurescript' ], 'branch': 'acid-autocmd' }
 Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'tpope/vim-fireplace'
-Plug 'tpope/vim-sexp-mappings-for-regular-people'
-Plug 'markwoodhall/vim-aurepl'
+Plug 'tpope/vim-fireplace',             {'for': ['clojure', 'clojurescript']}
+Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'clojurescript']}
+Plug 'markwoodhall/vim-aurepl',         {'for': ['clojure', 'clojurescript']}
+Plug 'venantius/vim-cljfmt',            {'for': ['clojure', 'clojurescript']}
 
 
 Plug 'tpope/vim-repeat'
@@ -324,13 +325,19 @@ Plug 'junegunn/vim-easy-align'
 Plug 'w0rp/ale'
   let g:ale_javascript_prettier_use_local_config = 1
   let g:ale_linters = {
-  \ 'javascript': ['eslint'],
+  \ 'javascript': ['eslint', 'prettier'],
   \ 'go':         ['gofmt', 'gometalinter'],
+  \ 'haskell': ['stack-ghc-mod', 'hlint'],
+  \ 'reason': ['merlin'],
+  \ 'ocaml': ['merlin']
   \ }
 
   let g:ale_fixers = {
-  \ 'javascript': ['eslint', 'prettier'],
-  \ 'python':     ['isort'],
+  \ 'javascript': ['prettier'],
+  \ 'python':     ['isort', 'yapt'],
+  \ 'elm': ['elm-format'],
+  \ 'reason': ['refmt'],
+  \ 'ocaml': ['refmt'],
   \ }
   let g:ale_completion_enabled          = 1
   let g:ale_fix_on_save                 = 1
@@ -728,6 +735,7 @@ augroup general
   autocmd BufWritePre,BufLeave,FocusLost * StripWhitespace
   autocmd Filetype gitcommit setlocal spell textwidth=72
   autocmd InsertLeave * set nopaste
+  autocmd InsertLeave * pc               "close preview on insert leave
 augroup END
 
 augroup cursorline
@@ -742,7 +750,22 @@ augroup language_server
   autocmd!
   nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
   nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-  nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+  " nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+
+
+  au FileType rust,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx setlocal omnifunc=LanguageClient#complete
+  au FileType rust,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
+  au FileType rust,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
+  au FileType rust,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
+  au FileType rust,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>x :LanguageClientStop<cr>:LanguageClientStart<cr>
+augroup END
+
+augroup elm
+  au!
+  au FileType elm setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent
+  au FileType elm nn <buffer> K :ElmShowDocs<CR>
+  au FileType elm nn <buffer> <localleader>m :ElmMakeMain<CR>
+  au FileType elm nn <buffer> <localleader>r :ElmRepl<CR>
 augroup END
 
 " Vim-Alchemist Mappings
@@ -814,7 +837,8 @@ augroup END
 
 augroup viml
   autocmd!
-  autocmd BufWinEnter,WinEnter term://* startinsert | setlocal norelativenumber nonumber
+  " autocmd BufWinEnter,WinEnter term://* startinsert | setlocal norelativenumber nonumber
+  autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
 
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew ~/.config/nvim/init.vim
@@ -873,6 +897,8 @@ augroup END
 
 augroup python
   autocmd!
+  au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
+
   " Autoinsert ipdb
   au FileType python nnoremap <leader>d oimport ipdb; ipdb.set_trace()<esc>:w<CR>
 augroup END
