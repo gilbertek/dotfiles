@@ -41,6 +41,7 @@ alias l='ls -CF'
 alias halt='halt -p'
 alias v='nvim'
 alias s='source ~/.bash_profile'
+alias path='echo -e ${PATH//:/\\n}'         # path:         Echo all executable Paths
 
 # ** [ GIT ALIASES ] ******************
 alias gf='git fetch'
@@ -129,3 +130,59 @@ alias yt-audio="youtube-dl -citk --max-quality mp3 --audio-format mp3 --extract-
 
 # ** [ MACOS SHORTCUTS ] ******************
 alias mac-clean-logs='sudo rm -rf /private/var/log/asl/*.asl'
+
+# ** [ KUBECTL SHORTCUTS ] ******************
+alias ikubectl="kubectl --insecure-skip-tls-verify=true"
+alias kdescribe="kubectl describe"
+alias kget="kubectl get"
+alias kcreate="kubectl create"
+alias kapply="kubectl apply"
+alias kdelete="kubectl delete"
+alias kscale="kubectl scale"
+alias krollout="kubectl rollout"
+alias klogs="kubect logs"
+# Query common resources
+# Resource reference list:
+# pods (po), services (svc), deployments, replicasets (rs)
+# replicationcontrollers (rc), nodes (no), events (ev),
+# limitranges (limits), persistentvolumes (pv),
+# persistentvolumeclaims (pvc), resourcequotas (quota),
+# namespaces (ns), serviceaccounts (sa), ingresses (ing),
+# horizontalpodautoscalers (hpa), daemonsets (ds), configmaps,
+# componentstatuses (cs), endpoints (ep), and secrets.
+alias pods="get pods"
+alias services="get svc"
+alias svc="get svc"
+alias deployments="get deployments"
+alias dep="get deployments" # NON-STANDARD!!
+alias replicasets="get rs"
+alias replicationcontrollers="get rc"
+alias rc="get rc"
+alias nodes="get nodes"
+alias limitranges="get limitranges"
+alias limits="get limitranges"
+alias events="get events"
+alias persistentvolumes="get pv"
+alias pv="get pv"
+alias persistentvolumeclaims="get pvc"
+alias pvc="get pvc"
+alias namespaces="get ns"
+alias ingresses="get ing"
+alias ing="get ing"
+alias configmaps="get configmaps"
+alias secrets="get secrets"
+
+# ** [ NVIM SHORTCUTS ] ******************
+alias nvu="nvim +PlugInstall +UpdateRemotePlugins +qa"
+
+# ** [ NETWORKING SHORTCUTS ] ******************
+alias myip='curl ip.appspot.com'                    # myip:         Public facing IP Address
+alias netCons='lsof -i'                             # netCons:      Show all open TCP/IP sockets
+alias flushDNS='dscacheutil -flushcache'            # flushDNS:     Flush out the DNS Cache
+alias lsock='sudo /usr/sbin/lsof -i -P'             # lsock:        Display open sockets
+alias lsockU='sudo /usr/sbin/lsof -nP | grep UDP'   # lsockU:       Display only open UDP sockets
+alias lsockT='sudo /usr/sbin/lsof -nP | grep TCP'   # lsockT:       Display only open TCP sockets
+alias ipInfo0='ipconfig getpacket en0'              # ipInfo0:      Get info on connections for en0
+alias ipInfo1='ipconfig getpacket en1'              # ipInfo1:      Get info on connections for en1
+alias openPorts='sudo lsof -i | grep LISTEN'        # openPorts:    All listening connections
+alias showBlocked='sudo ipfw list'                  # showBlocked:  All ipfw rules inc/ blocked IPs

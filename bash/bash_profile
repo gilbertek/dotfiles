@@ -67,6 +67,8 @@ export CLICOLOR='true'
 
 export TERM=xterm-256color
 
+export KUBECTL_CONTEXT=$(kubectl config current-context)
+
 ### Foreground Colours #######################################################
 ATTRIBUTE_BOLD='\[\e[1m\]'
 ATTRIBUTE_RESET='\[\e[0m\]'
@@ -129,9 +131,18 @@ if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
 fi;
 
 # hub as git
-if command -v hub >/dev/null; then
+if command -v hub > /dev/null; then
   eval "$(hub alias -s)"
 fi
+
+
+# Docker (for mac only)
+# if hash docker-machine > /dev/null; then
+#   if [ $(docker-machine status default 2>/dev/null) == "Running" ]; then
+#     eval "$(docker-machine env default)"
+#   fi
+# fi
+#
 
 # Motivation reminder
 # echo "2017 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); print "There are " int(dt/86400/7) " weeks left until the year ends. What will you do?";}'

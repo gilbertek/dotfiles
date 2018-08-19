@@ -32,6 +32,7 @@ let g:mapleader=','
 
 " *** 1.3) Omni #omni ***
 set omnifunc=syntaxcomplete#Complete
+" set completefunc=LanguageClient#complete " Local completion functions
 
 """" 1.4) UI Basics #ui-basics
 set relativenumber              " Relative number
@@ -169,17 +170,16 @@ Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.s
       \ }
 
 " Clojure plugins
-Plug 'guns/vim-sexp',                   { 'for': [ 'clojure', 'clojurescript'] }
-Plug 'clojure-vim/acid.nvim',           { 'for': [ 'clojure', 'clojurescript' ] }
-Plug 'clojure-vim/async-clj-omni',      { 'for': [ 'clojure', 'clojurescript' ] }
-Plug 'fholiveira/vim-clojure-static',   { 'for': [ 'clojure', 'clojurescript' ] }
-Plug 'clojure-vim/async-clj-highlight', { 'for': [ 'clojure', 'clojurescript' ], 'branch': 'acid-autocmd' }
+Plug 'guns/vim-sexp',                   { 'for': 'clojure' }
+Plug 'clojure-vim/acid.nvim'
+Plug 'clojure-vim/async-clj-omni'
+Plug 'fholiveira/vim-clojure-static',   { 'for': 'clojure' }
+Plug 'clojure-vim/async-clj-highlight', { 'for': 'clojure', 'branch': 'acid-autocmd' }
+Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
+Plug 'markwoodhall/vim-aurepl'
 Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'tpope/vim-fireplace',             {'for': ['clojure', 'clojurescript']}
-Plug 'tpope/vim-sexp-mappings-for-regular-people', {'for': ['clojure', 'clojurescript']}
-Plug 'markwoodhall/vim-aurepl',         {'for': ['clojure', 'clojurescript']}
 Plug 'venantius/vim-cljfmt',            {'for': ['clojure', 'clojurescript']}
-
 
 Plug 'tpope/vim-repeat'
 
@@ -388,9 +388,10 @@ Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
 
 " Tagbar: a class outline viewer for Vim
 Plug 'majutsushi/tagbar'
-  let g:tagbar_autofocus   = 1
-  let g:tagbar_autoshowtag = 1
-  let g:tagbar_width       = 25
+  let g:tagbar_autofocus        = 1
+  let g:tagbar_show_linenumbers = 1
+  let g:tagbar_autoshowtag      = 1
+  let g:tagbar_width            = 35
   nnoremap <Space>t :TagbarToggle<CR>
 
 " fzf fuzzy finder
@@ -748,16 +749,15 @@ augroup END
 
 augroup language_server
   autocmd!
-  nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-  nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-  " nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+  " Configure ruby omni-completion to use the language client:
+  autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
 
-
-  au FileType rust,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx setlocal omnifunc=LanguageClient#complete
-  au FileType rust,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>f :call LanguageClient_textDocument_formatting()<cr>
-  au FileType rust,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>r :call LanguageClient_textDocument_rename()<cr>
-  au FileType rust,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>u :call LanguageClient_textDocument_documentSymbol()<cr>
-  au FileType rust,javascript,javascript.jsx,reason,ocaml,typescript,typescript.tsx nn <buffer> <localleader>x :LanguageClientStop<cr>:LanguageClientStart<cr>
+  nnoremap <silent> <leader>gt :call LanguageClient_textDocument_hover()<CR>
+  nnoremap <silent> <leader>gd :call LanguageClient_textDocument_definition()<CR>
+  nnoremap <silent> <leader>gf :call LanguageClient_textDocument_formatting()<CR>
+  vnoremap <silent> <leader>gf :call LanguageClient_textDocument_rangeFormatting()<CR>
+  nnoremap <silent> <leader>gv :call LanguageClient_textDocument_codeAction()<CR>
+  nnoremap <silent> <leader>gr :call LanguageClient#textDocument_rename()<CR>
 augroup END
 
 augroup elm
@@ -835,11 +835,16 @@ augroup rainbow_lisp
   nnoremap <leader>rp :RainbowParentheses<CR>
 augroup END
 
+augroup terminal_commands
+    au!
+    au BufEnter * if &buftype == "terminal" | startinsert | endif
+    " au TermOpen * setl nonumber norelativenumber
+    " autocmd BufWinEnter,WinEnter term://* startinsert | setlocal norelativenumber nonumber
+    " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
+augroup END
+
 augroup viml
   autocmd!
-  " autocmd BufWinEnter,WinEnter term://* startinsert | setlocal norelativenumber nonumber
-  autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
-
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew ~/.config/nvim/init.vim
   command! Loadrc source ~/.config/nvim/init.vim
@@ -848,6 +853,10 @@ augroup END
 
 augroup perl
   au FileType perl6 setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
+augroup END
+
+augroup haskell
+  au FileType haskell nnoremap <silent> <leader>b :!stack build<CR>
 augroup END
 
 augroup dotenv
@@ -861,9 +870,6 @@ augroup ruby
   " Add pry to debug
   autocmd FileType ruby nnoremap <leader>d obinding.pry<esc>:w<CR>
   autocmd FileType ruby nmap <Leader>r :RuboCop<CR>
-
-  " Configure ruby omni-completion to use the language client:
-  autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
 
   " Migrate and rollback
   autocmd FileType ruby nnoremap <leader>dbm :!bin/rake db:migrate<CR>
