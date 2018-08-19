@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Open project in CircleCI
+
+set -euo pipefail
+
+repo=$(git config --get remote.origin.url | perl -ne 'm|/([^/]+/[^/]+)\.git$| and print $1')
+
+if [[ -n $repo ]]; then
+    url="https://circleci.com/gh/$repo"
+    echo "$url"
+    open "$url"
+else
+    exit 1
+fi

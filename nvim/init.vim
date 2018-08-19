@@ -338,6 +338,7 @@ Plug 'w0rp/ale'
   \ 'elm': ['elm-format'],
   \ 'reason': ['refmt'],
   \ 'ocaml': ['refmt'],
+  \ 'ruby': ['rubocop']
   \ }
   let g:ale_completion_enabled          = 1
   let g:ale_fix_on_save                 = 1
@@ -349,6 +350,8 @@ Plug 'w0rp/ale'
 
   " Run autoformatter
   nnoremap <leader>= :ALEFix<cr>
+  nmap ]a <Plug>(ale_next_wrap)
+  nmap [a <Plug>(ale_previous_wrap)
 
   " Git Plugins
 " ---------------

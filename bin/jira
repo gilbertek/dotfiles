@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Open JIRA ticket
+
+set -euo pipefail
+
+if [ $# -eq 1 ]; then
+    issue=$1
+else
+    issue=$(git symbolic-ref --short HEAD | perl -ne '/([A-Z]+-[0-9]+)$/ and print $1')
+fi
+
+if [[ -n $issue ]]; then
+    url="https://work.atlassian.net/browse/$issue"
+    echo "$url"
+    open "$url"
+else
+    exit 1
+fi
