@@ -32,7 +32,6 @@ let g:mapleader=','
 
 " *** 1.3) Omni #omni ***
 set omnifunc=syntaxcomplete#Complete
-" set completefunc=LanguageClient#complete " Local completion functions
 
 """" 1.4) UI Basics #ui-basics
 set relativenumber              " Relative number
@@ -342,8 +341,8 @@ Plug 'w0rp/ale'
   \ }
   let g:ale_completion_enabled          = 1
   let g:ale_fix_on_save                 = 1
-  let g:ale_sign_error                  = '△' " could use emoji or 'X'
-  let g:ale_sign_warning                = '✕' " could use emoji '?'
+  let g:ale_sign_error                  = '✗✗' " '△'  could use emoji or 'X'
+  let g:ale_sign_warning                = '∆∆' " '✕' could use emoji '?'
   let g:ale_echo_msg_format             = '[%linter%] %s [%severity%]'
   let g:ale_statusline_format           = ['⨉ %d', '⚠ %d', '⬥ ok']
   let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'

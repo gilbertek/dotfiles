@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+parent_branch=$(git show-branch -a 2>/dev/null | grep '\*' | grep -v "$current_branch" | head -n1 | sed 's/.*\[\(.*\)\].*/\1/' | sed 's/[\^~].*//')
+if [ -n "$parent_branch" ]; then
+  git diff $(git merge-base $parent_branch HEAD) --diff-filter=d --name-only
+fi
