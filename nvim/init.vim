@@ -337,14 +337,14 @@ Plug 'w0rp/ale'
   \ 'elm': ['elm-format'],
   \ 'reason': ['refmt'],
   \ 'ocaml': ['refmt'],
-  \ 'ruby': ['rubocop']
+  \ 'ruby': ['rubocop'],
   \ }
   let g:ale_completion_enabled          = 1
   let g:ale_fix_on_save                 = 1
   let g:ale_sign_error                  = '✗✗' " '△'  could use emoji or 'X'
-  let g:ale_sign_warning                = '∆∆' " '✕' could use emoji '?'
+  let g:ale_sign_warning                = '⚠ ' " '✕' could use emoji '?'
   let g:ale_echo_msg_format             = '[%linter%] %s [%severity%]'
-  let g:ale_statusline_format           = ['⨉ %d', '⚠ %d', '⬥ ok']
+  let g:ale_statusline_format           = ['✗✗%d', '⚠ %d', '⬥ ok']
   let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
 
   " Run autoformatter
@@ -399,10 +399,8 @@ Plug 'majutsushi/tagbar'
 " fzf fuzzy finder
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
   let g:fzf_layout = { 'down': '40%' }
+  let g:fzf_files_options="--preview 'bat --color \"always\" {}'"
 
-  " Search all files, e.g. node_modules/
-  nnoremap <silent> <leader>af :call fzf#vim#files('',
-      \ {'source': 'ag --hidden --ignore .git -f -g "" -u', 'down': '40%'})<CR>
   nnoremap <silent> <C-P> :FZF<cr>
   nnoremap <silent> <leader>a :Ag<cr>
   nnoremap <leader>b :Buffers<cr>
@@ -412,24 +410,6 @@ Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
   nmap <leader><tab> <plug>(fzf-maps-n)
   xmap <leader><tab> <plug>(fzf-maps-x)
   omap <leader><tab> <plug>(fzf-maps-o)
-
-  augroup localfzf
-    autocmd!
-    autocmd FileType fzf :tnoremap <buffer> <C-J> <C-J>
-    autocmd FileType fzf :tnoremap <buffer> <C-K> <C-K>
-    autocmd VimEnter * command! -bang -nargs=* Ag
-      \ call fzf#vim#ag(<q-args>,
-      \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-      \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-      \                 <bang>0)
-  augroup END
-
-" Javascript Formatting and development
-Plug 'sbdchd/neoformat'
-  let g:neoformat_try_formatprg      = 1
-  let g:neoformat_basic_format_align = 1 " Enable alignment
-  let g:neoformat_basic_format_retab = 1 " Enable tab to spaces conversion
-  let g:neoformat_basic_format_trim  = 1 " Enable trimmming of trailing whitespace
 
 Plug 'easymotion/vim-easymotion'
 
@@ -736,7 +716,7 @@ augroup general
   autocmd FileType vue syntax sync fromstart
 
   autocmd BufWritePre,BufLeave,FocusLost * StripWhitespace
-  autocmd Filetype gitcommit setlocal spell textwidth=72
+  autocmd Filetype gitcommit,markdown setlocal spell textwidth=72
   autocmd InsertLeave * set nopaste
   autocmd InsertLeave * pc               "close preview on insert leave
 augroup END
@@ -822,13 +802,6 @@ augroup javascript
 
   " Log out the word under the cursor
   nmap <leader>d yiwoconsole.log('<c-r>"', <c-r>");<esc>^
-
-  autocmd FileType javascript setlocal formatprg=prettier\
-                                                \--stdin\
-                                                \--print-width\ 80\
-                                                \--single-quote\
-                                                \--trailing-comma\ es5
-  autocmd BufWritePre *.{js,jsx,elm,css,scss,json,hs,sql} undojoin | Neoformat
 augroup END
 
 augroup rainbow_lisp

@@ -23,6 +23,14 @@ alias xcode="open -a '/Developer/Applications/Xcode.app'"
 # Avoid progress bar and follow redirects
 alias curl="curl -sL"
 
+alias cat='bat'  # bat > cat
+
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+
+# alias help='tldr'
+
+alias watch="watch --color"
+
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
@@ -172,6 +180,13 @@ alias ing="get ing"
 alias configmaps="get configmaps"
 alias secrets="get secrets"
 
+# ** [CLOJURE SHORTCUTS ] ******************
+alias l='lein'
+alias b='boot'
+alias clj-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept clojure.core.server/repl}" -A:rebel; }; do_repl'
+alias cljs-node-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept cljs.server.node/repl}" -R:cljs-canary -A:rebel-cljs -m cljs.main -re node -r; }; do_repl'
+
+
 # ** [ NVIM SHORTCUTS ] ******************
 alias nvu="nvim +PlugInstall +UpdateRemotePlugins +qa"
 
@@ -186,3 +201,14 @@ alias ipInfo0='ipconfig getpacket en0'              # ipInfo0:      Get info on 
 alias ipInfo1='ipconfig getpacket en1'              # ipInfo1:      Get info on connections for en1
 alias openPorts='sudo lsof -i | grep LISTEN'        # openPorts:    All listening connections
 alias showBlocked='sudo ipfw list'                  # showBlocked:  All ipfw rules inc/ blocked IPs
+
+
+alias ws=wireshark
+# export WS_OPTIONS=(-o tcp.no_subdissector_on_error:false -d tcp.port==1-65535,ssl -o ssl.keylog_file:/home/dsf/PCAPS/all-pcaps.keylogfile)
+export WS_OPTIONS=(-o ssl.keylog_file:/home/dsf/PCAPS/all-pcaps.keylogfile)
+alias lvs='tmux split -d lnav ssldebug'
+alias tsv='truncate -s0 ssldebug'
+alias ww='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:/dev/null -r cap.pcapng &'
+alias wwss='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:/dev/stdout -r cap.pcapng'
+alias wws='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:ssldebug -r cap.pcapng & truncate -s0 ssldebug'
+alias wwso='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:ssldebug-orig -r cap.pcapng & truncate -s0 ssldebug-orig'

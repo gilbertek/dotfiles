@@ -38,6 +38,13 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 export EDITOR=nvim
 export VISUAL=nvim
 
+export FZF_DEFAULT_OPTS='--height 60% --reverse'
+
+# Setting fd as the default source for fzf
+export FZF_DEFAULT_COMMAND='fd --type f'
+export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
 #Ignore duplicate commands, space-prefixed, and misc boring cmds.
 export HISTIGNORE="&:[ ]*:exit:gs:gl"
 # Massive main .bash_history...

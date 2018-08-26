@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+read -p "User name? " user
+
+sudo -u postgres createuser \
+  --echo \
+  --superuser \
+  --createdb \
+  --pwprompt \
+  --createrole \
+  "$user"

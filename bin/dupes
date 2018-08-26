@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require 'set'
+require 'digest'
+
+known = {}
+Dir['*'].sort.reverse_each do |file|
+  digest = Digest::SHA256.file(file).hexdigest
+  if dupe = known[digest]
+    puts "#{file}: Duplicate of #{dupe}"
+    # File.unlink file
+  else
+    known[digest] = file
+  end
+end
