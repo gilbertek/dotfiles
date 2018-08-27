@@ -401,7 +401,6 @@ Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
   let g:fzf_layout = { 'down': '40%' }
   let g:fzf_files_options="--preview 'bat --color \"always\" {}'"
 
-  nnoremap <silent> <C-P> :FZF<cr>
   nnoremap <silent> <leader>a :Ag<cr>
   nnoremap <leader>b :Buffers<cr>
   nmap <leader>h :History<cr>
@@ -719,6 +718,9 @@ augroup general
   autocmd Filetype gitcommit,markdown setlocal spell textwidth=72
   autocmd InsertLeave * set nopaste
   autocmd InsertLeave * pc               "close preview on insert leave
+
+  " expand all folds when entering a file
+  autocmd BufWinEnter * silent! :%foldopen!
 augroup END
 
 augroup cursorline
@@ -797,8 +799,7 @@ augroup END
 
 augroup javascript
   autocmd!
-  autocmd BufNewFile,BufRead .babelrc setlocal filetype=json
-  autocmd BufNewFile,BufRead .eslintrc setlocal filetype=json
+  autocmd BufNewFile,BufRead .babelrc,.eslintrc setlocal filetype=json
 
   " Log out the word under the cursor
   nmap <leader>d yiwoconsole.log('<c-r>"', <c-r>");<esc>^

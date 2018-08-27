@@ -65,11 +65,15 @@
 [merge]
   summary = true
   tool = vimdiff
+
 [mergetool]
-  prompt = false
-  keepBackup = false
+  path = nvim
+  prompt = true
+
 [mergetool "vimdiff"]
-  cmd = $EDITOR -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w|only|diffoff!'
+  cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w|only|diffoff!'
+  # cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
 [merge "bundlelock"]
   name = lock Gemfile
   driver = bundle install
