@@ -28,6 +28,10 @@ JAVA_HOME=$(/usr/libexec/java_home)
 # Haskell/hdevtools Home path setup
 export PATH=~/.local/bin:$PATH
 
+# Put GHC on the path globally
+GHC_PATH=`stack path | grep compiler-bin | sed -e 's/compiler-bin: //'`
+export PATH="$PATH:$GHC_PATH"
+
 # PHP CLI
 # export PATH="$(brew --prefix homebrew/php/php70)/bin:$PATH"
 export PATH="/usr/local/opt/php@5.6/bin:$PATH"
@@ -105,8 +109,7 @@ txtend='\[\e[00m\]'
 # Define the prompt character
 CHAR='❯'
 
-PS1="${COLOR_BLUE}[${COLOR_RESET}${COLOR_CYAN}\\u ${COLOR_GREEN}in ${COLOR_YELLOW}\
-\W${COLOR_CYAN}\$(parse_git_branch)${COLOR_BLUE}]${CHAR}${COLOR_RESET}${COLOR_DEFAULT} "
+PS1="${COLOR_BLUE}[${COLOR_RESET}${COLOR_CYAN}\\u ${COLOR_GREEN}in ${COLOR_YELLOW}\W${COLOR_CYAN}\$(parse_git_branch)${COLOR_BLUE}]${CHAR}${COLOR_RESET}${COLOR_DEFAULT} "
 
 
 __kirbies=("<('o'<)" "(>‘o’)>" "v(‘.’)v" "<('.')>" "<('.'<)" "^('.')^" "(>‘.’)>" "v(‘.’)v" "<('.')>")

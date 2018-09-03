@@ -37,7 +37,7 @@ set omnifunc=syntaxcomplete#Complete
 set relativenumber              " Relative number
 set number                      " Precede each line with its line number.
 set colorcolumn=80              " Show right column in a highlighted colour.
-set diffopt+=vertical
+set diffopt+=vertical           " Vertical display with vimdiff
 set hidden                      " Hide buffers instead of closing them
 set lazyredraw                  " Don't redraw during macros
 set splitbelow                  " Put a split beneath the current one
@@ -82,7 +82,7 @@ let g:elm_make_show_warnings      = 1
 let g:elm_setup_keybindings       = 1
 
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled           = ['elm', 'go', 'clojure']
+let g:polyglot_disabled           = ['elm', 'go', 'clojure', 'haskell']
 
 "js configs
 let g:jsx_ext_required            = 0
@@ -201,18 +201,21 @@ Plug 'ternjs/tern_for_vim',     { 'do': 'npm install' }
 Plug 'elzr/vim-json',           {'for' : 'json'}
 let g:vim_json_syntax_conceal = 0
 
-" Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Haskell
-"   let g:haskell_enable_quantification   = 1 " to enable highlighting of `forall`
-"   let g:haskell_enable_recursivedo      = 1 " to enable highlighting of `mdo` and `rec`
-"   let g:haskell_enable_arrowsyntax      = 1 " to enable highlighting of `proc`
-"   let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
-"   let g:haskell_enable_typeroles        = 1 " to enable highlighting of type roles
-"   let g:haskell_enable_static_pointers  = 1 " to enable highlighting of `static`
-"   let g:haskell_backpack                = 1 " to enable highlighting of backpack keywords
+Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Haskell
+let g:haskell_enable_quantification   = 1 " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo      = 1 " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax      = 1 " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles        = 1 " to enable highlighting of type roles
+let g:haskell_enable_static_pointers  = 1 " to enable highlighting of `static`
+let g:haskell_backpack                = 1 " to enable highlighting of backpack keywords
 
-Plug 'eagletmt/neco-ghc' " A completion plugin for Haskell
-let g:haskellmode_completion_ghc      = 0 " Disable haskell-vim omnifunc
+Plug 'parsonsmatt/intero-neovim'
+Plug 'Shougo/vimproc.vim',            {'do' : 'make'}
+Plug 'eagletmt/neco-ghc',             { 'for': 'haskell' } "Haskell completion
+let g:haskellmode_completion_ghc      = 0
 let g:necoghc_enable_detailed_browse  = 1
+let g:necoghc_use_stack               = 1
 
 " Plugins for Database support
 " Plug 'vim-scripts/dbext.vim'
@@ -815,11 +818,14 @@ augroup javascript
 augroup END
 
 augroup terminal_commands
-  au!
-  au BufEnter * if &buftype == "terminal" | startinsert | endif
-  " au TermOpen * setl nonumber norelativenumber
-  " autocmd BufWinEnter,WinEnter term://* startinsert | setlocal norelativenumber nonumber
-  " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
+  autocmd!
+
+  " Always enter terminal in insert mode
+  autocmd BufWinEnter,WinEnter,TermOpen term://* startinsert
+  autocmd BufLeave term://* stopinsert
+
+  " no linenumbers in terminals
+  autocmd TermOpen * setlocal nonumber norelativenumber
 augroup END
 
 augroup viml
@@ -835,12 +841,21 @@ augroup perl
 augroup END
 
 augroup haskell
-  au FileType haskell nnoremap <silent> <leader>b :!stack build<CR>
   autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-  autocmd! BufWrite *.hs silent! undojoin | Neoformat
+  au FileType haskell nnoremap <silent> <leader>b :!stack build --fast<CR>
   au FileType haskell let g:neoformat_run_all_formatters = 1
-  au FileType haskell setlocal formatprg=stylish-haskell
-  au FileType haskell setlocal makeprg=stack\ build\ --fast
+augroup END
+
+augroup interoMaps
+  autocmd!
+  au BufWritePost *.hs InteroReload " Automatically reload on save.
+  au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR><C-W>H
+  au FileType haskell nnoremap <silent> <leader>ih :InteroHide<cr>
+  au FileType haskell nnoremap <silent> <leader>if :InteroLoadCurrentFile<CR>
+  au FileType haskell nnoremap <silent> <leader>dd :InteroGoToDef<CR>
+  au FileType haskell nnoremap <silent> <leader>it :InteroType<CR>
+  au FileType haskell map <silent> <leader>ii :InteroInfo<cr>
+  au FileType haskell map <leader>ic :!echo ":ctags" \| stack ghci<cr>
 augroup END
 
 augroup dotenv
