@@ -51,8 +51,10 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 #Ignore duplicate commands, space-prefixed, and misc boring cmds.
 export HISTIGNORE="&:[ ]*:exit:gs:gl"
+
 # Massive main .bash_history...
 export HISTFILESIZE=10000
+
 # Larger session histories...
 export HISTSIZE=1000
 
@@ -139,6 +141,16 @@ fi
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
   complete -o default -o nospace -F _git g;
 fi;
+
+export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+
+# Cargo bin directory
+# export PATH="$HOME/.asdf/installs/rust/1.28.0/bin:$PATH"
+
+#To configure your current shell run
+if [ -f "$HOME/.asdf/installs/rust/1.28.0/env" ]; then
+  source "$HOME/.asdf/installs/rust/1.28.0/env"
+fi
 
 # hub as git
 if command -v hub > /dev/null; then

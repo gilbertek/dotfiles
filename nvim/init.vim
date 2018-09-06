@@ -165,7 +165,7 @@ let g:LanguageClient_serverCommands = {
       \ 'reason': ['ocaml-language-server', '--stdio'],
       \ 'ocaml': ['ocaml-language-server', '--stdio'],
       \ 'python': ['pyls'],
-      \ 'ruby': ['solargraph', 'stdio']
+      \ 'ruby': ['solargraph', 'stdio'],
       \ }
 
 " Clojure plugins
@@ -225,7 +225,6 @@ Plug 'tpope/vim-db'
 " Plug 'vyzyv/vimpyter'
 
 """" 2.2) Utilities #utilities
-
 Plug 'sbdchd/neoformat'
 let g:neoformat_try_formatprg      = 1
 let g:neoformat_basic_format_align = 1 " Enable alignment
@@ -444,7 +443,6 @@ Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 8
 let g:indentLine_char = '│'
 
-" Bottom bar with all settings wombat
 Plug 'itchyny/lightline.vim'
 let g:lightline = {
       \ 'colorscheme': 'wombat',
@@ -483,7 +481,7 @@ endif
 " Autocompletion Engine (neovim) Autocompletion Engine (neovim)
 Plug 'Shougo/deoplete.nvim',        { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-clang'
-Plug 'sebastianmarkow/deoplete-rust'
+Plug 'racer-rust/vim-racer'
 " Plug 'fishbullet/deoplete-ruby'
 Plug 'zchee/deoplete-jedi'          " source for Python
 Plug 'zchee/deoplete-go',           { 'do': 'make'}
@@ -505,8 +503,6 @@ let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 
 let g:deoplete#sources#go#gocode_binary    = $GOPATH.'/bin/gocode'
 let g:deoplete#sources#go#pointer          = 1
-
-let g:deoplete#sources#rust#racer_binary   = $HOME.'/.cargo/bin/racer'
 
 let g:deoplete#sources#clang#libclang_path = $BREW_PATH.'/Cellar/llvm/5.0.1/lib/libclang.dylib'
 let g:deoplete#sources#clang#clang_header  = $BREW_PATH.'/opt/llvm/bin/clang'
