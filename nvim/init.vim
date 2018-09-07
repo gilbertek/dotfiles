@@ -162,10 +162,14 @@ let g:LanguageClient_trace = 'verbose'
 
 let g:LanguageClient_serverCommands = {
       \ 'javascript': ['javascript-typescript-stdio'],
-      \ 'reason': ['ocaml-language-server', '--stdio'],
-      \ 'ocaml': ['ocaml-language-server', '--stdio'],
-      \ 'python': ['pyls'],
-      \ 'ruby': ['solargraph', 'stdio'],
+      \ 'reason':     ['ocaml-language-server', '--stdio'],
+      \ 'ocaml':      ['ocaml-language-server', '--stdio'],
+      \ 'python':     ['pyls'],
+      \ 'ruby':       ['solargraph', 'stdio'],
+      \ 'cpp':        ['cquery', '--log-file=/tmp/cq.log'],
+      \ 'c':          ['cquery', '--log-file=/tmp/cq.log'],
+      \ 'rust':       ['rustup', 'run', 'stable', 'rls'],
+      \ 'haskell':    ['hie-wrapper', '--lsp']
       \ }
 
 " Clojure plugins
@@ -235,8 +239,6 @@ vmap <Leader>nf :Neoformat<CR>
 " Automatically match any brackets, parentheses or quotes
 Plug 'jiangmiao/auto-pairs'
 Plug 'machakann/vim-highlightedyank'
-
-" Plug 'eraserhd/parinfer-rust'
 
 " Cycle through deopletes auto-completion with the tab key
 Plug 'ervandew/supertab'
@@ -341,18 +343,18 @@ let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_linters = {
       \ 'javascript': ['eslint', 'prettier'],
       \ 'go':         ['gofmt', 'gometalinter'],
-      \ 'haskell': ['stack-ghc-mod', 'hlint'],
-      \ 'reason': ['merlin'],
-      \ 'ocaml': ['merlin']
+      \ 'haskell':    ['stack-ghc-mod', 'hlint'],
+      \ 'reason':     ['merlin'],
+      \ 'ocaml':      ['merlin']
       \ }
 
 let g:ale_fixers = {
       \ 'javascript': ['prettier'],
       \ 'python':     ['isort', 'yapt'],
-      \ 'elm': ['elm-format'],
-      \ 'reason': ['refmt'],
-      \ 'ocaml': ['refmt'],
-      \ 'ruby': ['rubocop'],
+      \ 'elm':        ['elm-format'],
+      \ 'reason':     ['refmt'],
+      \ 'ocaml':      ['refmt'],
+      \ 'ruby':       ['rubocop'],
       \ }
 let g:ale_completion_enabled          = 1
 let g:ale_fix_on_save                 = 1
@@ -479,14 +481,14 @@ if has('ultisnips')
 endif
 
 " Autocompletion Engine (neovim) Autocompletion Engine (neovim)
-Plug 'Shougo/deoplete.nvim',        { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-clang'
 Plug 'racer-rust/vim-racer'
 " Plug 'fishbullet/deoplete-ruby'
-Plug 'zchee/deoplete-jedi'          " source for Python
-Plug 'zchee/deoplete-go',           { 'do': 'make'}
+Plug 'zchee/deoplete-jedi'                 " source for Python
+Plug 'zchee/deoplete-go',                  { 'do': 'make'}
 Plug 'clojure-vim/async-clj-omni'
-Plug 'carlitux/deoplete-ternjs',    { 'for': ['javascript', 'javascript.jsx'] }
+Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
 let g:deoplete#sources#ternjs#types        = 1
 let g:deoplete#sources#ternjs#docs         = 1
 let g:tern#command                         = ['tern']
@@ -507,6 +509,11 @@ let g:deoplete#sources#go#pointer          = 1
 let g:deoplete#sources#clang#libclang_path = $BREW_PATH.'/Cellar/llvm/5.0.1/lib/libclang.dylib'
 let g:deoplete#sources#clang#clang_header  = $BREW_PATH.'/opt/llvm/bin/clang'
 
+let g:deoplete#sources#cpp                 = ['LanguageClient']
+let g:deoplete#sources#python              = ['LanguageClient']
+let g:deoplete#sources#python3             = ['LanguageClient']
+" let g:deoplete#sources#rust                = ['LanguageClient']
+let g:deoplete#sources#c                   = ['LanguageClient']
 """" 2.4) End Code completion & Navigation #code-navigation
 call plug#end()
 "" Plugin configuration that has to run after plug#end
@@ -750,6 +757,13 @@ augroup language_server
   vnoremap <silent> <leader>gf :call LanguageClient_textDocument_rangeFormatting()<CR>
   nnoremap <silent> <leader>gv :call LanguageClient_textDocument_codeAction()<CR>
   nnoremap <silent> <leader>gr :call LanguageClient#textDocument_rename()<CR>
+augroup END
+
+augroup rustRaceMap
+  au FileType rust nmap gd <Plug>(rust-def)
+  au FileType rust nmap gs <Plug>(rust-def-split)
+  au FileType rust nmap gx <Plug>(rust-def-vertical)
+  au FileType rust nmap <leader>gd <Plug>(rust-doc)
 augroup END
 
 augroup elm

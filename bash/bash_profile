@@ -7,7 +7,9 @@ bind "set completion-ignore-case on"
 # What will you do?";}';
 
 # Add `~/bin` to the `$PATH`
-export PATH=$HOME/bin:$PATH
+if [ -d "$HOME/bin" ] ; then
+  export PATH="$HOME/bin:$PATH"
+fi
 
 # Homebrew
 export PATH="/usr/local/bin:$PATH"
@@ -38,6 +40,17 @@ export PATH="/usr/local/opt/php@5.6/bin:$PATH"
 
 # Persistent history in Elixir repl IEx
 export ERL_AFLAGS="-kernel shell_history enabled"
+
+# android
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+
+# Google Cloud SDK.
+if [[ -x "$(command -v gcloud)" ]]; then
+  source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+  source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+fi
+
 
 export EDITOR=nvim
 export VISUAL=nvim
