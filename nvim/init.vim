@@ -21,19 +21,22 @@
 " 5) Utilities
 
 " **[ 1) Basics #basics ]********************
-" *** 1.1) Tabs & Indent #tabs
+let g:username = "Gilbert F. Sewovoe-Ekoue"
+let g:email = "gilberts55@hotmail.com"
+
+" **[ 1.1) Tabs & Indent #tabs ]********************
 set expandtab                   " Replace tabs with spaces in Insert mode.
 set shiftwidth=2                " Spaces for each (auto)indent.
 set softtabstop=2               " Spaces for tabs when inserting <Tab> or <BS>.
 set tabstop=2                   " Spaces that a <Tab> in file counts for.
 
-" *** 1.2) Leader #leader ***
+" **[ 1.2) Leader #leader ]********************
 let g:mapleader=','
 
-" *** 1.3) Omni #omni ***
+" **[ 1.3) Omni #omni ]********************
 set omnifunc=syntaxcomplete#Complete
 
-"""" 1.4) UI Basics #ui-basics
+" **[ 1.4) UI Basics #ui-basics ]********************
 set relativenumber              " Relative number
 set number                      " Precede each line with its line number.
 set colorcolumn=80              " Show right column in a highlighted colour.
@@ -82,7 +85,7 @@ let g:elm_make_show_warnings      = 1
 let g:elm_setup_keybindings       = 1
 
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled           = ['elm', 'clojure', 'haskell']
+let g:polyglot_disabled           = ['elm', 'haskell']
 
 "js configs
 let g:jsx_ext_required            = 0
@@ -95,14 +98,9 @@ let g:alchemist_tag_disable       = 1 "Use Universal ctags instead
 let g:alchemist_iex_term_size     = 10
 
 Plug 'vim-erlang/vim-erlang-tags'
-Plug 'vim-erlang/vim-erlang-runtime'
 Plug 'vim-erlang/vim-erlang-omnicomplete'
 Plug 'vim-erlang/vim-erlang-compiler'
 let g:erlang_tags_ignore = '_build'
-
-" Perl
-Plug 'vim-perl/vim-perl6', { 'for': 'perl6' }
-let g:perl6_unicode_abbrevs = 1
 
 " Phoenix
 Plug 'c-brenn/phoenix.vim'
@@ -130,7 +128,8 @@ let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
 " Plugins for Go support
 Plug 'jodosha/vim-godebug'
-let g:go_list_type                    = 'quickfix'
+Plug 'buoto/gotests-vim'
+let g:go_list_type                    = 'quickfix' " Fix for location list
 let g:go_fmt_command                  = 'goimports'
 let g:go_highlight_functions          = 1
 let g:go_highlight_methods            = 1
@@ -140,10 +139,9 @@ let g:go_highlight_build_constraints  = 1
 let g:go_highlight_types              = 1
 let g:go_highlight_fields             = 1
 let g:go_highlight_interfaces         = 1
-let g:go_auto_type_info               = 1
-let g:go_auto_sameids                 = 1
-" Show the progress when running :GoCoverage
-let g:go_echo_command_info = 1
+let g:go_auto_type_info               = 1 " Show type information
+let g:go_auto_sameids                 = 1 " Highlight variable uses
+let g:go_echo_command_info            = 1 " Show the progress when running :GoCoverage
 
 " LSP client
 Plug 'reasonml-editor/vim-reason-plus'
@@ -174,7 +172,6 @@ let g:LanguageClient_serverCommands = {
 Plug 'guns/vim-sexp',                    { 'for': 'clojure' }
 Plug 'clojure-vim/acid.nvim'
 Plug 'clojure-vim/async-clj-omni'
-Plug 'fholiveira/vim-clojure-static',    { 'for': 'clojure' }
 Plug 'clojure-vim/async-clj-highlight',  { 'for': 'clojure', 'branch': 'acid-autocmd' }
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
@@ -203,7 +200,7 @@ Plug 'ternjs/tern_for_vim',     { 'do': 'npm install' }
 Plug 'elzr/vim-json',           {'for' : 'json'}
 let g:vim_json_syntax_conceal   = 0
 
-Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Haskell
+" Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Haskell
 let g:haskell_enable_quantification   = 1 " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo      = 1 " to enable highlighting of `mdo` and `rec`
 let g:haskell_enable_arrowsyntax      = 1 " to enable highlighting of `proc`
@@ -808,9 +805,7 @@ augroup END
 
 augroup erlang
   autocmd!
-  autocmd BufNewFile,BufRead *.erl setlocal tabstop=4
-  autocmd BufNewFile,BufRead *.erl setlocal shiftwidth=4
-  autocmd BufNewFile,BufRead *.erl setlocal softtabstop=4
+  autocmd BufNewFile,BufRead *.erl setlocal tabstop=4 shiftwidth=4 softtabstop=4
   autocmd BufNewFile,BufRead relx.config setlocal filetype=erlang
 augroup END
 
