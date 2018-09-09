@@ -155,10 +155,9 @@ if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
   complete -o default -o nospace -F _git g;
 fi;
 
-export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+export PATH=$HOME/.cargo/bin:$PATH
 
-# Cargo bin directory
-# export PATH="$HOME/.asdf/installs/rust/1.28.0/bin:$PATH"
+export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 
 #To configure your current shell run
 if [ -f "$HOME/.asdf/installs/rust/1.28.0/env" ]; then
@@ -169,6 +168,12 @@ fi
 if command -v hub > /dev/null; then
   eval "$(hub alias -s)"
 fi
+
+# kubectl
+if command -v kubectl &>/dev/null; then
+  source <(kubectl completion bash)
+fi
+
 
 
 # Docker (for mac only)

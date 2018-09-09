@@ -109,10 +109,10 @@ Plug 'c-brenn/phoenix.vim'
 Plug 'tpope/vim-projectionist'    " required for some navigation features
 
 " Markdown Preview
-Plug 'shime/vim-livedown',     { 'do': 'npm install -g livedown' }
+Plug 'shime/vim-livedown',      { 'do': 'npm install -g livedown' }
 
-Plug 'junegunn/goyo.vim', { 'on': 'Goyo' } " Distraction free
-Plug 'junegunn/limelight.vim' " To accompany goyo
+Plug 'junegunn/goyo.vim',       { 'on': 'Goyo' } " Distraction free
+Plug 'junegunn/limelight.vim'   " To accompany goyo
 let g:goyo_width         = 80
 let g:goyo_margin_top    = 2
 let g:goyo_margin_bottom = 2
@@ -130,20 +130,19 @@ let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
 " Plugins for Go support
 Plug 'jodosha/vim-godebug'
-Plug 'fatih/vim-go',                   { 'for': 'go' }
-let g:go_list_type                   = 'quickfix'
-let g:go_fmt_command                 = 'goimports'
-let g:go_highlight_functions         = 1
-let g:go_highlight_methods           = 1
-let g:go_highlight_structs           = 1
-let g:go_highlight_operators         = 1
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_types             = 1
-let g:go_highlight_fields            = 1
-let g:go_highlight_interfaces        = 1
-let g:go_auto_type_info              = 1
-let g:go_auto_sameids                = 1
-
+Plug 'fatih/vim-go',                  { 'do': ':GoUpdateBinaries' }
+let g:go_list_type                    = 'quickfix'
+let g:go_fmt_command                  = 'goimports'
+let g:go_highlight_functions          = 1
+let g:go_highlight_methods            = 1
+let g:go_highlight_structs            = 1
+let g:go_highlight_operators          = 1
+let g:go_highlight_build_constraints  = 1
+let g:go_highlight_types              = 1
+let g:go_highlight_fields             = 1
+let g:go_highlight_interfaces         = 1
+let g:go_auto_type_info               = 1
+let g:go_auto_sameids                 = 1
 " Show the progress when running :GoCoverage
 let g:go_echo_command_info = 1
 
@@ -157,8 +156,8 @@ Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.s
 let g:LanguageClient_autoStart = 1 " Automatically start language servers
 let g:LanguageClient_trace = 'verbose'
 " Debugging
-" let g:LanguageClient_loggingLevel = 'DEBUG'
-" let g:LanguageClient_diagnosticsEnable = 1
+" let g:LanguageClient_loggingLevel       = 'DEBUG'
+" let g:LanguageClient_diagnosticsEnable  = 1
 
 let g:LanguageClient_serverCommands = {
       \ 'javascript': ['javascript-typescript-stdio'],
@@ -188,8 +187,8 @@ Plug 'tpope/vim-repeat'
 
 " HTML / CSS
 Plug 'mattn/emmet-vim',       { 'for': ['javascript', 'javascript.jsx', 'html'] }
-let g:user_emmet_mode       = 'a'     " Only enable Insert mode functions.
-let g:user_emmet_leader_key = '<tab>' " Using Tab to expand
+let g:user_emmet_mode         = 'a'     " Only enable Insert mode functions.
+let g:user_emmet_leader_key   = '<tab>' " Using Tab to expand
 
 Plug 'ap/vim-css-color'
 Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']} " Autocompletes tags.
@@ -197,13 +196,13 @@ Plug 'cakebaker/scss-syntax.vim'
 
 " JS
 Plug 'chemzqm/vim-jsx-improve'
-let g:javascript_plugin_jsdoc = 1
-let g:javascript_plugin_flow  = 1
+let g:javascript_plugin_jsdoc   = 1
+let g:javascript_plugin_flow    = 1
 
 Plug 'flowtype/vim-flow'
 Plug 'ternjs/tern_for_vim',     { 'do': 'npm install' }
 Plug 'elzr/vim-json',           {'for' : 'json'}
-let g:vim_json_syntax_conceal = 0
+let g:vim_json_syntax_conceal   = 0
 
 Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Haskell
 let g:haskell_enable_quantification   = 1 " to enable highlighting of `forall`
@@ -222,17 +221,14 @@ let g:necoghc_enable_detailed_browse  = 1
 let g:necoghc_use_stack               = 1
 
 " Plugins for Database support
-" Plug 'vim-scripts/dbext.vim'
 Plug 'tpope/vim-db'
-
-" Plugins for Jupyter notebooks
-" Plug 'vyzyv/vimpyter'
+" Plug 'vyzyv/vimpyter' " Plugins for Jupyter notebooks
 
 """" 2.2) Utilities #utilities
 Plug 'sbdchd/neoformat'
-let g:neoformat_try_formatprg      = 1
-let g:neoformat_basic_format_align = 1 " Enable alignment
-let g:neoformat_basic_format_retab = 1
+let g:neoformat_try_formatprg         = 1
+let g:neoformat_basic_format_align    = 1 " Enable alignment
+let g:neoformat_basic_format_retab    = 1
 nmap <Leader>nf :Neoformat<CR>
 vmap <Leader>nf :Neoformat<CR>
 
@@ -297,9 +293,9 @@ let g:NERDTreeIgnore = [
       \ '^_build$',
       \ '^dist$'
       \ ]
-let g:NERDTreeMinimalUI     = 1
-let g:NERDTreeChDirMode     = 2     " keep working directory set to NERD's root
-let g:NERDTreeBookmarksFile = $HOME . '/.config/nvim/NERDTreeBookmarks'
+let g:NERDTreeMinimalUI           = 1
+let g:NERDTreeChDirMode           = 2     " keep working directory set to NERD's root
+let g:NERDTreeBookmarksFile       = $HOME . '/.config/nvim/NERDTreeBookmarks'
 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
       \ && b:NERDTree.isTabTree()) | q | endif
@@ -449,8 +445,8 @@ Plug 'itchyny/lightline.vim'
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \   'left': [[ 'mode', 'paste' ],
+      \            [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
       \ },
       \ 'component': {
       \   'readonly': '%{&readonly? "🔒": ""}',
@@ -484,8 +480,6 @@ endif
 Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-clang'
 Plug 'racer-rust/vim-racer'
-" Plug 'fishbullet/deoplete-ruby'
-Plug 'zchee/deoplete-jedi'                 " source for Python
 Plug 'zchee/deoplete-go',                  { 'do': 'make'}
 Plug 'clojure-vim/async-clj-omni'
 Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
@@ -522,6 +516,10 @@ call plug#end()
 """" 3.1) Theme #theme
 if (has('termguicolors'))
   set termguicolors     " True color
+endif
+
+if !has('nvim')
+  set term=xterm-256color
 endif
 
 set background=dark
@@ -709,8 +707,7 @@ xmap <s-tab> <
 noremap <c-g> :Ggrep <cword><CR>
 
 " Use tab for completion
-inoremap <expr> <Tab>  pumvisible() ? "\<C-n>" : "\<Tab>"
-
+inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 nnoremap 0 ^ " Set 0 as begining of line
 
 " Select all text
@@ -749,7 +746,7 @@ augroup END
 augroup language_server
   autocmd!
   " Configure ruby omni-completion to use the language client:
-  autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
+  autocmd FileType ruby,pyhton3,pyhton,rust setlocal omnifunc=LanguageClient#complete
 
   nnoremap <silent> <leader>gt :call LanguageClient_textDocument_hover()<CR>
   nnoremap <silent> <leader>gd :call LanguageClient_textDocument_definition()<CR>
