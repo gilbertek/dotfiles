@@ -82,7 +82,7 @@ let g:elm_make_show_warnings      = 1
 let g:elm_setup_keybindings       = 1
 
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled           = ['elm', 'go', 'clojure', 'haskell']
+let g:polyglot_disabled           = ['elm', 'clojure', 'haskell']
 
 "js configs
 let g:jsx_ext_required            = 0
@@ -130,7 +130,6 @@ let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
 " Plugins for Go support
 Plug 'jodosha/vim-godebug'
-Plug 'fatih/vim-go',                  { 'do': ':GoUpdateBinaries' }
 let g:go_list_type                    = 'quickfix'
 let g:go_fmt_command                  = 'goimports'
 let g:go_highlight_functions          = 1
@@ -493,7 +492,6 @@ Plug 'pbogut/deoplete-elm',                  { 'for': 'elm' }
 " Plug 'yoru/deoplete-crystal',              { 'for': 'crystal' }
 let g:deoplete#enable_at_startup           = 1 " Enable deoplete on startup.
 let g:deoplete#enable_smart_case           = 1 " Use smartcase.
-let g:deoplete#complete_method             = 'omnifunc' " Use omnifunc for completion.
 let g:deoplete#keyword_patterns            = {}
 let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 
