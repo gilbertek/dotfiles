@@ -93,9 +93,11 @@ let g:jsx_ext_required            = 0
 " Elixir
 Plug 'elixir-lang/vim-elixir'
 Plug 'slashmili/alchemist.vim'
-let g:alchemist#elixir_erlang_src = "/usr/local/opt/asdf/installs/elixir/"
+let g:alchemist#elixir_erlang_src = "/usr/local/opt/asdf/installs/elixir/1.7.3/bin/elixir"
 let g:alchemist_tag_disable       = 1 "Use Universal ctags instead
 let g:alchemist_iex_term_size     = 10
+let g:alchemist_tag_map           = '<C-]>'
+let g:alchemist_tag_stack_map     = '<C-T>'
 
 Plug 'vim-erlang/vim-erlang-tags'
 Plug 'vim-erlang/vim-erlang-omnicomplete'
@@ -178,6 +180,7 @@ Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'markwoodhall/vim-aurepl'
 Plug 'junegunn/rainbow_parentheses.vim', { 'for': ['clojure', 'lisp', 'racket', 'scheme'] }
 Plug 'venantius/vim-cljfmt',             {'for': ['clojure', 'clojurescript']}
+let g:clj_fmt_autosave = 1
 
 Plug 'tpope/vim-repeat'
 
@@ -401,9 +404,7 @@ noremap <Leader>g :GundoToggle<CR>
 " Tagbar: a class outline viewer for Vim
 Plug 'majutsushi/tagbar'
 let g:tagbar_autofocus        = 1
-let g:tagbar_show_linenumbers = 1
-let g:tagbar_autoshowtag      = 1
-let g:tagbar_width            = 35
+let g:tagbar_autoclose        = 1
 nnoremap <Space>t :TagbarToggle<CR>
 
 " fzf fuzzy finder
@@ -498,11 +499,6 @@ let g:deoplete#sources#go#pointer          = 1
 let g:deoplete#sources#clang#libclang_path = $BREW_PATH.'/Cellar/llvm/5.0.1/lib/libclang.dylib'
 let g:deoplete#sources#clang#clang_header  = $BREW_PATH.'/opt/llvm/bin/clang'
 
-let g:deoplete#sources#cpp                 = ['LanguageClient']
-let g:deoplete#sources#python              = ['LanguageClient']
-let g:deoplete#sources#python3             = ['LanguageClient']
-" let g:deoplete#sources#rust                = ['LanguageClient']
-let g:deoplete#sources#c                   = ['LanguageClient']
 """" 2.4) End Code completion & Navigation #code-navigation
 call plug#end()
 "" Plugin configuration that has to run after plug#end
@@ -725,9 +721,8 @@ augroup general
   autocmd InsertLeave * set nopaste
   autocmd InsertLeave * pc               "close preview on insert leave
 
-  " expand all folds when entering a file
-  autocmd BufWinEnter * silent! :%foldopen!
-  autocmd BufWritePre * undojoin | Neoformat
+  autocmd BufWinEnter * silent! :%foldopen! " expand all folds when entering a file
+  autocmd BufWritePre * silent! undojoin | Neoformat
 augroup END
 
 augroup cursorline
@@ -752,10 +747,12 @@ augroup language_server
 augroup END
 
 augroup rustRaceMap
-  au FileType rust nmap gd <Plug>(rust-def)
-  au FileType rust nmap gs <Plug>(rust-def-split)
-  au FileType rust nmap gx <Plug>(rust-def-vertical)
-  au FileType rust nmap <leader>gd <Plug>(rust-doc)
+  autocmd!
+  autocmd FileType rust nmap gd <Plug>(rust-def)
+  autocmd FileType rust nmap gs <Plug>(rust-def-split)
+  autocmd FileType rust nmap gx <Plug>(rust-def-vertical)
+  autocmd FileType rust nmap <leader>gd <Plug>(rust-doc)
+  autocmd FileType rust nnoremap <silent>rr <ESC>:<C-u>RustRun<cr>
 augroup END
 
 augroup elm
@@ -869,6 +866,7 @@ augroup ruby
   " Add pry to debug
   autocmd FileType ruby nnoremap <leader>d obinding.pry<esc>:w<CR>
   autocmd FileType ruby nmap <Leader>r :RuboCop<CR>
+  autocmd FileType eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
   " Migrate and rollback
   autocmd FileType ruby nnoremap <leader>dbm :!bin/rake db:migrate<CR>

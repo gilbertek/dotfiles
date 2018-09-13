@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# install rust with asdf
+
+# install rustfmt
+cargo install rustfmt
+
+# install racer
+cargo install racer
+
+# get rust sources for racer
+rustup component add rust-src

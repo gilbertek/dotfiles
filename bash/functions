@@ -332,3 +332,25 @@ genpasswd() {
 	[ "$l" == "" ] && l=16
 	tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${l} | xargs
 }
+
+function debug() { java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 $@;}
+
+function es-indexes() {
+    curl -XGET 'localhost:9200/_aliases?pretty'
+}
+
+function es-create-index() {
+    curl -XPUT "localhost:9200/${1}?pretty"
+}
+
+function es-delete-index() {
+    curl -XDELETE "localhost:9200/${1}?pretty"
+}
+
+function es-search-index() {
+    curl -XGET "localhost:9200/${1}/_search?pretty"
+}
+
+function es-get-index-mapping() {
+    curl -XGET "localhost:9200/${1}/_mapping?pretty"
+}

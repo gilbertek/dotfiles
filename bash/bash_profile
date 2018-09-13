@@ -175,7 +175,6 @@ if command -v kubectl &>/dev/null; then
 fi
 
 
-
 # Docker (for mac only)
 # if hash docker-machine > /dev/null; then
 #   if [ $(docker-machine status default 2>/dev/null) == "Running" ]; then
