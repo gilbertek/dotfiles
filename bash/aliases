@@ -6,7 +6,7 @@ alias dt="cd ~/Desktop"
 
 # ** [ Some Conveniences ] *************
 alias mkdir='mkdir -p'
-alias pathes='echo -e ${PATH//:/\\n}' # Pretty-print of some PATH variables
+alias paths='echo -e ${PATH//:/\\n}' # Pretty-print of some PATH variables
 alias rmr="rm -rf"
 alias ports="lsof -i -P"
 alias tree='tree -C'
@@ -57,7 +57,6 @@ alias l='ls -CF'
 alias halt='halt -p'
 alias v='nvim'
 alias s='source ~/.bash_profile'
-alias path='echo -e ${PATH//:/\\n}'         # path:         Echo all executable Paths
 
 # ** [ GIT ALIASES ] ******************
 alias gf='git fetch'
@@ -110,6 +109,8 @@ alias dkc='docker container'
 alias dkm='docker-machine'
 alias dkm:reload='eval $(docker-machine env default)'
 
+# ** [ GOLANG ALIASES ] ******************
+
 # ** [ RUBY ALIASES ] ******************
 alias web='ruby -run -e httpd . -p 5000'
 
@@ -123,6 +124,8 @@ alias devlog='tail -f log/development.log'
 
 # ** [ ELIXIR ALIASES ] ******************
 alias mps="[ -d assets ] && iex -S mix phx.server || iex -S mix phoenix.server"
+alias iexm="iex -S mix"
+alias phx:help='mix help | grep -i phoenix'
 
 # ** [ C++ ALIASES ] ******************
 alias cppcompile='c++ -std=c++11 -stdlib=libc++'
@@ -170,7 +173,7 @@ alias pods="get pods"
 alias services="get svc"
 alias svc="get svc"
 alias deployments="get deployments"
-alias dep="get deployments" # NON-STANDARD!!
+alias kdep="get deployments" # NON-STANDARD!!
 alias replicasets="get rs"
 alias replicationcontrollers="get rc"
 alias rc="get rc"

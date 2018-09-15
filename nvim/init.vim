@@ -25,10 +25,9 @@ let g:username = "Gilbert F. Sewovoe-Ekoue"
 let g:email = "gilberts55@hotmail.com"
 
 " **[ 1.1) Tabs & Indent #tabs ]********************
-set expandtab                   " Replace tabs with spaces in Insert mode.
-set shiftwidth=2                " Spaces for each (auto)indent.
-set softtabstop=2               " Spaces for tabs when inserting <Tab> or <BS>.
-set tabstop=2                   " Spaces that a <Tab> in file counts for.
+set expandtab                   " Use spaces instead of tabs
+set shiftwidth=4                " 1 tab == 4 spaces
+set tabstop=4                   " Spaces that a <Tab> in file counts for.
 
 " **[ 1.2) Leader #leader ]********************
 let g:mapleader=','
@@ -51,9 +50,9 @@ set title                       " Set the title of the iterm tab
 set noswapfile                  " Don't save with swap files
 set nobackup                    " Don't make a backup before overwriting a file.
 set nowritebackup               " Don't make a backup
-set hidden                      " Hide when switching buffers instead of unloading.
+set hidden                      " A buffer becomes hidden when it is abandoned
 set mouse=a                     " Enable use of the mouse in all modes.
-set lazyredraw                  " macros don't update display
+set lazyredraw                  " Don't redraw while executing macros (good performance config)
 set winfixwidth                 " Keep Nerdtree window fixed between toggles
 set inccommand=nosplit          " Search and substitutions
 set clipboard+=unnamedplus      " +p paste OS clipboard
@@ -99,8 +98,8 @@ let g:alchemist_iex_term_size     = 10
 let g:alchemist_tag_map           = '<C-]>'
 let g:alchemist_tag_stack_map     = '<C-T>'
 
-Plug 'vim-erlang/vim-erlang-tags'
-Plug 'vim-erlang/vim-erlang-omnicomplete'
+Plug 'vim-erlang/vim-erlang-tags',          {'for': 'erlang'}
+Plug 'vim-erlang/vim-erlang-omnicomplete',  {'for': 'erlang'}
 Plug 'vim-erlang/vim-erlang-compiler'
 let g:erlang_tags_ignore = '_build'
 
@@ -113,9 +112,9 @@ Plug 'shime/vim-livedown',      { 'do': 'npm install -g livedown' }
 
 Plug 'junegunn/goyo.vim',       { 'on': 'Goyo' } " Distraction free
 Plug 'junegunn/limelight.vim'   " To accompany goyo
-let g:goyo_width         = 80
-let g:goyo_margin_top    = 2
-let g:goyo_margin_bottom = 2
+let g:goyo_width                = 80
+let g:goyo_margin_top           = 2
+let g:goyo_margin_bottom        = 2
 nnoremap <silent> <leader>z :Goyo<cr>
 
 " Plugins for rails
@@ -229,7 +228,6 @@ let g:neoformat_try_formatprg         = 1
 let g:neoformat_basic_format_align    = 1 " Enable alignment
 let g:neoformat_basic_format_retab    = 1
 nmap <Leader>nf :Neoformat<CR>
-vmap <Leader>nf :Neoformat<CR>
 
 " Automatically match any brackets, parentheses or quotes
 Plug 'jiangmiao/auto-pairs'
@@ -246,7 +244,6 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'janko-m/vim-test' " Run tests with varying granularity
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
-nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 let test#strategy = 'neovim'
@@ -429,7 +426,6 @@ Plug 'joshdick/onedark.vim'
 Plug 'ajh17/Spacegray.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'tomasiser/vim-code-dark'
-Plug 'KeitaNakamura/neodark.vim'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'rakr/vim-one'
@@ -509,8 +505,9 @@ if (has('termguicolors'))
   set termguicolors     " True color
 endif
 
-if !has('nvim')
-  set term=xterm-256color
+" Make sure colors work in tmux and other weird places
+if &term =~ '256color'
+  set t_ut=
 endif
 
 set background=dark
@@ -534,9 +531,6 @@ let base16colorspace=256
 
 """ codedark Color Scheme settings
 " colorscheme codedark
-
-""" Neodark Color Scheme settings
-" colorscheme neodark
 
 " colorscheme PaperColor
 
@@ -573,11 +567,13 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 nmap <tab> :tabnext<CR>   "Use tab to change navigate on tabs
+map ,, <C-^> " Open the alternate file
 
 " use <shift> + <tab> to go to the previous tab
 nmap <S-tab> :tabprevious<CR>
 nmap <silent>tt :tabnew<CR>
 nmap <silent>tc :tabclose<cr>
+map <leader>n :tabnew .<CR><C-P>      " Custom tab opening behaviour
 
 nnoremap <silent> [b :bprevious<CR>   " Move to the previous buffer
 nnoremap <silent> ]b :bnext<CR>       " Move to the next buffer
@@ -621,9 +617,8 @@ map <C-C> :q<CR>
 " Makes foo-bar considered one word
 set iskeyword+=-
 
-" Exit insert mode.
-inoremap jj <ESC>
-inoremap kk <ESC>
+inoremap jj <ESC> " jj to exit insert mode
+inoremap kk <ESC> " kk to exit insert mode
 nnoremap <Leader>q :close<CR>
 nnoremap <leader>x :wq<cr>
 
@@ -648,13 +643,6 @@ vnoremap > >gv
 
 " execute default register.
 nnoremap Q @q
-
-" auto indent pasted text
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>
-
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
 
 " Pressing ,ss will toggle spell checking
 noremap <leader>ss :setlocal spell!<cr>
@@ -699,7 +687,6 @@ noremap <c-g> :Ggrep <cword><CR>
 
 " Use tab for completion
 inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-nnoremap 0 ^ " Set 0 as begining of line
 
 " Select all text
 nnoremap vA ggVG
@@ -757,7 +744,6 @@ augroup END
 
 augroup elm
   au!
-  au FileType elm setlocal tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=indent
   au FileType elm nn <buffer> K :ElmShowDocs<CR>
   au FileType elm nn <buffer> <localleader>m :ElmMakeMain<CR>
   au FileType elm nn <buffer> <localleader>r :ElmRepl<CR>
@@ -776,9 +762,8 @@ augroup elixir
   autocmd FileType elixir nnoremap <leader>d orequire IEx; IEx.pry<ESC>:w<CR>
   autocmd FileType elixir nnoremap <leader>i i\|>IO.inspect<ESC>:w<CR>
 
-  " open iex with current file compiled
-  " :!iex %
-  " command! Iex :!iex %<cr>
+  " :Eix => open iex with current file compiled
+  command! Iex :!iex %<cr>
   autocmd FileType elixir nnoremap <leader>e :!elixir %<CR>
   autocmd FileType elixir nnoremap <leader>ee :!iex -r % -S mix<CR>
 augroup END
@@ -797,17 +782,16 @@ augroup golang
   au FileType go nmap <Leader>/ :GoInfo<CR>
   au FileType go nmap <Leader>bp :GoToggleBreakpoint<CR>
   au FileType go nmap <Leader>db :GoDebug<CR>
-  au FileType go setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4 nolist
 augroup END
 
 augroup erlang
   autocmd!
-  autocmd BufNewFile,BufRead *.erl setlocal tabstop=4 shiftwidth=4 softtabstop=4
   autocmd BufNewFile,BufRead relx.config setlocal filetype=erlang
 augroup END
 
 augroup javascript
   autocmd!
+  autocmd FileType javascript setl sw=2 sts=2 et
   autocmd BufNewFile,BufRead .babelrc,.eslintrc setlocal filetype=json
 
   " Log out the word under the cursor
@@ -831,10 +815,6 @@ augroup viml
   command! Editrc tabnew ~/.config/nvim/init.vim
   command! Loadrc source ~/.config/nvim/init.vim
   command! PU PlugClean <bar> PlugUpdate <bar> PlugUpgrade
-augroup END
-
-augroup perl
-  au FileType perl6 setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 augroup END
 
 augroup haskell
@@ -866,7 +846,7 @@ augroup ruby
   " Add pry to debug
   autocmd FileType ruby nnoremap <leader>d obinding.pry<esc>:w<CR>
   autocmd FileType ruby nmap <Leader>r :RuboCop<CR>
-  autocmd FileType eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
+  autocmd FileType ruby,yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
   " Migrate and rollback
   autocmd FileType ruby nnoremap <leader>dbm :!bin/rake db:migrate<CR>

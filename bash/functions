@@ -132,7 +132,6 @@ function clear_dev_log() {
 # http://www.commandlinefu.com/commands/view/3555/find-duplicate-files-based-on-size-first-then-md5-hash
 alias find_dups="find . -type f -exec md5 '{}' ';' | sort | uniq -f 3 -d | sed -e \"s/.*(\(.*\)).*/\1/\""
 
-alias paths='echo -e ${PATH//:/\\n}' # Pretty-print of some PATH variables
 
 function ip {
   echo "Airport:  $(ifconfig en1 | grep netmask | awk '{print $2}')"

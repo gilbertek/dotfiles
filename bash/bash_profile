@@ -8,15 +8,14 @@ bind "set completion-ignore-case on"
 
 # Add `~/bin` to the `$PATH`
 if [ -d "$HOME/bin" ] ; then
-  export PATH="$HOME/bin:$PATH"
+  PATH="$HOME/bin:$PATH"
 fi
 
 # Homebrew
-export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
+[[ ":$PATH:" =~ ":/usr/local/bin:" ]]  || PATH="/usr/local/bin:$PATH"
+[[ ":$PATH:" =~ ":/usr/local/sbin:" ]] || PATH="/usr/local/sbin:$PATH"
 
 # GO Path setups
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
 export GOPATH=$HOME/Projects/GOAPPS
 export PATH=$PATH:$GOPATH/bin
 export GOAPPS=$GOPATH/src/github.com/gilbertek
@@ -188,7 +187,6 @@ fi
 
 # asdf package manager
 [ -f /usr/local/opt/asdf/asdf.sh ] && . /usr/local/opt/asdf/asdf.sh
-
 
 # OPAM configuration
 source ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
