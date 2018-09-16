@@ -181,6 +181,11 @@ Plug 'junegunn/rainbow_parentheses.vim', { 'for': ['clojure', 'lisp', 'racket', 
 Plug 'venantius/vim-cljfmt',             {'for': ['clojure', 'clojurescript']}
 let g:clj_fmt_autosave = 1
 
+Plug 'jpalardy/vim-slime'
+let g:slime_target                      = 'tmux'
+let g:slimux_select_from_current_window = 1
+let g:slime_default_config              = {'socket_name': 'default', 'target_pane': ':0.2'}
+
 Plug 'tpope/vim-repeat'
 
 " HTML / CSS
@@ -345,7 +350,6 @@ let g:ale_fixers = {
       \ 'python':     ['isort', 'yapt'],
       \ 'elm':        ['elm-format'],
       \ 'reason':     ['refmt'],
-      \ 'ocaml':      ['refmt'],
       \ 'ruby':       ['rubocop'],
       \ }
 let g:ale_completion_enabled          = 1
@@ -488,6 +492,9 @@ let g:deoplete#enable_at_startup           = 1 " Enable deoplete on startup.
 let g:deoplete#enable_smart_case           = 1 " Use smartcase.
 let g:deoplete#keyword_patterns            = {}
 let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+
+let g:deoplete#omni_patterns = {}
+let g:deoplete#omni_patterns.ocaml = '[^ ,;\t\[()\]]'
 
 let g:deoplete#sources#go#gocode_binary    = $GOPATH.'/bin/gocode'
 let g:deoplete#sources#go#pointer          = 1
@@ -722,9 +729,6 @@ augroup END
 
 augroup language_server
   autocmd!
-  " Configure ruby omni-completion to use the language client:
-  autocmd FileType ruby,pyhton3,pyhton,rust setlocal omnifunc=LanguageClient#complete
-
   nnoremap <silent> <leader>gt :call LanguageClient_textDocument_hover()<CR>
   nnoremap <silent> <leader>gd :call LanguageClient_textDocument_definition()<CR>
   nnoremap <silent> <leader>gf :call LanguageClient_textDocument_formatting()<CR>

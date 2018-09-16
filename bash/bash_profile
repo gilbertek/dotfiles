@@ -50,6 +50,8 @@ if [[ -x "$(command -v gcloud)" ]]; then
   source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 fi
 
+# export ANT_OPTS='-Xms512M -Xmx1024M -XX:MaxPermSize=1024M'
+# export ANT_ARGS='-logger org.apache.tools.ant.listener.AnsiColorLogger'
 
 export EDITOR=nvim
 export VISUAL=nvim
@@ -189,7 +191,7 @@ fi
 [ -f /usr/local/opt/asdf/asdf.sh ] && . /usr/local/opt/asdf/asdf.sh
 
 # OPAM configuration
-source ~/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+. /usr/local/opt/asdf/installs/ocaml/4.07.0/opam-init/init.sh > /dev/null 2> /dev/null || true
 
 [ -f ~/.bashrc ]            && . ~/.bashrc
 [ -f ~/.bashrc.local ]      && . ~/.bashrc.local
