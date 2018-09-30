@@ -41,7 +41,6 @@ set number                      " Precede each line with its line number.
 set colorcolumn=80              " Show right column in a highlighted colour.
 set diffopt+=vertical           " Vertical display with vimdiff
 set hidden                      " Hide buffers instead of closing them
-set lazyredraw                  " Don't redraw during macros
 set splitbelow                  " Put a split beneath the current one
 set splitright                  " Put a split to the right the current one
 set virtualedit=block           " Visual block mode to go beyond the characters at eof
@@ -147,6 +146,10 @@ let g:go_echo_command_info            = 1 " Show the progress when running :GoCo
 " LSP client
 Plug 'reasonml-editor/vim-reason-plus'
 
+" PureScript
+Plug 'purescript-contrib/purescript-vim', { 'for': ['purescript', 'purs'] }
+Plug 'FrigoEU/psc-ide-vim', { 'for': ['purescript', 'purs'] }
+
 " This language client actually makes use of a binary, hence the `install.sh`.
 " We also need the `next` branch in order to specify
 " a language server's TCP port at the time of writing
@@ -172,7 +175,7 @@ let g:LanguageClient_serverCommands = {
 " Clojure plugins
 Plug 'guns/vim-sexp',                    { 'for': 'clojure' }
 Plug 'clojure-vim/acid.nvim'
-Plug 'clojure-vim/async-clj-omni'
+Plug 'clojure-vim/async-clj-omni',       { 'for': 'clojure' }
 Plug 'clojure-vim/async-clj-highlight',  { 'for': 'clojure', 'branch': 'acid-autocmd' }
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
@@ -273,9 +276,8 @@ let g:calendar_google_task     = 1
 Plug 'vimwiki/vimwiki'
 let g:vimwiki_global_ext = 0
 let g:vimwiki_list = [{
-      \ 'path': '~/Dropbox/Personal/notes/',
+      \ 'path': '~/Dropbox/Personal/Notes/',
       \ 'syntax': 'markdown',
-      \ 'index': 'home',
       \ 'ext': '.md',
       \ 'auto_tags': 1
       \ }]
@@ -328,6 +330,8 @@ nmap SS <Plug>YSsurround
 xmap s <Plug>VSurround
 xmap S <Plug>VgSurround
 
+Plug 'wsdjeg/vim-fetch' "Vim to process line and column jump in paths
+
 Plug 'junegunn/vim-easy-align'
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -351,6 +355,7 @@ let g:ale_fixers = {
       \ 'elm':        ['elm-format'],
       \ 'reason':     ['refmt'],
       \ 'ruby':       ['rubocop'],
+      \ 'elixir':     ['mix_format'],
       \ }
 let g:ale_completion_enabled          = 1
 let g:ale_fix_on_save                 = 1
@@ -695,8 +700,7 @@ noremap <c-g> :Ggrep <cword><CR>
 " Use tab for completion
 inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 
-" Select all text
-nnoremap vA ggVG
+nnoremap <C-a> ggVG " Hit Ctrl+A to select all in current buffer
 """" 4.2) End Mappings
 
 " **[ 4.3) Filetypes Config ]**
@@ -884,11 +888,14 @@ augroup END
 
 augroup python
   autocmd!
-  autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
-
   " Autoinsert ipdb
   au FileType python nnoremap <leader>d oimport ipdb; ipdb.set_trace()<esc>:w<CR>
 augroup END
+
+" add any local configs that need to be added, if they exist
+if filereadable(glob("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
 " **[ 4) End Navigation #navigation ]**
 
 " TIPS & TRICKS
