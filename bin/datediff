@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+import argparse
+import datetime
+
+import dateutil.parser
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('date1')
+    parser.add_argument('date2', default=None, nargs='?')
+    return parser.parse_args()
+
+
+def parse_date(text):
+    text = text.strip().lower()
+    if text == 'yesterday':
+        return datetime.datetime.now() - datetime.timedelta(days=1)
+    return dateutil.parser.parse(text)
+
+
+def main():
+    args = parse_args()
+    date1 = parse_date(args.date1)
+    date2 = parse_date(args.date2) if args.date2 else datetime.datetime.now()
+    diff = abs(date2 - date1)
+    diff_seconds = diff.total_seconds()
+
+    print(f'Seconds: {diff_seconds:.2f}')
+    print(f'Minutes: {diff_seconds / 60:.2f}')
+    print(f'Hours:   {diff_seconds / 3600:.2f}')
+    print(f'Days:    {diff_seconds / 3600 / 24:.2f}')
+    print(f'Months:  {diff_seconds / 3600 / 24 / (365.25 / 12):.2f}')
+    print(f'Years:   {diff_seconds / 3600 / 24 / 365.25:.2f}')
+
+
+if __name__ == '__main__':
+    main()

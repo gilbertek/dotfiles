@@ -1,21 +1,16 @@
 # Create a new directory and enter it
 function mkd() {
-	mkdir -p "$@" && cd "$_";
-}
-
-# find shorthand
-function f() {
-  find . -name "$1"
+  mkdir -p "$@" && cd "$_";
 }
 
 # `o` with no arguments opens the current directory, otherwise opens the given
 # location
 function o() {
-	if [ $# -eq 0 ]; then
-		open .;
-	else
-		open "$@";
-	fi;
+  if [ $# -eq 0 ]; then
+    open .;
+  else
+    open "$@";
+  fi;
 }
 
 # `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
@@ -23,15 +18,31 @@ function o() {
 # `less` with options to preserve color and line numbers, unless the output is
 # small enough for one screen.
 function tre() {
-	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+  tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
-function git_is_dirty {
+branch_is_dirty() {
   if [ "$(git status --porcelain 2>/dev/null)" != "" ]; then echo '*'; fi
 }
 
-parse_git_branch() {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+                                                      }
+
+# github push - push the current branch and then open a browser window with the
+# PR page open
+gpr () {
+  branch="$(git rev-parse --abbrev-ref HEAD)"
+  regex="github\.com:(.*)\.git"
+  [[ "$(git remote -v | grep push)" =~ $regex ]]
+
+  git push -u origin "$branch"
+  open "https://github.com/${BASH_REMATCH[1]}/compare/$branch?expand=1"
+}
+
+# png - build a PNG from the given text
+png () {
+  echo "$1" | convert label:@- a.png
 }
 
 function pid_on() {
@@ -43,28 +54,28 @@ function cdl { cd $1; ls; }
 
 # Remove a direcory and its files
 function rmd() {
-    rm -rf "$@"
+  rm -rf "$@"
 }
 
-function random-word {
+random-word() {
   ruby -e "puts File.readlines('/usr/share/dict/words').shuffle.take(${1-1})"
 }
 
 # Use Git’s colored diff when available
 hash git &>/dev/null;
 if [ $? -eq 0 ]; then
-	function diff() {
-		git diff --no-index --color-words "$@";
-	}
+  function diff() {
+    git diff --no-index --color-words "$@";
+  }
 fi;
 
 # Create a data URL from a file
 function dataurl() {
-	local mimeType=$(file -b --mime-type "$1");
-	if [[ $mimeType == text/* ]]; then
-		mimeType="${mimeType};charset=utf-8";
-	fi
-	echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
+  local mimeType=$(file -b --mime-type "$1");
+  if [[ $mimeType == text/* ]]; then
+    mimeType="${mimeType};charset=utf-8";
+  fi
+  echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
 }
 
 # git tag and push
@@ -85,20 +96,20 @@ function gc() { git clone "$1" && cd `echo "'$1'" | cut -d/ -f2 | cut -d. -f1`; 
 
 # Start an HTTP server from a directory, optionally specifying the port
 function server() {
-	local port="${1:-8000}";
-	sleep 1 && open "http://localhost:${port}/" &
-	# Set the default Content-Type to `text/plain` instead of `application/octet-stream`
-	# And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
-	python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port";
+  local port="${1:-8000}";
+  sleep 1 && open "http://localhost:${port}/" &
+  # Set the default Content-Type to `text/plain` instead of `application/octet-stream`
+  # And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
+  python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port";
 }
 
 # Start a PHP server from a directory, optionally specifying the port
 # (Requires PHP 5.4.0+.)
 function phpserver() {
-	local port="${1:-4000}";
-	local ip=$(ipconfig getifaddr en1);
-	sleep 1 && open "http://${ip}:${port}/" &
-	php -S "${ip}:${port}";
+  local port="${1:-4000}";
+  local ip=$(ipconfig getifaddr en1);
+  sleep 1 && open "http://${ip}:${port}/" &
+  php -S "${ip}:${port}";
 }
 
 # Does git word nicely
@@ -125,7 +136,7 @@ function clear_dev_log() {
   echo > log/bullet.log > /dev/null 2>&1
   echo > log/development.log > /dev/null 2>&1
   echo > log/test.log > /dev/null 2>&1
-	echo > log/newrelic_agent.log > /dev/null 2>&1
+  echo > log/newrelic_agent.log > /dev/null 2>&1
 }
 
 
@@ -133,7 +144,7 @@ function clear_dev_log() {
 alias find_dups="find . -type f -exec md5 '{}' ';' | sort | uniq -f 3 -d | sed -e \"s/.*(\(.*\)).*/\1/\""
 
 
-function ip {
+ip() {
   echo "Airport:  $(ifconfig en1 | grep netmask | awk '{print $2}')"
   echo "Ethernet: $(ifconfig en0 | grep netmask | awk '{print $2}')"
 }
@@ -143,61 +154,59 @@ function ip {
 create_post() {
   if [[ -n "$1" ]]; then
     local file_name="$(echo $@ | tr ' ' '-' | tr '[A-Z]' '[a-z]').md"
-    # local file_name="$(date +%Y-%m-%d)-$(echo $@ | tr ' ' '-' | tr '[A-Z]' '[a-z]').md"
-    hugo new posts/$file_name
-    nvim posts/$file_name
+# local file_name="$(date +%Y-%m-%d)-$(echo $@ | tr ' ' '-' | tr '[A-Z]' '[a-z]').md"
+      hugo new posts/$file_name
+      nvim posts/$file_name
   else
     echo "Please provide a post title"
-  fi
+      fi
 }
-alias @post=create_post
-
 
 # Show Battery Percentage
 battery() {
-	pmset -g batt | egrep "([0-9]+\%).*" -o --colour=auto | cut -f1 -d';'
+  pmset -g batt | egrep "([0-9]+\%).*" -o --colour=auto | cut -f1 -d';'
 }
 
 # Show Wi-Fi Network Passwords
 # Exchange SSID with the SSID of the access point you wish to query the password from.
 wifipass() {
-	security find-generic-password -D "AirPort network password" -a "$@" -gw
+  security find-generic-password -D "AirPort network password" -a "$@" -gw
 }
 
 # Turn on Wi-Fi Adapter
 offwifi() {
-	networksetup -setairportpower en0 on
+  networksetup -setairportpower en0 on
 }
 
 gcap() {
-		git add . && git ci -m "$*" && gp
+  git add . && git ci -m "$*" && gp
 }
 
 
 # FIX.
 gfix() {
-	gcap "🐛 FIX: $@"
+  gcap "🐛 FIX: $@"
 }
 
 # RELEASE.
 grlz() {
-	gcap "🚀 RELEASE: $@"
+  gcap "🚀 RELEASE: $@"
 }
 
 # DOC.
 gdoc() {
-	gcap "📖 DOC: $@"
+  gcap "📖 DOC: $@"
 }
 
 # TEST.
 function gtst() {
-	gcap "✅ TEST: $@"
+  gcap "✅ TEST: $@"
 }
 
 ####.#### ———————————————————————————————————————————— Todolist http://todolist.site/ ———————————————————————————————————————————— ####.####
 # Alias it all.
 function td() {
-	todolist "$@"
+  todolist "$@"
 }
 
 # Init.
@@ -205,12 +214,12 @@ alias tdi="todolist init"
 
 # Add.
 function tda() {
-	todolist add "$@"
+  todolist add "$@"
 }
 
 # List.
 function tdl() {
-	todolist list "$@"
+  todolist list "$@"
 }
 
 # List by priority.
@@ -218,37 +227,37 @@ alias tdgc="todolist l p"
 
 # Due.
 function tdld() {
-	todolist list due "$@"
+  todolist list due "$@"
 }
 
 # Edit.
 function tde() {
-	todolist e "$@"
+  todolist e "$@"
 }
 
 # Complete.
 function tdc() {
-	todolist c "$@"
+  todolist c "$@"
 }
 
 # Archive Complete.
 function tdac() {
-	todolist ac "$@"
+  todolist ac "$@"
 }
 
 # Prioritize.
 function tdp() {
-	todolist p "$@"
+  todolist p "$@"
 }
 
 # Delete.
 function tdd() {
-	todolist d "$@"
+  todolist d "$@"
 }
 
 # Expanding existing todos.
 function tdex() {
-	todolist ex "$@"
+  todolist ex "$@"
 }
 
 # Archived todos will only show up when running.
@@ -277,6 +286,7 @@ function surl() {
 function rsyncsendy() {
   rsync -chavz --partial --progress --stats "$1" root@"$2":"$3"
 }
+
 function rsyncserver() {
   rsync -chavz --partial --progress --stats "$1" root@"$2":"$3"
 }
@@ -284,26 +294,22 @@ function rsyncserver() {
 
 # Record terminal.
 function recterm() {
-	asciinema rec
+  asciinema rec
 }
-
 
 # Find the CNAMEs
 alias thecname="dig $* +nostats +nocomments +nocmd"
 
-
 # Lock the screen (when going AFK)
 alias lock="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-
 
 # git add commit and then fix an issue on github
 # usage: gifix 5
 # Where 5 is the issue number
 function gifix() {
-	issue=$* ;
-	git add . && git ci -m "ISSUE: Fixes #$(echo -e "$issue")" && git push
+  issue=$* ;
+  git add . && git ci -m "ISSUE: Fixes #$(echo -e "$issue")" && git push
 }
-
 
 function emptytrash() {
   sudo rm -rfv /Volumes/*/.Trashes
@@ -322,34 +328,95 @@ function digga() {
   dig +nocmd "$1" any +multiline +noall +answer
 }
 
-function dssh() {
-docker exec -i -t $1 bash
+function dkbash() {
+  docker exec -i -t $1 bash
+}
+
+# Usage:
+#   @params: name and tag
+#   buildit <webapp> <v1.0>
+dkbuild() {
+  docker build -t gilbertek/$1:$2 .
+}
+
+dkpush() {
+  docker push gilbertek/$1:$2
+}
+
+dkclean(){
+  docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
+  docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
 }
 
 genpasswd() {
-	local l=$1
-	[ "$l" == "" ] && l=16
-	tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${l} | xargs
+  local l=$1
+  [ "$l" == "" ] && l=16
+  tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${l} | xargs
 }
 
-function debug() { java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 $@;}
+jdebug() { java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 $@;}
 
-function es-indexes() {
-    curl -XGET 'localhost:9200/_aliases?pretty'
+es-indexes() {
+  curl -XGET 'localhost:9200/_aliases?pretty'
 }
 
-function es-create-index() {
-    curl -XPUT "localhost:9200/${1}?pretty"
+es-create-index() {
+  curl -XPUT "localhost:9200/${1}?pretty"
 }
 
-function es-delete-index() {
-    curl -XDELETE "localhost:9200/${1}?pretty"
+es-delete-index() {
+  curl -XDELETE "localhost:9200/${1}?pretty"
 }
 
-function es-search-index() {
-    curl -XGET "localhost:9200/${1}/_search?pretty"
+es-search-index() {
+  curl -XGET "localhost:9200/${1}/_search?pretty"
 }
 
-function es-get-index-mapping() {
-    curl -XGET "localhost:9200/${1}/_mapping?pretty"
+es-get-index-mapping() {
+  curl -XGET "localhost:9200/${1}/_mapping?pretty"
+}
+
+# squashes the current changes into the previous commit
+fixup() {
+  local OC=`git rev-parse HEAD`
+  git add -A
+  git commit --fixup=$OC
+  git rebase -i --autosquash $OC~1
+}
+
+# pushes the branch you are on and opens compare on github for a PR
+pushpr() {
+  git push -u origin `git rev-parse --abbrev-ref HEAD`
+  git compare
+}
+
+pullpr() {
+  git fetch origin pull/$1/head:pr-$1
+  git checkout pr-$1
+}
+
+# to be run after `npm version`, pushes tags, publishes, and opens release notes
+publish(){
+  push && push --tags && npm publish .
+  echo `git config --get remote.origin.url` | sed -e 's/\.git/\/releases/g' | echo "`cat -`/new?tag=`git describe`" | xargs open
+}
+
+# node
+alias reload-deps="rm -rf node_modules && npm i"
+
+# Gui aliases
+google() { open "http://www.google.com/search?q=$@" ;}
+graphviz() { open "$@" -a /Applications/Graphviz.app ;}
+marked() { open "$@" -a /Applications/Marked.app ;}
+
+cdgo() { cd $GOAPPS ;}
+cdnotes() { cd ~/Notes ;}
+
+# clojure
+lein() {
+  if [[ $1 == "figwheel" ]]; then
+    command rlwrap lein figwheel
+  else
+    command lein "$@"
+  fi
 }

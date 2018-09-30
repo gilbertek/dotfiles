@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+echo "Updating master from upstream..."
+
+BRANCH=$(git symbolic-ref --short HEAD)
+
+git checkout master && git fetch upstream && git merge upstream/master && git push && git checkout "$BRANCH"

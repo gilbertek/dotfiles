@@ -14,6 +14,8 @@ alias c='clear'
 alias e='$EDITOR'
 alias v='$VISUAL'
 alias h='history'
+alias y='yarn'
+alias n='npm run'
 alias nom="rm -rf node_modules; npm cache clean; npm i"
 alias yom="rm -rf node_modules; yarn"
 
@@ -24,8 +26,8 @@ alias umount_pi=" sudo umount /mnt/pi"
 
 alias anki="anki -b ~/.anki"
 
-alias filemerge="open -a '/Developer/Applications/Utilities/FileMerge.app'"
-alias xcode="open -a '/Developer/Applications/Xcode.app'"
+alias filemerge="open -a '/Applications/Xcode.app/Contents/Applications/FileMerge.app'"
+alias xcode="open -a '/Applications/Xcode.app'"
 
 
 # Avoid progress bar and follow redirects
@@ -59,6 +61,7 @@ alias v='nvim'
 alias s='source ~/.bash_profile'
 
 # ** [ GIT ALIASES ] ******************
+alias g=git
 alias gf='git fetch'
 alias gco='git checkout $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
 alias gsp='git stash pop $(git stash list | fzf | cut -d=: -f1)'
@@ -108,6 +111,7 @@ alias dki='docker image'
 alias dkc='docker container'
 alias dkm='docker-machine'
 alias dkm:reload='eval $(docker-machine env default)'
+alias dk:rd='docker run -d '
 
 # ** [ GOLANG ALIASES ] ******************
 
@@ -121,6 +125,16 @@ alias binit="bi && b package && echo 'vendor/bundle' >> .gitignore && echo 'vend
 alias rails_best='rails_best_practices -e "db/migrate,vendor" -f html .'
 alias cop='rubocop'
 alias devlog='tail -f log/development.log'
+alias cucumber='bundle exec cucumber'
+alias rspec='bundle exec rspec'
+alias rake='bundle exec rake'
+alias cap='bundle exec cap'
+
+# ** [ PYTHON ALIASES ] ******************
+alias pjson='python -mjson.tool'
+
+# ** [ ANDROID ALIASES ] ******************
+alias adb-screenshot='adb shell screencap -p | sed 's/\r$//' > screen.png'
 
 # ** [ ELIXIR ALIASES ] ******************
 alias mps="[ -d assets ] && iex -S mix phx.server || iex -S mix phoenix.server"

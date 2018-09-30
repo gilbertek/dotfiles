@@ -1,5 +1,14 @@
-# Case-Insensitive Auto Completion
-bind "set completion-ignore-case on"
+" **[ General ]*******************
+bind "set completion-ignore-case on"  # Case-Insensitive Auto Completion
+
+# Case-insensitive globbing (used in pathname expansion)
+shopt -s nocaseglob
+
+# Append to the Bash history file, rather than overwriting it
+shopt -s histappend
+
+# Autocorrect typos in path names when using `cd`
+shopt -s cdspell
 
 # Motivation reminder
 # echo "2017 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); \
@@ -44,6 +53,8 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
+# export PATH=$PATH:$HOME/.luarocks/bin
+
 # Google Cloud SDK.
 if [[ -x "$(command -v gcloud)" ]]; then
   source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
@@ -63,8 +74,8 @@ export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-#Ignore duplicate commands, space-prefixed, and misc boring cmds.
-export HISTIGNORE="&:[ ]*:exit:gs:gl"
+# Omit duplicates and commands that begin with a space from history.
+export HISTCONTROL='ignoreboth'
 
 # Massive main .bash_history...
 export HISTFILESIZE=10000
@@ -75,15 +86,6 @@ export HISTSIZE=1000
 # Disable Homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
-
-# Case-insensitive globbing (used in pathname expansion)
-shopt -s nocaseglob;
-
-# Append to the Bash history file, rather than overwriting it
-shopt -s histappend;
-
-# Autocorrect typos in path names when using `cd`
-shopt -s cdspell;
 
 # Visible cucumber step locations
 export CUCUMBER_COLORS=comment=cyan
@@ -121,21 +123,28 @@ txtred='\[\e[1;31;40m\]'
 txtpink='\[\e[1;35;40m\]'
 txtend='\[\e[00m\]'
 
-# ♥ ☆ ⚡ λ ❯ ▸ → 💥 - Keeping some cool ASCII Characters for reference
+# ♥ ☆ ⚡ λ ❯ » ▸ → 💥 - Keeping some cool ASCII Characters for reference
 # Define the prompt character
 CHAR='❯'
 
-PS1="${COLOR_BLUE}[${COLOR_RESET}${COLOR_CYAN}\\u ${COLOR_GREEN}in ${COLOR_YELLOW}\W${COLOR_CYAN}\$(parse_git_branch)${COLOR_BLUE}]${CHAR}${COLOR_RESET}${COLOR_DEFAULT} "
+# PS1="${COLOR_BLUE}[${COLOR_RESET}${COLOR_CYAN}\\u ${COLOR_GREEN}in ${COLOR_YELLOW}\W${COLOR_CYAN}\$(parse_git_branch)${COLOR_BLUE}]${CHAR}${COLOR_RESET}${COLOR_DEFAULT} "
 
+emojis=('🚀' '🎯' '🎾' '🤖' '👽' '👻' '👀' '💍' '🐔' '🐙' '🐤' '🐠' '🍁' '✨' '💥' '🍉' '🍕' '🍪' '🍭' '🍺' '⛵️' '💸' '🔑')
+icon=${emojis[$RANDOM % ${#emojis[@]} ]}
+# PS1='${icon} \[\e[0;31m\]${PWD##*/}\[\e[m\]$(parse_git_branch "@\[\e[0;33m\]%s\[\e[m\]") '
 
-__kirbies=("<('o'<)" "(>‘o’)>" "v(‘.’)v" "<('.')>" "<('.'<)" "^('.')^" "(>‘.’)>" "v(‘.’)v" "<('.')>")
+# PS1="\[\e[0;35m\][\t] \[\e[0;31m\]\u \[\e[0;32m\]\w \[\e[0;34m\]$(gb)\[\e[0m\]$ "
 
-function __kirby_dance {
-  echo ${__kirbies[$RANDOM % 9]}
-}
+NO_C='\[\033[00m\]'
+GREEN='\[\033[00;32m\]'
+BLUE='\[\033[00;34m\]'
+YELLOW='\[\033[00;33m\]'
+PURPLE='\[\e[0;95m\]'
+GITBRANCH='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\ \(\\\\\1\)/`'
 
-# export PS1="${txtgray}\W${txtend} ${txtcyan}\$(parse_git_branch)\$(git_is_dirty)${txtend}${txtpink}\$(__kirby_dance)${txtend} ${txtgray}\$${txtend} "
+# PS1="$GREEN\u$NO_C:[$BLUE\w$YELLOW$GITBRANCH$NO_C]\$ "
 
+# PS1="[${COLOR_PURPLE}\u\[\e[0;36m\]@\h:\[\e[0m\]\[\e[0;33m\]\W\[\e[0m\]] \t $\[\e[m\] "
 
 # For a ipython notebook and pyspark integration
 if which pyspark > /dev/null; then
@@ -156,9 +165,17 @@ if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
   complete -o default -o nospace -F _git g;
 fi;
 
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
 export PATH=$HOME/.cargo/bin:$PATH
 
-export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+export RUST_SRC_PATH="/usr/local/Cellar/asdf/0.5.1/installs/rust/1.28.0/toolchains/1.28.0-x86_64-apple-darwin/lib/rustlib/src/rust/src"
 
 #To configure your current shell run
 if [ -f "$HOME/.asdf/installs/rust/1.28.0/env" ]; then
@@ -198,3 +215,24 @@ fi
 [ -f ~/.aliases ]           && . ~/.aliases
 [ -f ~/.aliases.local ]     && . ~/.aliases.local
 [ -f ~/.functions ]         && . ~/.functions
+
+# Todo
+# Remove dups from path
+# This is in reverse order.
+paths=(
+    /usr/local/sbin
+    $HOME/Library/Haskell/bin
+    $OCLINT_HOME/bin
+    /usr/local/go/bin
+    $GOPATH/bin
+    /usr/local/opt/openssl/bin
+    /Library/TeX/texbin
+    $haskell_local_bin
+    $HOME/bin
+)
+
+# for p in ${paths[@]}; do
+#    if [[ -d $p ]]; then
+#        export PATH="$p:$PATH";
+#    fi
+# done
