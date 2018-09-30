@@ -1,4 +1,4 @@
-" **[ General ]*******************
+# **[ General ]*******************
 bind "set completion-ignore-case on"  # Case-Insensitive Auto Completion
 
 # Case-insensitive globbing (used in pathname expansion)
@@ -127,11 +127,11 @@ txtend='\[\e[00m\]'
 # Define the prompt character
 CHAR='❯'
 
-# PS1="${COLOR_BLUE}[${COLOR_RESET}${COLOR_CYAN}\\u ${COLOR_GREEN}in ${COLOR_YELLOW}\W${COLOR_CYAN}\$(parse_git_branch)${COLOR_BLUE}]${CHAR}${COLOR_RESET}${COLOR_DEFAULT} "
+# PS1="${COLOR_BLUE}[${COLOR_RESET}${COLOR_CYAN}\\u ${COLOR_GREEN}in ${COLOR_YELLOW}\W${COLOR_CYAN}\$(git_branch)${COLOR_BLUE}]${CHAR}${COLOR_RESET}${COLOR_DEFAULT} "
 
 emojis=('🚀' '🎯' '🎾' '🤖' '👽' '👻' '👀' '💍' '🐔' '🐙' '🐤' '🐠' '🍁' '✨' '💥' '🍉' '🍕' '🍪' '🍭' '🍺' '⛵️' '💸' '🔑')
 icon=${emojis[$RANDOM % ${#emojis[@]} ]}
-# PS1='${icon} \[\e[0;31m\]${PWD##*/}\[\e[m\]$(parse_git_branch "@\[\e[0;33m\]%s\[\e[m\]") '
+# PS1='${icon} \[\e[0;31m\]${PWD##*/}\[\e[m\]$(git_branch "@\[\e[0;33m\]%s\[\e[m\]") '
 
 # PS1="\[\e[0;35m\][\t] \[\e[0;31m\]\u \[\e[0;32m\]\w \[\e[0;34m\]$(gb)\[\e[0m\]$ "
 
