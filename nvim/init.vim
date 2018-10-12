@@ -83,7 +83,7 @@ let g:elm_make_show_warnings      = 1
 let g:elm_setup_keybindings       = 1
 
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled           = ['elm', 'haskell']
+let g:polyglot_disabled           = ['elm', 'haskell', 'clojure']
 
 "js configs
 let g:jsx_ext_required            = 0
@@ -174,14 +174,14 @@ let g:LanguageClient_serverCommands = {
 
 " Clojure plugins
 Plug 'guns/vim-sexp',                    { 'for': 'clojure' }
-Plug 'clojure-vim/acid.nvim'
+Plug 'clojure-vim/acid.nvim',            { 'do': ':UpdateRemotePlugins' }
 Plug 'clojure-vim/async-clj-omni',       { 'for': 'clojure' }
-Plug 'clojure-vim/async-clj-highlight',  { 'for': 'clojure', 'branch': 'acid-autocmd' }
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
-Plug 'markwoodhall/vim-aurepl'
-Plug 'junegunn/rainbow_parentheses.vim', { 'for': ['clojure', 'lisp', 'racket', 'scheme'] }
-Plug 'venantius/vim-cljfmt',             {'for': ['clojure', 'clojurescript']}
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'eraserhd/parinfer-rust',           { 'do': 'cargo build --release' }
+Plug 'humorless/vim-kibit'
+Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
 let g:clj_fmt_autosave = 1
 
 Plug 'jpalardy/vim-slime'
@@ -384,7 +384,8 @@ nnoremap <leader>gp :Git push<cr>
 nnoremap <leader>gl :Glog<cr>
 
 " Add to index with ,ga
-map <leader>ga :silent !git add % &<cr><cr>
+nmap <leader>ga :silent !git add % &<cr><cr>
+nmap <Leader>gc :silent !git add -A<CR>:Gcommit<CR>
 
 " Git Gutter: shows a git diff in the gutter
 Plug 'airblade/vim-gitgutter'
@@ -438,6 +439,7 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'rakr/vim-one'
+Plug 'skielbasa/vim-material-monokai'
 
 Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 8
@@ -483,7 +485,6 @@ Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-clang'
 Plug 'racer-rust/vim-racer'
 Plug 'zchee/deoplete-go',                  { 'do': 'make'}
-Plug 'clojure-vim/async-clj-omni'
 Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
 let g:deoplete#sources#ternjs#types        = 1
 let g:deoplete#sources#ternjs#docs         = 1
@@ -498,8 +499,8 @@ let g:deoplete#enable_smart_case           = 1 " Use smartcase.
 let g:deoplete#keyword_patterns            = {}
 let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 
-let g:deoplete#omni_patterns = {}
-let g:deoplete#omni_patterns.ocaml = '[^ ,;\t\[()\]]'
+let g:deoplete#omni_patterns               = {}
+let g:deoplete#omni_patterns.ocaml         = '[^ ,;\t\[()\]]'
 
 let g:deoplete#sources#go#gocode_binary    = $GOPATH.'/bin/gocode'
 let g:deoplete#sources#go#pointer          = 1
@@ -540,6 +541,7 @@ let g:hybrid_reduced_contrast = 1
 """ base16-vim Color Scheme settings
 let base16colorspace=256
 " colorscheme base16-eighties
+colorscheme base16-default-dark
 
 """ codedark Color Scheme settings
 " colorscheme codedark
@@ -549,7 +551,9 @@ let base16colorspace=256
 let g:quantum_black = 1
 " silent! colorscheme quantum
 
-colorscheme one
+" colorscheme one
+
+" colorscheme material-monokai
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -701,6 +705,11 @@ noremap <c-g> :Ggrep <cword><CR>
 inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 
 nnoremap <C-a> ggVG " Hit Ctrl+A to select all in current buffer
+
+" Search and replace
+nnoremap <Leader>rr :%s//g<Left><Left>
+nnoremap <Leader>rw :%s/\<<C-r><C-w>\>//g<Left><Left>
+vnoremap <Leader>rr :s//g<Left><Left>
 """" 4.2) End Mappings
 
 " **[ 4.3) Filetypes Config ]**
@@ -721,6 +730,9 @@ augroup general
 
   autocmd BufWinEnter * silent! :%foldopen! " expand all folds when entering a file
   autocmd BufWritePre * silent! undojoin | Neoformat
+
+  autocmd FileType *.toml setl sw=2 sts=2 et
+
 augroup END
 
 augroup cursorline
@@ -806,7 +818,7 @@ augroup javascript
   nmap <leader>d yiwoconsole.log('<c-r>"', <c-r>");<esc>^
 augroup END
 
-augroup terminal_commands
+augroup termMaps
   autocmd!
 
   " Always enter terminal in insert mode
@@ -847,6 +859,18 @@ augroup dotenv
   autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
   autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
   autocmd BufNewFile,BufRead *.envrc setlocal filetype=sh
+augroup END
+
+" Quick breakpoints
+augroup AutoBreakpoint
+  autocmd!
+  autocmd FileType python map <silent><buffer> <leader><leader>b oimport ipdb; ipdb.set_trace()<esc>
+  autocmd FileType python map <silent><buffer> <leader><leader>B Oimport ipdb; ipdb.set_trace()<esc>
+  autocmd FileType javascript map <silent><buffer> <leader><leader>b odebugger;<esc>
+  autocmd FileType javascript map <silent><buffer> <leader><leader>B Odebugger;<esc>
+
+  autocmd FileType clojure map <silent><buffer> <leader><leader>b o(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
+  autocmd FileType clojure map <silent><buffer> <leader><leader>B O(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
 augroup END
 
 augroup ruby
