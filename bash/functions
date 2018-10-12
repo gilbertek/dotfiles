@@ -25,9 +25,18 @@ branch_is_dirty() {
   if [ "$(git status --porcelain 2>/dev/null)" != "" ]; then echo '*'; fi
 }
 
+git_last_tag() {
+  git for-each-ref --sort='*authordate' --format='%(tag)' refs/tags | egrep "^${branch}\.[0-9]+$" | tail -n1
+}
+
+validate_yaml() {
+ local filename="$1"
+ ruby -ryaml -e "puts YAML.load_file('${filename}')"
+}
+
 git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-                                                      }
+}
 
 # github push - push the current branch and then open a browser window with the
 # PR page open
@@ -350,8 +359,9 @@ dkclean(){
 
 genpasswd() {
   local l=$1
-  [ "$l" == "" ] && l=16
-  tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${l} | xargs
+  [ "$l" == "" ] && l=${1:-8}
+  # tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${l} | xargs
+  cat /dev/random | LC_CTYPE=C tr -dc "[:alpha:]" | head -c $long; echo
 }
 
 jdebug() { java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 $@;}

@@ -29,11 +29,16 @@ alias anki="anki -b ~/.anki"
 alias filemerge="open -a '/Applications/Xcode.app/Contents/Applications/FileMerge.app'"
 alias xcode="open -a '/Applications/Xcode.app'"
 
-
 # Avoid progress bar and follow redirects
 alias curl="curl -sL"
 
-alias cat='bat'  # bat > cat
+if [ $(which bat) ]; then
+  alias cat='bat'
+fi
+
+if [ $(which terraform) ]; then
+  alias tf='terraform'
+fi
 
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 
@@ -49,7 +54,6 @@ alias reload="exec $SHELL -l"
 jscbin="/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc";
 [ -e "${jscbin}" ] && alias jsc="${jscbin}";
 unset jscbin;
-
 
 # ** [ BASH ALIASES ] ****************
 alias p='pwd'
@@ -119,9 +123,9 @@ alias dk:rd='docker run -d '
 alias web='ruby -run -e httpd . -p 5000'
 
 alias b='bundle'
-alias bi="b install --path vendor/bundle --binstubs vendor/bundle/bin"
+alias bi="bundle install --path vendor/bundle --binstubs vendor/bundle/bin"
 alias be="bundle exec"
-alias binit="bi && b package && echo 'vendor/bundle' >> .gitignore && echo 'vendor/cache' >> .gitignore"
+alias binit="bi && bundle package && echo 'vendor/bundle' >> .gitignore && echo 'vendor/cache' >> .gitignore"
 alias rails_best='rails_best_practices -e "db/migrate,vendor" -f html .'
 alias cop='rubocop'
 alias devlog='tail -f log/development.log'
@@ -132,6 +136,7 @@ alias cap='bundle exec cap'
 
 # ** [ PYTHON ALIASES ] ******************
 alias pjson='python -mjson.tool'
+alias pip:up='pip3 install --upgrade pip setuptools wheel'
 
 # ** [ ANDROID ALIASES ] ******************
 alias adb-screenshot='adb shell screencap -p | sed 's/\r$//' > screen.png'
@@ -165,7 +170,8 @@ alias yt-audio="youtube-dl -citk --max-quality mp3 --audio-format mp3 --extract-
 alias mac-clean-logs='sudo rm -rf /private/var/log/asl/*.asl'
 
 # ** [ KUBECTL SHORTCUTS ] ******************
-alias ikubectl="kubectl --insecure-skip-tls-verify=true"
+alias k8='kubectl'
+alias k8:i="kubectl --insecure-skip-tls-verify=true"
 alias kdescribe="kubectl describe"
 alias kget="kubectl get"
 alias kcreate="kubectl create"
@@ -208,8 +214,13 @@ alias secrets="get secrets"
 # ** [CLOJURE SHORTCUTS ] ******************
 alias l='lein'
 alias b='boot'
+alias cljs='shadow-cljs'
 alias clj-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept clojure.core.server/repl}" -A:rebel; }; do_repl'
 alias cljs-node-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept cljs.server.node/repl}" -R:cljs-canary -A:rebel-cljs -m cljs.main -re node -r; }; do_repl'
+
+# ** [HASKELL SHORTCUTS ] ******************
+alias sbuild="stack build        -j 2 --test --bench --no-run-tests --no-run-benchmarks"
+alias fbuild="stack build --fast -j 2 --test --bench --no-run-tests --no-run-benchmarks"
 
 
 # ** [ NVIM SHORTCUTS ] ******************
@@ -227,8 +238,8 @@ alias ipInfo1='ipconfig getpacket en1'              # ipInfo1:      Get info on 
 alias openPorts='sudo lsof -i | grep LISTEN'        # openPorts:    All listening connections
 alias showBlocked='sudo ipfw list'                  # showBlocked:  All ipfw rules inc/ blocked IPs
 
-
-alias ws=wireshark
+# ** [ WIRESHARK SHORTCUTS ] ******************
+alias ws=
 # export WS_OPTIONS=(-o tcp.no_subdissector_on_error:false -d tcp.port==1-65535,ssl -o ssl.keylog_file:/home/dsf/PCAPS/all-pcaps.keylogfile)
 export WS_OPTIONS=(-o ssl.keylog_file:/home/dsf/PCAPS/all-pcaps.keylogfile)
 alias lvs='tmux split -d lnav ssldebug'

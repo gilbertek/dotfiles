@@ -10,7 +10,17 @@ shopt -s histappend
 # Autocorrect typos in path names when using `cd`
 shopt -s cdspell
 
+# Omit duplicates and commands that begin with a space from history.
+export HISTCONTROL='ignoreboth'
+
+# Massive main .bash_history...
+export HISTFILESIZE=10000
+
+# Larger session histories...
+export HISTSIZE=1000
+
 # Motivation reminder
+now=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 # echo "2017 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); \
 # print "There are " int(dt/86400/7) " weeks left until the year ends. \
 # What will you do?";}';
@@ -32,8 +42,7 @@ export GOAPPS=$GOPATH/src/github.com/gilbertek
 # Groovy Home path setup
 export GROOVY_HOME=/usr/local/opt/groovy/libexec
 
-export JAVA_HOME
-JAVA_HOME=$(/usr/libexec/java_home)
+export JAVA_HOME=$(/usr/libexec/java_home)
 
 # Haskell/hdevtools Home path setup
 export PATH=~/.local/bin:$PATH
@@ -73,15 +82,6 @@ export FZF_DEFAULT_OPTS='--height 60% --reverse'
 export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-# Omit duplicates and commands that begin with a space from history.
-export HISTCONTROL='ignoreboth'
-
-# Massive main .bash_history...
-export HISTFILESIZE=10000
-
-# Larger session histories...
-export HISTSIZE=1000
 
 # Disable Homebrew analytics
 export HOMEBREW_NO_ANALYTICS=1
@@ -144,7 +144,9 @@ GITBRANCH='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\ 
 
 # PS1="$GREEN\u$NO_C:[$BLUE\w$YELLOW$GITBRANCH$NO_C]\$ "
 
-# PS1="[${COLOR_PURPLE}\u\[\e[0;36m\]@\h:\[\e[0m\]\[\e[0;33m\]\W\[\e[0m\]] \t $\[\e[m\] "
+PS1="[${COLOR_PURPLE}\u\[\e[0;36m\]@\h:\[\e[0m\]\[\e[0;33m\]\W\[\e[0m\]] \t $\[\e[m\] "
+# PS1="[-]\e[01;41m\e[37m\@\e[00m\e [${COLOR_PURPLE}\u\[\e[0;36m\]@\h:\[\e[0m\]\[\e[0;33m\]\W\[\e[0m\]] $\[\e[m\] "
+
 
 # For a ipython notebook and pyspark integration
 if which pyspark > /dev/null; then
@@ -160,10 +162,14 @@ if [ -f ~/.config/exercism/exercism_completion.bash ]; then
   . ~/.config/exercism/exercism_completion.bash
 fi
 
-# Enable tab completion for `g` by marking it as an alias for `git`
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
-  complete -o default -o nospace -F _git g;
-fi;
+  source /usr/local/etc/bash_completion.d/git-completion.bash
+fi
+
+# Git prompt
+if [ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
+  source /usr/local/etc/bash_completion.d/git-prompt.sh
+fi
 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -191,7 +197,6 @@ fi
 if command -v kubectl &>/dev/null; then
   source <(kubectl completion bash)
 fi
-
 
 # Docker (for mac only)
 # if hash docker-machine > /dev/null; then
