@@ -217,11 +217,12 @@ alias secrets="get secrets"
 # ** [CLOJURE SHORTCUTS ] ******************
 alias l='lein'
 alias b='boot'
-alias cljs='shadow-cljs'
+alias shadow='shadow-cljs'
+alias shdw='shadow-cljs'
 alias clj-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept clojure.core.server/repl}" -A:rebel; }; do_repl'
 alias cljs-node-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept cljs.server.node/repl}" -R:cljs-canary -A:rebel-cljs -m cljs.main -re node -r; }; do_repl'
 
-# Maven
+# ** [MAVEN SHORTCUTS ] ******************
 alias mvn='notify-after mvn'
 alias mc='mvn --quiet clean'
 alias mci='mvn --quiet clean install'
@@ -231,7 +232,6 @@ alias mcisst='mvn --quiet clean install -DskipTests -DskipITests -DskipAllTests 
 # ** [HASKELL SHORTCUTS ] ******************
 alias sbuild="stack build        -j 2 --test --bench --no-run-tests --no-run-benchmarks"
 alias fbuild="stack build --fast -j 2 --test --bench --no-run-tests --no-run-benchmarks"
-
 
 # ** [ NVIM SHORTCUTS ] ******************
 alias nvu="nvim +PlugInstall +UpdateRemotePlugins +qa"

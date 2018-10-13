@@ -178,7 +178,8 @@ Plug 'clojure-vim/acid.nvim',            { 'do': ':UpdateRemotePlugins' }
 Plug 'clojure-vim/async-clj-omni',       { 'for': 'clojure' }
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
-Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'luochen1990/rainbow'
+let g:rainbow_active = 1
 Plug 'eraserhd/parinfer-rust',           { 'do': 'cargo build --release' }
 Plug 'humorless/vim-kibit'
 Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
@@ -428,9 +429,7 @@ nmap <leader>f :Files<cr>
 
 Plug 'easymotion/vim-easymotion'
 
-" The interactive scratchpad for hackers.
-Plug 'metakirby5/codi.vim'
-
+Plug 'metakirby5/codi.vim' " The interactive scratchpad for hackers.
 " **[ 2.3) UI Plugins #ui-plugins ]********************
 Plug 'ayu-theme/ayu-vim'
 Plug 'w0ng/vim-hybrid'
@@ -447,7 +446,7 @@ Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 8
 let g:indentLine_char = '│'
 
-Plug 'itchyny/lightline.vim' "  wombat onedark quantum
+Plug 'itchyny/lightline.vim' " wombat onedark quantum
 let g:lightline = {
       \ 'colorscheme': 'quantum',
       \ 'active': {
@@ -540,7 +539,6 @@ let g:hybrid_reduced_contrast = 1
 
 """ base16-vim Color Scheme settings
 let base16colorspace=256
-" colorscheme base16-eighties
 colorscheme base16-default-dark
 
 """ codedark Color Scheme settings
@@ -736,7 +734,7 @@ augroup general
   autocmd BufWritePre * silent! undojoin | Neoformat
 
   autocmd FileType *.toml setl sw=2 sts=2 et
-  autocmd Syntax clojure,timl,scheme,lisp,racket RainbowParentheses
+  " autocmd Syntax clojure,timl,scheme,lisp,racket RainbowToggle
 augroup END
 
 augroup cursorline
