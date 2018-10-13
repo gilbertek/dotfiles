@@ -184,6 +184,7 @@ Plug 'humorless/vim-kibit'
 Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
 let g:clj_fmt_autosave = 1
 
+Plug 'guns/vim-slamhound'
 Plug 'jpalardy/vim-slime'
 let g:slime_target                      = 'tmux'
 let g:slimux_select_from_current_window = 1
@@ -359,6 +360,7 @@ let g:ale_fixers = {
       \ }
 let g:ale_completion_enabled          = 1
 let g:ale_fix_on_save                 = 1
+let g:ale_python_auto_pipenv          = 1
 let g:ale_sign_error                  = '✗✗' " '△'  could use emoji or 'X'
 let g:ale_sign_warning                = '⚠ ' " '✕' could use emoji '?'
 let g:ale_echo_msg_format             = '[%linter%] %s [%severity%]'
@@ -445,9 +447,9 @@ Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 8
 let g:indentLine_char = '│'
 
-Plug 'itchyny/lightline.vim'
+Plug 'itchyny/lightline.vim' "  wombat onedark quantum
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'quantum',
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
       \            [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -514,9 +516,7 @@ call plug#end()
 
 " **[ 3) UI Tweaks #ui-tweaks ] *********************
 """" 3.1) Theme #theme
-if (has('termguicolors'))
-  set termguicolors     " True color
-endif
+set termguicolors     " True color options
 
 " Make sure colors work in tmux and other weird places
 if &term =~ '256color'
@@ -710,6 +710,10 @@ nnoremap <C-a> ggVG " Hit Ctrl+A to select all in current buffer
 nnoremap <Leader>rr :%s//g<Left><Left>
 nnoremap <Leader>rw :%s/\<<C-r><C-w>\>//g<Left><Left>
 vnoremap <Leader>rr :s//g<Left><Left>
+
+" Slamhound mapping
+nnoremap <Leader>sh :Slamhound<CR>
+
 """" 4.2) End Mappings
 
 " **[ 4.3) Filetypes Config ]**
@@ -725,14 +729,14 @@ augroup general
 
   autocmd BufWritePre,BufLeave,FocusLost * StripWhitespace
   autocmd Filetype gitcommit,markdown setlocal spell textwidth=72
-  autocmd InsertLeave * set nopaste
-  autocmd InsertLeave * pc               "close preview on insert leave
+  autocmd InsertLeave * set nopaste " Leave paste mode when leaving insert mode
+  autocmd InsertLeave * pc          "close preview on insert leave
 
   autocmd BufWinEnter * silent! :%foldopen! " expand all folds when entering a file
   autocmd BufWritePre * silent! undojoin | Neoformat
 
   autocmd FileType *.toml setl sw=2 sts=2 et
-
+  autocmd Syntax clojure,timl,scheme,lisp,racket RainbowParentheses
 augroup END
 
 augroup cursorline

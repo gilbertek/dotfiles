@@ -21,6 +21,10 @@ export HISTSIZE=1000
 
 # Motivation reminder
 now=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+alias DATE="date '+%Y-%m-%d'"
+alias TIME="date '+%H·%M·%S'"
+alias DATETIME="date '+%Y-%m-%d.%H·%M·%S'"
+
 # echo "2017 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); \
 # print "There are " int(dt/86400/7) " weeks left until the year ends. \
 # What will you do?";}';
@@ -43,6 +47,21 @@ export GOAPPS=$GOPATH/src/github.com/gilbertek
 export GROOVY_HOME=/usr/local/opt/groovy/libexec
 
 export JAVA_HOME=$(/usr/libexec/java_home)
+export NASHORN_HOME=$JAVA_HOME/bin
+# export M2_HOME=/usr/share/maven
+# export M2=$M2_HOME/bin
+# export MAVEN_OPTS="-Xmx2048m -Xms512m -XX:MaxPermSize=312M -XX:ReservedCodeCacheSize=128m -Dsun.lang.ClassLoader.allowArraySyntax=true -ea -Dfile.encoding=UTF-8"
+# export MAVEN_JMX="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=6969 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+
+# Clojure
+# export CLOJURE_JAR=$HOME/.m2/repository/org/clojure/clojure/1.9.0/clojure-1.9.0.jar
+# export CLOJURE_EXT=$CLOJURE_JAR
+export CLOJURE_OPTS="-Xms128M -Xmx512M -server"
+
+# Boot
+# export BOOT_JVM_OPTIONS="-Xmx8g -client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Xverify:none -XX:-OmitStackTraceInFastThrow"
+# export BOOT_COLOR=1
+# export BOOT_GPG_COMMAND=gpg2
 
 # Haskell/hdevtools Home path setup
 export PATH=~/.local/bin:$PATH

@@ -423,10 +423,10 @@ cdgo() { cd $GOAPPS ;}
 cdnotes() { cd ~/Notes ;}
 
 # clojure
-lein() {
-  if [[ $1 == "figwheel" ]]; then
-    command rlwrap lein figwheel
-  else
-    command lein "$@"
-  fi
-}
+# lein() {
+#   if [[ $1 == "figwheel" ]]; then
+#     command rlwrap lein figwheel
+#   else
+#     command lein "$@"
+#   fi
+# }

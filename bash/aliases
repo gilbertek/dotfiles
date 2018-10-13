@@ -140,6 +140,9 @@ alias pip:up='pip3 install --upgrade pip setuptools wheel'
 
 # ** [ ANDROID ALIASES ] ******************
 alias adb-screenshot='adb shell screencap -p | sed 's/\r$//' > screen.png'
+alias adbkill='sudo /usr/local/share/android-sdk/platform-tools/adb kill-server'
+alias adbstart='sudo /usr/local/share/android-sdk/platform-tools/adb start-server'
+alias adbrestart='adbkill;adbstart'
 
 # ** [ ELIXIR ALIASES ] ******************
 alias mps="[ -d assets ] && iex -S mix phx.server || iex -S mix phoenix.server"
@@ -217,6 +220,13 @@ alias b='boot'
 alias cljs='shadow-cljs'
 alias clj-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept clojure.core.server/repl}" -A:rebel; }; do_repl'
 alias cljs-node-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept cljs.server.node/repl}" -R:cljs-canary -A:rebel-cljs -m cljs.main -re node -r; }; do_repl'
+
+# Maven
+alias mvn='notify-after mvn'
+alias mc='mvn --quiet clean'
+alias mci='mvn --quiet clean install'
+alias mcist='mvn --quiet clean install -DskipAllTests -T3 -Dmaven.test.skip=true'
+alias mcisst='mvn --quiet clean install -DskipTests -DskipITests -DskipAllTests -Dskip.checkstyle -Dcheckstyle.skip -Dpmd.skip -Djacoco.skip -T3'
 
 # ** [HASKELL SHORTCUTS ] ******************
 alias sbuild="stack build        -j 2 --test --bench --no-run-tests --no-run-benchmarks"
