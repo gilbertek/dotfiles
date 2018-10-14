@@ -173,19 +173,21 @@ let g:LanguageClient_serverCommands = {
       \ }
 
 " Clojure plugins
-Plug 'guns/vim-sexp',                    { 'for': 'clojure' }
+Plug 'guns/vim-sexp',                    {'for': ['clojure', 'clojurescript']}
 Plug 'clojure-vim/acid.nvim',            { 'do': ':UpdateRemotePlugins' }
-Plug 'clojure-vim/async-clj-omni',       { 'for': 'clojure' }
-Plug 'tpope/vim-fireplace'
-Plug 'tpope/vim-sexp-mappings-for-regular-people'
-Plug 'luochen1990/rainbow'
-let g:rainbow_active = 1
+Plug 'tpope/vim-classpath',              {'for': ['clojure', 'clojurescript']}
+Plug 'clojure-vim/async-clj-omni',       { 'for': ['clojure', 'clojurescript'] }
+Plug 'tpope/vim-fireplace',              {'for': ['clojure', 'clojurescript']}
+Plug 'tpope/vim-sexp-mappings-for-regular-people' , {'for': ['clojure', 'clojurescript']}
 Plug 'eraserhd/parinfer-rust',           { 'do': 'cargo build --release' }
-Plug 'humorless/vim-kibit'
+Plug 'humorless/vim-kibit',              { 'for': ['clojure', 'clojurescript'] }
+Plug 'guns/vim-slamhound',               { 'for': ['clojure', 'clojurescript'] }
 Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
 let g:clj_fmt_autosave = 1
 
-Plug 'guns/vim-slamhound'
+Plug 'luochen1990/rainbow'
+let g:rainbow_active = 1
+
 Plug 'jpalardy/vim-slime'
 let g:slime_target                      = 'tmux'
 let g:slimux_select_from_current_window = 1
@@ -431,16 +433,12 @@ Plug 'easymotion/vim-easymotion'
 
 Plug 'metakirby5/codi.vim' " The interactive scratchpad for hackers.
 " **[ 2.3) UI Plugins #ui-plugins ]********************
-Plug 'ayu-theme/ayu-vim'
 Plug 'w0ng/vim-hybrid'
 Plug 'joshdick/onedark.vim'
 Plug 'ajh17/Spacegray.vim'
-Plug 'chriskempson/base16-vim'
 Plug 'tomasiser/vim-code-dark'
-Plug 'NLKNguyen/papercolor-theme'
 Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'rakr/vim-one'
-Plug 'skielbasa/vim-material-monokai'
 
 Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 8
@@ -496,7 +494,6 @@ Plug 'zchee/deoplete-jedi'                   " source for Python
 Plug 'pbogut/deoplete-elm',                  { 'for': 'elm' }
 " Plug 'yoru/deoplete-crystal',              { 'for': 'crystal' }
 let g:deoplete#enable_at_startup           = 1 " Enable deoplete on startup.
-let g:deoplete#enable_smart_case           = 1 " Use smartcase.
 let g:deoplete#keyword_patterns            = {}
 let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 
@@ -508,7 +505,6 @@ let g:deoplete#sources#go#pointer          = 1
 
 let g:deoplete#sources#clang#libclang_path = $BREW_PATH.'/Cellar/llvm/5.0.1/lib/libclang.dylib'
 let g:deoplete#sources#clang#clang_header  = $BREW_PATH.'/opt/llvm/bin/clang'
-
 """" 2.4) End Code completion & Navigation #code-navigation
 call plug#end()
 "" Plugin configuration that has to run after plug#end
@@ -526,10 +522,6 @@ set background=dark
 """ onedark Color Scheme settings
 " colorscheme onedark
 
-""" Ayu Color Scheme settings
-let ayucolor="dark"   " for dark version of theme
-" colorscheme ayu
-
 """ Hybrid Color Scheme settings
 let g:hybrid_reduced_contrast = 1
 " colorscheme hybrid
@@ -537,21 +529,13 @@ let g:hybrid_reduced_contrast = 1
 """ Spacegray Color Scheme settings
 " colorscheme spacegray
 
-""" base16-vim Color Scheme settings
-let base16colorspace=256
-colorscheme base16-default-dark
-
 """ codedark Color Scheme settings
 " colorscheme codedark
 
-" colorscheme PaperColor
-
 let g:quantum_black = 1
-" silent! colorscheme quantum
+silent! colorscheme quantum
 
 " colorscheme one
-
-" colorscheme material-monokai
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -620,9 +604,6 @@ nnoremap J mzJ`z
 " Split line (sister to [J]oin lines above)
 " The normal use of S is covered by cc, so don't worry about shadowing it.
 nnoremap S i<cr><esc>^mwgk:silent! s/\v +$//<cr>:noh<cr>`w
-
-" Open the alternate file
-map ,, <C-^>
 
 " Custom split opening / closing behaviour
 map <C-N> :vsp<CR><C-P>
@@ -711,7 +692,6 @@ vnoremap <Leader>rr :s//g<Left><Left>
 
 " Slamhound mapping
 nnoremap <Leader>sh :Slamhound<CR>
-
 """" 4.2) End Mappings
 
 " **[ 4.3) Filetypes Config ]**
@@ -728,18 +708,16 @@ augroup general
   autocmd BufWritePre,BufLeave,FocusLost * StripWhitespace
   autocmd Filetype gitcommit,markdown setlocal spell textwidth=72
   autocmd InsertLeave * set nopaste " Leave paste mode when leaving insert mode
-  autocmd InsertLeave * pc          "close preview on insert leave
+  autocmd InsertLeave * pc          " Close preview on insert leave
 
-  autocmd BufWinEnter * silent! :%foldopen! " expand all folds when entering a file
+  autocmd BufWinEnter * silent! :%foldopen! " Expand all folds when entering a file
   autocmd BufWritePre * silent! undojoin | Neoformat
-
   autocmd FileType *.toml setl sw=2 sts=2 et
   " autocmd Syntax clojure,timl,scheme,lisp,racket RainbowToggle
 augroup END
 
 augroup cursorline
-  " Switch between normal and relative line numbers and cursorline
-  " when switching modes
+  " Switch between normal/relative line numbers and cursorline
   autocmd!
   autocmd InsertEnter,WinEnter * setlocal number cursorline norelativenumber
   autocmd InsertLeave,WinEnter * setlocal relativenumber nocursorline
@@ -822,10 +800,8 @@ augroup END
 
 augroup termMaps
   autocmd!
-
   " Always enter terminal in insert mode
   autocmd BufWinEnter,WinEnter,TermOpen term://* startinsert
-  autocmd BufLeave term://* stopinsert
 
   " no linenumbers in terminals
   autocmd TermOpen * setlocal nonumber norelativenumber
@@ -866,13 +842,14 @@ augroup END
 " Quick breakpoints
 augroup AutoBreakpoint
   autocmd!
-  autocmd FileType python map <silent><buffer> <leader><leader>b oimport ipdb; ipdb.set_trace()<esc>
-  autocmd FileType python map <silent><buffer> <leader><leader>B Oimport ipdb; ipdb.set_trace()<esc>
-  autocmd FileType javascript map <silent><buffer> <leader><leader>b odebugger;<esc>
-  autocmd FileType javascript map <silent><buffer> <leader><leader>B Odebugger;<esc>
+  autocmd FileType python map <silent> <leader>b oimport ipdb; ipdb.set_trace()<esc>
+  autocmd FileType python map <silent> <leader>B Oimport ipdb; ipdb.set_trace()<esc>
 
-  autocmd FileType clojure map <silent><buffer> <leader><leader>b o(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
-  autocmd FileType clojure map <silent><buffer> <leader><leader>B O(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
+  autocmd FileType javascript map <silent> <leader>b odebugger;<esc>
+  autocmd FileType javascript map <silent> <leader>B Odebugger;<esc>
+
+  autocmd FileType clojure map <silent> <leader>b o(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
+  autocmd FileType clojure map <silent> <leader>B O(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
 augroup END
 
 augroup ruby
