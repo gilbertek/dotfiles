@@ -52,11 +52,9 @@ set lazyredraw                  " Don't redraw while executing macros (good perf
 set winfixwidth                 " Keep Nerdtree window fixed between toggles
 set inccommand=nosplit          " Search and substitutions
 set clipboard+=unnamedplus      " +p paste OS clipboard
-
 """" 1.5) Searching #Searching
 set ignorecase                  " Ignore case when searching
 set smartcase                   " Ignore case if search pattern is all lowercase,
-
 """" 1.6) Folding & scrolling #Folding & scrolling
 set foldmethod=indent           " fold based on indent
 set foldnestmax=10              " deepest fold is 10 levels
@@ -64,11 +62,10 @@ set nofoldenable                " dont fold by default
 set foldlevel=1                 " this is just what i use
 set scroll=5                    " Nicer scrolling
 set scrolloff=1                 " Start scrolling when the cursor is near the edges
-
 set undofile
-
 " **[ 2) Plugins #plugins ]***************
 call plug#begin()
+
 """" 2.1) Filetypes #filetypes
 Plug 'elmcast/elm-vim',             { 'for': [ 'elm' ] }
 let g:elm_format_autosave         = 1
@@ -145,14 +142,14 @@ Plug 'reasonml-editor/vim-reason-plus'
 
 " PureScript
 Plug 'purescript-contrib/purescript-vim', { 'for': ['purescript', 'purs'] }
-Plug 'FrigoEU/psc-ide-vim', { 'for': ['purescript', 'purs'] }
+Plug 'FrigoEU/psc-ide-vim',               { 'for': ['purescript', 'purs'] }
 
 " This language client actually makes use of a binary, hence the `install.sh`.
 " We also need the `next` branch in order to specify
 " a language server's TCP port at the time of writing
 Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 let g:LanguageClient_autoStart = 1 " Automatically start language servers
-let g:LanguageClient_trace = 'verbose'
+let g:LanguageClient_trace     = 'verbose'
 " Debugging
 " let g:LanguageClient_loggingLevel       = 'DEBUG'
 " let g:LanguageClient_diagnosticsEnable  = 1
@@ -198,11 +195,6 @@ let g:user_emmet_leader_key   = '<tab>' " Using Tab to expand
 Plug 'ap/vim-css-color'
 Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']} " Autocompletes tags.
 Plug 'cakebaker/scss-syntax.vim'
-
-" JS
-Plug 'chemzqm/vim-jsx-improve'
-let g:javascript_plugin_jsdoc   = 1
-let g:javascript_plugin_flow    = 1
 
 Plug 'flowtype/vim-flow'
 Plug 'ternjs/tern_for_vim',     { 'do': 'npm install' }
@@ -389,11 +381,10 @@ nmap <Leader>gc :silent !git add -A<CR>:Gcommit<CR>
 
 " Git Gutter: shows a git diff in the gutter
 Plug 'airblade/vim-gitgutter'
-Plug 'Xuyuanp/nerdtree-git-plugin'   " NerdTree-git
+Plug 'Xuyuanp/nerdtree-git-plugin'    " NerdTree-git
 Plug 'tpope/vim-rhubarb'
-" vim interface to web apis.  Required for gist-vim
-Plug 'mattn/webapi-vim'
-Plug 'junegunn/gv.vim'      "A git commit browser
+Plug 'mattn/webapi-vim'               " Vim interface to web apis
+Plug 'junegunn/gv.vim'                " A git commit browser
 
 " create gists trivially from buffer, selection, etc.
 Plug 'mattn/gist-vim'
@@ -425,8 +416,8 @@ nmap <leader>h :History<cr>
 nmap <leader>f :Files<cr>
 
 Plug 'easymotion/vim-easymotion'
-
 Plug 'metakirby5/codi.vim' " The interactive scratchpad for hackers.
+
 " **[ 2.3) UI Plugins #ui-plugins ]********************
 Plug 'w0ng/vim-hybrid'
 Plug 'joshdick/onedark.vim'
@@ -692,11 +683,10 @@ nnoremap <Leader>sh :Slamhound<CR>
 " **[ 4.3) Filetypes Config ]**
 augroup general
   autocmd!
-  " Save anytime we leave a buffer or loses focus
-  autocmd BufLeave,FocusLost * :silent! wall
+  autocmd BufLeave,FocusLost * :silent! wall " Save on buffer or leave/loses focus
   autocmd CursorHold * silent! checktime
 
-  " vue files need special handling because of their
+  " Vue files need special handling because of their
   " mix of different languages in one file
   autocmd FileType vue syntax sync fromstart
 
@@ -706,7 +696,7 @@ augroup general
   autocmd InsertLeave * pc          " Close preview on insert leave
 
   autocmd BufWinEnter * silent! :%foldopen! " Expand all folds when entering a file
-  autocmd BufWritePre * silent! undojoin | Neoformat
+  autocmd BufWritePre *.js,*.jsx,*.ts,*.scss,*.rb Neoformat
   autocmd FileType toml setl ts=2 sw=2 sts=2 et
 augroup END
 
@@ -737,15 +727,15 @@ augroup rustRaceMap
 augroup END
 
 augroup elm
-  au!
-  au FileType elm nn <buffer> K :ElmShowDocs<CR>
-  au FileType elm nn <buffer> <localleader>m :ElmMakeMain<CR>
-  au FileType elm nn <buffer> <localleader>r :ElmRepl<CR>
+  autocmd!
+  autocmd FileType elm nn <buffer> K :ElmShowDocs<CR>
+  autocmd FileType elm nn <buffer> <localleader>m :ElmMakeMain<CR>
+  autocmd FileType elm nn <buffer> <localleader>r :ElmRepl<CR>
 augroup END
 
 augroup clojure
-  au!
-  au FileType cljs,clj nmap <leader>e :Eval<CR>
+  autocmd!
+  autocmd FileType cljs,clj nmap <leader>e :Eval<CR>
   autocmd Syntax clojure,timl,scheme,lisp,racket RainbowToggle
   " command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
   " command! Figapp :Piggieback! (figwheel-sidecar.repl-api/repl-env "app")
@@ -774,18 +764,18 @@ augroup END
 
 augroup golang
   autocmd!
-  au FileType go nmap <leader>r <Plug>(go-run)
-  au FileType go nmap <leader>b <Plug>(go-build)
-  au FileType go nmap <leader>e <Plug>(go-install)
-  au FileType go nmap <leader>t <Plug>(go-test)
-  au FileType go nmap <leader>c <Plug>(go-coverage)
-  au FileType go nmap <leader>rt <Plug>(go-run-tab)
-  au FileType go nmap <Leader>rs <Plug>(go-run-split)
-  au FileType go nmap <Leader>d <Plug>(go-doc)
-  au FileType go nmap <Leader>rv <Plug>(go-run-vertical)
-  au FileType go nmap <Leader>/ :GoInfo<CR>
-  au FileType go nmap <Leader>bp :GoToggleBreakpoint<CR>
-  au FileType go nmap <Leader>db :GoDebug<CR>
+  autocmd FileType go nmap <leader>r <Plug>(go-run)
+  autocmd FileType go nmap <leader>b <Plug>(go-build)
+  autocmd FileType go nmap <leader>e <Plug>(go-install)
+  autocmd FileType go nmap <leader>t <Plug>(go-test)
+  autocmd FileType go nmap <leader>c <Plug>(go-coverage)
+  autocmd FileType go nmap <leader>rt <Plug>(go-run-tab)
+  autocmd FileType go nmap <Leader>rs <Plug>(go-run-split)
+  autocmd FileType go nmap <Leader>d <Plug>(go-doc)
+  autocmd FileType go nmap <Leader>rv <Plug>(go-run-vertical)
+  autocmd FileType go nmap <Leader>/ :GoInfo<CR>
+  autocmd FileType go nmap <Leader>bp :GoToggleBreakpoint<CR>
+  autocmd FileType go nmap <Leader>db :GoDebug<CR>
 augroup END
 
 augroup erlang
@@ -819,20 +809,20 @@ augroup END
 
 augroup haskell
   autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-  au FileType haskell nnoremap <silent> <leader>b :!stack build --fast<CR>
-  au FileType haskell let g:neoformat_run_all_formatters = 1
+  autocmd FileType haskell nnoremap <silent> <leader>b :!stack build --fast<CR>
+  autocmd FileType haskell let g:neoformat_run_all_formatters = 1
 augroup END
 
 augroup interoMaps
   autocmd!
-  au BufWritePost *.hs InteroReload " Automatically reload on save.
-  au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR><C-W>H
-  au FileType haskell nnoremap <silent> <leader>ih :InteroHide<cr>
-  au FileType haskell nnoremap <silent> <leader>if :InteroLoadCurrentFile<CR>
-  au FileType haskell nnoremap <silent> <leader>dd :InteroGoToDef<CR>
-  au FileType haskell nnoremap <silent> <leader>it :InteroType<CR>
-  au FileType haskell map <silent> <leader>ii :InteroInfo<cr>
-  au FileType haskell map <leader>ic :!echo ":ctags" \| stack ghci<cr>
+  autocmd BufWritePost *.hs InteroReload " autocmdtomatically reload on save.
+  autocmd FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR><C-W>H
+  autocmd FileType haskell nnoremap <silent> <leader>ih :InteroHide<cr>
+  autocmd FileType haskell nnoremap <silent> <leader>if :InteroLoadCurrentFile<CR>
+  autocmd FileType haskell nnoremap <silent> <leader>dd :InteroGoToDef<CR>
+  autocmd FileType haskell nnoremap <silent> <leader>it :InteroType<CR>
+  autocmd FileType haskell map <silent> <leader>ii :InteroInfo<cr>
+  autocmd FileType haskell map <leader>ic :!echo ":ctags" \| stack ghci<cr>
 augroup END
 
 augroup dotenv
@@ -856,7 +846,6 @@ augroup END
 
 augroup ruby
   autocmd!
-  " Add pry to debug
   autocmd FileType ruby nnoremap <leader>d obinding.pry<esc>:w<CR>
   autocmd FileType ruby nmap <Leader>r :RuboCop<CR>
   autocmd FileType ruby,yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2
@@ -871,23 +860,23 @@ augroup ruby
   " 3.0.0.beta.6`
   " " ...yeah, current release is a beta, which won't auto-install
   "
-  " " Annotate every line
+  " Annotate every line
   autocmd FileType ruby nmap <leader>bb :%!seeing_is_believing --timeout 12
         \ --line-length 500 --number-of-captures 300
         \ --alignment-strategy chunk<CR>;
 
-  "  " Annotate marked lines
+  " Annotate marked lines
   autocmd FileType ruby nmap <leader>bn :%.!seeing_is_believing --timeout 12
         \ --line-length 500 --number-of-captures 300
         \ --alignment-strategy chunk --xmpfilter-style<CR>;
 
-  "  " Remove annotations
+  " Remove annotations
   autocmd FileType ruby nmap <leader>bc :%.!seeing_is_believing --clean<CR>;
 
-  "  " Mark the current line for annotation
+  " Mark the current line for annotation
   autocmd FileType ruby nmap <leader>bm A
 
-  "  " Mark the highlighted lines for annotation
+  " Mark the highlighted lines for annotation
   autocmd FileType ruby vmap <leader>bm :norm A
 augroup END
 
