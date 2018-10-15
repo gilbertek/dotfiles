@@ -714,7 +714,7 @@ augroup cursorline
   " Switch between normal/relative line numbers and cursorline
   autocmd!
   autocmd InsertEnter,WinEnter * setlocal number cursorline norelativenumber
-  " autocmd InsertLeave,WinEnter * setlocal relativenumber nocursorline
+  autocmd InsertLeave,WinEnter * setlocal relativenumber nocursorline
 augroup END
 
 augroup language_server
