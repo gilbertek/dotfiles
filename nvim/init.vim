@@ -77,7 +77,7 @@ let g:elm_make_show_warnings      = 1
 let g:elm_setup_keybindings       = 1
 
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled           = ['elm', 'haskell', 'clojure']
+let g:polyglot_disabled           = ['elm', 'haskell']
 
 "js configs
 let g:jsx_ext_required            = 0
