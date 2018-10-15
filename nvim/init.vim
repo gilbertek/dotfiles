@@ -21,9 +21,6 @@
 " 5) Utilities
 
 " **[ 1) Basics #basics ]********************
-let g:username = "Gilbert F. Sewovoe-Ekoue"
-let g:email = "gilberts55@hotmail.com"
-
 " **[ 1.1) Tabs & Indent #tabs ]********************
 set expandtab                   " Use spaces instead of tabs
 set shiftwidth=4                " 1 tab == 4 spaces
@@ -173,12 +170,10 @@ let g:LanguageClient_serverCommands = {
       \ }
 
 " Clojure plugins
-Plug 'guns/vim-sexp',                    {'for': ['clojure', 'clojurescript']}
-Plug 'clojure-vim/acid.nvim',            { 'do': ':UpdateRemotePlugins' }
-Plug 'tpope/vim-classpath',              {'for': ['clojure', 'clojurescript']}
+Plug 'guns/vim-sexp',                    { 'for': ['clojure', 'clojurescript'] }
 Plug 'clojure-vim/async-clj-omni',       { 'for': ['clojure', 'clojurescript'] }
-Plug 'tpope/vim-fireplace',              {'for': ['clojure', 'clojurescript']}
-Plug 'tpope/vim-sexp-mappings-for-regular-people' , {'for': ['clojure', 'clojurescript']}
+Plug 'tpope/vim-fireplace',              { 'for': ['clojure', 'clojurescript'] }
+Plug 'tpope/vim-sexp-mappings-for-regular-people' , { 'for': ['clojure', 'clojurescript'] }
 Plug 'eraserhd/parinfer-rust',           { 'do': 'cargo build --release' }
 Plug 'humorless/vim-kibit',              { 'for': ['clojure', 'clojurescript'] }
 Plug 'guns/vim-slamhound',               { 'for': ['clojure', 'clojurescript'] }
@@ -186,7 +181,7 @@ Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
 let g:clj_fmt_autosave = 1
 
 Plug 'luochen1990/rainbow'
-let g:rainbow_active = 1
+let g:rainbow_active = 0
 
 Plug 'jpalardy/vim-slime'
 let g:slime_target                      = 'tmux'
@@ -712,15 +707,14 @@ augroup general
 
   autocmd BufWinEnter * silent! :%foldopen! " Expand all folds when entering a file
   autocmd BufWritePre * silent! undojoin | Neoformat
-  autocmd FileType *.toml setl sw=2 sts=2 et
-  " autocmd Syntax clojure,timl,scheme,lisp,racket RainbowToggle
+  autocmd FileType toml setl ts=2 sw=2 sts=2 et
 augroup END
 
 augroup cursorline
   " Switch between normal/relative line numbers and cursorline
   autocmd!
   autocmd InsertEnter,WinEnter * setlocal number cursorline norelativenumber
-  autocmd InsertLeave,WinEnter * setlocal relativenumber nocursorline
+  " autocmd InsertLeave,WinEnter * setlocal relativenumber nocursorline
 augroup END
 
 augroup language_server
@@ -747,6 +741,16 @@ augroup elm
   au FileType elm nn <buffer> K :ElmShowDocs<CR>
   au FileType elm nn <buffer> <localleader>m :ElmMakeMain<CR>
   au FileType elm nn <buffer> <localleader>r :ElmRepl<CR>
+augroup END
+
+augroup clojure
+  au!
+  au FileType cljs,clj nmap <leader>e :Eval<CR>
+  autocmd Syntax clojure,timl,scheme,lisp,racket RainbowToggle
+  " command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
+  " command! Figapp :Piggieback! (figwheel-sidecar.repl-api/repl-env "app")
+  " command! Figcard :Piggieback! (figwheel-sidecar.repl-api/repl-env "devcards")
+  " command! Fignut :Piggieback (figwheel-sidecar.system/repl-env (:figwheel-system reloaded.repl/system) nil)
 augroup END
 
 " Vim-Alchemist Mappings
@@ -802,8 +806,6 @@ augroup termMaps
   autocmd!
   " Always enter terminal in insert mode
   autocmd BufWinEnter,WinEnter,TermOpen term://* startinsert
-
-  " no linenumbers in terminals
   autocmd TermOpen * setlocal nonumber norelativenumber
 augroup END
 

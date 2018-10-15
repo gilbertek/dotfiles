@@ -166,6 +166,7 @@ GITBRANCH='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\ 
 PS1="[${COLOR_PURPLE}\u\[\e[0;36m\]@\h:\[\e[0m\]\[\e[0;33m\]\W\[\e[0m\]] \t $\[\e[m\] "
 # PS1="[-]\e[01;41m\e[37m\@\e[00m\e [${COLOR_PURPLE}\u\[\e[0;36m\]@\h:\[\e[0m\]\[\e[0;33m\]\W\[\e[0m\]] $\[\e[m\] "
 
+# PS1='\[\033[01;34m\]\w\[\033[00m\]\[\033[01;32m\] $(__git_ps1 "[%s]")\[\033[00m\]λ '
 
 # For a ipython notebook and pyspark integration
 if which pyspark > /dev/null; then
