@@ -79,9 +79,6 @@ let g:elm_setup_keybindings       = 1
 Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled           = ['elm', 'haskell']
 
-"js configs
-let g:jsx_ext_required            = 0
-
 " Elixir
 Plug 'elixir-lang/vim-elixir'
 Plug 'slashmili/alchemist.vim'
@@ -97,7 +94,6 @@ Plug 'vim-erlang/vim-erlang-compiler'
 let g:erlang_tags_ignore = '_build'
 
 " Phoenix
-Plug 'c-brenn/phoenix.vim'
 Plug 'tpope/vim-projectionist'    " required for some navigation features
 
 " Markdown Preview
@@ -113,6 +109,7 @@ nnoremap <silent> <leader>z :Goyo<cr>
 " Plugins for rails
 Plug 'tpope/vim-rails'              " vim-rails
 Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-repeat'
 Plug 'ngmy/vim-rubocop'
 let g:vimrubocop_keymap = 0
 
@@ -185,8 +182,6 @@ let g:slime_target                      = 'tmux'
 let g:slimux_select_from_current_window = 1
 let g:slime_default_config              = {'socket_name': 'default', 'target_pane': ':0.2'}
 
-Plug 'tpope/vim-repeat'
-
 " HTML / CSS
 Plug 'mattn/emmet-vim',       { 'for': ['javascript', 'javascript.jsx', 'html'] }
 let g:user_emmet_mode         = 'a'     " Only enable Insert mode functions.
@@ -198,7 +193,6 @@ Plug 'cakebaker/scss-syntax.vim'
 
 Plug 'flowtype/vim-flow'
 Plug 'ternjs/tern_for_vim',     { 'do': 'npm install' }
-Plug 'elzr/vim-json',           {'for' : 'json'}
 let g:vim_json_syntax_conceal   = 0
 
 " Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Haskell
@@ -236,7 +230,6 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'ervandew/supertab'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'ntpeters/vim-better-whitespace'
-
 Plug 'powerman/vim-plugin-AnsiEsc'  " Ansi support
 Plug 'editorconfig/editorconfig-vim'
 
@@ -365,7 +358,6 @@ nmap [a <Plug>(ale_previous_wrap)
 
 " Git Plugins
 " ---------------
-" git support from dat tpope
 Plug 'tpope/vim-fugitive'
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gdiff<CR>
@@ -374,10 +366,8 @@ nnoremap <leader>gc :Gcommit -v<CR>
 nnoremap <leader>gca :Gcommit --amend -v<CR>
 nnoremap <leader>gp :Git push<cr>
 nnoremap <leader>gl :Glog<cr>
-
-" Add to index with ,ga
-nmap <leader>ga :silent !git add % &<cr><cr>
-nmap <Leader>gc :silent !git add -A<CR>:Gcommit<CR>
+nnoremap <leader>ga :silent !git add % &<cr><cr>
+nnoremap <Leader>gac :silent !git add -A<CR>:Gcommit<CR>
 
 " Git Gutter: shows a git diff in the gutter
 Plug 'airblade/vim-gitgutter'
@@ -401,8 +391,6 @@ noremap <Leader>g :GundoToggle<CR>
 
 " Tagbar: a class outline viewer for Vim
 Plug 'majutsushi/tagbar'
-let g:tagbar_autofocus        = 1
-let g:tagbar_autoclose        = 1
 nnoremap <Space>t :TagbarToggle<CR>
 
 " fzf fuzzy finder
@@ -454,8 +442,6 @@ let g:lightline = {
 " **[ 2.3) End UI Plugins #ui-plugins ]*****************
 
 """" 2.4) Code completion & Navigation #code-navigation
-" Snippets
-" -----------
 Plug 'epilande/vim-react-snippets'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -625,14 +611,10 @@ vnoremap > >gv
 " execute default register.
 nnoremap Q @q
 
-" Pressing ,ss will toggle spell checking
-noremap <leader>ss :setlocal spell!<cr>
+noremap <leader>ss :setlocal spell!<cr> " Pressing ,ss to toggle spelling
+nnoremap <leader>o <C-w>o " Declutter all windows
 
-" declutter all windows
-nnoremap <leader>o <C-w>o
-
-"" Set working directory
-" <leader>cd: Switch to the directory of the open buffer
+"" Set working directory of the open buffer <leader>cd
 nnoremap <leader>cd :lcd %:p:h<cr>:pwd<cr>
 
 " Toggle background with <leader>bg
@@ -675,9 +657,6 @@ nnoremap <C-a> ggVG " Hit Ctrl+A to select all in current buffer
 nnoremap <Leader>rr :%s//g<Left><Left>
 nnoremap <Leader>rw :%s/\<<C-r><C-w>\>//g<Left><Left>
 vnoremap <Leader>rr :s//g<Left><Left>
-
-" Slamhound mapping
-nnoremap <Leader>sh :Slamhound<CR>
 """" 4.2) End Mappings
 
 " **[ 4.3) Filetypes Config ]**
@@ -686,8 +665,7 @@ augroup general
   autocmd BufLeave,FocusLost * :silent! wall " Save on buffer or leave/loses focus
   autocmd CursorHold * silent! checktime
 
-  " Vue files need special handling because of their
-  " mix of different languages in one file
+  " Vuejs mix of different languages in one file
   autocmd FileType vue syntax sync fromstart
 
   autocmd BufWritePre,BufLeave,FocusLost * StripWhitespace
@@ -696,7 +674,7 @@ augroup general
   autocmd InsertLeave * pc          " Close preview on insert leave
 
   autocmd BufWinEnter * silent! :%foldopen! " Expand all folds when entering a file
-  autocmd BufWritePre *.js,*.jsx,*.ts,*.scss,*.rb Neoformat
+  autocmd BufWritePre *.{js,jsx,ts,scss,rb} Neoformat
   autocmd FileType toml setl ts=2 sw=2 sts=2 et
 augroup END
 
@@ -737,6 +715,7 @@ augroup clojure
   autocmd!
   autocmd FileType cljs,clj nmap <leader>e :Eval<CR>
   autocmd Syntax clojure,timl,scheme,lisp,racket RainbowToggle
+  autocmd FileType cljs,clj nmap <Leader>sh :Slamhound<CR>
   " command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
   " command! Figapp :Piggieback! (figwheel-sidecar.repl-api/repl-env "app")
   " command! Figcard :Piggieback! (figwheel-sidecar.repl-api/repl-env "devcards")
@@ -789,7 +768,7 @@ augroup javascript
   autocmd BufNewFile,BufRead .babelrc,.eslintrc setlocal filetype=json
 
   " Log out the word under the cursor
-  nmap <leader>d yiwoconsole.log('<c-r>"', <c-r>");<esc>^
+  nmap autocmd FileType javascript <leader>d yiwoconsole.log('<c-r>"', <c-r>");<esc>^
 augroup END
 
 augroup termMaps
@@ -882,7 +861,6 @@ augroup END
 
 augroup python
   autocmd!
-  " Autoinsert ipdb
   au FileType python nnoremap <leader>d oimport ipdb; ipdb.set_trace()<esc>:w<CR>
 augroup END
 
