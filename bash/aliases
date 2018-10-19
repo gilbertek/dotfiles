@@ -3,6 +3,11 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
+alias work='cd ~/Projects'
+alias trash="sudo rm -rvf ~/.Trash/*"
+
+alias weather="curl -4 http://wttr.in/New_York"
+alias whatsmyip='curl -s https://am.i.mullvad.net/json | jq'
 
 # ** [ Some Conveniences ] *************
 alias mkdir='mkdir -p'
@@ -45,7 +50,6 @@ alias preview="fzf --preview 'bat --color \"always\" {}'"
 # alias help='tldr'
 
 alias watch="watch --color"
-
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
@@ -157,12 +161,6 @@ alias tml="tmux list-sessions"
 alias tma="tmux attach-session -t $1"
 alias tmk="tmux kill-session -t $1"
 alias mux='tmuxinator'
-
-# ** [ SOME SHORTCUTS ] ******************
-alias work='cd ~/Projects'
-alias trash="sudo rm -rvf ~/.Trash/*"
-
-alias weather="curl -4 http://wttr.in/New_York"
 
 # ** [ YOUTUBE-DL SHORTCUTS ] ******************
 # youtube downloader

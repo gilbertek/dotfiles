@@ -78,6 +78,8 @@ let g:elm_setup_keybindings       = 1
 
 Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled           = ['elm', 'haskell']
+let g:vim_json_syntax_conceal     = 0
+let g:jsx_ext_required            = 0
 
 " Elixir
 Plug 'elixir-lang/vim-elixir'
@@ -134,12 +136,10 @@ let g:go_auto_type_info               = 1 " Show type information
 let g:go_auto_sameids                 = 1 " Highlight variable uses
 let g:go_echo_command_info            = 1 " Show the progress when running :GoCoverage
 
-" LSP client
-Plug 'reasonml-editor/vim-reason-plus'
+Plug 'reasonml-editor/vim-reason-plus' " Reasonml LSP client
 
 " PureScript
-Plug 'purescript-contrib/purescript-vim', { 'for': ['purescript', 'purs'] }
-Plug 'FrigoEU/psc-ide-vim',               { 'for': ['purescript', 'purs'] }
+Plug 'FrigoEU/psc-ide-vim',           { 'for': ['purescript', 'purs'] }
 
 " This language client actually makes use of a binary, hence the `install.sh`.
 " We also need the `next` branch in order to specify
@@ -177,11 +177,6 @@ let g:clj_fmt_autosave = 1
 Plug 'luochen1990/rainbow'
 let g:rainbow_active = 0
 
-Plug 'jpalardy/vim-slime'
-let g:slime_target                      = 'tmux'
-let g:slimux_select_from_current_window = 1
-let g:slime_default_config              = {'socket_name': 'default', 'target_pane': ':0.2'}
-
 " HTML / CSS
 Plug 'mattn/emmet-vim',       { 'for': ['javascript', 'javascript.jsx', 'html'] }
 let g:user_emmet_mode         = 'a'     " Only enable Insert mode functions.
@@ -193,7 +188,6 @@ Plug 'cakebaker/scss-syntax.vim'
 
 Plug 'flowtype/vim-flow'
 Plug 'ternjs/tern_for_vim',     { 'do': 'npm install' }
-let g:vim_json_syntax_conceal   = 0
 
 " Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Haskell
 let g:haskell_enable_quantification   = 1 " to enable highlighting of `forall`
@@ -395,8 +389,8 @@ nnoremap <Space>t :TagbarToggle<CR>
 
 " fzf fuzzy finder
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
-let g:fzf_layout = { 'down': '40%' }
-let g:fzf_files_options="--preview 'bat --color \"always\" {}'"
+let g:fzf_layout        = { 'down': '40%' }
+let g:fzf_files_options = "--preview 'bat --color \"always\" {}'"
 
 nnoremap <silent> <leader>a :Ag<cr>
 nnoremap <leader>b :Buffers<cr>
@@ -551,6 +545,8 @@ nnoremap ]l :lnext<cr>                " Move to the next loclist
 nnoremap [l :lprevious<cr>            " Move to the previous loclist
 nnoremap ]q :cnext<cr>                " Move to the next quickfix
 nnoremap [q :cprevious<cr>            " Move to the previous quickfix
+nnoremap <silent> ,z :bprevious<CR>
+nnoremap <silent> ,x :bnext<CR>
 
 " map tab navigation to Cmd-1 to 9.
 map <silent> <D-1> :tabn 1<cr>
