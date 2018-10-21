@@ -219,6 +219,7 @@ alias shadow='shadow-cljs'
 alias shdw='shadow-cljs'
 alias clj-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept clojure.core.server/repl}" -A:rebel; }; do_repl'
 alias cljs-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept cljs.server.node/repl}" -R:cljs-canary -A:rebel-cljs -m cljs.main -re node -r; }; do_repl'
+alias cljs='clj -Sdeps "{:deps {org.clojure/clojurescript {:mvn/version \"1.9.946\"}}}" -m cljs.repl.node'
 
 # ** [MAVEN SHORTCUTS ] ******************
 alias mvn='notify-after mvn'

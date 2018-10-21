@@ -471,6 +471,8 @@ let g:deoplete#sources#go#pointer          = 1
 
 let g:deoplete#sources#clang#libclang_path = $BREW_PATH.'/Cellar/llvm/5.0.1/lib/libclang.dylib'
 let g:deoplete#sources#clang#clang_header  = $BREW_PATH.'/opt/llvm/bin/clang'
+" Elm support
+" h/t https://github.com/ElmCast/elm-vim/issues/52#issuecomment-264161975
 """" 2.4) End Code completion & Navigation #code-navigation
 call plug#end()
 "" Plugin configuration that has to run after plug#end
