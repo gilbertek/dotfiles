@@ -711,9 +711,10 @@ augroup END
 
 augroup clojure
   autocmd!
-  autocmd FileType cljs,clj nmap <leader>e :Eval<CR>
-  autocmd Syntax clojure,timl,scheme,lisp,racket RainbowToggle
-  autocmd FileType cljs,clj nmap <Leader>sh :Slamhound<CR>
+  autocmd BufWinEnter *.{cljs,clj} nmap <leader>e :Eval<CR>
+  autocmd FileType clojure,timl,scheme,lisp,racket :RainbowToggle
+  autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
+  autocmd FileType clojure nnoremap <buffer> <Leader>ee :Eval (clojure.repl/pst)<CR>
   " command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
   " command! Figapp :Piggieback! (figwheel-sidecar.repl-api/repl-env "app")
   " command! Figcard :Piggieback! (figwheel-sidecar.repl-api/repl-env "devcards")

@@ -23,9 +23,11 @@
 
         :dependencies [[nrepl                         "0.4.5"]
                        [org.clojure/tools.namespace   "0.2.11"]
+                       [com.bhauman/rebel-readline    "0.1.4"]
                        [midje "1.6.0"                 :exclusions [org.clojure/clojure]]
                        [slamhound                     "RELEASE"]]
 
-        :aliases {"slamhound" ["run" "-m" "slam.hound"]}
+        :aliases {"slamhound" ["run" "-m" "slam.hound"]
+                  "rebl" ["trampoline" "run" "-m" "rebel-readline.main"]}
 
         :repl-options {:prompt (fn [ns] (str "[" ns "](\u001b[36mλ\u001b[0m)> "))}}}

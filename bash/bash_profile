@@ -222,8 +222,8 @@ if ! shopt -oq posix; then
 fi
 
 export PATH=$HOME/.cargo/bin:$PATH
-# export RUST_SRC_PATH="/usr/local/Cellar/asdf/0.5.1/installs/rust/1.28.0/toolchains/1.28.0-x86_64-apple-darwin/lib/rustlib/src/rust/src"
-export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+export RUST_SRC_PATH="/usr/local/Cellar/asdf/0.5.1/installs/rust/1.28.0/toolchains/1.28.0-x86_64-apple-darwin/lib/rustlib/src/rust/src"
+# export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 
 #To configure your current shell run
 if [ -f "$HOME/.asdf/installs/rust/1.28.0/env" ]; then
