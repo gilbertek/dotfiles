@@ -223,7 +223,6 @@ alias cljs-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:
 alias cljs='clj -Sdeps "{:deps {org.clojure/clojurescript {:mvn/version \"1.9.946\"}}}" -m cljs.repl.node'
 
 # ** [MAVEN SHORTCUTS ] ******************
-alias mvn='notify-after mvn'
 alias mc='mvn --quiet clean'
 alias mci='mvn --quiet clean install'
 alias mcist='mvn --quiet clean install -DskipAllTests -T3 -Dmaven.test.skip=true'

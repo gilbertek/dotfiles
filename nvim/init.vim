@@ -548,25 +548,28 @@ nnoremap [l :lprevious<cr>            " Move to the previous loclist
 nnoremap ]q :cnext<cr>                " Move to the next quickfix
 nnoremap [q :cprevious<cr>            " Move to the previous quickfix
 nnoremap <silent> ,z :bprevious<CR>
-nnoremap <silent> ,x :bnext<CR>
+nnoremap <silent> ,l :bnext<CR>
 
 " map tab navigation to Cmd-1 to 9.
 map <silent> <D-1> :tabn 1<cr>
 
 " Alt based mapping
 noremap <silent><A-t> :$tabnew<cr>
+
+  " In the quickfix window, <CR> is used to jump to the error under the
+  " cursor, so undefine the mapping there.
+  autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 """" 4.1) End Keyboard
 
 """" 4.2) Mappings
 " Start/ENd of line
-map H ^
-map L $
+nnoremap H ^ " Move to the start of line
+nnoremap L $ " Move to the end of line
 
 " reselect pasted content:
 noremap gV `[v`]
 
-" Make `Y` work from the cursor to the end of line
-nnoremap Y y$
+nnoremap Y y$ " Yank to the end of line
 
 " Keep the cursor in place while joining lines
 nnoremap J mzJ`z
@@ -584,8 +587,11 @@ set iskeyword+=-
 
 inoremap jj <ESC> " jj to exit insert mode
 inoremap kk <ESC> " kk to exit insert mode
-nnoremap <Leader>q :close<CR>
 nnoremap <leader>x :wq<cr>
+
+nnoremap <Leader>q :close<CR>
+nnoremap <silent> <Leader>q :q<CR> " Quit normal mode
+nnoremap <Leader>Q :qa!<CR>
 
 nnoremap <leader>s :update<cr>  " Save
 nnoremap <Leader>w :w<CR>       " Save
@@ -700,25 +706,25 @@ augroup rustRaceMap
   autocmd FileType rust nmap gx <Plug>(rust-def-vertical)
   autocmd FileType rust nmap <leader>gd <Plug>(rust-doc)
   autocmd FileType rust nnoremap <silent>rr <ESC>:<C-u>RustRun<cr>
+  let g:rustfmt_autosave = 1
 augroup END
 
 augroup elm
   autocmd!
   autocmd FileType elm nn <buffer> K :ElmShowDocs<CR>
-  autocmd FileType elm nn <buffer> <localleader>m :ElmMakeMain<CR>
-  autocmd FileType elm nn <buffer> <localleader>r :ElmRepl<CR>
+  autocmd FileType elm nn <buffer> <leader>m :ElmMakeMain<CR>
+  autocmd FileType elm nn <buffer> <leader>r :ElmRepl<CR>
 augroup END
 
 augroup clojure
   autocmd!
-  autocmd BufWinEnter *.{cljs,clj} nmap <leader>e :Eval<CR>
+  autocmd FileType clojure nmap <buffer> <leader>e :Eval<CR>
+  autocmd FileType clojure vnoremap <buffer> <leader>re :Eval<cr>
+  autocmd FileType clojure nnoremap <buffer> <leader>rf :%Eval<cr>
   autocmd FileType clojure,timl,scheme,lisp,racket :RainbowToggle
   autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
-  autocmd FileType clojure nnoremap <buffer> <Leader>ee :Eval (clojure.repl/pst)<CR>
-  " command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
-  " command! Figapp :Piggieback! (figwheel-sidecar.repl-api/repl-env "app")
-  " command! Figcard :Piggieback! (figwheel-sidecar.repl-api/repl-env "devcards")
-  " command! Fignut :Piggieback (figwheel-sidecar.system/repl-env (:figwheel-system reloaded.repl/system) nil)
+  command MFigwheel :Piggieback (figwheel.main.api/repl-env "dev")
+  autocmd FileType clojure nnoremap <buffer> <Leader>rc :FireplaceConnect<cr>
 augroup END
 
 " Vim-Alchemist Mappings

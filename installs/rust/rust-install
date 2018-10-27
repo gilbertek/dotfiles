@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+RUST_VERSION=1.30.0
+
+asdf install rust $RUST_VERSION
+
+rustup self update
+rustup update stable
+rustup toolchain add nightly
+
+cargo uninstall racer > /dev/null
+cargo +nightly install racer
+
+rustup component add rust-src
+rustup component add rust-analysis
+rustup component add rls-preview
+rustup component add rustfmt-preview
+
+# Enable tab completion for Bash
+rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion
+
