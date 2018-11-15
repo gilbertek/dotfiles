@@ -8,7 +8,7 @@ rustup self update
 rustup update stable
 rustup toolchain add nightly
 
-cargo uninstall racer > /dev/null
+cargo uninstall racer 2>&1 | less # 2> /dev/null
 cargo +nightly install racer
 
 rustup component add rust-src

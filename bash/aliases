@@ -21,6 +21,7 @@ alias v='$VISUAL'
 alias h='history'
 alias y='yarn'
 alias n='npm run'
+alias topdir="du -sh */ | sort -rh | head -5"
 alias nom="rm -rf node_modules; npm cache clean; npm i"
 alias yom="rm -rf node_modules; yarn"
 
@@ -155,6 +156,22 @@ alias phx:help='mix help | grep -i phoenix'
 
 # ** [ C++ ALIASES ] ******************
 alias cppcompile='c++ -std=c++11 -stdlib=libc++'
+
+# ** [ POSTGRESQL ALIASES ] ******************
+alias pg:start="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
+alias pg:stop="pg_ctl -D /usr/local/var/postgres stop -s -m fast"
+alias pg:status="pg_ctl -D /usr/local/var/postgres status"
+# alias parity='development restore production --app vive-production'
+
+# ** [ Mysql ALIASES ] ******************
+alias mysql:start="mysql.server start"
+alias mysql:stop="mysql.server stop"
+
+# ** [ REDIS ALIASES ] ******************
+alias redis:start="redis-server > /dev/null &"
+function redis:stop {
+  ps -ax | grep redis-server | awk 'NR==1{print $1}' | xargs kill
+}
 
 # ** [ TMUX ALIASES ] ******************
 alias tml="tmux list-sessions"

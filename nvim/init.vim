@@ -77,7 +77,7 @@ let g:elm_make_show_warnings      = 1
 let g:elm_setup_keybindings       = 1
 
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled           = ['elm', 'haskell']
+let g:polyglot_disabled           = ['elm']
 let g:vim_json_syntax_conceal     = 0
 let g:jsx_ext_required            = 0
 
@@ -89,6 +89,7 @@ let g:alchemist_tag_disable       = 1 "Use Universal ctags instead
 let g:alchemist_iex_term_size     = 10
 let g:alchemist_tag_map           = '<C-]>'
 let g:alchemist_tag_stack_map     = '<C-T>'
+let g:alchemist_iex_term_split    = 'split'
 
 Plug 'vim-erlang/vim-erlang-tags',          {'for': 'erlang'}
 Plug 'vim-erlang/vim-erlang-omnicomplete',  {'for': 'erlang'}
@@ -160,7 +161,8 @@ let g:LanguageClient_serverCommands = {
       \ 'cpp':        ['cquery', '--log-file=/tmp/cq.log'],
       \ 'c':          ['cquery', '--log-file=/tmp/cq.log'],
       \ 'rust':       ['rustup', 'run', 'stable', 'rls'],
-      \ 'haskell':    ['hie-wrapper', '--lsp']
+      \ 'haskell':    ['hie-wrapper', '--lsp'],
+      \ 'vue':        ['vls']
       \ }
 
 " Clojure plugins
@@ -324,7 +326,8 @@ let g:ale_linters = {
       \ 'go':         ['gofmt', 'gometalinter'],
       \ 'haskell':    ['stack-ghc-mod', 'hlint'],
       \ 'reason':     ['merlin'],
-      \ 'ocaml':      ['merlin']
+      \ 'ocaml':      ['merlin'],
+      \ 'vue': ['eslint', 'stylelint'],
       \ }
 
 let g:ale_fixers = {
@@ -343,7 +346,7 @@ let g:ale_sign_warning                = '⚠ ' " '✕' could use emoji '?'
 let g:ale_echo_msg_format             = '[%linter%] %s [%severity%]'
 let g:ale_statusline_format           = ['✗✗%d', '⚠ %d', '⬥ ok']
 let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
-
+" let g:ale_linter_aliases = {'vue': ['css', 'javascript']}
 " Run autoformatter
 nnoremap <leader>fx :ALEFix<CR>
 nnoremap <leader>at :ALEToggle<CR>
@@ -407,14 +410,16 @@ Plug 'ajh17/Spacegray.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'rakr/vim-one'
+Plug 'kaicataldo/material.vim'
+let g:material_theme_style = 'dark'
 
 Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 8
 let g:indentLine_char = '│'
 
-Plug 'itchyny/lightline.vim' " wombat onedark quantum
+Plug 'itchyny/lightline.vim' " wombat onedark quantum material_vim
 let g:lightline = {
-      \ 'colorscheme': 'quantum',
+      \ 'colorscheme': 'material_vim',
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
       \            [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -501,9 +506,11 @@ let g:hybrid_reduced_contrast = 1
 " colorscheme codedark
 
 let g:quantum_black = 1
-silent! colorscheme quantum
+" silent! colorscheme quantum
 
 " colorscheme one
+
+colorscheme material
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -723,7 +730,8 @@ augroup clojure
   autocmd FileType clojure nnoremap <buffer> <leader>rf :%Eval<cr>
   autocmd FileType clojure,timl,scheme,lisp,racket :RainbowToggle
   autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
-  command MFigwheel :Piggieback (figwheel.main.api/repl-env "dev")
+  " command MFigwheel :Piggieback (figwheel.main.api/repl-env "dev")
+  " command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
   autocmd FileType clojure nnoremap <buffer> <Leader>rc :FireplaceConnect<cr>
 augroup END
 

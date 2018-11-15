@@ -58,6 +58,12 @@ function pid_on() {
   lsof -i tcp:$1
 }
 
+# Kills a process listening on a port
+kill_tcp() {
+  port=$1
+  lsof -i :$port -s TCP:LISTEN -t | xargs kill
+}
+
 # Change to and list contents of a directory
 function cdl { cd $1; ls; }
 
