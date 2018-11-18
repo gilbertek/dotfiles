@@ -84,7 +84,7 @@ let g:jsx_ext_required            = 0
 " Elixir
 Plug 'elixir-lang/vim-elixir'
 Plug 'slashmili/alchemist.vim'
-let g:alchemist#elixir_erlang_src = "/usr/local/opt/asdf/installs/elixir/1.7.3/bin/elixir"
+let g:alchemist#elixir_erlang_src = "/Users/Gilbert/.asdf/installs/elixir/1.7.4/bin/elixir"
 let g:alchemist_tag_disable       = 1 "Use Universal ctags instead
 let g:alchemist_iex_term_size     = 10
 let g:alchemist_tag_map           = '<C-]>'
@@ -410,16 +410,14 @@ Plug 'ajh17/Spacegray.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'rakr/vim-one'
-Plug 'kaicataldo/material.vim'
-let g:material_theme_style = 'dark'
 
 Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 8
 let g:indentLine_char = '│'
 
-Plug 'itchyny/lightline.vim' " wombat onedark quantum material_vim
+Plug 'itchyny/lightline.vim' " wombat onedark quantum
 let g:lightline = {
-      \ 'colorscheme': 'material_vim',
+      \ 'colorscheme': 'quantum',
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
       \            [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -506,11 +504,9 @@ let g:hybrid_reduced_contrast = 1
 " colorscheme codedark
 
 let g:quantum_black = 1
-" silent! colorscheme quantum
+silent! colorscheme quantum
 
 " colorscheme one
-
-colorscheme material
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -521,7 +517,7 @@ map <Up>    :echo "no!"<cr>
 map <Down>  :echo "no!"<cr>
 
 " Terminal Mode Configuration
-tnoremap <Esc> <C-\><C-n>
+tnoremap <Esc> <C-\><C-n> " Terminal Exit
 nnoremap <silent> <bslash> :vsplit term://$SHELL<bar>startinsert<CR>
 
 " Open in TeXShop
@@ -533,7 +529,7 @@ tnoremap <C-j> <C-\><C-n><C-w>j
 tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 
-" Navigate splits with C-h,j,k,l
+" Navigate splits windows with C-h,j,k,l
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -548,14 +544,17 @@ nmap <silent>tt :tabnew<CR>
 nmap <silent>tc :tabclose<cr>
 map <leader>n :tabnew .<CR><C-P>      " Custom tab opening behaviour
 
-nnoremap <silent> [b :bprevious<CR>   " Move to the previous buffer
-nnoremap <silent> ]b :bnext<CR>       " Move to the next buffer
 nnoremap ]l :lnext<cr>                " Move to the next loclist
 nnoremap [l :lprevious<cr>            " Move to the previous loclist
 nnoremap ]q :cnext<cr>                " Move to the next quickfix
 nnoremap [q :cprevious<cr>            " Move to the previous quickfix
+
+" Buffer nav
+nnoremap <silent> [b :bprevious<CR>   " Move to the previous buffer
+nnoremap <silent> ]b :bnext<CR>       " Move to the next buffer
 nnoremap <silent> ,z :bprevious<CR>
 nnoremap <silent> ,l :bnext<CR>
+noremap <leader>c :bd<CR> " Close buffer
 
 " map tab navigation to Cmd-1 to 9.
 map <silent> <D-1> :tabn 1<cr>
@@ -566,6 +565,12 @@ noremap <silent><A-t> :$tabnew<cr>
   " In the quickfix window, <CR> is used to jump to the error under the
   " cursor, so undefine the mapping there.
   autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+
+" session management
+nnoremap <leader>os :OpenSession<Space>
+nnoremap <leader>ss :SaveSession<Space>
+nnoremap <leader>ds :DeleteSession<CR>
+nnoremap <leader>cs :CloseSession<CR>
 """" 4.1) End Keyboard
 
 """" 4.2) Mappings
@@ -585,9 +590,7 @@ nnoremap J mzJ`z
 " The normal use of S is covered by cc, so don't worry about shadowing it.
 nnoremap S i<cr><esc>^mwgk:silent! s/\v +$//<cr>:noh<cr>`w
 
-" Custom split opening / closing behaviour
-map <C-N> :vsp<CR><C-P>
-map <C-C> :q<CR>
+map <C-C> :q<CR> " Custom split opening / closing behaviour
 
 " Makes foo-bar considered one word
 set iskeyword+=-
@@ -622,7 +625,6 @@ vnoremap > >gv
 " execute default register.
 nnoremap Q @q
 
-noremap <leader>ss :setlocal spell!<cr> " Pressing ,ss to toggle spelling
 nnoremap <leader>o <C-w>o " Declutter all windows
 
 "" Set working directory of the open buffer <leader>cd

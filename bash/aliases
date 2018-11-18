@@ -15,12 +15,18 @@ alias paths='echo -e ${PATH//:/\\n}' # Pretty-print of some PATH variables
 alias rmr="rm -rf"
 alias ports="lsof -i -P"
 alias tree='tree -C'
+alias p='pwd'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias halt='halt -p'
+alias v='nvim'
+alias s='source ~/.bash_profile'
 alias c='clear'
 alias e='$EDITOR'
 alias v='$VISUAL'
 alias h='history'
-alias y='yarn'
-alias n='npm run'
+alias curl="curl -sL" # Avoid progress bar and follow redirects
 alias topdir="du -sh */ | sort -rh | head -5"
 alias nom="rm -rf node_modules; npm cache clean; npm i"
 alias yom="rm -rf node_modules; yarn"
@@ -35,9 +41,6 @@ alias anki="anki -b ~/.anki"
 alias filemerge="open -a '/Applications/Xcode.app/Contents/Applications/FileMerge.app'"
 alias xcode="open -a '/Applications/Xcode.app'"
 
-# Avoid progress bar and follow redirects
-alias curl="curl -sL"
-
 if [ $(which bat) ]; then
   alias cat='bat'
 fi
@@ -47,59 +50,38 @@ if [ $(which terraform) ]; then
 fi
 
 alias preview="fzf --preview 'bat --color \"always\" {}'"
-
-# alias help='tldr'
-
 alias watch="watch --color"
-
-# Reload the shell (i.e. invoke as a login shell)
-alias reload="exec $SHELL -l"
+alias reload="exec $SHELL -l" # Reload the shell (i.e. invoke as a login shell)
 
 # JavaScriptCore REPL
 jscbin="/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc";
 [ -e "${jscbin}" ] && alias jsc="${jscbin}";
 unset jscbin;
 
-# ** [ BASH ALIASES ] ****************
-alias p='pwd'
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-alias halt='halt -p'
-alias v='nvim'
-alias s='source ~/.bash_profile'
-
 # ** [ GIT ALIASES ] ******************
 alias g=git
-alias gf='git fetch'
-alias gco='git checkout $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
-alias gsp='git stash pop $(git stash list | fzf | cut -d=: -f1)'
-alias grb='git rebase -i $(git log --all --graph --oneline --decorate | fzf --reverse | sed -Ee "s/.* ([a-f0-9]{6,}) .*/\1/")'
-alias gm='git merge --no-ff $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
-alias gp='git push'
-
-alias gaa='git add --all'
+alias gs='git status'
+alias gb='git branch -a'
 alias ga='git add -p'
 alias gci='git commit'
+alias gd='git diff'
+alias gco='git checkout $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
+alias stash:p='git stash pop $(git stash list | fzf | cut -d=: -f1)'
+alias grb='git rebase -i $(git log --all --graph --oneline --decorate | fzf --reverse | sed -Ee "s/.* ([a-f0-9]{6,}) .*/\1/")'
+alias gm='git merge --no-ff $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
 alias gca='git commit --amend --date="$(date)"'
 alias wip='gaa && gca -m "WIP"'
-alias gst='git stash'
-
-alias gsl='git stash list'
-alias gs='git status'
+alias stash='git stash'
+alias stash:l='git stash list'
 alias gsh='git show HEAD'
-alias gd='git diff'
 alias grev='git diff master'
 alias gh='git history'
 alias gha='git history --all'
-alias gl='git log'
-alias gb='git branch -a'
 alias gmt='git mergetool'
 
 alias gsu='git submodule foreach git pull origin master'
 alias changelog='git log --format="%h %ai %an %s"'
 alias ggpull='git pull --rebase'
-
 alias gmu='git fetch origin -v; git fetch upstream -v; git merge upstream/master'
 
 # git fetch pull
@@ -121,6 +103,7 @@ alias dkc='docker container'
 alias dkm='docker-machine'
 alias dkm:reload='eval $(docker-machine env default)'
 alias dk:rd='docker run -d '
+alias dk:clean='docker system prune --all --volumes'
 
 # ** [ GOLANG ALIASES ] ******************
 
@@ -209,7 +192,7 @@ alias klogs="kubect logs"
 # componentstatuses (cs), endpoints (ep), and secrets.
 alias pods="get pods"
 alias services="get svc"
-alias svc="get svc"
+alias svc="kget svc"
 alias deployments="get deployments"
 alias kdep="get deployments" # NON-STANDARD!!
 alias replicasets="get rs"
@@ -220,7 +203,7 @@ alias limitranges="get limitranges"
 alias limits="get limitranges"
 alias events="get events"
 alias persistentvolumes="get pv"
-alias pv="get pv"
+alias pv="kget pv"
 alias persistentvolumeclaims="get pvc"
 alias pvc="get pvc"
 alias namespaces="get ns"
