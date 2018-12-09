@@ -29,7 +29,7 @@ set tabstop=4                   " Spaces that a <Tab> in file counts for.
 " **[ 1.2) Leader #leader ]********************
 let g:mapleader=','
 
-" **[ 1.3) Omni #omni ]********************
+" **[ 1.3) Omni completion ]********************
 set omnifunc=syntaxcomplete#Complete
 
 " **[ 1.4) UI Basics #ui-basics ]********************
@@ -80,11 +80,12 @@ Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled           = ['elm']
 let g:vim_json_syntax_conceal     = 0
 let g:jsx_ext_required            = 0
+let g:rustfmt_autosave            = 1
 
 " Elixir
 Plug 'elixir-lang/vim-elixir'
 Plug 'slashmili/alchemist.vim'
-let g:alchemist#elixir_erlang_src = "/Users/Gilbert/.asdf/installs/elixir/1.7.4/bin/elixir"
+let g:alchemist#elixir_erlang_src = expand('~/.asdf/installs/elixir/1.7.4/bin/elixir')
 let g:alchemist_tag_disable       = 1 "Use Universal ctags instead
 let g:alchemist_iex_term_size     = 10
 let g:alchemist_tag_map           = '<C-]>'
@@ -145,24 +146,20 @@ Plug 'FrigoEU/psc-ide-vim',           { 'for': ['purescript', 'purs'] }
 " This language client actually makes use of a binary, hence the `install.sh`.
 " We also need the `next` branch in order to specify
 " a language server's TCP port at the time of writing
-Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
-let g:LanguageClient_autoStart = 1 " Automatically start language servers
-let g:LanguageClient_trace     = 'verbose'
-" Debugging
-" let g:LanguageClient_loggingLevel       = 'DEBUG'
-" let g:LanguageClient_diagnosticsEnable  = 1
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 
+" Automatically start language servers
+let g:LanguageClient_autoStart         = 1
 let g:LanguageClient_serverCommands = {
       \ 'javascript': ['javascript-typescript-stdio'],
+      \ 'typescript': ['javascript-typescript-stdio'],
       \ 'reason':     ['ocaml-language-server', '--stdio'],
       \ 'ocaml':      ['ocaml-language-server', '--stdio'],
-      \ 'python':     ['pyls'],
       \ 'ruby':       ['solargraph', 'stdio'],
-      \ 'cpp':        ['cquery', '--log-file=/tmp/cq.log'],
-      \ 'c':          ['cquery', '--log-file=/tmp/cq.log'],
       \ 'rust':       ['rustup', 'run', 'stable', 'rls'],
-      \ 'haskell':    ['hie-wrapper', '--lsp'],
-      \ 'vue':        ['vls']
       \ }
 
 " Clojure plugins
@@ -214,9 +211,13 @@ Plug 'tpope/vim-db'
 """" 2.2) Utilities #utilities
 Plug 'sbdchd/neoformat'
 let g:neoformat_try_formatprg         = 1
-let g:neoformat_basic_format_align    = 1 " Enable alignment
+let g:neoformat_basic_format_align    = 1
 let g:neoformat_basic_format_retab    = 1
 nmap <Leader>nf :Neoformat<CR>
+
+" LanguageClient enhancements
+" Showing function signature and inline doc.
+Plug 'Shougo/echodoc.vim'
 
 " Automatically match any brackets, parentheses or quotes
 Plug 'jiangmiao/auto-pairs'
@@ -226,7 +227,7 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'ervandew/supertab'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'powerman/vim-plugin-AnsiEsc'  " Ansi support
+Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'editorconfig/editorconfig-vim'
 
 Plug 'janko-m/vim-test' " Run tests with varying granularity
@@ -278,7 +279,7 @@ let g:NERDTreeIgnore = [
       \ ]
 let g:NERDTreeMinimalUI           = 1
 let g:NERDTreeChDirMode           = 2     " keep working directory set to NERD's root
-let g:NERDTreeBookmarksFile       = $HOME . '/.config/nvim/NERDTreeBookmarks'
+let g:NERDTreeBookmarksFile       = expand('~/.config/nvim/NERDTreeBookmarks')
 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
       \ && b:NERDTree.isTabTree()) | q | endif
@@ -338,7 +339,6 @@ let g:ale_fixers = {
       \ 'ruby':       ['rubocop'],
       \ 'elixir':     ['mix_format'],
       \ }
-let g:ale_completion_enabled          = 1
 let g:ale_fix_on_save                 = 1
 let g:ale_python_auto_pipenv          = 1
 let g:ale_sign_error                  = '✗✗' " '△'  could use emoji or 'X'
@@ -346,8 +346,7 @@ let g:ale_sign_warning                = '⚠ ' " '✕' could use emoji '?'
 let g:ale_echo_msg_format             = '[%linter%] %s [%severity%]'
 let g:ale_statusline_format           = ['✗✗%d', '⚠ %d', '⬥ ok']
 let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
-" let g:ale_linter_aliases = {'vue': ['css', 'javascript']}
-" Run autoformatter
+let g:ale_rust_cargo_use_clippy       = executable('cargo-clippy')
 nnoremap <leader>fx :ALEFix<CR>
 nnoremap <leader>at :ALEToggle<CR>
 nmap ]a <Plug>(ale_next_wrap)
@@ -392,7 +391,7 @@ nnoremap <Space>t :TagbarToggle<CR>
 
 " fzf fuzzy finder
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
-let g:fzf_layout        = { 'down': '40%' }
+let g:fzf_layout        = { 'down': '35%' }
 let g:fzf_files_options = "--preview 'bat --color \"always\" {}'"
 
 nnoremap <silent> <leader>a :Ag<cr>
@@ -410,6 +409,8 @@ Plug 'ajh17/Spacegray.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'rakr/vim-one'
+Plug 'chriskempson/base16-vim'
+let base16colorspace=256
 
 Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 8
@@ -421,14 +422,6 @@ let g:lightline = {
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
       \            [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component': {
-      \   'readonly': '%{&readonly? "🔒": ""}',
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}'
-      \ },
-      \ 'component_visible_condition': {
-      \   'readonly': '(&filetype!="help"&& &readonly)',
-      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))'
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head'
@@ -451,7 +444,6 @@ endif
 " Autocompletion Engine (neovim) Autocompletion Engine (neovim)
 Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-clang'
-Plug 'racer-rust/vim-racer'
 Plug 'zchee/deoplete-go',                  { 'do': 'make'}
 Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
 let g:deoplete#sources#ternjs#types        = 1
@@ -482,13 +474,7 @@ call plug#end()
 
 " **[ 3) UI Tweaks #ui-tweaks ] *********************
 """" 3.1) Theme #theme
-set termguicolors     " True color options
-
-" Make sure colors work in tmux and other weird places
-if &term =~ '256color'
-  set t_ut=
-endif
-
+set termguicolors
 set background=dark
 """ onedark Color Scheme settings
 " colorscheme onedark
@@ -507,14 +493,16 @@ let g:quantum_black = 1
 silent! colorscheme quantum
 
 " colorscheme one
+
+" colorscheme base16-atelier-dune
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
 """" 4.1) Keyboard
-map <Left>  :echo "no!"<cr>
-map <Right> :echo "no!"<cr>
-map <Up>    :echo "no!"<cr>
-map <Down>  :echo "no!"<cr>
+nnoremap <Left>  :echo "no!"<cr>
+nnoremap <Right> :echo "no!"<cr>
+nnoremap <Up>    :echo "no!"<cr>
+nnoremap <Down>  :echo "no!"<cr>
 
 " Terminal Mode Configuration
 tnoremap <Esc> <C-\><C-n> " Terminal Exit
@@ -544,17 +532,22 @@ nmap <silent>tt :tabnew<CR>
 nmap <silent>tc :tabclose<cr>
 map <leader>n :tabnew .<CR><C-P>      " Custom tab opening behaviour
 
-nnoremap ]l :lnext<cr>                " Move to the next loclist
-nnoremap [l :lprevious<cr>            " Move to the previous loclist
-nnoremap ]q :cnext<cr>                " Move to the next quickfix
-nnoremap [q :cprevious<cr>            " Move to the previous quickfix
+" " tabs "
+nnoremap [t gT
+nnoremap ]t gt
+nnoremap ]T :tablast<CR>
+nnoremap [T :tabfirst<CR>
+" " quickfix "
+nnoremap [q :cprevious<CR>
+nnoremap ]q :cnext<CR>
+" " loclist "
+nnoremap [l :lprevious<CR>
+nnoremap ]l :lnext<CR>
 
 " Buffer nav
-nnoremap <silent> [b :bprevious<CR>   " Move to the previous buffer
-nnoremap <silent> ]b :bnext<CR>       " Move to the next buffer
-nnoremap <silent> ,z :bprevious<CR>
-nnoremap <silent> ,l :bnext<CR>
-noremap <leader>c :bd<CR> " Close buffer
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
+noremap <leader>c :bd<CR>
 
 " map tab navigation to Cmd-1 to 9.
 map <silent> <D-1> :tabn 1<cr>
@@ -562,9 +555,9 @@ map <silent> <D-1> :tabn 1<cr>
 " Alt based mapping
 noremap <silent><A-t> :$tabnew<cr>
 
-  " In the quickfix window, <CR> is used to jump to the error under the
-  " cursor, so undefine the mapping there.
-  autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+" In the quickfix window, <CR> is used to jump to the error under the
+" cursor, so undefine the mapping there.
+autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
 " session management
 nnoremap <leader>os :OpenSession<Space>
@@ -574,9 +567,13 @@ nnoremap <leader>cs :CloseSession<CR>
 """" 4.1) End Keyboard
 
 """" 4.2) Mappings
-" Start/ENd of line
-nnoremap H ^ " Move to the start of line
-nnoremap L $ " Move to the end of line
+" Jump to start and end of line using the home row keys
+nnoremap H ^
+nnoremap L $
+
+" Move by line
+nnoremap j gj
+nnoremap k gk
 
 " reselect pasted content:
 noremap gV `[v`]
@@ -590,21 +587,24 @@ nnoremap J mzJ`z
 " The normal use of S is covered by cc, so don't worry about shadowing it.
 nnoremap S i<cr><esc>^mwgk:silent! s/\v +$//<cr>:noh<cr>`w
 
-map <C-C> :q<CR> " Custom split opening / closing behaviour
+" Custom split opening / closing behaviour
+map <C-C> :q<CR>
 
 " Makes foo-bar considered one word
 set iskeyword+=-
 
-inoremap jj <ESC> " jj to exit insert mode
-inoremap kk <ESC> " kk to exit insert mode
+" jj/kk to exit insert mode
+inoremap jj <Esc>
+inoremap kk <Esc>
 nnoremap <leader>x :wq<cr>
 
 nnoremap <Leader>q :close<CR>
-nnoremap <silent> <Leader>q :q<CR> " Quit normal mode
-nnoremap <Leader>Q :qa!<CR>
 
-nnoremap <leader>s :update<cr>  " Save
-nnoremap <Leader>w :w<CR>       " Save
+" Quit normal mode
+nnoremap <silent> <Leader>q :q<CR>
+
+" Quick-save
+nnoremap <Leader>w :w<CR>
 
 " find merge conflict markers
 nnoremap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
@@ -625,7 +625,12 @@ vnoremap > >gv
 " execute default register.
 nnoremap Q @q
 
-nnoremap <leader>o <C-w>o " Declutter all windows
+" Declutter all windows
+nnoremap <leader>o <C-w>o
+
+" Search results centered please
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
 
 "" Set working directory of the open buffer <leader>cd
 nnoremap <leader>cd :lcd %:p:h<cr>:pwd<cr>
@@ -634,7 +639,7 @@ nnoremap <leader>cd :lcd %:p:h<cr>:pwd<cr>
 nnoremap <leader>lt :let &background = (&background == "dark"? "light" : "dark")<cr>
 
 " ctrl-v: Paste
-cnoremap <c-v> <c-r>"
+cnoremap <c-v> <c-r>
 
 " U: Redos since 'u' undos
 nnoremap U :redo<cr>
@@ -662,7 +667,8 @@ xmap <s-tab> <
 noremap <c-g> :Ggrep <cword><CR>
 
 " Use tab for completion
-inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr><Tab> pumvisible() ? "\<C-n>"       : "\<Tab>"
+inoremap <expr><Esc> pumvisible() ? "\<C-y>\<Esc>" : "\<Esc>"
 
 nnoremap <C-a> ggVG " Hit Ctrl+A to select all in current buffer
 
@@ -700,22 +706,12 @@ augroup END
 
 augroup language_server
   autocmd!
-  nnoremap <silent> <leader>gt :call LanguageClient_textDocument_hover()<CR>
-  nnoremap <silent> <leader>gd :call LanguageClient_textDocument_definition()<CR>
-  nnoremap <silent> <leader>gf :call LanguageClient_textDocument_formatting()<CR>
-  vnoremap <silent> <leader>gf :call LanguageClient_textDocument_rangeFormatting()<CR>
-  nnoremap <silent> <leader>gv :call LanguageClient_textDocument_codeAction()<CR>
-  nnoremap <silent> <leader>gr :call LanguageClient#textDocument_rename()<CR>
-augroup END
-
-augroup rustRaceMap
-  autocmd!
-  autocmd FileType rust nmap gd <Plug>(rust-def)
-  autocmd FileType rust nmap gs <Plug>(rust-def-split)
-  autocmd FileType rust nmap gx <Plug>(rust-def-vertical)
-  autocmd FileType rust nmap <leader>gd <Plug>(rust-doc)
-  autocmd FileType rust nnoremap <silent>rr <ESC>:<C-u>RustRun<cr>
-  let g:rustfmt_autosave = 1
+  nnoremap <silent> gt :call LanguageClient_textDocument_hover()<CR>
+  nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+  nnoremap <silent> gf :call LanguageClient_textDocument_formatting()<CR>
+  vnoremap <silent> gf :call LanguageClient_textDocument_rangeFormatting()<CR>
+  nnoremap <silent> gv :call LanguageClient_textDocument_codeAction()<CR>
+  nnoremap <silent> gr :call LanguageClient#textDocument_rename()<CR>
 augroup END
 
 augroup elm
@@ -781,20 +777,14 @@ augroup javascript
   autocmd!
   autocmd FileType javascript setl sw=2 sts=2 et
   autocmd BufNewFile,BufRead .babelrc,.eslintrc setlocal filetype=json
-
-  " Log out the word under the cursor
-  nmap autocmd FileType javascript <leader>d yiwoconsole.log('<c-r>"', <c-r>");<esc>^
-augroup END
-
-augroup termMaps
-  autocmd!
-  " Always enter terminal in insert mode
-  autocmd BufWinEnter,WinEnter,TermOpen term://* startinsert
-  autocmd TermOpen * setlocal nonumber norelativenumber
 augroup END
 
 augroup viml
   autocmd!
+  " Always enter terminal in insert mode
+  autocmd BufWinEnter,WinEnter,TermOpen term://* startinsert
+  autocmd TermOpen * setlocal nonumber norelativenumber
+
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew ~/.config/nvim/init.vim
   command! Loadrc source ~/.config/nvim/init.vim
@@ -828,19 +818,16 @@ augroup END
 " Quick breakpoints
 augroup AutoBreakpoint
   autocmd!
-  autocmd FileType python map <silent> <leader>b oimport ipdb; ipdb.set_trace()<esc>
-  autocmd FileType python map <silent> <leader>B Oimport ipdb; ipdb.set_trace()<esc>
-
-  autocmd FileType javascript map <silent> <leader>b odebugger;<esc>
-  autocmd FileType javascript map <silent> <leader>B Odebugger;<esc>
-
-  autocmd FileType clojure map <silent> <leader>b o(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
-  autocmd FileType clojure map <silent> <leader>B O(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
+  autocmd FileType python nnoremap <leader>d oimport ipdb; ipdb.set_trace()<esc>:w<CR>
+  autocmd FileType javascript map <silent> <leader>d odebugger;<esc>
+ " Log out the word under the cursor
+  autocmd FileType javascript map<leader>dl yiwoconsole.log('<c-r>"', <c-r>");<esc>^
+  autocmd FileType ruby nnoremap <leader>d obinding.pry<esc>:w<CR>
+  autocmd FileType clojure map <silent> <leader>d o(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
 augroup END
 
 augroup ruby
   autocmd!
-  autocmd FileType ruby nnoremap <leader>d obinding.pry<esc>:w<CR>
   autocmd FileType ruby nmap <Leader>r :RuboCop<CR>
   autocmd FileType ruby,yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
@@ -872,11 +859,6 @@ augroup ruby
 
   " Mark the highlighted lines for annotation
   autocmd FileType ruby vmap <leader>bm :norm A
-augroup END
-
-augroup python
-  autocmd!
-  au FileType python nnoremap <leader>d oimport ipdb; ipdb.set_trace()<esc>:w<CR>
 augroup END
 
 " add any local configs that need to be added, if they exist

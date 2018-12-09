@@ -1,21 +1,28 @@
 #!/usr/bin/env bash
+# Set default channel
+# rustup default <stable> | <nightly>
 
-RUST_VERSION=1.30.0
+RUST_VERSION=1.31.0
 
 asdf install rust $RUST_VERSION
 
 rustup self update
 rustup update stable
-rustup toolchain add nightly
-
-cargo uninstall racer 2>&1 | less # 2> /dev/null
-cargo +nightly install racer
+rustup component add clippy
+rustup component add rustfmt
 
 rustup component add rust-src
 rustup component add rust-analysis
 rustup component add rls-preview
 rustup component add rustfmt-preview
 
+# Racer - code completion for Rust use nightly
+cargo uninstall racer 2>&1 | less # 2> /dev/null
+#rustup toolchain add nightly
+# cargo +nightly install racer
+rustup run nightly cargo install racer
+
 # Enable tab completion for Bash
 rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion
 
+asdf reshim rust

@@ -1,10 +1,19 @@
+[user]
+	name = Gilbert F. Sewovoe-Ekoue
+	email = gilberts55@hotmail.com
+
+[color]
+	status = auto
+  branch = auto
+  diff = auto
+  interactive = auto
+  ui = true
+
 [alias]
   aliases=!git config -l | grep '^alias' | cut -c 7- | sort
   aa = add -A .
-  b  = branch
   st = status
   cheddar = commit --amend -CHEAD
-  ci = commit
   co = checkout
   cp = cherry-pick
   put = push origin HEAD
@@ -12,48 +21,18 @@
   fixup = commit --fixup
   squash = commit --squash
   doff = reset HEAD^
-  ri = rebase --interactive
-  br = branch
   pruneremote = remote prune origin
-  tr = log --graph --oneline --decorate --color
-  tre = log --graph --oneline --decorate --color --all
   tree = log --pretty=format:'%C(auto)%h%d%Creset %s  %C(auto,bold blue)%an%Creset %C(auto,green)(%ar)%Creset' --graph --all
   add-untracked = !"git status --porcelain | awk '/\\?\\?/{ print $2 }' | xargs git add"
-  reset-authors = commit --amend --reset-author -CHEAD
-  rmbranch = "!f(){ git branch -d ${1} && git push origin --delete ${1}; };f"
   snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
-  #current branch
-  me = !git rev-parse --abbrev-ref HEAD
-    #publish
-  up = !git push origin -u $(git me)
-    #unpublish
-  down = !git push origin --delete $(git me)
-  #stage all then commit with message
-  acm = !git add . && echo 'Staged all changes, if any.' && git commit -m $message
   # list aliases
   la = !git config -l | grep alias | cut -c 7-
-
-  # shorthand for chpullchreb. [fin]alize branch by rebasing to updated master
-  fin = "!f() \
-    { \
-    echo && \
-    git checkout master && \
-    git pull && \
-    echo && \
-    git checkout \"$1\" && \
-    git rebase master; \
-    };f"
-  # execute to current branch
-  fin-me = !git fin $(git me)
 
 [branch]
   autosetuprebase = always
 
-[color]
-  ui = auto
-
 [core]
-  excludesfile = ~/.cvsignore
+  excludesfile = ~/.gitignore
   whitespace = warn
 
 [help]
@@ -66,21 +45,9 @@
   summary = true
   tool = vimdiff
 
-[mergetool]
-  path = nvim
-  prompt = true
-
 [mergetool "vimdiff"]
   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w|only|diffoff!'
   # cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
-
-[merge "bundlelock"]
-  name = lock Gemfile
-  driver = bundle install
-
-[merge "bundle"]
-  name = bundle
-  driver = bundle
 
 [push]
   default = tracking
@@ -96,6 +63,3 @@
 
 [fetch]
   prune = true
-
-[magit]
-  hideCampaign = true
