@@ -17,7 +17,7 @@ rustup component add rls-preview
 rustup component add rustfmt-preview
 
 # Racer - code completion for Rust use nightly
-cargo uninstall racer 2>&1 | less # 2> /dev/null
+cargo uninstall racer 2> /dev/null
 #rustup toolchain add nightly
 # cargo +nightly install racer
 rustup run nightly cargo install racer
