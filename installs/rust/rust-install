@@ -9,12 +9,10 @@ asdf install rust $RUST_VERSION
 rustup self update
 rustup update stable
 rustup component add clippy
-rustup component add rustfmt
 
 rustup component add rust-src
 rustup component add rust-analysis
 rustup component add rls-preview
-rustup component add rustfmt-preview
 
 # Racer - code completion for Rust use nightly
 cargo uninstall racer 2> /dev/null
