@@ -18,7 +18,8 @@ rustup component add rustfmt-preview
 
 # Racer - code completion for Rust use nightly
 cargo uninstall racer 2> /dev/null
-rustup run nightly cargo install racer
+rustup toolchain add nightly
+cargo +nightly install racer
 
 # Enable tab completion for Bash
 rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion
