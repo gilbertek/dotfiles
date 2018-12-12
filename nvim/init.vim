@@ -52,6 +52,7 @@ set lazyredraw                  " Don't redraw while executing macros (good perf
 set winfixwidth                 " Keep Nerdtree window fixed between toggles
 set inccommand=nosplit          " Search and substitutions
 set clipboard+=unnamedplus      " +p paste OS clipboard
+set undofile                    " Set persistent undo
 """" 1.5) Searching #Searching
 set ignorecase                  " Ignore case when searching
 set smartcase                   " Ignore case if search pattern is all lowercase,
@@ -62,7 +63,6 @@ set nofoldenable                " dont fold by default
 set foldlevel=1                 " this is just what i use
 set scroll=5                    " Nicer scrolling
 set scrolloff=1                 " Start scrolling when the cursor is near the edges
-set undofile
 " **[ 2) Plugins #plugins ]***************
 call plug#begin()
 
@@ -523,8 +523,11 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-nmap <tab> :tabnext<CR>   "Use tab to change navigate on tabs
-map ,, <C-^> " Open the alternate file
+"Use tab to change navigate on tabs
+nmap <tab> :tabnext<CR>
+
+" Open the alternate file
+map ,, <C-^>
 
 " use <shift> + <tab> to go to the previous tab
 nmap <S-tab> :tabprevious<CR>
@@ -575,10 +578,11 @@ nnoremap L $
 nnoremap j gj
 nnoremap k gk
 
+" Yank to the end of line
+nnoremap Y y$
+
 " reselect pasted content:
 noremap gV `[v`]
-
-nnoremap Y y$ " Yank to the end of line
 
 " Keep the cursor in place while joining lines
 nnoremap J mzJ`z
@@ -628,6 +632,9 @@ nnoremap Q @q
 " Declutter all windows
 nnoremap <leader>o <C-w>o
 
+" Open current directory in Finder
+nnoremap <leader>O :!open .<cr>
+
 " Search results centered please
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
@@ -668,7 +675,6 @@ noremap <c-g> :Ggrep <cword><CR>
 
 " Use tab for completion
 inoremap <expr><Tab> pumvisible() ? "\<C-n>"       : "\<Tab>"
-inoremap <expr><Esc> pumvisible() ? "\<C-y>\<Esc>" : "\<Esc>"
 
 nnoremap <C-a> ggVG " Hit Ctrl+A to select all in current buffer
 
@@ -783,6 +789,7 @@ augroup viml
   autocmd!
   " Always enter terminal in insert mode
   autocmd BufWinEnter,WinEnter,TermOpen term://* startinsert
+  autocmd BufLeave term://* stopinsert
   autocmd TermOpen * setlocal nonumber norelativenumber
 
   " Reload & easy edit Neovim configuration
