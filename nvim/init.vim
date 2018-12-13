@@ -37,16 +37,12 @@ set relativenumber              " Relative number
 set number                      " Precede each line with its line number.
 set colorcolumn=80              " Show right column in a highlighted colour.
 set diffopt+=vertical           " Vertical display with vimdiff
-set hidden                      " Hide buffers instead of closing them
 set splitbelow                  " Put a split beneath the current one
 set splitright                  " Put a split to the right the current one
 set virtualedit=block           " Visual block mode to go beyond the characters at eof
 set showmatch                   " Show matching brackets.
 set title                       " Set the title of the iterm tab
 set noswapfile                  " Don't save with swap files
-set nobackup                    " Don't make a backup before overwriting a file.
-set nowritebackup               " Don't make a backup
-set hidden                      " A buffer becomes hidden when it is abandoned
 set mouse=a                     " Enable use of the mouse in all modes.
 set lazyredraw                  " Don't redraw while executing macros (good performance config)
 set winfixwidth                 " Keep Nerdtree window fixed between toggles
@@ -57,12 +53,8 @@ set undofile                    " Set persistent undo
 set ignorecase                  " Ignore case when searching
 set smartcase                   " Ignore case if search pattern is all lowercase,
 """" 1.6) Folding & scrolling #Folding & scrolling
-set foldmethod=indent           " fold based on indent
-set foldnestmax=10              " deepest fold is 10 levels
-set nofoldenable                " dont fold by default
-set foldlevel=1                 " this is just what i use
-set scroll=5                    " Nicer scrolling
-set scrolloff=1                 " Start scrolling when the cursor is near the edges
+set foldmethod=syntax           " fold based on indent/syntax
+set foldlevelstart=99
 " **[ 2) Plugins #plugins ]***************
 call plug#begin()
 
@@ -210,10 +202,9 @@ Plug 'tpope/vim-db'
 
 """" 2.2) Utilities #utilities
 Plug 'sbdchd/neoformat'
-let g:neoformat_try_formatprg         = 1
-let g:neoformat_basic_format_align    = 1
-let g:neoformat_basic_format_retab    = 1
-nmap <Leader>nf :Neoformat<CR>
+let g:neoformat_try_formatprg      = 1
+let g:neoformat_basic_format_align = 1
+let g:neoformat_basic_format_retab = 1
 
 " LanguageClient enhancements
 " Showing function signature and inline doc.
