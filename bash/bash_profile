@@ -1,5 +1,9 @@
 # **[ General ]*******************
-bind "set completion-ignore-case on"  # Case-Insensitive Auto Completion
+# Case-Insensitive Auto Completion
+bind "set completion-ignore-case on"
+bind 'TAB:menu-complete'
+
+export PROMPT_COMMAND='history -a;history -c;history -r'
 
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob
@@ -11,7 +15,7 @@ shopt -s histappend
 shopt -s cdspell
 
 # Omit duplicates and commands that begin with a space from history.
-export HISTCONTROL='ignoreboth'
+HISTCONTROL=ignoreboth
 
 # Massive main .bash_history...
 export HISTFILESIZE=10000
@@ -84,6 +88,9 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 # android
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+
+# LLVM Bindings
+export PATH="/usr/local/opt/llvm/bin:$PATH"
 
 # export PATH=$PATH:$HOME/.luarocks/bin
 

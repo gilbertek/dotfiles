@@ -395,10 +395,12 @@ Plug 'metakirby5/codi.vim' " The interactive scratchpad for hackers.
 
 " **[ 2.3) UI Plugins #ui-plugins ]********************
 Plug 'w0ng/vim-hybrid'
+let g:hybrid_reduced_contrast = 1
 Plug 'joshdick/onedark.vim'
 Plug 'ajh17/Spacegray.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'tyrannicaltoucan/vim-quantum'
+let g:quantum_black = 1
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
 let base16colorspace=256
@@ -437,13 +439,8 @@ Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-clang'
 Plug 'zchee/deoplete-go',                  { 'do': 'make'}
 Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
-let g:deoplete#sources#ternjs#types        = 1
-let g:deoplete#sources#ternjs#docs         = 1
-let g:tern#command                         = ['tern']
-let g:tern#arguments                       = ['--persistent']
-
 Plug 'zchee/deoplete-jedi'                   " source for Python
-Plug 'pbogut/deoplete-elm',                  { 'for': 'elm' }
+Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
 " Plug 'yoru/deoplete-crystal',              { 'for': 'crystal' }
 let g:deoplete#enable_at_startup           = 1 " Enable deoplete on startup.
 let g:deoplete#keyword_patterns            = {}
@@ -455,8 +452,8 @@ let g:deoplete#omni_patterns.ocaml         = '[^ ,;\t\[()\]]'
 let g:deoplete#sources#go#gocode_binary    = $GOPATH.'/bin/gocode'
 let g:deoplete#sources#go#pointer          = 1
 
-let g:deoplete#sources#clang#libclang_path = $BREW_PATH.'/Cellar/llvm/5.0.1/lib/libclang.dylib'
-let g:deoplete#sources#clang#clang_header  = $BREW_PATH.'/opt/llvm/bin/clang'
+let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
+let g:deoplete#sources#clang#clang_header  = '/usr/local/opt/llvm/lib/clang'
 " Elm support
 " h/t https://github.com/ElmCast/elm-vim/issues/52#issuecomment-264161975
 """" 2.4) End Code completion & Navigation #code-navigation
@@ -467,25 +464,7 @@ call plug#end()
 """" 3.1) Theme #theme
 set termguicolors
 set background=dark
-""" onedark Color Scheme settings
-" colorscheme onedark
-
-""" Hybrid Color Scheme settings
-let g:hybrid_reduced_contrast = 1
-" colorscheme hybrid
-
-""" Spacegray Color Scheme settings
-" colorscheme spacegray
-
-""" codedark Color Scheme settings
-" colorscheme codedark
-
-let g:quantum_black = 1
 silent! colorscheme quantum
-
-" colorscheme one
-
-" colorscheme base16-atelier-dune
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -592,7 +571,6 @@ set iskeyword+=-
 inoremap jj <Esc>
 inoremap kk <Esc>
 nnoremap <leader>x :wq<cr>
-
 nnoremap <Leader>q :close<CR>
 
 " Quit normal mode
@@ -665,14 +643,10 @@ xmap <s-tab> <
 noremap <c-g> :Ggrep <cword><CR>
 
 " Use tab for completion
-inoremap <expr><Tab> pumvisible() ? "\<C-n>"       : "\<Tab>"
+inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 
-nnoremap <C-a> ggVG " Hit Ctrl+A to select all in current buffer
-
-" Search and replace
-nnoremap <Leader>rr :%s//g<Left><Left>
-nnoremap <Leader>rw :%s/\<<C-r><C-w>\>//g<Left><Left>
-vnoremap <Leader>rr :s//g<Left><Left>
+" Hit Ctrl+A to select all in current buffer
+nnoremap <C-a> ggVG
 """" 4.2) End Mappings
 
 " **[ 4.3) Filetypes Config ]**
