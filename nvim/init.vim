@@ -74,6 +74,9 @@ let g:vim_json_syntax_conceal     = 0
 let g:jsx_ext_required            = 0
 let g:rustfmt_autosave            = 1
 
+" Latext
+Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+
 " Elixir
 Plug 'elixir-lang/vim-elixir'
 Plug 'slashmili/alchemist.vim'
@@ -366,7 +369,7 @@ Plug 'junegunn/gv.vim'                " A git commit browser
 " create gists trivially from buffer, selection, etc.
 Plug 'mattn/gist-vim'
 let g:gist_open_browser_after_post = 1
-let g:gist_detect_filetype         = 2
+let g:gist_detect_filetype         = 1
 let g:gist_post_private            = 1
 if has('macunix')
   let g:gist_clip_command          = 'pbcopy'
@@ -537,6 +540,11 @@ nnoremap <leader>os :OpenSession<Space>
 nnoremap <leader>ss :SaveSession<Space>
 nnoremap <leader>ds :DeleteSession<CR>
 nnoremap <leader>cs :CloseSession<CR>
+
+" Automatic pane split layouts
+nnoremap <leader>3 :vsplit<CR>:bn<CR>:vsplit<CR>:bn<CR>
+nnoremap <leader>4 :vnew<CR>:bn<CR>:vnew<CR>:bn<CR><C-W><C-L><C-W><C-L>:split<CR>:bn<CR>
+nnoremap <leader>sv :vert sb <BS>
 """" 4.1) End Keyboard
 
 """" 4.2) Mappings

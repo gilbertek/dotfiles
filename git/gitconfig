@@ -1,14 +1,12 @@
 [user]
 	name = Gilbert F. Sewovoe-Ekoue
 	email = gilberts55@hotmail.com
-
 [color]
 	status = auto
   branch = auto
   diff = auto
   interactive = auto
-  ui = true
-
+  ui = always
 [alias]
   aliases=!git config -l | grep '^alias' | cut -c 7- | sort
   aa = add -A .
@@ -20,46 +18,32 @@
   find = !sh -c 'git ls-files | grep --color=always -i "$@" | less -FRSX' -
   fixup = commit --fixup
   squash = commit --squash
-  doff = reset HEAD^
   pruneremote = remote prune origin
+  lg = "log --format='%Cgreen%h %Cred%cr %Creset%s %Cblue%cn'"
   tree = log --pretty=format:'%C(auto)%h%d%Creset %s  %C(auto,bold blue)%an%Creset %C(auto,green)(%ar)%Creset' --graph --all
   add-untracked = !"git status --porcelain | awk '/\\?\\?/{ print $2 }' | xargs git add"
   snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
-  # list aliases
-  la = !git config -l | grep alias | cut -c 7-
-
+  last = log -1 HEAD
 [branch]
   autosetuprebase = always
-
+  autosetupmerge = true
+[credential]
+	helper = osxkeychain
 [core]
   excludesfile = ~/.gitignore
   whitespace = warn
-
-[help]
-  autocorrect = 10
-
-[interactive]
-  singlekey = true
-
+  editor = nvim
 [merge]
   summary = true
   tool = vimdiff
-
 [mergetool "vimdiff"]
   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w|only|diffoff!'
   # cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
-
 [push]
   default = tracking
-
-[rebase]
-  autosquash = true
-
 [diff]
   algorithm = patience
-
 [include]
   path = ~/.gitconfig.local
-
 [fetch]
   prune = true

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # ** [ Folder Navigation ] *************
 alias ..="cd .."
 alias ...="cd ../.."
