@@ -60,6 +60,10 @@ jscbin="/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources
 [ -e "${jscbin}" ] && alias jsc="${jscbin}";
 unset jscbin;
 
+# Archives
+alias mktar="tar -pvczf"
+alias untar="tar -zxvf"
+
 # ** [ GIT ALIASES ] ******************
 alias g=git
 alias gs='git status'

@@ -130,6 +130,8 @@ export TERM=xterm-256color
 
 export KUBECTL_CONTEXT=$(kubectl config current-context)
 
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWCOLORHINTS=1
 ### Foreground Colours #######################################################
 RED=$'\e[0;31m'
 GREEN=$'\e[0;32m'
@@ -179,7 +181,8 @@ txtend='\[\e[00m\]'
 
 # ♥ ☆ ⚡ λ ❯ » ▸ → 💥 - Keeping some cool ASCII Characters for reference
 # Define the prompt character
-CHAR='❯'
+# CHAR='❯'
+CHAR='💥'
 
 # PS1="${COLOR_BLUE}[${COLOR_RESET}${COLOR_CYAN}\\u ${COLOR_GREEN}in ${COLOR_YELLOW}\W${COLOR_CYAN}\$(git_branch)${COLOR_BLUE}]${CHAR}${COLOR_RESET}${COLOR_DEFAULT} "
 
@@ -194,13 +197,38 @@ GITBRANCH='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\ 
 
 #PS1="[${COLOR_PURPLE}\u\[\e[0;36m\]@\h:\[\e[0m\]\[\e[0;33m\]\W\[\e[0m\]] \t $\[\e[m\] "
 #PS1="[-]\e[01;41m\e[37m\@\e[00m\e [${COLOR_PURPLE}\u\[\e[0;36m\]@\h:\[\e[0m\]\[\e[0;33m\]\W\[\e[0m\]] $\[\e[m\] "
-PS1="[-]${COLOR_GRAY} \A \[\e[m\][${COLOR_PURPLE}\u\[\e[0;36m\]@\h:\[\e[0m\]\[\e[0;33m\]\W$(git_branch)\[\e[0m\]]${CHAR}\[\e[m\] "
+PS1="[-]${COLOR_GRAY} \A \[\e[m\][${COLOR_PURPLE}\u"
+PS1+="\[\e[0;36m\]@\h:\[\e[0m\]\[\e[0;33m\]\W$(git_branch)"
+PS1+="\[\e[0m\]]${CHAR}\[\e[m\] "
 
 ###PS1="${COLOR_GRAY}[\A] [\[\e[0;33m\]\u\[\e[0m\]@\[\e[35m\]\h \[\e[32m\]\W$(git_branch)\[\e[37m\]]${COLOR_RED}${CHAR} \[\033[00m\] "
 #PS1="${ORANGE}[\u] \[\033[32m\]\W\[\033[33m\]\$(git_branch)\[\033[00m\]${CHAR} "
 
 # do not create .pyc files
 export PYTHONDONTWRITEBYTECODE=x
+
+# unset PS1
+# PS1+="\[\e[01;31m\]"
+# PS1+="┌─[\[\e[01;35m\u\e[01;31m\]]"
+# PS1+="──[\[\e[00;37m\]${HOSTNAME%%.*}\[\e[01;32m\]]:\w$\[\e[01;31m\]\n\[\e[01;31m\]"
+# PS1+="└──\[\e[01;36m\]>> \[\e[0m\]"
+# export PS1
+
+# GPG agent configuration
+# gpgconf --launch gpg-agent
+
+# Ensure ssh agent is running
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  eval `ssh-agent -s`
+  ssh-add ~/.ssh/id_rsa
+
+  # export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh # Use GPG as the SSH agent
+fi
+
+if command -v xclip >/dev/null; then
+    alias clipc='xclip -sel clip -i'
+    alias clipv='xclip -sel clip -o'
+fi
 
 # For a ipython notebook and pyspark integration
 if which pyspark > /dev/null; then

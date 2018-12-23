@@ -40,7 +40,7 @@ set diffopt+=vertical           " Vertical display with vimdiff
 set splitbelow                  " Put a split beneath the current one
 set splitright                  " Put a split to the right the current one
 set virtualedit=block           " Visual block mode to go beyond the characters at eof
-set showmatch                   " Show matching brackets.
+set showmatch                   " Show matching brackets/parenthesis.
 set title                       " Set the title of the iterm tab
 set noswapfile                  " Don't save with swap files
 set mouse=a                     " Enable use of the mouse in all modes.
@@ -548,13 +548,17 @@ nnoremap <leader>sv :vert sb <BS>
 """" 4.1) End Keyboard
 
 """" 4.2) Mappings
-" Jump to start and end of line using the home row keys
+" Use shift-H and shift-L for move to beginning/end
 nnoremap H ^
 nnoremap L $
 
-" Move by line
+" Remap j and k to act as expected when used on long, wrapped, lines
 nnoremap j gj
 nnoremap k gk
+
+" See http://stevelosh.com/blog/2010/09/coming-home-to-vim
+nnoremap / /\v
+vnoremap / /\v
 
 " Yank to the end of line
 nnoremap Y y$
@@ -787,12 +791,6 @@ augroup interoMaps
   autocmd FileType haskell nnoremap <silent> <leader>it :InteroType<CR>
   autocmd FileType haskell map <silent> <leader>ii :InteroInfo<cr>
   autocmd FileType haskell map <leader>ic :!echo ":ctags" \| stack ghci<cr>
-augroup END
-
-augroup dotenv
-  autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
-  autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
-  autocmd BufNewFile,BufRead *.envrc setlocal filetype=sh
 augroup END
 
 " Quick breakpoints
