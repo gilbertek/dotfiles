@@ -135,10 +135,7 @@ let g:go_echo_command_info            = 1 " Show the progress when running :GoCo
 
 Plug 'reasonml-editor/vim-reason-plus' " Reasonml LSP client
 
-" PureScript
-Plug 'FrigoEU/psc-ide-vim',           { 'for': ['purescript', 'purs'] }
-
-" This language client actually makes use of a binary, hence the `install.sh`.
+" The language client actually makes use of a binary, hence the `install.sh`.
 " We also need the `next` branch in order to specify
 " a language server's TCP port at the time of writing
 Plug 'autozimu/LanguageClient-neovim', {
@@ -178,7 +175,6 @@ let g:user_emmet_leader_key   = '<tab>' " Using Tab to expand
 
 Plug 'ap/vim-css-color'
 Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']} " Autocompletes tags.
-Plug 'cakebaker/scss-syntax.vim'
 
 Plug 'flowtype/vim-flow'
 Plug 'ternjs/tern_for_vim',     { 'do': 'npm install' }
@@ -362,7 +358,6 @@ nnoremap <Leader>gac :silent !git add -A<CR>:Gcommit<CR>
 " Git Gutter: shows a git diff in the gutter
 Plug 'airblade/vim-gitgutter'
 Plug 'Xuyuanp/nerdtree-git-plugin'    " NerdTree-git
-Plug 'tpope/vim-rhubarb'
 Plug 'mattn/webapi-vim'               " Vim interface to web apis
 Plug 'junegunn/gv.vim'                " A git commit browser
 
@@ -555,10 +550,6 @@ nnoremap L $
 " Remap j and k to act as expected when used on long, wrapped, lines
 nnoremap j gj
 nnoremap k gk
-
-" See http://stevelosh.com/blog/2010/09/coming-home-to-vim
-nnoremap / /\v
-vnoremap / /\v
 
 " Yank to the end of line
 nnoremap Y y$
@@ -799,7 +790,7 @@ augroup AutoBreakpoint
   autocmd FileType python nnoremap <leader>d oimport ipdb; ipdb.set_trace()<esc>:w<CR>
   autocmd FileType javascript map <silent> <leader>d odebugger;<esc>
  " Log out the word under the cursor
-  autocmd FileType javascript map<leader>dl yiwoconsole.log('<c-r>"', <c-r>");<esc>^
+  autocmd FileType javascript map<leader>ll yiwoconsole.log('<c-r>"', <c-r>");<esc>^
   autocmd FileType ruby nnoremap <leader>d obinding.pry<esc>:w<CR>
   autocmd FileType clojure map <silent> <leader>d o(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
 augroup END
