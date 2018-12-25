@@ -3,9 +3,9 @@
 from sys import argv
 from webbrowser import open_new_tab
 
-duck = "https://duckduckgo.com/?q="
+DUCK = "https://duckduckgo.com/?q="
 
-if len(argv) == 1:  # SCRIPT NAME:
+if len(argv) == 1:
     print("Enter search term.")
 else:
-    open_new_tab(duck + "".join(argv[1:]))
+    open_new_tab(DUCK + "".join(argv[1:]))

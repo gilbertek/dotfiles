@@ -234,7 +234,6 @@ let g:gutentags_ctags_exclude = [
       \ 'node_modules',
       \ 'dist',
       \ 'vendor',
-      \ 'bower_components',
       \ 'coverage',
       \ '.git'
       \ ]
@@ -323,7 +322,7 @@ let g:ale_linters = {
 
 let g:ale_fixers = {
       \ 'javascript': ['prettier'],
-      \ 'python':     ['isort', 'yapt'],
+      \ 'python':     ['isort', 'autopep8'],
       \ 'elm':        ['elm-format'],
       \ 'reason':     ['refmt'],
       \ 'ruby':       ['rubocop'],
@@ -359,7 +358,7 @@ nnoremap <Leader>gac :silent !git add -A<CR>:Gcommit<CR>
 Plug 'airblade/vim-gitgutter'
 Plug 'Xuyuanp/nerdtree-git-plugin'    " NerdTree-git
 Plug 'mattn/webapi-vim'               " Vim interface to web apis
-Plug 'junegunn/gv.vim'                " A git commit browser
+Plug 'junegunn/gv.vim' , {'on': ['Gitv']} " A git commit browser
 
 " create gists trivially from buffer, selection, etc.
 Plug 'mattn/gist-vim'
@@ -539,7 +538,6 @@ nnoremap <leader>cs :CloseSession<CR>
 " Automatic pane split layouts
 nnoremap <leader>3 :vsplit<CR>:bn<CR>:vsplit<CR>:bn<CR>
 nnoremap <leader>4 :vnew<CR>:bn<CR>:vnew<CR>:bn<CR><C-W><C-L><C-W><C-L>:split<CR>:bn<CR>
-nnoremap <leader>sv :vert sb <BS>
 """" 4.1) End Keyboard
 
 """" 4.2) Mappings
