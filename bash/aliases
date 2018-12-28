@@ -139,8 +139,8 @@ alias adbstart='sudo /usr/local/share/android-sdk/platform-tools/adb start-serve
 alias adbrestart='adbkill;adbstart'
 
 # ** [ ELIXIR ALIASES ] ******************
-alias mps="[ -d assets ] && iex -S mix phx.server || iex -S mix phoenix.server"
-alias iexm="iex -S mix"
+alias phx.s="[ -d assets ] && iex -S mix phx.server || iex -S mix phoenix.server"
+alias mixs="iex -S mix"
 alias phx:help='mix help | grep -i phoenix'
 
 # ** [ C++ ALIASES ] ******************
@@ -236,7 +236,18 @@ alias mcisst='mvn --quiet clean install -DskipTests -DskipITests -DskipAllTests 
 
 # ** [HASKELL SHORTCUTS ] ******************
 alias sbuild="stack build        -j 2 --test --bench --no-run-tests --no-run-benchmarks"
-alias fbuild="stack build --fast -j 2 --test --bench --no-run-tests --no-run-benchmarks"
+alias sbuildf="stack build --fast -j 2 --test --bench --no-run-tests --no-run-benchmarks"
+alias sbuild:w="stack build --fast --file-watch" # Build binaries
+alias sbuild:t="stack build --fast --file-watch --tests" # Build and run tests
+alias sbuild:doc="stack build --fast --file-watch --haddock --no-haddock-deps" # Build docs"
+# Haskell
+if type stack > /dev/null 2>&1; then
+  alias ghc="stack ghc"
+  alias ghci="stack ghci"
+  alias runghc="stack runghc"
+  alias runhaskell="stack runhaskell"
+  eval "$(stack --bash-completion-script stack)"
+fi
 
 # ** [ NVIM SHORTCUTS ] ******************
 alias nvu="nvim +PlugInstall +UpdateRemotePlugins +qa"

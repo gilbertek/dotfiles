@@ -133,8 +133,6 @@ let g:go_auto_type_info               = 1 " Show type information
 let g:go_auto_sameids                 = 1 " Highlight variable uses
 let g:go_echo_command_info            = 1 " Show the progress when running :GoCoverage
 
-Plug 'reasonml-editor/vim-reason-plus' " Reasonml LSP client
-
 " The language client actually makes use of a binary, hence the `install.sh`.
 " We also need the `next` branch in order to specify
 " a language server's TCP port at the time of writing
@@ -259,21 +257,18 @@ let g:NERDTreeIgnore = [
       \ '\~$',
       \ '\.o$',
       \ '\.pyc$',
-      \ '^\.DS_Store$',
-      \ '\.db$',
       \ '^node_modules$',
       \ '^__pycache__$',
-      \ '^_build$',
-      \ '^dist$'
+      \ '^_build$'
       \ ]
+let NERDTreeQuitOnOpen=1
 let g:NERDTreeMinimalUI           = 1
-let g:NERDTreeChDirMode           = 2     " keep working directory set to NERD's root
 let g:NERDTreeBookmarksFile       = expand('~/.config/nvim/NERDTreeBookmarks')
 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
       \ && b:NERDTree.isTabTree()) | q | endif
 
-nnoremap <leader>nn :NERDTreeToggle<cr>
+nnoremap <C-n> :NERDTreeToggle<CR>
 nnoremap <leader>nb :NERDTreeFromBookmark<Space>
 nnoremap <leader>nf :NERDTreeFind<CR>
 
@@ -314,7 +309,7 @@ let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_linters = {
       \ 'javascript': ['eslint', 'prettier'],
       \ 'go':         ['gofmt', 'gometalinter'],
-      \ 'haskell':    ['stack-ghc-mod', 'hlint'],
+      \ 'haskell':    ['ghc', 'hlint'],
       \ 'reason':     ['merlin'],
       \ 'ocaml':      ['merlin'],
       \ 'vue': ['eslint', 'stylelint'],
@@ -327,6 +322,7 @@ let g:ale_fixers = {
       \ 'reason':     ['refmt'],
       \ 'ruby':       ['rubocop'],
       \ 'elixir':     ['mix_format'],
+      \ 'haskell':    ['hfmt'],
       \ }
 let g:ale_fix_on_save                 = 1
 let g:ale_python_auto_pipenv          = 1
@@ -387,6 +383,10 @@ nnoremap <leader>b :Buffers<cr>
 nmap <leader>h :History<cr>
 nmap <leader>f :Files<cr>
 
+" Grammarous
+Plug 'rhysd/vim-grammarous'
+let g:grammarous#use_vim_spelllang = 1
+
 Plug 'easymotion/vim-easymotion'
 Plug 'metakirby5/codi.vim' " The interactive scratchpad for hackers.
 
@@ -423,8 +423,8 @@ let g:lightline = {
 
 """" 2.4) Code completion & Navigation #code-navigation
 Plug 'epilande/vim-react-snippets'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'   " Track the snippets engine.
+Plug 'honza/vim-snippets' " Snippets are separated from the engine.
 if has('ultisnips')
   let g:UltiSnipsExpandTrigger       = '<tab>'
   let g:UltiSnipsJumpForwardTrigger  = '<tab>'
@@ -438,7 +438,6 @@ Plug 'zchee/deoplete-go',                  { 'do': 'make'}
 Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'zchee/deoplete-jedi'                   " source for Python
 Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
-" Plug 'yoru/deoplete-crystal',              { 'for': 'crystal' }
 let g:deoplete#enable_at_startup           = 1 " Enable deoplete on startup.
 let g:deoplete#keyword_patterns            = {}
 let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
@@ -579,6 +578,7 @@ nnoremap <silent> <Leader>q :q<CR>
 
 " Quick-save
 nnoremap <Leader>w :w<CR>
+nnoremap ;; :w<CR>
 
 " find merge conflict markers
 nnoremap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
@@ -787,7 +787,6 @@ augroup AutoBreakpoint
   autocmd!
   autocmd FileType python nnoremap <leader>d oimport ipdb; ipdb.set_trace()<esc>:w<CR>
   autocmd FileType javascript map <silent> <leader>d odebugger;<esc>
- " Log out the word under the cursor
   autocmd FileType javascript map<leader>ll yiwoconsole.log('<c-r>"', <c-r>");<esc>^
   autocmd FileType ruby nnoremap <leader>d obinding.pry<esc>:w<CR>
   autocmd FileType clojure map <silent> <leader>d o(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
