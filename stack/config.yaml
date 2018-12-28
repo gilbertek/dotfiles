@@ -1,0 +1,11 @@
+---
+ghc-build: standard
+templates:
+  params:
+    author-email: gilberts55@hotmail.com
+    author-name: Gilbert F. Sewovoe-Ekoue
+    category: Network
+    copyright: 2018 Gilbert F. Sewovoe-Ekoue
+    github-username: gilbertek
+  scm-init: git
+save-hackage-creds: true
