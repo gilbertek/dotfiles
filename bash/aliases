@@ -5,6 +5,7 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
+alias readings='cd ~/Documents/Readings'
 alias work='cd ~/Projects'
 alias trash="sudo rm -rvf ~/.Trash/*"
 

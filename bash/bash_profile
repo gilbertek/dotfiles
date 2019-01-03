@@ -1,5 +1,4 @@
 #!usr/bin/env bash
-# **[ General ]*******************
 # Case-Insensitive Auto Completion
 bind "set completion-ignore-case on"
 bind 'TAB:menu-complete'
@@ -119,41 +118,34 @@ export HOMEBREW_NO_ANALYTICS=1
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 export PROJECT_HOME=$HOME/Projects
-export TERM=xterm-256color
 export KUBECTL_CONTEXT=$(kubectl config current-context)
 
 ### Foreground Colours #######################################################
 LIGHT_GREEN='\[\e[32m\]'
-LIGHT_RED='\[\e[01;31m\]'
+LIGHT_RED='\[\e[0;31m\]'
 COLOR_RESET='\[\e[m\]'
-COLOR_MAGENTA='\[\e[35m\]'
+COLOR_PURPLE='\[\e[35m\]'
 COLOR_FUSHIA='\[\e[33m\]'
 COLOR_BLUE='\[\e[0;34m\]'
 COLOR_CYAN='\[\e[36m\]'
-COLOR_CYAN_LIGHT="\[\033[1;36m\]"
+COLOR_GREY='\[\e[0;37m\]'
+COLOR_WHITE='\[\033[0m\]'
 
 # ♥ ☆ ⚡ λ ❯ » ▸ → 💥 - Keeping some cool ASCII Characters for reference
-CHAR='❯'
+CHAR='»'
 
 NO_C='\[\033[00m\]'
-GITBRANCH='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\\(\\\\\1\)/`'
+GITBRANCH='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\\(:\\\\\1\)/`'
 
 # do not create .pyc files
 export PYTHONDONTWRITEBYTECODE=x
-
-PS1="\[\e]0;\w\a\]\n${LIGHT_RED}→ ${NORMAL}${LIGHT_GREEN}\u ${COLOR_FUSHIA}\W\[\e[0m\]"
-# PS1+=":${COLOR_MAGENTA}$GITBRANCH\[\e[0m\] ${CHAR}\[\e[m\] "
-PS1+=":${COLOR_MAGENTA}$GITBRANCH\[\e[01;36m\]>> ${COLOR_RESET}"
-
-# GPG agent configuration
-# gpgconf --launch gpg-agent
+PS1="${COLOR_GREY}→ ${NORMAL}${COLOR_BLUE}\u ${LIGHT_GREEN}\W\[\e[0m\]"
+PS1+="${COLOR_PURPLE}$GITBRANCH ${COLOR_GREY}${CHAR} ${COLOR_RESET}"
 
 # Ensure ssh agent is running
 if [ -z "$SSH_AUTH_SOCK" ] ; then
   eval `ssh-agent -s`
   ssh-add ~/.ssh/id_rsa
-
-  # export SSH_AUTH_SOCK=~/.gnupg/S.gpg-agent.ssh # Use GPG as the SSH agent
 fi
 
 if command -v xclip >/dev/null; then
@@ -199,7 +191,7 @@ fi
 [[ -f /usr/local/opt/asdf/asdf.sh ]] && . /usr/local/opt/asdf/asdf.sh
 
 # OPAM configuration
-. /usr/local/opt/asdf/installs/ocaml/4.07.0/opam-init/init.sh > /dev/null 2> /dev/null || true
+. $HOME/.asdf/installs/ocaml/4.07.0/opam-init/init.sh > /dev/null 2> /dev/null || true
 
 [ -f ~/.bashrc ]            && . ~/.bashrc
 [ -f ~/.bashrc.local ]      && . ~/.bashrc.local

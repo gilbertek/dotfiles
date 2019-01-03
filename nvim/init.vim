@@ -67,9 +67,10 @@ let g:elm_format_fail_silently    = 1
 let g:elm_browser_command         = 'open'
 let g:elm_make_show_warnings      = 1
 let g:elm_setup_keybindings       = 1
+let g:javascript_plugin_jsdoc     = 1
 
-Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled           = ['elm']
+Plug 'sheerun/vim-polyglot', {'commit':'d9b11ed'} " pinned due to conflict: https://github.com/sheerun/vim-polyglot/issues/309
+let g:polyglot_disabled           = ['elm', 'go']
 let g:vim_json_syntax_conceal     = 0
 let g:jsx_ext_required            = 0
 let g:rustfmt_autosave            = 1
@@ -117,21 +118,19 @@ Plug 'thoughtbot/vim-rspec'
 let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
 " Plugins for Go support
+Plug 'fatih/vim-go',                  { 'do': ':GoUpdateBinaries' }
 Plug 'jodosha/vim-godebug'
 Plug 'buoto/gotests-vim'
 let g:go_list_type                    = 'quickfix' " Fix for location list
 let g:go_fmt_command                  = 'goimports'
 let g:go_highlight_functions          = 1
-let g:go_highlight_methods            = 1
-let g:go_highlight_structs            = 1
 let g:go_highlight_operators          = 1
 let g:go_highlight_build_constraints  = 1
+let g:go_highlight_generate_tags      = 1
 let g:go_highlight_types              = 1
 let g:go_highlight_fields             = 1
-let g:go_highlight_interfaces         = 1
 let g:go_auto_type_info               = 1 " Show type information
 let g:go_auto_sameids                 = 1 " Highlight variable uses
-let g:go_echo_command_info            = 1 " Show the progress when running :GoCoverage
 
 " The language client actually makes use of a binary, hence the `install.sh`.
 " We also need the `next` branch in order to specify
@@ -187,11 +186,12 @@ let g:haskell_enable_static_pointers  = 1 " to enable highlighting of `static`
 let g:haskell_backpack                = 1 " to enable highlighting of backpack keywords
 
 Plug 'parsonsmatt/intero-neovim'
-Plug 'Shougo/vimproc.vim',            {'do' : 'make'}
 Plug 'eagletmt/neco-ghc',             { 'for': 'haskell' } "Haskell completion
 let g:haskellmode_completion_ghc      = 0
 let g:necoghc_enable_detailed_browse  = 1
 let g:necoghc_use_stack               = 1
+
+Plug 'Shougo/vimproc.vim',            {'do' : 'make'}
 
 " Plugins for Database support
 Plug 'tpope/vim-db'
@@ -332,10 +332,6 @@ let g:ale_echo_msg_format             = '[%linter%] %s [%severity%]'
 let g:ale_statusline_format           = ['✗✗%d', '⚠ %d', '⬥ ok']
 let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
 let g:ale_rust_cargo_use_clippy       = executable('cargo-clippy')
-nnoremap <leader>fx :ALEFix<CR>
-nnoremap <leader>at :ALEToggle<CR>
-nmap ]a <Plug>(ale_next_wrap)
-nmap [a <Plug>(ale_previous_wrap)
 
 " Git Plugins
 " ---------------
@@ -350,10 +346,9 @@ nnoremap <leader>gl :Glog<cr>
 nnoremap <leader>ga :silent !git add % &<cr><cr>
 nnoremap <Leader>gac :silent !git add -A<CR>:Gcommit<CR>
 
-" Git Gutter: shows a git diff in the gutter
 Plug 'airblade/vim-gitgutter'
-Plug 'Xuyuanp/nerdtree-git-plugin'    " NerdTree-git
-Plug 'mattn/webapi-vim'               " Vim interface to web apis
+Plug 'Xuyuanp/nerdtree-git-plugin'        " NerdTree-git
+Plug 'mattn/webapi-vim'                   " Vim interface to web apis
 Plug 'junegunn/gv.vim' , {'on': ['Gitv']} " A git commit browser
 
 " create gists trivially from buffer, selection, etc.
@@ -383,6 +378,8 @@ nnoremap <leader>b :Buffers<cr>
 nmap <leader>h :History<cr>
 nmap <leader>f :Files<cr>
 
+Plug 'thanthese/Tortoise-Typing'
+
 " Grammarous
 Plug 'rhysd/vim-grammarous'
 let g:grammarous#use_vim_spelllang = 1
@@ -408,7 +405,7 @@ let g:indentLine_char = '│'
 
 Plug 'itchyny/lightline.vim' " wombat onedark quantum
 let g:lightline = {
-      \ 'colorscheme': 'quantum',
+      \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
       \            [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
@@ -433,8 +430,8 @@ endif
 
 " Autocompletion Engine (neovim) Autocompletion Engine (neovim)
 Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-clang'
 Plug 'zchee/deoplete-go',                  { 'do': 'make'}
+Plug 'zchee/deoplete-clang'
 Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'zchee/deoplete-jedi'                   " source for Python
 Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
@@ -445,8 +442,9 @@ let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:deoplete#omni_patterns               = {}
 let g:deoplete#omni_patterns.ocaml         = '[^ ,;\t\[()\]]'
 
-let g:deoplete#sources#go#gocode_binary    = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#pointer          = 1
+" deoplete-go settings
+let g:deoplete#sources#go#gocode_binary    = $GOPATH . '/bin/gocode'
+let g:deoplete#sources#go#sort_class       = ['package', 'func', 'type', 'var', 'const']
 
 let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
 let g:deoplete#sources#clang#clang_header  = '/usr/local/opt/llvm/lib/clang'
@@ -460,11 +458,11 @@ call plug#end()
 """" 3.1) Theme #theme
 set termguicolors
 set background=dark
-silent! colorscheme quantum
+" silent! colorscheme quantum
+colorscheme base16-default-dark
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
-"""" 4.1) Keyboard
 nnoremap <Left>  :echo "no!"<cr>
 nnoremap <Right> :echo "no!"<cr>
 nnoremap <Up>    :echo "no!"<cr>
@@ -472,7 +470,7 @@ nnoremap <Down>  :echo "no!"<cr>
 
 " Terminal Mode Configuration
 tnoremap <Esc> <C-\><C-n> " Terminal Exit
-nnoremap <silent> <bslash> :vsplit term://$SHELL<bar>startinsert<CR>
+nnoremap <silent> <bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
 
 " Open in TeXShop
 nnoremap <leader>tx :!open -a TeXShop %<cr><cr>
@@ -644,7 +642,7 @@ xmap <s-tab> <
 noremap <c-g> :Ggrep <cword><CR>
 
 " Use tab for completion
-inoremap <expr><Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>"
 
 " Hit Ctrl+A to select all in current buffer
 nnoremap <C-a> ggVG
@@ -703,6 +701,13 @@ augroup clojure
   " command MFigwheel :Piggieback (figwheel.main.api/repl-env "dev")
   " command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
   autocmd FileType clojure nnoremap <buffer> <Leader>rc :FireplaceConnect<cr>
+
+  autocmd FileType clojure nnoremap <A-e> :Eval<CR>
+  autocmd FileType clojure vnoremap <A-e> :Eval<CR>
+  autocmd FileType clojure nnoremap <C-q> :Last<CR>
+  autocmd FileType clojure inoremap <C-q> <Esc>:Last<CR>
+  autocmd FileType clojure nnoremap <C-e> :%Eval<CR>
+  autocmd FileType clojure inoremap <C-e> <Esc>:%Eval<CR>
 augroup END
 
 " Vim-Alchemist Mappings
@@ -738,6 +743,8 @@ augroup golang
   autocmd FileType go nmap <Leader>/ :GoInfo<CR>
   autocmd FileType go nmap <Leader>bp :GoToggleBreakpoint<CR>
   autocmd FileType go nmap <Leader>db :GoDebug<CR>
+  au Filetype go nmap <leader>ga <Plug>(go-alternate-edit)
+  au Filetype go nmap <leader>gav <Plug>(go-alternate-vertical)
 augroup END
 
 augroup erlang
