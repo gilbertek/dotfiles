@@ -444,8 +444,6 @@ let g:deoplete#omni_patterns.ocaml         = '[^ ,;\t\[()\]]'
 
 " deoplete-go settings
 let g:deoplete#sources#go#gocode_binary    = $GOPATH . '/bin/gocode'
-let g:deoplete#sources#go#sort_class       = ['package', 'func', 'type', 'var', 'const']
-
 let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
 let g:deoplete#sources#clang#clang_header  = '/usr/local/opt/llvm/lib/clang'
 " Elm support

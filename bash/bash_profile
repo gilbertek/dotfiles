@@ -130,6 +130,7 @@ COLOR_BLUE='\[\e[0;34m\]'
 COLOR_CYAN='\[\e[36m\]'
 COLOR_GREY='\[\e[0;37m\]'
 COLOR_WHITE='\[\033[0m\]'
+COLOR_GREEN='\[\e[0;36m\]'
 
 # ♥ ☆ ⚡ λ ❯ » ▸ → 💥 - Keeping some cool ASCII Characters for reference
 CHAR='»'
@@ -139,7 +140,7 @@ GITBRANCH='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\\
 
 # do not create .pyc files
 export PYTHONDONTWRITEBYTECODE=x
-PS1="${COLOR_GREY}→ ${NORMAL}${COLOR_BLUE}\u ${LIGHT_GREEN}\W\[\e[0m\]"
+PS1="\[${COLOR_GREY}→ ${NORMAL}${COLOR_BLUE}\u ${COLOR_GREEN}\W\[\e[0m\]"
 PS1+="${COLOR_PURPLE}$GITBRANCH ${COLOR_GREY}${CHAR} ${COLOR_RESET}"
 
 # Ensure ssh agent is running

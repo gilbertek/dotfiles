@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Usage: go-new-proj <project name>
+# Require: valid installation of `dep` via `brew install dep`
+
+set -euo pipefail
+
+EXPECTED_ARGS=1
+E_BADARGS=65
+
+if [ $# -ne $EXPECTED_ARGS ]
+then
+  echo "Please provide a valid project name"
+  echo "Usage: go-new-proj <project name> "
+  echo "e.g. : go-new-proj meme"
+  exit $E_BADARGS
+fi
+
+if [[ -n "$1" ]]; then
+  project_name=$1
+  mkdir -p $GOPATH/src/github.com/gilbertek/${project_name}
+  cd $GOPATH/src/github.com/gilbertek/${project_name}
+  pwd
+  dep init
+  git init
+  mkdir -p cmd models util
+  echo "# ${project_name}" >> README.md 
+  echo "# ${project_name} Main" >>cmd/README.md
+  ls -al
+fi

@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Usage: get-pdf <url>
+# Require: valid installation of `percollate` `npm install -g percollate`
+
+set -euo pipefail
+
+EXPECTED_ARGS=1
+E_BADARGS=65
+
+if [ $# -ne $EXPECTED_ARGS ]
+then
+  echo "Please provide a valid url"
+  echo "Usage: get-pdf <url> "
+  echo "e.g. : get-pdf google.com/meme"
+  exit $E_BADARGS
+fi
+
+if [[ -n "$1" ]] && [[ -n "${2-}" ]]; then
+  percollate pdf --output "${2}.pdf" "${1}"
+elif [[ -n "$1" ]]; then
+  url=$1
+  # title="$(echo ${url} | cut -d : -f -1 | xargs basename)"
+  title=$(echo "$url" | awk -F '/' '{print $NF}')
+
+  if [[ -z "${title}" ]]; then
+    printf "Unable to extract title\n"
+    printf "Please add a title to use.\n"
+    exit 1
+  fi
+  printf "Saving pdf as %s.pdf\n\n" "${title}"
+  percollate pdf --output "${title}.pdf" "$url"
+fi
