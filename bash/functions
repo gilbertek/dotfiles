@@ -36,7 +36,7 @@ validate_yaml() {
  ruby -ryaml -e "puts YAML.load_file('${filename}')"
 }
 
-git_branch() {
+parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 

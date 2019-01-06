@@ -1,4 +1,5 @@
-#!usr/bin/env bash
+#!/usr/bin/env bash
+
 # Case-Insensitive Auto Completion
 bind "set completion-ignore-case on"
 bind 'TAB:menu-complete'
@@ -15,13 +16,14 @@ shopt -s histappend
 shopt -s cdspell
 
 # Omit duplicates and commands that begin with a space from history.
-HISTCONTROL=ignoredups:erasedups
+HISTCONTROL=ignoredups:ignorespace:erasedups
 
-# Massive main .bash_history...
+# Larger bash history...
+export HISTSIZE=10000
 export HISTFILESIZE=10000
 
-# Larger session histories...
-export HISTSIZE=10000
+# Make some commands not show up in history
+export HISTIGNORE="ls:cd:cd -:pwd:exit:logout:quit:reset"
 
 # Motivation reminder
 now=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
@@ -52,9 +54,9 @@ export GROOVY_HOME=/usr/local/opt/groovy/libexec
 
 if [ -f /usr/libexec/java_home ]; then
   export JAVA_HOME=`/usr/libexec/java_home`
+  export NASHORN_HOME=$JAVA_HOME/bin
 fi
 
-export NASHORN_HOME=$JAVA_HOME/bin
 # export M2_HOME=/usr/local/Cellar/maven/3.5.4/libexec
 # export M2=$M2_HOME/bin
 # export PATH=$PATH:$M2_HOME/bin
@@ -130,18 +132,18 @@ COLOR_BLUE='\[\e[0;34m\]'
 COLOR_CYAN='\[\e[36m\]'
 COLOR_GREY='\[\e[0;37m\]'
 COLOR_WHITE='\[\033[0m\]'
-COLOR_GREEN='\[\e[0;36m\]'
+COLOR_GREEN='\[\e[0;32m\]'
+LIGHT_BLUE="\[\033[0;38;05;74m\]"
+YELLOW="\[\033[0;38;05;184m\]"
+GREEN="\[\033[0;38;05;77m\]"
 
 # ♥ ☆ ⚡ λ ❯ » ▸ → 💥 - Keeping some cool ASCII Characters for reference
 CHAR='»'
-
-NO_C='\[\033[00m\]'
-GITBRANCH='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\\(:\\\\\1\)/`'
-
+GITBRANCH='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\\(\\\\\1\)/`'
 # do not create .pyc files
 export PYTHONDONTWRITEBYTECODE=x
-PS1="\[${COLOR_GREY}→ ${NORMAL}${COLOR_BLUE}\u ${COLOR_GREEN}\W\[\e[0m\]"
-PS1+="${COLOR_PURPLE}$GITBRANCH ${COLOR_GREY}${CHAR} ${COLOR_RESET}"
+PS1="${COLOR_GREY}→ ${NORMAL}${COLOR_BLUE}\u ${COLOR_PURPLE}\W\[\e[0m\]"
+PS1+="${COLOR_GREEN}$GITBRANCH ${COLOR_GREY}${CHAR} ${COLOR_RESET}"
 
 # Ensure ssh agent is running
 if [ -z "$SSH_AUTH_SOCK" ] ; then

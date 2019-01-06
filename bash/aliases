@@ -11,6 +11,7 @@ alias trash="sudo rm -rvf ~/.Trash/*"
 
 alias weather="curl -4 http://wttr.in/New_York"
 alias whatsmyip='curl -s https://am.i.mullvad.net/json | jq'
+alias shrug="echo '¯\_(ツ)_/¯'"
 
 # ** [ Some Conveniences ] *************
 alias mkdir='mkdir -p'

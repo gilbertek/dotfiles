@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+EXPECTED_ARGS=1
+E_BADARGS=65
+
+knode() {
+    local name=$1
+    kubectl get nodes -o \
+      go-template="{{range .items}}{{if eq .metadata.name \"$name\"}}{{range .status.addresses}}{{if eq .type \"ExternalDNS\"}}{{.address}}{{\"\\n\"}}{{end}}{{end}}{{end}}{{end}}"
+}

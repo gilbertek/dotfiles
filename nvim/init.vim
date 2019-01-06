@@ -59,24 +59,34 @@ set foldlevelstart=99
 call plug#begin()
 
 """" 2.1) Filetypes #filetypes
-Plug 'elmcast/elm-vim',             { 'for': [ 'elm' ] }
-let g:elm_format_autosave         = 1
-let g:elm_detailed_complete       = 1
-let g:elm_syntastic_show_warnings = 1
-let g:elm_format_fail_silently    = 1
-let g:elm_browser_command         = 'open'
-let g:elm_make_show_warnings      = 1
-let g:elm_setup_keybindings       = 1
-let g:javascript_plugin_jsdoc     = 1
+Plug 'elmcast/elm-vim',        { 'for': [ 'elm' ] }
+let g:elm_format_autosave      = 1
+let g:elm_detailed_complete    = 1
+let g:elm_format_fail_silently = 1
+let g:elm_browser_command      = 'open'
+let g:elm_make_show_warnings   = 1
+let g:elm_setup_keybindings    = 1
+let g:javascript_plugin_jsdoc  = 1
 
-Plug 'sheerun/vim-polyglot', {'commit':'d9b11ed'} " pinned due to conflict: https://github.com/sheerun/vim-polyglot/issues/309
-let g:polyglot_disabled           = ['elm', 'go']
-let g:vim_json_syntax_conceal     = 0
-let g:jsx_ext_required            = 0
-let g:rustfmt_autosave            = 1
+" Plugins for Go support
+Plug 'fatih/vim-go',           { 'do': ':GoUpdateBinaries' }
+Plug 'jodosha/vim-godebug'
+Plug 'buoto/gotests-vim'
+let g:go_list_type             = 'quickfix' " Fix for location list
+let g:go_fmt_command           = 'goimports'
+let g:go_highlight_functions   = 1
+let g:go_highlight_operators   = 1
+let g:go_highlight_types       = 1
+let g:go_highlight_fields      = 1
+let g:go_auto_type_info        = 1
+let g:go_auto_sameids          = 1
 
-" Latext
-Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+" {'commit':'d9b11ed'} " pinned due to conflict: https://github.com/sheerun/vim-polyglot/issues/309
+Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled        = ['elm', 'go']
+let g:vim_json_syntax_conceal  = 0
+let g:jsx_ext_required         = 0
+let g:rustfmt_autosave         = 1
 
 " Elixir
 Plug 'elixir-lang/vim-elixir'
@@ -97,17 +107,17 @@ let g:erlang_tags_ignore = '_build'
 Plug 'tpope/vim-projectionist'    " required for some navigation features
 
 " Markdown Preview
-Plug 'shime/vim-livedown',      { 'do': 'npm install -g livedown' }
+Plug 'shime/vim-livedown', {'for': 'markdown', 'do': 'npm install -g livedown'}
 
-Plug 'junegunn/goyo.vim',       { 'on': 'Goyo' } " Distraction free
-Plug 'junegunn/limelight.vim'   " To accompany goyo
-let g:goyo_width                = 80
-let g:goyo_margin_top           = 2
-let g:goyo_margin_bottom        = 2
+Plug 'junegunn/goyo.vim',     { 'on': 'Goyo' } " Distraction free
+Plug 'junegunn/limelight.vim' " To accompany goyo
+let g:goyo_width              = 80
+let g:goyo_margin_top         = 2
+let g:goyo_margin_bottom      = 2
 nnoremap <silent> <leader>z :Goyo<cr>
 
 " Plugins for rails
-Plug 'tpope/vim-rails'              " vim-rails
+Plug 'tpope/vim-rails'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'ngmy/vim-rubocop'
@@ -116,21 +126,6 @@ let g:vimrubocop_keymap = 0
 Plug 'tpope/vim-dispatch'
 Plug 'thoughtbot/vim-rspec'
 let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
-
-" Plugins for Go support
-Plug 'fatih/vim-go',                  { 'do': ':GoUpdateBinaries' }
-Plug 'jodosha/vim-godebug'
-Plug 'buoto/gotests-vim'
-let g:go_list_type                    = 'quickfix' " Fix for location list
-let g:go_fmt_command                  = 'goimports'
-let g:go_highlight_functions          = 1
-let g:go_highlight_operators          = 1
-let g:go_highlight_build_constraints  = 1
-let g:go_highlight_generate_tags      = 1
-let g:go_highlight_types              = 1
-let g:go_highlight_fields             = 1
-let g:go_auto_type_info               = 1 " Show type information
-let g:go_auto_sameids                 = 1 " Highlight variable uses
 
 " The language client actually makes use of a binary, hence the `install.sh`.
 " We also need the `next` branch in order to specify
@@ -150,6 +145,10 @@ let g:LanguageClient_serverCommands = {
       \ 'ruby':       ['solargraph', 'stdio'],
       \ 'rust':       ['rustup', 'run', 'stable', 'rls'],
       \ }
+
+" PureScript ftplugin/purescript.vim
+Plug 'raichoo/purescript-vim'
+Plug 'frigoeu/psc-ide-vim',              { 'for': 'purescript' }
 
 " Clojure plugins
 Plug 'guns/vim-sexp',                    { 'for': ['clojure', 'clojurescript'] }
@@ -192,11 +191,11 @@ let g:necoghc_enable_detailed_browse  = 1
 let g:necoghc_use_stack               = 1
 
 Plug 'Shougo/vimproc.vim',            {'do' : 'make'}
+Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 
 " Plugins for Database support
 Plug 'tpope/vim-db'
 " Plug 'vyzyv/vimpyter' " Plugins for Jupyter notebooks
-
 """" 2.2) Utilities #utilities
 Plug 'sbdchd/neoformat'
 let g:neoformat_try_formatprg      = 1
@@ -587,6 +586,9 @@ nnoremap <leader>bs :!make html<cr>
 
 " Unselect the search result
 map <Leader><Space> :noh<CR>
+" Keep search matches in the middle of the window.
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 " Easy indent in Visual mode
 vnoremap < <gv

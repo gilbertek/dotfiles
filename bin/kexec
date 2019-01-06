@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+EXPECTED_ARGS=3
+E_BADARGS=65
+
+kexec() {
+    [[ "$#" -ne 3 ]] && {
+        echo "USAGE: kexec <namespace> <name> <command>"
+        return 1
+    }
+    local namespace=$1
+    local name=$2
+    local command=$3
+    local container=$(kubectl --namespace="$namespace" get pods -o json |jq --raw-output ".items[] | select(.[\"metadata\"][\"labels\"][\"app\"] == \"$name\") | .[\"metadata\"][\"name\"]") 
+    kubectl --namespace="$namespace" exec -ti $container $command
+}
