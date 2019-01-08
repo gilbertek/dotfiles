@@ -535,7 +535,7 @@ nnoremap <leader>4 :vnew<CR>:bn<CR>:vnew<CR>:bn<CR><C-W><C-L><C-W><C-L>:split<CR
 """" 4.1) End Keyboard
 
 """" 4.2) Mappings
-" Use shift-H and shift-L for move to beginning/end
+" Use shift-H and shift-L for move to beginning/end. alt map 0 ^
 nnoremap H ^
 nnoremap L $
 
@@ -663,7 +663,7 @@ augroup general
   autocmd InsertLeave * pc          " Close preview on insert leave
 
   autocmd BufWinEnter * silent! :%foldopen! " Expand all folds when entering a file
-  autocmd BufWritePre *.{js,jsx,ts,scss,rb} Neoformat
+  autocmd BufWritePre *.{js,jsx,ts,tsx,scss,less,rb,mjs,json,graphql,md} Neoformat
   autocmd FileType toml setl ts=2 sw=2 sts=2 et
 augroup END
 
