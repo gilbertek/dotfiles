@@ -178,6 +178,11 @@ alias yt-audio="youtube-dl -citk --max-quality mp3 --audio-format mp3 --extract-
 # ** [ MACOS SHORTCUTS ] ******************
 alias mac-clean-logs='sudo rm -rf /private/var/log/asl/*.asl'
 
+#Elm
+alias epi="elm package install"
+
+alias emacs='emacs -nw'
+
 # ** [ KUBECTL SHORTCUTS ] ******************
 alias k8='kubectl'
 alias k8:i="kubectl --insecure-skip-tls-verify=true"

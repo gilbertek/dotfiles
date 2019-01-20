@@ -2,9 +2,10 @@
 # Set default channel
 # rustup default <stable> | <nightly>
 
-RUST_VERSION=1.31.1
+RUST_VERSION=1.32.0
 
 asdf install rust $RUST_VERSION
+asdf global rust $RUST_VERSION
 
 rustup self update
 rustup update stable
@@ -22,3 +23,6 @@ cargo +nightly install racer
 # Enable tab completion for Bash
 rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion
 asdf reshim rust
+
+# Test racer on the command line:
+racer complete std::io::B

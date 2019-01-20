@@ -1,0 +1,7 @@
+docker-clean() {
+  docker rmi $(docker images | grep "^<none>" | \column -t | tr -s ' ' | cut -d ' ' -f 3)
+}
+
+docker-init() {
+  docker-machine start && eval "$(docker-machine env default)"
+}

@@ -34,12 +34,13 @@
                       [refactor-nrepl                 "2.4.0"]
 
                       ;; collection of nREPL middleware designed to enhance CIDER
-                      [cider/cider-nrepl              "0.18.0"]
+                      [cider/cider-nrepl              "0.20.0"]
                       [lein-fore-prob                 "0.1.2"]
                       [lein-gorilla                   "0.4.0"]
                       [lein-midje                     "3.2.1"]]
 
-        :dependencies [[nrepl                         "0.4.5"]
+        :dependencies [[org.clojure/clojure "1.10.0"]
+                       [org.clojure/tools.nrepl "0.2.13"]
                        [org.clojure/tools.namespace   "0.2.11"]
                        [com.bhauman/rebel-readline    "0.1.4"]
                        [midje "1.6.0"
@@ -47,6 +48,7 @@
                        [slamhound                     "RELEASE"]]
 
         :aliases {"slamhound" ["run" "-m" "slam.hound"]
-                  "rebl" ["trampoline" "run" "-m" "rebel-readline.main"]}
+                  "rebl" ["trampoline" "run" "-m" "rebel-readline.main"]
+                  "lint" ["do" ["kibit"] ["eastwood"] ["bikeshed"] ["yagni"]]}
 
         :repl-options {:prompt (fn [ns] (str "[" ns "](\u001b[36mλ\u001b[0m)> "))}}}

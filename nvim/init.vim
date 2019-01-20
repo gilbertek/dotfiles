@@ -81,12 +81,24 @@ let g:go_highlight_fields      = 1
 let g:go_auto_type_info        = 1
 let g:go_auto_sameids          = 1
 
-" {'commit':'d9b11ed'} " pinned due to conflict: https://github.com/sheerun/vim-polyglot/issues/309
+" Clojure plugins
+Plug 'guns/vim-sexp',                    { 'for': ['clojure', 'clojurescript'] }
+Plug 'clojure-vim/async-clj-omni',       { 'for': ['clojure', 'clojurescript'] }
+Plug 'tpope/vim-fireplace',              { 'for': ['clojure', 'clojurescript'] }
+Plug 'tpope/vim-sexp-mappings-for-regular-people' , { 'for': ['clojure', 'clojurescript'] }
+Plug 'eraserhd/parinfer-rust',           { 'do': 'cargo build --release' }
+Plug 'humorless/vim-kibit',              { 'for': ['clojure', 'clojurescript'] }
+Plug 'guns/vim-slamhound',               { 'for': ['clojure', 'clojurescript'] }
+Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
+let g:clj_fmt_autosave = 1
+
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled        = ['elm', 'go']
+let g:polyglot_disabled        = ['elm', 'go', 'clojure']
 let g:vim_json_syntax_conceal  = 0
 let g:jsx_ext_required         = 0
 let g:rustfmt_autosave         = 1
+let g:javascript_plugin_jsdoc  = v:true " Enables syntax highlighting for JSDocs.
+let g:javascript_plugin_flow   = v:true " Enables Flow syntax support.
 
 " Elixir
 Plug 'elixir-lang/vim-elixir'
@@ -150,24 +162,17 @@ let g:LanguageClient_serverCommands = {
 Plug 'raichoo/purescript-vim'
 Plug 'frigoeu/psc-ide-vim',              { 'for': 'purescript' }
 
-" Clojure plugins
-Plug 'guns/vim-sexp',                    { 'for': ['clojure', 'clojurescript'] }
-Plug 'clojure-vim/async-clj-omni',       { 'for': ['clojure', 'clojurescript'] }
-Plug 'tpope/vim-fireplace',              { 'for': ['clojure', 'clojurescript'] }
-Plug 'tpope/vim-sexp-mappings-for-regular-people' , { 'for': ['clojure', 'clojurescript'] }
-Plug 'eraserhd/parinfer-rust',           { 'do': 'cargo build --release' }
-Plug 'humorless/vim-kibit',              { 'for': ['clojure', 'clojurescript'] }
-Plug 'guns/vim-slamhound',               { 'for': ['clojure', 'clojurescript'] }
-Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
-let g:clj_fmt_autosave = 1
-
 Plug 'luochen1990/rainbow'
 let g:rainbow_active = 0
 
 " HTML / CSS
-Plug 'mattn/emmet-vim',       { 'for': ['javascript', 'javascript.jsx', 'html'] }
-let g:user_emmet_mode         = 'a'     " Only enable Insert mode functions.
-let g:user_emmet_leader_key   = '<tab>' " Using Tab to expand
+Plug 'mattn/emmet-vim',     { 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html'] }
+let g:user_emmet_mode       = 'a'     " Only enable Insert mode functions.
+let g:user_emmet_leader_key = '<tab>' " Using Tab to expand
+" Override default settings.
+let g:user_emmet_settings = {
+	\ 'javascript.jsx': { 'extends': 'jsx' }
+  \ }
 
 Plug 'ap/vim-css-color'
 Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']} " Autocompletes tags.
@@ -212,6 +217,8 @@ Plug 'machakann/vim-highlightedyank'
 
 " Cycle through deopletes auto-completion with the tab key
 Plug 'ervandew/supertab'
+let g:SuperTabDefaultCompletionType    = "<c-x><c-o>"
+let g:SuperTabClosePreviewOnPopupClose = 1
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'powerman/vim-plugin-AnsiEsc'
@@ -263,13 +270,9 @@ let g:NERDTreeIgnore = [
 let NERDTreeQuitOnOpen=1
 let g:NERDTreeMinimalUI           = 1
 let g:NERDTreeBookmarksFile       = expand('~/.config/nvim/NERDTreeBookmarks')
-
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
-      \ && b:NERDTree.isTabTree()) | q | endif
-
-nnoremap <C-n> :NERDTreeToggle<CR>
 nnoremap <leader>nb :NERDTreeFromBookmark<Space>
 nnoremap <leader>nf :NERDTreeFind<CR>
+nnoremap <leader>nn :NERDTreeToggle<cr>
 
 " Move blocks of code with ALT+j/k
 Plug 'matze/vim-move'
@@ -282,6 +285,9 @@ Plug 'eugen0329/vim-esearch'
 Plug 'tomtom/tcomment_vim'
 map <silent> <Leader>cc :TComment<CR>
 map <silent> <leader>cl :TCommentInline<cr>
+" Adds 'gcp' comment current paragraph (block)
+" using tComment's built in <c-_>p mapping
+nmap <silent> gcp <c-_>p
 
 " Jump between quicklist, location (syntastic, etc) items with ease, among other things
 Plug 'tpope/vim-unimpaired'
@@ -316,21 +322,27 @@ let g:ale_linters = {
 
 let g:ale_fixers = {
       \ 'javascript': ['prettier'],
-      \ 'python':     ['isort', 'autopep8'],
+      \ 'python':     ['yapf', 'isort', 'autopep8'],
       \ 'elm':        ['elm-format'],
       \ 'reason':     ['refmt'],
       \ 'ruby':       ['rubocop'],
       \ 'elixir':     ['mix_format'],
       \ 'haskell':    ['hfmt'],
+      \ 'rust':       ['rustfmt'],
+      \ 'cpp':        ['clang-format'],
+      \ 'c':          ['clang-format'],
+      \ 'sh':         ['shfmt'],
       \ }
 let g:ale_fix_on_save                 = 1
 let g:ale_python_auto_pipenv          = 1
-let g:ale_sign_error                  = '✗✗' " '△'  could use emoji or 'X'
+let g:ale_sign_error                  = '✗✗' " '△' '✖' could use emoji
 let g:ale_sign_warning                = '⚠ ' " '✕' could use emoji '?'
-let g:ale_echo_msg_format             = '[%linter%] %s [%severity%]'
-let g:ale_statusline_format           = ['✗✗%d', '⚠ %d', '⬥ ok']
+let g:ale_echo_msg_format             = '[%linter% %severity%]: %(code) %%s'
+let g:ale_statusline_format           = ['✗✗%d', '⚠ %d', '✔ Ok']
 let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
 let g:ale_rust_cargo_use_clippy       = executable('cargo-clippy')
+nmap [a <Plug>(ale_next_wrap)
+nmap ]a <Plug>(ale_previous_wrap)
 
 " Git Plugins
 " ---------------
@@ -387,6 +399,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'metakirby5/codi.vim' " The interactive scratchpad for hackers.
 
 " **[ 2.3) UI Plugins #ui-plugins ]********************
+Plug 'cocopon/iceberg.vim'
 Plug 'w0ng/vim-hybrid'
 let g:hybrid_reduced_contrast = 1
 Plug 'joshdick/onedark.vim'
@@ -407,10 +420,13 @@ let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
-      \            [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
       \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head'
+      \ 'component': {
+      \   'fugitive': ' %{exists("*fugitive#head") ? fugitive#head() : ""}',
+      \ },
+      \ 'component_visible_condition': {
+      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
       \ },
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
@@ -421,11 +437,7 @@ let g:lightline = {
 Plug 'epilande/vim-react-snippets'
 Plug 'SirVer/ultisnips'   " Track the snippets engine.
 Plug 'honza/vim-snippets' " Snippets are separated from the engine.
-if has('ultisnips')
-  let g:UltiSnipsExpandTrigger       = '<tab>'
-  let g:UltiSnipsJumpForwardTrigger  = '<tab>'
-  let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-endif
+let g:UltiSnipsExpandTrigger="<C-j>"
 
 " Autocompletion Engine (neovim) Autocompletion Engine (neovim)
 Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
@@ -456,7 +468,8 @@ call plug#end()
 set termguicolors
 set background=dark
 " silent! colorscheme quantum
-colorscheme base16-default-dark
+" colorscheme base16-default-dark
+colorscheme iceberg
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -641,11 +654,22 @@ xmap <s-tab> <
 "Grep for current word in git
 noremap <c-g> :Ggrep <cword><CR>
 
+" Replace word under cursor
+map <Leader>r :%s/<c-r><c-w>/
+
 " Use tab for completion
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>"
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr><Up>   pumvisible() ? "\<C-p>" : "\<Up>"
 
 " Hit Ctrl+A to select all in current buffer
 nnoremap <C-a> ggVG
+
+" Abbreviations, trigger by typing the abbreviation and hitting space
+abbr pry! require 'pry'; binding.pry
+abbr cl! console.log( )<left><left>
+
+nmap <silent><leader>d :Start '/Applications/Devdogs.app/Contents/MacOS/Devdogs'<CR>
 """" 4.2) End Mappings
 
 " **[ 4.3) Filetypes Config ]**
@@ -696,7 +720,7 @@ augroup clojure
   autocmd FileType clojure nmap <buffer> <leader>e :Eval<CR>
   autocmd FileType clojure vnoremap <buffer> <leader>re :Eval<cr>
   autocmd FileType clojure nnoremap <buffer> <leader>rf :%Eval<cr>
-  autocmd FileType clojure,timl,scheme,lisp,racket :RainbowToggle
+  autocmd FileType clojure,clojurescript,timl,scheme,lisp,racket :RainbowToggle
   autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
   " command MFigwheel :Piggieback (figwheel.main.api/repl-env "dev")
   " command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)

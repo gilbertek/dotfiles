@@ -1,29 +1,18 @@
 #!/usr/bin/env bash
 
-# Case-Insensitive Auto Completion
-bind "set completion-ignore-case on"
-bind 'TAB:menu-complete'
-
+bind "set completion-ignore-case on"        # Case-Insensitive Auto Completion
+bind "set show-all-if-ambiguous on"         # Display matches for ambiguous patterns
+shopt -s histappend                         # Append to history from all terminals in realtime
+shopt -s cmdhist                            # store multiline commands as 1 line
+shopt -s cdspell                            # spelling error correction
+shopt -s checkwinsize                       # check window size after command and, if necessary, update lines and columns.
+shopt -s nocaseglob                         # Case-insensitive globbing (for pathname expansion)
+shopt -s extglob
+HISTCONTROL="ignoredups:erasedups"          # ignore duplicates(store command once)
+HISTSIZE=10000	                            # Larger bash history...
+HISTFILESIZE=10000	                        # Larger bash history...
+HISTIGNORE="&:ll:ls:c:cd:cd -:pwd:exit:logout:quit:reset" # Don't record some commands
 export PROMPT_COMMAND='history -a;history -c;history -r'
-
-# Case-insensitive globbing (used in pathname expansion)
-shopt -s nocaseglob
-
-# Append to the Bash history file, rather than overwriting it
-shopt -s histappend
-
-# Autocorrect typos in path names when using `cd`
-shopt -s cdspell
-
-# Omit duplicates and commands that begin with a space from history.
-HISTCONTROL=ignoredups:ignorespace:erasedups
-
-# Larger bash history...
-export HISTSIZE=10000
-export HISTFILESIZE=10000
-
-# Make some commands not show up in history
-export HISTIGNORE="ls:cd:cd -:pwd:exit:logout:quit:reset"
 
 # Motivation reminder
 now=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
@@ -125,6 +114,7 @@ export KUBECTL_CONTEXT=$(kubectl config current-context)
 ### Foreground Colours #######################################################
 LIGHT_GREEN='\[\e[32m\]'
 LIGHT_RED='\[\e[0;31m\]'
+COLOR_RED='\[\e[31m\]'
 COLOR_RESET='\[\e[m\]'
 COLOR_PURPLE='\[\e[35m\]'
 COLOR_FUSHIA='\[\e[33m\]'
@@ -136,14 +126,14 @@ COLOR_GREEN='\[\e[0;32m\]'
 LIGHT_BLUE="\[\033[0;38;05;74m\]"
 YELLOW="\[\033[0;38;05;184m\]"
 GREEN="\[\033[0;38;05;77m\]"
-
 # ♥ ☆ ⚡ λ ❯ » ▸ → 💥 - Keeping some cool ASCII Characters for reference
-CHAR='»'
+CHAR=' » '
 GITBRANCH='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\\(\\\\\1\)/`'
 # do not create .pyc files
 export PYTHONDONTWRITEBYTECODE=x
-PS1="${COLOR_GREY}→ ${NORMAL}${COLOR_BLUE}\u ${COLOR_PURPLE}\W\[\e[0m\]"
-PS1+="${COLOR_GREEN}$GITBRANCH ${COLOR_GREY}${CHAR} ${COLOR_RESET}"
+
+PS1="${COLOR_RED}\u${COLOR_RESET} in ${COLOR_GREEN}\W${COLOR_RESET}"
+PS1+="${COLOR_PURPLE}$GITBRANCH${COLOR_RESET}${CHAR}${COLOR_RESET}"
 
 # Ensure ssh agent is running
 if [ -z "$SSH_AUTH_SOCK" ] ; then
