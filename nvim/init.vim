@@ -35,7 +35,7 @@ set omnifunc=syntaxcomplete#Complete
 " **[ 1.4) UI Basics #ui-basics ]********************
 set relativenumber              " Relative number
 set number                      " Precede each line with its line number.
-set colorcolumn=80              " Show right column in a highlighted colour.
+set colorcolumn=81              " Show right column in a highlighted colour.
 set diffopt+=vertical           " Vertical display with vimdiff
 set splitbelow                  " Put a split beneath the current one
 set splitright                  " Put a split to the right the current one
@@ -81,17 +81,6 @@ let g:go_highlight_fields      = 1
 let g:go_auto_type_info        = 1
 let g:go_auto_sameids          = 1
 
-" Clojure plugins
-Plug 'guns/vim-sexp',                    { 'for': ['clojure', 'clojurescript'] }
-Plug 'clojure-vim/async-clj-omni',       { 'for': ['clojure', 'clojurescript'] }
-Plug 'tpope/vim-fireplace',              { 'for': ['clojure', 'clojurescript'] }
-Plug 'tpope/vim-sexp-mappings-for-regular-people' , { 'for': ['clojure', 'clojurescript'] }
-Plug 'eraserhd/parinfer-rust',           { 'do': 'cargo build --release' }
-Plug 'humorless/vim-kibit',              { 'for': ['clojure', 'clojurescript'] }
-Plug 'guns/vim-slamhound',               { 'for': ['clojure', 'clojurescript'] }
-Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
-let g:clj_fmt_autosave = 1
-
 Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled        = ['elm', 'go', 'clojure']
 let g:vim_json_syntax_conceal  = 0
@@ -99,6 +88,19 @@ let g:jsx_ext_required         = 0
 let g:rustfmt_autosave         = 1
 let g:javascript_plugin_jsdoc  = v:true " Enables syntax highlighting for JSDocs.
 let g:javascript_plugin_flow   = v:true " Enables Flow syntax support.
+
+" Clojure plugins
+Plug 'guns/vim-clojure-static'
+Plug 'guns/vim-sexp'
+Plug 'clojure-vim/async-clj-omni' " Provides clojure completion through deoplete or ncm
+Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-sexp-mappings-for-regular-people' , { 'for': ['clojure', 'clojurescript'] }
+Plug 'eraserhd/parinfer-rust',           { 'do': 'cargo build --release' }
+Plug 'snoe/clj-refactor.nvim'
+Plug 'humorless/vim-kibit',              { 'for': ['clojure', 'clojurescript'] }
+Plug 'guns/vim-slamhound',               { 'for': ['clojure', 'clojurescript'] }
+Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
+let g:clj_fmt_autosave = 1
 
 " Elixir
 Plug 'elixir-lang/vim-elixir'
@@ -469,7 +471,7 @@ set termguicolors
 set background=dark
 " silent! colorscheme quantum
 " colorscheme base16-default-dark
-colorscheme iceberg
+colorscheme base16-classic-dark
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -485,17 +487,23 @@ nnoremap <silent> <bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
 " Open in TeXShop
 nnoremap <leader>tx :!open -a TeXShop %<cr><cr>
 
-" Navigate terminal with C-h,j,k,l
-tnoremap <C-h> <C-\><C-n><C-w>h
-tnoremap <C-j> <C-\><C-n><C-w>j
-tnoremap <C-k> <C-\><C-n><C-w>k
-tnoremap <C-l> <C-\><C-n><C-w>l
-
-" Navigate splits windows with C-h,j,k,l
+" Navigate terminal/splits windows with C-h,j,k,l
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+if has("nvim")
+  tnoremap <C-h> <C-\><C-n><C-w>h
+  tnoremap <C-j> <C-\><C-n><C-w>j
+  tnoremap <C-k> <C-\><C-n><C-w>k
+  tnoremap <C-l> <C-\><C-n><C-w>l
+endif
+
+" One more way to exit insert mode
+inoremap <C-c> <ESC>
+if has("nvim")
+  tnoremap <Esc> <C-\><C-n>
+endif
 
 "Use tab to change navigate on tabs
 nmap <tab> :tabnext<CR>
@@ -722,8 +730,7 @@ augroup clojure
   autocmd FileType clojure nnoremap <buffer> <leader>rf :%Eval<cr>
   autocmd FileType clojure,clojurescript,timl,scheme,lisp,racket :RainbowToggle
   autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
-  " command MFigwheel :Piggieback (figwheel.main.api/repl-env "dev")
-  " command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
+  command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
   autocmd FileType clojure nnoremap <buffer> <Leader>rc :FireplaceConnect<cr>
 
   autocmd FileType clojure nnoremap <A-e> :Eval<CR>
