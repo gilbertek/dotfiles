@@ -165,9 +165,9 @@ function redis:stop {
 }
 
 # ** [ TMUX ALIASES ] ******************
-alias tml="tmux list-sessions"
-alias tma="tmux attach-session -t $1"
-alias tmk="tmux kill-session -t $1"
+alias tmx:l="tmux list-sessions"
+alias tmx:a="tmux attach-session -t $1"
+alias tmx:k="tmux kill-session -t $1"
 alias mux='tmuxinator'
 
 # ** [ YOUTUBE-DL SHORTCUTS ] ******************

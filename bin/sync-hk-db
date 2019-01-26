@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# Script to sync remote heroku db to local
+
+APP_NAME=$1
+DB_NAME=$2
+DUMP_FILE='latest.dump'
+
+if [ -n "$APP_NAME" ] && [ -n "$DB_NAME" ]; then
+
+    # Create new backup
+    echo "Creating database backup for $APP_NAME"
+    heroku pg:backups capture --app $APP_NAME
+    wait
+
+    # Fetch new dump from remote
+    echo "Fetching backup for $APP_NAME"
+    curl -o $DUMP_FILE `heroku pg:backups public-url -a $APP_NAME`
+    wait
+
+    # Restore local DB from dump
+    echo "Restoring local DB $DB_NAME"
+    pg_restore --verbose --clean --no-acl --no-owner -h localhost -d $DB_NAME $DUMP_FILE
+
+    # Delete local dump
+    echo "Cleaning..."
+    rm $DUMP_FILE
+
+else
+    echo 'You must specify an app and local DB name.'
+fi

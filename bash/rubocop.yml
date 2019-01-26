@@ -1,0 +1,61 @@
+AllCops:
+  DisabledByDefault: true
+
+Style/AlignArray:
+  Enabled: true
+
+# Align the elements of a hash literal if they span more than one line.
+Style/AlignHash:
+  # Alignment of entries using hash rocket as separator. Valid values are:
+  #
+  # key - left alignment of keys
+  #   'a' => 2
+  #   'bb' => 3
+  EnforcedHashRocketStyle: key
+  # ignore_implicit - Ignore only implicit hashes.
+  #   Accepts:
+  #     function(a: 1,
+  #       b: 2)
+  #   Registers an offense for:
+  #     function({a: 1,
+  #       b: 2})
+  EnforcedLastArgumentHashStyle: ignore_implicit
+  # key - left alignment of keys
+  #   a: 0
+  #   bb: 1
+  EnforcedColonStyle: key
+
+# Use empty lines between defs.
+Style/EmptyLineBetweenDefs:
+  # If true, this parameter means that single line method definitions don't
+  # need an empty line between them.
+  AllowAdjacentOneLineDefs: false
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19
+
+# The rails style implies that "private" and "protected" will have the same level of indentation as methods
+Style/IndentationConsistency:
+  EnforcedStyle: rails
+
+Style/RedundantReturn:
+  # When true allows code like `return x, y`.
+  AllowMultipleReturnValues: false
+
+Style/SpaceAroundOperators:
+  # When true, allows most uses of extra spacing if the intent is to align
+  # with an operator on the previous or next line, not counting empty lines
+  # or comment lines.
+  AllowForAlignment: true
+
+Style/SpaceInsideBlockBraces:
+  EnforcedStyle: space
+
+Style/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: space
+
+Style/SpaceInsideStringInterpolation:
+  EnforcedStyle: no_space
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes

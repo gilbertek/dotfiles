@@ -72,17 +72,15 @@ let g:javascript_plugin_jsdoc  = 1
 Plug 'fatih/vim-go',           { 'do': ':GoUpdateBinaries' }
 Plug 'jodosha/vim-godebug'
 Plug 'buoto/gotests-vim'
-let g:go_list_type             = 'quickfix' " Fix for location list
-let g:go_fmt_command           = 'goimports'
-let g:go_highlight_functions   = 1
-let g:go_highlight_operators   = 1
-let g:go_highlight_types       = 1
-let g:go_highlight_fields      = 1
-let g:go_auto_type_info        = 1
-let g:go_auto_sameids          = 1
+let g:go_list_type           = 'quickfix' " Fix for location list
+let g:go_fmt_command         = 'goimports'
+let g:go_highlight_methods   = 1
+let g:go_highlight_structs   = 1
+let g:go_highlight_functions = 1
+let g:go_auto_sameids        = 1
 
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled        = ['elm', 'go', 'clojure']
+let g:polyglot_disabled        = ['elm', 'go']
 let g:vim_json_syntax_conceal  = 0
 let g:jsx_ext_required         = 0
 let g:rustfmt_autosave         = 1
@@ -92,11 +90,11 @@ let g:javascript_plugin_flow   = v:true " Enables Flow syntax support.
 " Clojure plugins
 Plug 'guns/vim-clojure-static'
 Plug 'guns/vim-sexp'
-Plug 'clojure-vim/async-clj-omni' " Provides clojure completion through deoplete or ncm
+Plug 'clojure-vim/async-clj-omni'        " Provides completion through deoplete or ncm
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-sexp-mappings-for-regular-people' , { 'for': ['clojure', 'clojurescript'] }
 Plug 'eraserhd/parinfer-rust',           { 'do': 'cargo build --release' }
-Plug 'snoe/clj-refactor.nvim'
+Plug 'snoe/clj-refactor.nvim',           { 'do': ':UpdateRemotePlugins' }
 Plug 'humorless/vim-kibit',              { 'for': ['clojure', 'clojurescript'] }
 Plug 'guns/vim-slamhound',               { 'for': ['clojure', 'clojurescript'] }
 Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
@@ -150,7 +148,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 
 " Automatically start language servers
-let g:LanguageClient_autoStart         = 1
+let g:LanguageClient_autoStart      = 1
 let g:LanguageClient_serverCommands = {
       \ 'javascript': ['javascript-typescript-stdio'],
       \ 'typescript': ['javascript-typescript-stdio'],
@@ -171,10 +169,7 @@ let g:rainbow_active = 0
 Plug 'mattn/emmet-vim',     { 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html'] }
 let g:user_emmet_mode       = 'a'     " Only enable Insert mode functions.
 let g:user_emmet_leader_key = '<tab>' " Using Tab to expand
-" Override default settings.
-let g:user_emmet_settings = {
-	\ 'javascript.jsx': { 'extends': 'jsx' }
-  \ }
+let g:user_emmet_settings   = { 'javascript.jsx': { 'extends': 'jsx' } }
 
 Plug 'ap/vim-css-color'
 Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']} " Autocompletes tags.
@@ -196,6 +191,11 @@ Plug 'eagletmt/neco-ghc',             { 'for': 'haskell' } "Haskell completion
 let g:haskellmode_completion_ghc      = 0
 let g:necoghc_enable_detailed_browse  = 1
 let g:necoghc_use_stack               = 1
+
+Plug 'eagletmt/ghcmod-vim',           { 'for': 'haskell' }
+Plug 'enomsg/vim-haskellConcealPlus', { 'for': 'haskell' }
+Plug 'Twinside/vim-hoogle',           { 'for': 'haskell' }
+Plug 'mpickering/hlint-refactor-vim', { 'for': 'haskell' }
 
 Plug 'Shougo/vimproc.vim',            {'do' : 'make'}
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
@@ -269,9 +269,9 @@ let g:NERDTreeIgnore = [
       \ '^__pycache__$',
       \ '^_build$'
       \ ]
-let NERDTreeQuitOnOpen=1
-let g:NERDTreeMinimalUI           = 1
-let g:NERDTreeBookmarksFile       = expand('~/.config/nvim/NERDTreeBookmarks')
+let g:NERDTreeQuitOnOpen      = 1
+let g:NERDTreeMinimalUI     = 1
+let g:NERDTreeBookmarksFile = expand('~/.config/nvim/NERDTreeBookmarks')
 nnoremap <leader>nb :NERDTreeFromBookmark<Space>
 nnoremap <leader>nf :NERDTreeFind<CR>
 nnoremap <leader>nn :NERDTreeToggle<cr>
@@ -279,6 +279,7 @@ nnoremap <leader>nn :NERDTreeToggle<cr>
 " Move blocks of code with ALT+j/k
 Plug 'matze/vim-move'
 let g:move_key_modifier = 'C' " Use Control instead
+Plug 'moll/vim-bbye'
 
 " Global search
 Plug 'eugen0329/vim-esearch'
@@ -294,13 +295,13 @@ nmap <silent> gcp <c-_>p
 " Jump between quicklist, location (syntastic, etc) items with ease, among other things
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
-nmap s <Plug>Ysurround
-nmap S <Plug>YSurround
+nmap s  <Plug>Ysurround
+nmap S  <Plug>YSurround
 nmap ss <Plug>Yssurround
 nmap Ss <Plug>YSsurround
 nmap SS <Plug>YSsurround
-xmap s <Plug>VSurround
-xmap S <Plug>VgSurround
+xmap s  <Plug>VSurround
+xmap S  <Plug>VgSurround
 
 Plug 'wsdjeg/vim-fetch' "Vim to process line and column jump in paths
 
@@ -349,14 +350,14 @@ nmap ]a <Plug>(ale_previous_wrap)
 " Git Plugins
 " ---------------
 Plug 'tpope/vim-fugitive'
-nnoremap <leader>gb :Gblame<CR>
-nnoremap <leader>gd :Gdiff<CR>
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :Gcommit -v<CR>
+nnoremap <leader>gb  :Gblame<CR>
+nnoremap <leader>gd  :Gdiff<CR>
+nnoremap <leader>gs  :Gstatus<CR>
+nnoremap <leader>gc  :Gcommit -v<CR>
 nnoremap <leader>gca :Gcommit --amend -v<CR>
-nnoremap <leader>gp :Git push<cr>
-nnoremap <leader>gl :Glog<cr>
-nnoremap <leader>ga :silent !git add % &<cr><cr>
+nnoremap <leader>gp  :Git push<cr>
+nnoremap <leader>gl  :Glog<cr>
+nnoremap <leader>ga  :silent !git add % &<cr><cr>
 nnoremap <Leader>gac :silent !git add -A<CR>:Gcommit<CR>
 
 Plug 'airblade/vim-gitgutter'
@@ -380,6 +381,7 @@ noremap <Leader>g :GundoToggle<CR>
 " Tagbar: a class outline viewer for Vim
 Plug 'majutsushi/tagbar'
 nnoremap <Space>t :TagbarToggle<CR>
+let g:tagbar_autoclose  = 1
 
 " fzf fuzzy finder
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -391,11 +393,11 @@ nnoremap <leader>b :Buffers<cr>
 nmap <leader>h :History<cr>
 nmap <leader>f :Files<cr>
 
-Plug 'thanthese/Tortoise-Typing'
 
 " Grammarous
 Plug 'rhysd/vim-grammarous'
 let g:grammarous#use_vim_spelllang = 1
+Plug 'thanthese/Tortoise-Typing'
 
 Plug 'easymotion/vim-easymotion'
 Plug 'metakirby5/codi.vim' " The interactive scratchpad for hackers.
@@ -412,12 +414,15 @@ let g:quantum_black = 1
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
 let base16colorspace=256
+Plug 'nightsense/cosmic_latte'
+Plug 'sts10/vim-mustard'
+Plug 'nightsense/seabird'
 
 Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 8
-let g:indentLine_char = '│'
+let g:indentLine_char = '︙'   " another versions ┆│┊︙¦⋮⋮
 
-Plug 'itchyny/lightline.vim' " wombat onedark quantum
+Plug 'itchyny/lightline.vim' " wombat onedark quantum cosmic_latte_dark
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
@@ -428,10 +433,7 @@ let g:lightline = {
       \   'fugitive': ' %{exists("*fugitive#head") ? fugitive#head() : ""}',
       \ },
       \ 'component_visible_condition': {
-      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-      \ },
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' }
+      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())' }
       \ }
 " **[ 2.3) End UI Plugins #ui-plugins ]*****************
 
@@ -471,14 +473,27 @@ set termguicolors
 set background=dark
 " silent! colorscheme quantum
 " colorscheme base16-default-dark
-colorscheme base16-classic-dark
+" colorscheme base16-classic-dark
+
+" if strftime('%H') >= 7 && strftime('%H') < 19
+"   set background=light
+"   let g:lightline.colorscheme = 'cosmic_latte_light'
+" else
+"   set background=dark
+"   let g:lightline.colorscheme = 'cosmic_latte_dark'
+" endif
+colorscheme cosmic_latte
+
+" colorscheme mustard
+" colorscheme petrel
+
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
-nnoremap <Left>  :echo "no!"<cr>
-nnoremap <Right> :echo "no!"<cr>
-nnoremap <Up>    :echo "no!"<cr>
-nnoremap <Down>  :echo "no!"<cr>
+nnoremap <Left>  :echo "ಠ_ಠ!"<cr>
+nnoremap <Right> :echo "ಠ_ಠ!"<cr>
+nnoremap <Up>    :echo "ಠ_ಠ!"<cr>
+nnoremap <Down>  :echo "ಠ_ಠ!"<cr>
 
 " Terminal Mode Configuration
 tnoremap <Esc> <C-\><C-n> " Terminal Exit
@@ -499,33 +514,28 @@ if has("nvim")
   tnoremap <C-l> <C-\><C-n><C-w>l
 endif
 
-" One more way to exit insert mode
-inoremap <C-c> <ESC>
-if has("nvim")
-  tnoremap <Esc> <C-\><C-n>
-endif
-
-"Use tab to change navigate on tabs
-nmap <tab> :tabnext<CR>
-
 " Open the alternate file
 map ,, <C-^>
 
 " use <shift> + <tab> to go to the previous tab
-nmap <S-tab> :tabprevious<CR>
+nmap <tab>      :tabnext<CR>
+nmap <S-tab>    :tabprevious<CR>
 nmap <silent>tt :tabnew<CR>
 nmap <silent>tc :tabclose<cr>
-map <leader>n :tabnew .<CR><C-P>      " Custom tab opening behaviour
-
-" " tabs "
 nnoremap [t gT
 nnoremap ]t gt
 nnoremap ]T :tablast<CR>
 nnoremap [T :tabfirst<CR>
-" " quickfix "
+" map tab navigation to Cmd-1 to 9.
+map <silent> <D-1> :tabn 1<cr>
+" Alt based mapping
+noremap <silent><A-t> :$tabnew<cr>
+
+" quickfix
 nnoremap [q :cprevious<CR>
 nnoremap ]q :cnext<CR>
-" " loclist "
+
+" loclist
 nnoremap [l :lprevious<CR>
 nnoremap ]l :lnext<CR>
 
@@ -533,12 +543,6 @@ nnoremap ]l :lnext<CR>
 nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
 noremap <leader>c :bd<CR>
-
-" map tab navigation to Cmd-1 to 9.
-map <silent> <D-1> :tabn 1<cr>
-
-" Alt based mapping
-noremap <silent><A-t> :$tabnew<cr>
 
 " In the quickfix window, <CR> is used to jump to the error under the
 " cursor, so undefine the mapping there.
@@ -589,12 +593,8 @@ inoremap kk <Esc>
 nnoremap <leader>x :wq<cr>
 nnoremap <Leader>q :close<CR>
 
-" Quit normal mode
-nnoremap <silent> <Leader>q :q<CR>
-
 " Quick-save
 nnoremap <Leader>w :w<CR>
-nnoremap ;; :w<CR>
 
 " find merge conflict markers
 nnoremap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
@@ -602,11 +602,6 @@ nnoremap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 " re-indent entire file
 nmap <leader>i ggVG=
 
-" build sphinx docs
-nnoremap <leader>bs :!make html<cr>
-
-" Unselect the search result
-map <Leader><Space> :noh<CR>
 " Keep search matches in the middle of the window.
 nnoremap n nzzzv
 nnoremap N Nzzzv
@@ -615,7 +610,7 @@ nnoremap N Nzzzv
 vnoremap < <gv
 vnoremap > >gv
 
-" execute default register.
+" Fancy macros - default register.
 nnoremap Q @q
 
 " Declutter all windows
@@ -623,10 +618,6 @@ nnoremap <leader>o <C-w>o
 
 " Open current directory in Finder
 nnoremap <leader>O :!open .<cr>
-
-" Search results centered please
-nnoremap <silent> n nzz
-nnoremap <silent> N Nzz
 
 "" Set working directory of the open buffer <leader>cd
 nnoremap <leader>cd :lcd %:p:h<cr>:pwd<cr>
@@ -639,12 +630,6 @@ cnoremap <c-v> <c-r>
 
 " U: Redos since 'u' undos
 nnoremap U :redo<cr>
-
-" _ : Quick horizontal splits
-nnoremap <silent> _ :sp<cr>
-
-" | : Quick vertical splits
-nnoremap <silent> <bar> :vsp<cr>
 
 " +/-: Increment number
 nnoremap + <c-a>
@@ -725,13 +710,14 @@ augroup END
 
 augroup clojure
   autocmd!
-  autocmd FileType clojure nmap <buffer> <leader>e :Eval<CR>
+  autocmd FileType clojure nnoremap <buffer> <leader>e :Eval<CR>
   autocmd FileType clojure vnoremap <buffer> <leader>re :Eval<cr>
   autocmd FileType clojure nnoremap <buffer> <leader>rf :%Eval<cr>
-  autocmd FileType clojure,clojurescript,timl,scheme,lisp,racket :RainbowToggle
-  autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
-  command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
+  autocmd FileType clojure nnoremap <buffer> <leader>rs :Eval (dev/reset)<CR>
   autocmd FileType clojure nnoremap <buffer> <Leader>rc :FireplaceConnect<cr>
+  autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
+  autocmd FileType clojure,clojurescript,timl,scheme,lisp,racket :RainbowToggle
+  " command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
 
   autocmd FileType clojure nnoremap <A-e> :Eval<CR>
   autocmd FileType clojure vnoremap <A-e> :Eval<CR>
@@ -774,8 +760,8 @@ augroup golang
   autocmd FileType go nmap <Leader>/ :GoInfo<CR>
   autocmd FileType go nmap <Leader>bp :GoToggleBreakpoint<CR>
   autocmd FileType go nmap <Leader>db :GoDebug<CR>
-  au Filetype go nmap <leader>ga <Plug>(go-alternate-edit)
-  au Filetype go nmap <leader>gav <Plug>(go-alternate-vertical)
+  autocmd Filetype go nmap <leader>ga <Plug>(go-alternate-edit)
+  autocmd Filetype go nmap <leader>gav <Plug>(go-alternate-vertical)
 augroup END
 
 augroup erlang
@@ -842,9 +828,8 @@ augroup ruby
   " ===== Seeing Is Believing =====
   " " Assumes you have a Ruby with SiB available in the PATH
   " " If it doesn't work, you may need to `gem install seeing_is_believing -v
-  " 3.0.0.beta.6`
-  " " ...yeah, current release is a beta, which won't auto-install
-  "
+  " 3.0.0.beta.6` The current release is a beta, which won't auto-install
+
   " Annotate every line
   autocmd FileType ruby nmap <leader>bb :%!seeing_is_believing --timeout 12
         \ --line-length 500 --number-of-captures 300
