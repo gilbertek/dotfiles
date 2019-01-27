@@ -35,7 +35,7 @@ set omnifunc=syntaxcomplete#Complete
 " **[ 1.4) UI Basics #ui-basics ]********************
 set relativenumber              " Relative number
 set number                      " Precede each line with its line number.
-set colorcolumn=81              " Show right column in a highlighted colour.
+set colorcolumn=80              " Show right column in a highlighted colour.
 set diffopt+=vertical           " Vertical display with vimdiff
 set splitbelow                  " Put a split beneath the current one
 set splitright                  " Put a split to the right the current one
@@ -49,6 +49,7 @@ set winfixwidth                 " Keep Nerdtree window fixed between toggles
 set inccommand=nosplit          " Search and substitutions
 set clipboard+=unnamedplus      " +p paste OS clipboard
 set undofile                    " Set persistent undo
+set undodir=~/.config/nvim/undo
 """" 1.5) Searching #Searching
 set ignorecase                  " Ignore case when searching
 set smartcase                   " Ignore case if search pattern is all lowercase,
@@ -79,15 +80,7 @@ let g:go_highlight_structs   = 1
 let g:go_highlight_functions = 1
 let g:go_auto_sameids        = 1
 
-Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled        = ['elm', 'go']
-let g:vim_json_syntax_conceal  = 0
-let g:jsx_ext_required         = 0
-let g:rustfmt_autosave         = 1
-let g:javascript_plugin_jsdoc  = v:true " Enables syntax highlighting for JSDocs.
-let g:javascript_plugin_flow   = v:true " Enables Flow syntax support.
-
-" Clojure plugins
+" Clojure development plugins
 Plug 'guns/vim-clojure-static'
 Plug 'guns/vim-sexp'
 Plug 'clojure-vim/async-clj-omni'        " Provides completion through deoplete or ncm
@@ -99,6 +92,12 @@ Plug 'humorless/vim-kibit',              { 'for': ['clojure', 'clojurescript'] }
 Plug 'guns/vim-slamhound',               { 'for': ['clojure', 'clojurescript'] }
 Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
 let g:clj_fmt_autosave = 1
+
+Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled       = ['elm', 'go']
+let g:vim_json_syntax_conceal = 0
+let g:jsx_ext_required        = 0
+let g:rustfmt_autosave        = 1
 
 " Elixir
 Plug 'elixir-lang/vim-elixir'
@@ -166,13 +165,12 @@ Plug 'luochen1990/rainbow'
 let g:rainbow_active = 0
 
 " HTML / CSS
+Plug 'ap/vim-css-color'
+Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']}
 Plug 'mattn/emmet-vim',     { 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html'] }
 let g:user_emmet_mode       = 'a'     " Only enable Insert mode functions.
 let g:user_emmet_leader_key = '<tab>' " Using Tab to expand
 let g:user_emmet_settings   = { 'javascript.jsx': { 'extends': 'jsx' } }
-
-Plug 'ap/vim-css-color'
-Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']} " Autocompletes tags.
 
 Plug 'flowtype/vim-flow'
 Plug 'ternjs/tern_for_vim',     { 'do': 'npm install' }
@@ -192,12 +190,7 @@ let g:haskellmode_completion_ghc      = 0
 let g:necoghc_enable_detailed_browse  = 1
 let g:necoghc_use_stack               = 1
 
-Plug 'eagletmt/ghcmod-vim',           { 'for': 'haskell' }
-Plug 'enomsg/vim-haskellConcealPlus', { 'for': 'haskell' }
-Plug 'Twinside/vim-hoogle',           { 'for': 'haskell' }
-Plug 'mpickering/hlint-refactor-vim', { 'for': 'haskell' }
-
-Plug 'Shougo/vimproc.vim',            {'do' : 'make'}
+Plug 'Shougo/vimproc.vim',            { 'do' : 'make' }
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 
 " Plugins for Database support
@@ -231,7 +224,6 @@ nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
-let test#strategy = 'neovim'
 
 " Easily manage tags files
 Plug 'ludovicchabant/vim-gutentags'
@@ -269,46 +261,40 @@ let g:NERDTreeIgnore = [
       \ '^__pycache__$',
       \ '^_build$'
       \ ]
-let g:NERDTreeQuitOnOpen      = 1
+let g:NERDTreeQuitOnOpen    = 1
 let g:NERDTreeMinimalUI     = 1
 let g:NERDTreeBookmarksFile = expand('~/.config/nvim/NERDTreeBookmarks')
 nnoremap <leader>nb :NERDTreeFromBookmark<Space>
 nnoremap <leader>nf :NERDTreeFind<CR>
 nnoremap <leader>nn :NERDTreeToggle<cr>
 
-" Move blocks of code with ALT+j/k
+" Move blocks of code with Control+j/k
 Plug 'matze/vim-move'
-let g:move_key_modifier = 'C' " Use Control instead
-Plug 'moll/vim-bbye'
-
-" Global search
-Plug 'eugen0329/vim-esearch'
+let g:move_key_modifier = 'C'
 
 " Dependencies For tcomment
 Plug 'tomtom/tcomment_vim'
 map <silent> <Leader>cc :TComment<CR>
 map <silent> <leader>cl :TCommentInline<cr>
-" Adds 'gcp' comment current paragraph (block)
-" using tComment's built in <c-_>p mapping
-nmap <silent> gcp <c-_>p
+" Adds 'gcp' comment current paragraph (block) using tComment's built-in <c-_>p
+nmap <silent><leader>gcp <c-_>p
 
-" Jump between quicklist, location (syntastic, etc) items with ease, among other things
+" Jump between quicklist, location items with ease, among other things
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
-nmap s  <Plug>Ysurround
-nmap S  <Plug>YSurround
+nmap s <Plug>Ysurround
+nmap S <Plug>YSurround
 nmap ss <Plug>Yssurround
 nmap Ss <Plug>YSsurround
 nmap SS <Plug>YSsurround
-xmap s  <Plug>VSurround
-xmap S  <Plug>VgSurround
+xmap s <Plug>VSurround
+xmap S <Plug>VgSurround
 
 Plug 'wsdjeg/vim-fetch' "Vim to process line and column jump in paths
 
-Plug 'junegunn/vim-easy-align'
 " Start interactive EasyAlign in visual mode (e.g. vipga)
+Plug 'junegunn/vim-easy-align'
 xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
 " Asynchronous file linter
@@ -350,14 +336,14 @@ nmap ]a <Plug>(ale_previous_wrap)
 " Git Plugins
 " ---------------
 Plug 'tpope/vim-fugitive'
-nnoremap <leader>gb  :Gblame<CR>
-nnoremap <leader>gd  :Gdiff<CR>
-nnoremap <leader>gs  :Gstatus<CR>
-nnoremap <leader>gc  :Gcommit -v<CR>
+nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit -v<CR>
 nnoremap <leader>gca :Gcommit --amend -v<CR>
-nnoremap <leader>gp  :Git push<cr>
-nnoremap <leader>gl  :Glog<cr>
-nnoremap <leader>ga  :silent !git add % &<cr><cr>
+nnoremap <leader>gp :Git push<cr>
+nnoremap <leader>gl :Glog<cr>
+nnoremap <leader>ga :silent !git add % &<cr><cr>
 nnoremap <Leader>gac :silent !git add -A<CR>:Gcommit<CR>
 
 Plug 'airblade/vim-gitgutter'
@@ -374,9 +360,8 @@ if has('macunix')
   let g:gist_clip_command          = 'pbcopy'
 endif
 
-" Visualize undo tree
-Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
-noremap <Leader>g :GundoToggle<CR>
+Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' } " Vim undo tree visualizer
+noremap <Leader>g :MundoToggle<CR>
 
 " Tagbar: a class outline viewer for Vim
 Plug 'majutsushi/tagbar'
@@ -393,17 +378,15 @@ nnoremap <leader>b :Buffers<cr>
 nmap <leader>h :History<cr>
 nmap <leader>f :Files<cr>
 
-
 " Grammarous
 Plug 'rhysd/vim-grammarous'
 let g:grammarous#use_vim_spelllang = 1
 Plug 'thanthese/Tortoise-Typing'
-
 Plug 'easymotion/vim-easymotion'
 Plug 'metakirby5/codi.vim' " The interactive scratchpad for hackers.
 
 " **[ 2.3) UI Plugins #ui-plugins ]********************
-Plug 'cocopon/iceberg.vim'
+Plug 'nightsense/cosmic_latte'
 Plug 'w0ng/vim-hybrid'
 let g:hybrid_reduced_contrast = 1
 Plug 'joshdick/onedark.vim'
@@ -414,26 +397,19 @@ let g:quantum_black = 1
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
 let base16colorspace=256
-Plug 'nightsense/cosmic_latte'
-Plug 'sts10/vim-mustard'
-Plug 'nightsense/seabird'
 
 Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 8
-let g:indentLine_char = '︙'   " another versions ┆│┊︙¦⋮⋮
+let g:indentLine_char = '︙'   " Other options ┆│┊︙¦⋮⋮
 
-Plug 'itchyny/lightline.vim' " wombat onedark quantum cosmic_latte_dark
+Plug 'itchyny/lightline.vim' " wombat onedark quantum
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
-      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+      \            [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
       \ },
-      \ 'component': {
-      \   'fugitive': ' %{exists("*fugitive#head") ? fugitive#head() : ""}',
-      \ },
-      \ 'component_visible_condition': {
-      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())' }
+      \ 'component_function': { 'gitbranch': 'fugitive#head' }
       \ }
 " **[ 2.3) End UI Plugins #ui-plugins ]*****************
 
@@ -441,7 +417,11 @@ let g:lightline = {
 Plug 'epilande/vim-react-snippets'
 Plug 'SirVer/ultisnips'   " Track the snippets engine.
 Plug 'honza/vim-snippets' " Snippets are separated from the engine.
-let g:UltiSnipsExpandTrigger="<C-j>"
+if has('ultisnips')
+  let g:UltiSnipsExpandTrigger       = '<tab>'
+  let g:UltiSnipsJumpForwardTrigger  = '<tab>'
+  let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+endif
 
 " Autocompletion Engine (neovim) Autocompletion Engine (neovim)
 Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
@@ -472,21 +452,8 @@ call plug#end()
 set termguicolors
 set background=dark
 " silent! colorscheme quantum
-" colorscheme base16-default-dark
-" colorscheme base16-classic-dark
-
-" if strftime('%H') >= 7 && strftime('%H') < 19
-"   set background=light
-"   let g:lightline.colorscheme = 'cosmic_latte_light'
-" else
-"   set background=dark
-"   let g:lightline.colorscheme = 'cosmic_latte_dark'
-" endif
+colorscheme base16-default-dark
 colorscheme cosmic_latte
-
-" colorscheme mustard
-" colorscheme petrel
-
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -494,30 +461,26 @@ nnoremap <Left>  :echo "ಠ_ಠ!"<cr>
 nnoremap <Right> :echo "ಠ_ಠ!"<cr>
 nnoremap <Up>    :echo "ಠ_ಠ!"<cr>
 nnoremap <Down>  :echo "ಠ_ಠ!"<cr>
+nnoremap <A-Left> <C-o>
+nnoremap <A-Right> <C-i>
 
-" Terminal Mode Configuration
-tnoremap <Esc> <C-\><C-n> " Terminal Exit
-nnoremap <silent> <bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
-
-" Open in TeXShop
-nnoremap <leader>tx :!open -a TeXShop %<cr><cr>
-
-" Navigate terminal/splits windows with C-h,j,k,l
+" Navigate terminal and splits windows with C-h,j,k,l
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 if has("nvim")
+  " Quit terminal Exit/Navigation
+  tnoremap <Esc> <C-\><C-n>
   tnoremap <C-h> <C-\><C-n><C-w>h
   tnoremap <C-j> <C-\><C-n><C-w>j
   tnoremap <C-k> <C-\><C-n><C-w>k
   tnoremap <C-l> <C-\><C-n><C-w>l
+  " Terminal Mode Configuration
+  nnoremap <silent><bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
 endif
 
-" Open the alternate file
-map ,, <C-^>
-
-" use <shift> + <tab> to go to the previous tab
+"Use <tab>/<shift> + <tab> to navigate to tabs
 nmap <tab>      :tabnext<CR>
 nmap <S-tab>    :tabprevious<CR>
 nmap <silent>tt :tabnew<CR>
@@ -526,8 +489,10 @@ nnoremap [t gT
 nnoremap ]t gt
 nnoremap ]T :tablast<CR>
 nnoremap [T :tabfirst<CR>
+
 " map tab navigation to Cmd-1 to 9.
 map <silent> <D-1> :tabn 1<cr>
+
 " Alt based mapping
 noremap <silent><A-t> :$tabnew<cr>
 
@@ -544,15 +509,18 @@ nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
 noremap <leader>c :bd<CR>
 
+" Open the alternate file
+map ,, <C-^>
+
 " In the quickfix window, <CR> is used to jump to the error under the
 " cursor, so undefine the mapping there.
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
-" session management
-nnoremap <leader>os :OpenSession<Space>
-nnoremap <leader>ss :SaveSession<Space>
-nnoremap <leader>ds :DeleteSession<CR>
-nnoremap <leader>cs :CloseSession<CR>
+" _ : Quick horizontal splits
+nnoremap <silent> _ :sp<cr>
+
+" | : Quick vertical splits
+nnoremap <silent> <bar> :vsp<cr>
 
 " Automatic pane split layouts
 nnoremap <leader>3 :vsplit<CR>:bn<CR>:vsplit<CR>:bn<CR>
@@ -571,8 +539,17 @@ nnoremap k gk
 " Yank to the end of line
 nnoremap Y y$
 
+"Copy to system clipboard
+vnoremap <C-c> "+y
+
+" ctrl-v: Paste
+cnoremap <c-v> <c-r>
+
 " reselect pasted content:
 noremap gV `[v`]
+
+" U: Redos since 'u' undos
+nnoremap U :redo<cr>
 
 " Keep the cursor in place while joining lines
 nnoremap J mzJ`z
@@ -580,9 +557,6 @@ nnoremap J mzJ`z
 " Split line (sister to [J]oin lines above)
 " The normal use of S is covered by cc, so don't worry about shadowing it.
 nnoremap S i<cr><esc>^mwgk:silent! s/\v +$//<cr>:noh<cr>`w
-
-" Custom split opening / closing behaviour
-map <C-C> :q<CR>
 
 " Makes foo-bar considered one word
 set iskeyword+=-
@@ -592,6 +566,8 @@ inoremap jj <Esc>
 inoremap kk <Esc>
 nnoremap <leader>x :wq<cr>
 nnoremap <Leader>q :close<CR>
+" Custom split opening / closing behaviour
+map <C-C> :q<CR>
 
 " Quick-save
 nnoremap <Leader>w :w<CR>
@@ -602,15 +578,18 @@ nnoremap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 " re-indent entire file
 nmap <leader>i ggVG=
 
-" Keep search matches in the middle of the window.
-nnoremap n nzzzv
-nnoremap N Nzzzv
+" Unselect the search result
+map <Leader><Space> :noh<CR>
+
+" Search results centered please
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
 
 " Easy indent in Visual mode
 vnoremap < <gv
 vnoremap > >gv
 
-" Fancy macros - default register.
+" execute default register.
 nnoremap Q @q
 
 " Declutter all windows
@@ -624,12 +603,6 @@ nnoremap <leader>cd :lcd %:p:h<cr>:pwd<cr>
 
 " Toggle background with <leader>bg
 nnoremap <leader>lt :let &background = (&background == "dark"? "light" : "dark")<cr>
-
-" ctrl-v: Paste
-cnoremap <c-v> <c-r>
-
-" U: Redos since 'u' undos
-nnoremap U :redo<cr>
 
 " +/-: Increment number
 nnoremap + <c-a>
@@ -647,22 +620,21 @@ xmap <s-tab> <
 "Grep for current word in git
 noremap <c-g> :Ggrep <cword><CR>
 
-" Replace word under cursor
-map <Leader>r :%s/<c-r><c-w>/
-
 " Use tab for completion
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr><Up>   pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>"
 
 " Hit Ctrl+A to select all in current buffer
 nnoremap <C-a> ggVG
 
-" Abbreviations, trigger by typing the abbreviation and hitting space
-abbr pry! require 'pry'; binding.pry
-abbr cl! console.log( )<left><left>
+" Make <c-h> work like <c-h> again (this is a problem with libterm)
+nnoremap <BS> <C-w>h
 
-nmap <silent><leader>d :Start '/Applications/Devdogs.app/Contents/MacOS/Devdogs'<CR>
+" Open in TeXShop
+nnoremap <leader>tx :!open -a TeXShop %<cr><cr>
+" build sphinx docs
+nnoremap <leader>bs :!make html<cr>
+
+nmap <Leader>dd :silent !open -a Devdocs.app '%:p'<CR>
 """" 4.2) End Mappings
 
 " **[ 4.3) Filetypes Config ]**
@@ -710,14 +682,13 @@ augroup END
 
 augroup clojure
   autocmd!
-  autocmd FileType clojure nnoremap <buffer> <leader>e :Eval<CR>
+  autocmd FileType clojure nmap <buffer> <leader>e :Eval<CR>
   autocmd FileType clojure vnoremap <buffer> <leader>re :Eval<cr>
   autocmd FileType clojure nnoremap <buffer> <leader>rf :%Eval<cr>
-  autocmd FileType clojure nnoremap <buffer> <leader>rs :Eval (dev/reset)<CR>
-  autocmd FileType clojure nnoremap <buffer> <Leader>rc :FireplaceConnect<cr>
+  autocmd FileType clojure,timl,scheme,lisp,racket :RainbowToggle
   autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
-  autocmd FileType clojure,clojurescript,timl,scheme,lisp,racket :RainbowToggle
-  " command Figwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
+  " command MFigwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
+  autocmd FileType clojure nnoremap <buffer> <Leader>rc :FireplaceConnect<cr>
 
   autocmd FileType clojure nnoremap <A-e> :Eval<CR>
   autocmd FileType clojure vnoremap <A-e> :Eval<CR>
@@ -792,6 +763,9 @@ augroup haskell
   autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
   autocmd FileType haskell nnoremap <silent> <leader>b :!stack build --fast<CR>
   autocmd FileType haskell let g:neoformat_run_all_formatters = 1
+  " Use hindent instead of par for haskell buffers
+  autocmd FileType haskell let &formatprg="hindent --tab-size 2 -XQuasiQuotes"
+  autocmd FileType haskell map <silent> <leader><cr> :noh<cr>:GhcModTypeClear<cr>
 augroup END
 
 augroup interoMaps

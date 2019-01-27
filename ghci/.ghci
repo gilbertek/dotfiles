@@ -1,0 +1,16 @@
+:set -Wall
+:set -fno-warn-type-defaults
+-- Show the types of evaluated expressions
+:set +t
+:set +s
+-- Enable multi-line expressions with :{ and :}
+:set +m
+
+import Prelude
+
+:def hlint const . return $ ":! hlint \"src\""
+:def hoogle \s -> return $ ":! hoogle --count=25 --color \"" ++ s ++ "\""
+:def devel-reload \_ -> return (":l DevelMain\nDevelMain.update\n")
+:def yesod-reload \_ -> return (":l app/DevelMain.hs\nDevelMain.update\n")
+
+:set prompt "\n \ESC[34mλ\ESC[m\STX   "

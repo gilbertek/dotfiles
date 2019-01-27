@@ -13,16 +13,14 @@ HISTSIZE=10000	                            # Larger bash history...
 HISTFILESIZE=10000	                        # Larger bash history...
 HISTIGNORE="&:ll:ls:c:cd:cd -:pwd:exit:logout:quit:reset" # Don't record some commands
 export PROMPT_COMMAND='history -a;history -c;history -r'
+export CLICOLOR=1
 
 # Motivation reminder
 now=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 alias DATE="date '+%Y-%m-%d'"
 alias TIME="date '+%H·%M·%S'"
 alias DATETIME="date '+%Y-%m-%d.%H·%M·%S'"
-
-# echo "2017 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); \
-# print "There are " int(dt/86400/7) " weeks left until the year ends. \
-# What will you do?";}';
+# echo "2019 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); print "There are " int(dt/86400/7) " weeks left until the year ends. What will you do?";}'
 
 # Add `~/bin` to the `$PATH`
 if [ -d "$HOME/bin" ] ; then
@@ -53,14 +51,12 @@ fi
 # export MAVEN_JMX="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=6969 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
 
 # Clojure
-# export CLOJURE_JAR=$HOME/.m2/repository/org/clojure/clojure/1.9.0/clojure-1.9.0.jar
-# export CLOJURE_EXT=$CLOJURE_JAR
 export CLOJURE_OPTS="-Xms128M -Xmx512M -server"
 
 # Boot
-# export BOOT_JVM_OPTIONS="-Xmx8g -client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Xverify:none -XX:-OmitStackTraceInFastThrow"
-# export BOOT_COLOR=1
-# export BOOT_GPG_COMMAND=gpg2
+export BOOT_JVM_OPTIONS="-Xmx8g -client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Xverify:none -XX:-OmitStackTraceInFastThrow"
+export BOOT_COLOR=1
+export BOOT_GPG_COMMAND=gpg2
 
 # Haskell/hdevtools Home path setup
 export PATH=~/.local/bin:$PATH
@@ -91,8 +87,8 @@ if [[ -x "$(command -v gcloud)" ]]; then
   source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 fi
 
-# export ANT_OPTS='-Xms512M -Xmx1024M -XX:MaxPermSize=1024M'
-# export ANT_ARGS='-logger org.apache.tools.ant.listener.AnsiColorLogger'
+export ANT_OPTS='-Xms512M -Xmx1024M -XX:MaxPermSize=1024M'
+export ANT_ARGS='-logger org.apache.tools.ant.listener.AnsiColorLogger'
 
 export EDITOR=nvim
 export VISUAL=nvim
@@ -113,7 +109,7 @@ export KUBECTL_CONTEXT=$(kubectl config current-context)
 
 ### Foreground Colours #######################################################
 LIGHT_GREEN='\[\e[32m\]'
-LIGHT_RED='\[\e[0;31m\]'
+LIGHT_RED='\[\033[1;31m\]'
 COLOR_RED='\[\e[31m\]'
 COLOR_RESET='\[\e[m\]'
 COLOR_PURPLE='\[\e[35m\]'
@@ -126,14 +122,26 @@ COLOR_GREEN='\[\e[0;32m\]'
 LIGHT_BLUE="\[\033[0;38;05;74m\]"
 YELLOW="\[\033[0;38;05;184m\]"
 GREEN="\[\033[0;38;05;77m\]"
-# ♥ ☆ ⚡ λ ❯ » ▸ → 💥 - Keeping some cool ASCII Characters for reference
-CHAR=' » '
+
+# ♥ ☆ ⚡ λ ❯ » ▸ → 💥 ✚ - Keeping some cool ASCII Characters for reference
+CHAR='✚'
 GITBRANCH='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\\(\\\\\1\)/`'
 # do not create .pyc files
 export PYTHONDONTWRITEBYTECODE=x
 
-PS1="${COLOR_RED}\u${COLOR_RESET} in ${COLOR_GREEN}\W${COLOR_RESET}"
-PS1+="${COLOR_PURPLE}$GITBRANCH${COLOR_RESET}${CHAR}${COLOR_RESET}"
+# PS1="${COLOR_RED}\u${COLOR_RESET} in ${COLOR_GREEN}\W${COLOR_RESET}"
+# PS1+="${COLOR_PURPLE}$GITBRANCH${COLOR_RESET}${CHAR}${COLOR_RESET}"
+
+# git dirty functions for prompt
+function parse_git_dirty {
+  [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working tree clean" ]] && echo "*"
+}
+function parse_git_branch {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
+}
+
+PS1="[\[\e[30;1m\]\t\[\e[0m\]]$COLOR_RED\$(parse_git_branch) \[\e[0;34m\]\W\[\e[0m\] "
+PS1+="\[\e[0;31m\]$CHAR \[\e[0m\]"
 
 # Ensure ssh agent is running
 if [ -z "$SSH_AUTH_SOCK" ] ; then
@@ -176,9 +184,6 @@ fi
 #     eval "$(docker-machine env default)"
 #   fi
 # fi
-
-# Motivation reminder
-# echo "2017 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); print "There are " int(dt/86400/7) " weeks left until the year ends. What will you do?";}'
 
 # asdf package manager
 [[ -f /usr/local/opt/asdf/asdf.sh ]] && . /usr/local/opt/asdf/asdf.sh

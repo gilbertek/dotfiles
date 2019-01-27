@@ -8,6 +8,7 @@ alias dt="cd ~/Desktop"
 alias readings='cd ~/Documents/Readings'
 alias work='cd ~/Projects'
 alias trash="sudo rm -rvf ~/.Trash/*"
+alias blogs="cd ~/Projects/BLOG/leftaxe"
 
 alias weather="curl -4 http://wttr.in/New_York"
 alias whatsmyip='curl -s https://am.i.mullvad.net/json | jq'
@@ -34,6 +35,8 @@ alias curl="curl -sL" # Avoid progress bar and follow redirects
 alias topdir="du -sh */ | sort -rh | head -5"
 alias nom="rm -rf node_modules; npm cache clean; npm i"
 alias yom="rm -rf node_modules; yarn"
+# Add simulator to start the iOS simulator
+alias simulator="open -a Simulator"
 
 alias mount_usb="sudo mount /dev/sdb1 /mnt/usb"
 alias umount_usb="sudo umount /mnt/usb"
@@ -45,11 +48,11 @@ alias anki="anki -b ~/.anki"
 alias filemerge="open -a '/Applications/Xcode.app/Contents/Applications/FileMerge.app'"
 alias xcode="open -a '/Applications/Xcode.app'"
 
-if [ $(which bat) ]; then
+if [[ -x "$(command -v bat)" ]]; then
   alias cat='bat'
 fi
 
-if [ $(which terraform) ]; then
+if [[ -x "$(command -v terraform)" ]]; then
   alias tf='terraform'
 fi
 
@@ -93,13 +96,13 @@ alias ggpull='git pull --rebase'
 alias gmu='git fetch origin -v; git fetch upstream -v; git merge upstream/master'
 
 # git fetch pull
-gfpull () { git fetch && git checkout $1 && git pull origin $1; }
+gfpull () { git fetch && git checkout "$1" && git pull origin "$1"; }
 
 # git fetch push
-gfpush () { git fetch && git checkout $1 && git push origin $1; }
+gfpush () { git fetch && git checkout "$1" && git push origin "$1"; }
 
 # git track (create new tracking branch)
-gt () { git checkout -b $1 -t origin/$1; }
+gt () { git checkout -b "$1" -t origin/"$1"; }
 
 # git version (tag and branch at a specific deploy point)
 gv () { git tag v$1 && git checkout -b $1 && git push origin v$1 && git push origin $1; }
@@ -165,8 +168,8 @@ function redis:stop {
 }
 
 # ** [ TMUX ALIASES ] ******************
-alias tmx:l="tmux list-sessions"
-alias tmx:a="tmux attach-session -t $1"
+alias tmx:l='tmux list-sessions'
+alias tmx:a="tmux attach-session -t ${1}"
 alias tmx:k="tmux kill-session -t $1"
 alias mux='tmuxinator'
 
