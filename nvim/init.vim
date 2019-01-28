@@ -565,7 +565,8 @@ set iskeyword+=-
 inoremap jj <Esc>
 inoremap kk <Esc>
 nnoremap <leader>x :wq<cr>
-nnoremap <Leader>q :close<CR>
+nnoremap <leader>Q :q<CR>    " Quickly close the current window
+nnoremap <leader>q :bd<CR>   " Quickly close the current buffer
 " Custom split opening / closing behaviour
 map <C-C> :q<CR>
 
@@ -634,7 +635,17 @@ nnoremap <leader>tx :!open -a TeXShop %<cr><cr>
 " build sphinx docs
 nnoremap <leader>bs :!make html<cr>
 
-nmap <Leader>dd :silent !open -a Devdocs.app '%:p'<CR>
+nmap <Leader>// :silent !open -a Devdocs.app '%:p'<CR>
+" Auto-create directories for new files.
+if exists("*mkdir")
+  au BufWritePre,FileWritePre * silent! call mkdir(expand('<afile>:p:h'), 'p')
+endif
+
+ab teh the
+ab thne then
+ab tehn then
+ab wnat want
+
 """" 4.2) End Mappings
 
 " **[ 4.3) Filetypes Config ]**
@@ -682,9 +693,8 @@ augroup END
 
 augroup clojure
   autocmd!
-  autocmd FileType clojure nmap <buffer> <leader>e :Eval<CR>
-  autocmd FileType clojure vnoremap <buffer> <leader>re :Eval<cr>
-  autocmd FileType clojure nnoremap <buffer> <leader>rf :%Eval<cr>
+  autocmd FileType clojure nnoremap <buffer><leader>e :Eval<CR>
+  autocmd FileType clojure nnoremap <buffer><leader>rf :%Eval<cr>
   autocmd FileType clojure,timl,scheme,lisp,racket :RainbowToggle
   autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
   " command MFigwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
@@ -737,7 +747,7 @@ augroup END
 
 augroup erlang
   autocmd!
-  autocmd BufNewFile,BufRead relx.config setlocal filetype=erlang
+  autocmd BufNewFile,BufRead *.{erl,hrl,xrl,yrl}, relx.config setl filetype=erlang
 augroup END
 
 augroup javascript
