@@ -425,6 +425,8 @@ Plug 'zchee/deoplete-clang'
 Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
 let g:deoplete#sources#ternjs#types        = 1
 let g:deoplete#sources#ternjs#docs         = 1
+let g:tern#command                         = ['tern']
+let g:tern#arguments                       = ['--persistent']
 Plug 'zchee/deoplete-jedi'                   " source for Python
 Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
 let g:deoplete#enable_at_startup           = 1 " Enable deoplete on startup.
