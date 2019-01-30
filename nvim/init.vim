@@ -114,9 +114,6 @@ Plug 'vim-erlang/vim-erlang-omnicomplete',  {'for': 'erlang'}
 Plug 'vim-erlang/vim-erlang-compiler'
 let g:erlang_tags_ignore = '_build'
 
-" Phoenix
-Plug 'tpope/vim-projectionist'    " required for some navigation features
-
 " Markdown Preview
 Plug 'shime/vim-livedown', {'for': 'markdown', 'do': 'npm install -g livedown'}
 
@@ -127,7 +124,8 @@ let g:goyo_margin_top         = 2
 let g:goyo_margin_bottom      = 2
 nnoremap <silent> <leader>z :Goyo<cr>
 
-" Plugins for rails
+" Plugins for rails & Phoenix Projects
+Plug 'tpope/vim-projectionist'    " Adds some navigation niceties
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
@@ -164,9 +162,8 @@ Plug 'frigoeu/psc-ide-vim',              { 'for': 'purescript' }
 Plug 'luochen1990/rainbow'
 let g:rainbow_active = 0
 
-" HTML / CSS
+" HTML / CSS / SCSS
 Plug 'ap/vim-css-color'
-Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']}
 Plug 'mattn/emmet-vim',     { 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html'] }
 let g:user_emmet_mode       = 'a'     " Only enable Insert mode functions.
 let g:user_emmet_leader_key = '<tab>' " Using Tab to expand
@@ -184,17 +181,16 @@ let g:haskell_enable_typeroles        = 1 " to enable highlighting of type roles
 let g:haskell_enable_static_pointers  = 1 " to enable highlighting of `static`
 let g:haskell_backpack                = 1 " to enable highlighting of backpack keywords
 
+Plug 'Shougo/vimproc.vim',            { 'do' : 'make' }
 Plug 'parsonsmatt/intero-neovim'
 Plug 'eagletmt/neco-ghc',             { 'for': 'haskell' } "Haskell completion
 let g:haskellmode_completion_ghc      = 0
 let g:necoghc_enable_detailed_browse  = 1
 let g:necoghc_use_stack               = 1
 
-Plug 'Shougo/vimproc.vim',            { 'do' : 'make' }
-Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
-
 " Plugins for Database support
 Plug 'tpope/vim-db'
+Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 " Plug 'vyzyv/vimpyter' " Plugins for Jupyter notebooks
 """" 2.2) Utilities #utilities
 Plug 'sbdchd/neoformat'
@@ -208,6 +204,7 @@ Plug 'Shougo/echodoc.vim'
 
 " Automatically match any brackets, parentheses or quotes
 Plug 'jiangmiao/auto-pairs'
+Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']}
 Plug 'machakann/vim-highlightedyank'
 
 " Cycle through deopletes auto-completion with the tab key
@@ -215,7 +212,7 @@ Plug 'ervandew/supertab'
 let g:SuperTabDefaultCompletionType    = "<c-x><c-o>"
 let g:SuperTabClosePreviewOnPopupClose = 1
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'ntpeters/vim-better-whitespace'
+" Plug 'ntpeters/vim-better-whitespace'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'editorconfig/editorconfig-vim'
 
@@ -224,6 +221,7 @@ nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
+let test#strategy = 'neovim'
 
 " Easily manage tags files
 Plug 'ludovicchabant/vim-gutentags'
@@ -333,8 +331,7 @@ let g:ale_rust_cargo_use_clippy       = executable('cargo-clippy')
 nmap [a <Plug>(ale_next_wrap)
 nmap ]a <Plug>(ale_previous_wrap)
 
-" Git Plugins
-" ---------------
+" Plugins for Git & Gist
 Plug 'tpope/vim-fugitive'
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gdiff<CR>
@@ -378,12 +375,11 @@ nnoremap <leader>b :Buffers<cr>
 nmap <leader>h :History<cr>
 nmap <leader>f :Files<cr>
 
-" Grammarous
-Plug 'rhysd/vim-grammarous'
+Plug 'rhysd/vim-grammarous'        " Grammarous
 let g:grammarous#use_vim_spelllang = 1
 Plug 'thanthese/Tortoise-Typing'
 Plug 'easymotion/vim-easymotion'
-Plug 'metakirby5/codi.vim' " The interactive scratchpad for hackers.
+Plug 'metakirby5/codi.vim'         " The interactive scratchpad for hackers.
 
 " **[ 2.3) UI Plugins #ui-plugins ]********************
 Plug 'nightsense/cosmic_latte'
@@ -399,8 +395,7 @@ Plug 'chriskempson/base16-vim'
 let base16colorspace=256
 
 Plug 'Yggdroot/indentLine'
-let g:indentLine_color_term = 8
-let g:indentLine_char = '︙'   " Other options ┆│┊︙¦⋮⋮
+let g:indentLine_char = '⋮'   " Other options ┆│┊︙¦⋮⋮
 
 Plug 'itchyny/lightline.vim' " wombat onedark quantum
 let g:lightline = {
@@ -428,6 +423,8 @@ Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-go',                  { 'do': 'make'}
 Plug 'zchee/deoplete-clang'
 Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
+let g:deoplete#sources#ternjs#types        = 1
+let g:deoplete#sources#ternjs#docs         = 1
 Plug 'zchee/deoplete-jedi'                   " source for Python
 Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
 let g:deoplete#enable_at_startup           = 1 " Enable deoplete on startup.
@@ -570,6 +567,11 @@ nnoremap <leader>q :bd<CR>   " Quickly close the current buffer
 " Custom split opening / closing behaviour
 map <C-C> :q<CR>
 
+" Experiment
+" nnoremap <leader>q :bp\|bd#<cr>
+" nnoremap <leader>Q :bp!\|bd!#<cr>
+" nnoremap <leader>x :w\|bd<cr>
+
 " Quick-save
 nnoremap <Leader>w :w<CR>
 
@@ -657,7 +659,7 @@ augroup general
   " Vuejs mix of different languages in one file
   autocmd FileType vue syntax sync fromstart
 
-  autocmd BufWritePre,BufLeave,FocusLost * StripWhitespace
+  " autocmd BufWritePre,BufLeave,FocusLost * StripWhitespace
   autocmd Filetype gitcommit,markdown setlocal spell textwidth=72
   autocmd InsertLeave * set nopaste " Leave paste mode when leaving insert mode
   autocmd InsertLeave * pc          " Close preview on insert leave
@@ -752,7 +754,7 @@ augroup END
 
 augroup javascript
   autocmd!
-  autocmd FileType javascript setl sw=2 sts=2 et
+  autocmd FileType javascript,ocaml setl sw=2 sts=2 et
   autocmd BufNewFile,BufRead .babelrc,.eslintrc setlocal filetype=json
 augroup END
 
