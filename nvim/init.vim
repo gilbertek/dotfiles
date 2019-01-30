@@ -290,7 +290,7 @@ xmap S <Plug>VgSurround
 
 Plug 'wsdjeg/vim-fetch' "Vim to process line and column jump in paths
 
-" Start interactive EasyAlign in visual mode (e.g. vipga)
+" Start interactive EasyAlign in visual mode (e.g. vipga/gaip)
 Plug 'junegunn/vim-easy-align'
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
