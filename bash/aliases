@@ -69,6 +69,8 @@ unset jscbin;
 alias mktar="tar -pvczf"
 alias untar="tar -zxvf"
 
+alias stream="youtube-dl -q -o- $1 | vlc -"
+
 # ** [ GIT ALIASES ] ******************
 alias g=git
 alias gs='git status'

@@ -92,6 +92,8 @@ Plug 'humorless/vim-kibit',              { 'for': ['clojure', 'clojurescript'] }
 Plug 'guns/vim-slamhound',               { 'for': ['clojure', 'clojurescript'] }
 Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
 let g:clj_fmt_autosave = 1
+Plug 'luochen1990/rainbow'
+let g:rainbow_active = 0
 
 Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled       = ['elm', 'go']
@@ -136,6 +138,9 @@ Plug 'tpope/vim-dispatch'
 Plug 'thoughtbot/vim-rspec'
 let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
+" Configuration for Language Server Protocol client
+Plug 'derekwyatt/vim-scala'
+Plug 'reasonml-editor/vim-reason-plus'
 " The language client actually makes use of a binary, hence the `install.sh`.
 " We also need the `next` branch in order to specify
 " a language server's TCP port at the time of writing
@@ -143,24 +148,17 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
-
-" Automatically start language servers
-let g:LanguageClient_autoStart      = 1
 let g:LanguageClient_serverCommands = {
       \ 'javascript': ['javascript-typescript-stdio'],
       \ 'typescript': ['javascript-typescript-stdio'],
       \ 'reason':     ['ocaml-language-server', '--stdio'],
       \ 'ocaml':      ['ocaml-language-server', '--stdio'],
+      \ 'purescript': ['purescript-language-server --stdio'],
       \ 'ruby':       ['solargraph', 'stdio'],
       \ 'rust':       ['rustup', 'run', 'stable', 'rls'],
       \ }
-
-" PureScript ftplugin/purescript.vim
-Plug 'raichoo/purescript-vim'
-Plug 'frigoeu/psc-ide-vim',              { 'for': 'purescript' }
-
-Plug 'luochen1990/rainbow'
-let g:rainbow_active = 0
+" Automatically start language servers
+let g:LanguageClient_autoStart      = 1
 
 " HTML / CSS / SCSS
 Plug 'ap/vim-css-color'
@@ -196,7 +194,6 @@ Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 Plug 'sbdchd/neoformat'
 let g:neoformat_try_formatprg      = 1
 let g:neoformat_basic_format_align = 1
-let g:neoformat_basic_format_retab = 1
 
 " LanguageClient enhancements
 " Showing function signature and inline doc.
@@ -212,7 +209,7 @@ Plug 'ervandew/supertab'
 let g:SuperTabDefaultCompletionType    = "<c-x><c-o>"
 let g:SuperTabClosePreviewOnPopupClose = 1
 Plug 'christoomey/vim-tmux-navigator'
-" Plug 'ntpeters/vim-better-whitespace'
+Plug 'ntpeters/vim-better-whitespace'
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'editorconfig/editorconfig-vim'
 
@@ -242,9 +239,9 @@ let g:calendar_google_task     = 1
 Plug 'vimwiki/vimwiki'
 let g:vimwiki_global_ext = 0
 let g:vimwiki_list = [{
-      \ 'path': '~/Dropbox/Personal/Notes/',
-      \ 'syntax': 'markdown',
-      \ 'ext': '.md',
+      \ 'path':      '~/Dropbox/Personal/Notes/',
+      \ 'syntax':    'markdown',
+      \ 'ext':       '.md',
       \ 'auto_tags': 1
       \ }]
 
@@ -428,15 +425,12 @@ let g:deoplete#sources#ternjs#docs         = 1
 let g:tern#command                         = ['tern']
 let g:tern#arguments                       = ['--persistent']
 Plug 'zchee/deoplete-jedi'                   " source for Python
+let g:deoplete#sources#jedi#show_docstring = 1
 Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
 let g:deoplete#enable_at_startup           = 1 " Enable deoplete on startup.
 let g:deoplete#keyword_patterns            = {}
 let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
-
 let g:deoplete#omni_patterns               = {}
-let g:deoplete#omni_patterns.ocaml         = '[^ ,;\t\[()\]]'
-
-" deoplete-go settings
 let g:deoplete#sources#go#gocode_binary    = $GOPATH . '/bin/gocode'
 let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
 let g:deoplete#sources#clang#clang_header  = '/usr/local/opt/llvm/lib/clang'
@@ -451,7 +445,7 @@ call plug#end()
 set termguicolors
 set background=dark
 " silent! colorscheme quantum
-colorscheme base16-default-dark
+" colorscheme base16-default-dark
 colorscheme cosmic_latte
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
@@ -470,6 +464,9 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 if has("nvim")
   " Quit terminal Exit/Navigation
+  tnoremap <c-\> <Esc>
+  tnoremap jk <C-\><C-n>
+  nnoremap <c-\> i<Esc><c-\><c-n>
   tnoremap <Esc> <C-\><C-n>
   tnoremap <C-h> <C-\><C-n><C-w>h
   tnoremap <C-j> <C-\><C-n><C-w>j
@@ -697,6 +694,12 @@ augroup END
 
 augroup clojure
   autocmd!
+  " Line up doc strings vertically
+  let g:clojure_align_multiline_strings = 1
+
+  "  au BufNewFile,BufRead *.asd setlocal filetype=lisp
+  " autocmd BufReadPost *.wast set ft=lisp
+  " autocmd BufNewFile,BufRead  *.{cljs.hl,boot,edn} set filetype=clojure
   autocmd FileType clojure nnoremap <buffer><leader>e :Eval<CR>
   autocmd FileType clojure nnoremap <buffer><leader>rf :%Eval<cr>
   autocmd FileType clojure,timl,scheme,lisp,racket :RainbowToggle
@@ -842,6 +845,7 @@ augroup END
 if filereadable(glob("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
+
 " **[ 4) End Navigation #navigation ]**
 
 " TIPS & TRICKS

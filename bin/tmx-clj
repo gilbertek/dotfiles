@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# Usage: tmx-clj <project_name>
+
+set -euo pipefail
+
+EXPECTED_ARGS=1
+E_BADARGS=65
+ROOTDIR="$HOME/Projects/JVMAPPS"
+
+if [ $# -ne $EXPECTED_ARGS ]
+then
+  echo "Please provide a valid project"
+  echo "Usage: tmx-clj <project_name> "
+  echo "e.g. : tmx-clj project_name"
+  exit $E_BADARGS
+fi
+
+if [[ -n "$1" ]]; then
+  APP_NAME=$1
+  APP_DIR="${ROOTDIR}/${APP_NAME}"
+
+  if [ -d "$APP_DIR" ]; then
+    cd "${APP_DIR}"
+
+    echo "${APP_DIR}"
+
+    tmux new-session -d -s "$APP_NAME" 'sleep 1;nvim .'
+    tmux split-window -h -p 40 'lein repl'
+    tmux split-window -v
+    tmux selectp -t 1
+    tmux -2 attach-session
+  fi
+
+  if [[ -z "$TMUX" ]]; then
+    tmux attach-session -t "$APP_NAME"
+  fi
+fi

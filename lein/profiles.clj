@@ -32,8 +32,11 @@
                   ;; make ClojureScript development easy.
                   [lein-cljsbuild                     "1.1.7"]
 
-                  ;; lein-test when something changes
+                  ;; clojure.test && lein-test when something changes
+                  [lein-midje                          "3.2.1"]
                   [com.jakemccrary/lein-test-refresh  "0.21.1"]]
+
+        :middleware [cider-nrepl.plugin/middleware]
 
         :dependencies [[org.clojure/tools.nrepl       "0.2.13"]
                        [org.clojure/tools.namespace   "0.2.11"]
@@ -46,4 +49,4 @@
                   "rebl" ["trampoline" "run" "-m" "rebel-readline.main"]
                   "lint" ["do" ["kibit"] ["eastwood"] ["bikeshed"] ["yagni"]]}
 
-        :repl-options {:prompt (fn [ns] (str "[" ns "](\u001b[36mλ\u001b[0m)> "))} }}
+        :repl-options {:prompt (fn [ns] (str "[" ns "](\u001b[36mλ\u001b[0m)> "))}}}

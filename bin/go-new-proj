@@ -17,14 +17,14 @@ then
 fi
 
 if [[ -n "$1" ]]; then
-  project_name=$1
-  mkdir -p $GOPATH/src/github.com/gilbertek/${project_name}
-  cd $GOPATH/src/github.com/gilbertek/${project_name}
+  PROJ_NAME=$1
+  mkdir -p "$GOPATH/src/github.com/gilbertek/${PROJ_NAME}"
+  cd "$GOPATH/src/github.com/gilbertek/${PROJ_NAME}"
   pwd
   dep init
   git init
   mkdir -p cmd models util
-  echo "# ${project_name}" >> README.md 
-  echo "# ${project_name} Main" >>cmd/README.md
+  echo "# ${PROJ_NAME}" >> README.md
+  echo "# ${PROJ_NAME} Main" >>cmd/README.md
   ls -al
 fi
