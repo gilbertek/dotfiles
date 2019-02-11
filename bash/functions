@@ -40,6 +40,10 @@ parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
+pman() { man -t "$@" | open -f -a Preview; }
+vman() { vim -R -c "man $1" -c "bdelete 1"; }
+pm() { vim `perldoc -l $1`; }
+
 # github push - push the current branch and then open a browser window with the
 # PR page open
 gpr () {

@@ -14,6 +14,9 @@ alias weather="curl -4 http://wttr.in/New_York"
 alias whatsmyip='curl -s https://am.i.mullvad.net/json | jq'
 alias shrug="echo '¯\_(ツ)_/¯'"
 
+# AWS
+alias ecr-login='eval $(aws ecr get-login --no-include-email --region us-east-1)'
+
 # ** [ Some Conveniences ] *************
 alias mkdir='mkdir -p'
 alias paths='echo -e ${PATH//:/\\n}' # Pretty-print of some PATH variables
@@ -50,6 +53,14 @@ alias xcode="open -a '/Applications/Xcode.app'"
 
 if [[ -x "$(command -v bat)" ]]; then
   alias cat='bat'
+fi
+
+if [[ -x "$(command -v ncdu)" ]]; then
+  alias du='ncdu'
+fi
+
+if [[ -x "$(command -v pnpm)" ]]; then
+  alias npm='pnpm'
 fi
 
 if [[ -x "$(command -v terraform)" ]]; then

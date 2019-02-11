@@ -31,6 +31,13 @@ fi
 [[ ":$PATH:" =~ ":/usr/local/bin:" ]]  || PATH="/usr/local/bin:$PATH"
 [[ ":$PATH:" =~ ":/usr/local/sbin:" ]] || PATH="/usr/local/sbin:$PATH"
 
+# Load the shell dotfiles, and then some:
+# * ~/.path can be used to extend `$PATH`.
+# for file in ~/.{path,bash_prompt,aliases,functions,extra}; do
+# 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
+# done;
+# unset file;
+
 # GO Path setups
 export GOPATH=$HOME/Projects/GOAPPS
 export PATH=$PATH:$GOPATH/bin
@@ -140,8 +147,13 @@ function parse_git_branch {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
 }
 
-PS1="[\[\e[30;1m\]\t\[\e[0m\]]$COLOR_RED\$(parse_git_branch) \[\e[0;34m\]\W\[\e[0m\] "
-PS1+="\[\e[0;31m\]$CHAR \[\e[0m\]"
+# PS1="[\[\e[30;1m\]\t\[\e[0m\]]$COLOR_RED\$(parse_git_branch) \[\e[0;34m\]\W\[\e[0m\] "
+# PS1+="\[\e[0;31m\]$CHAR \[\e[0m\]"
+
+# PS1="\[\e[1;49;93m\]\`ts\` \[\e[1;32;40m\]< \[\e[m\]\[\e[30;42m\]\w\[\e[1;32;40m\] >\[\e[m\] $ "
+
+export GIT_PS1_SHOWSTASHSTATE=1
+export PS1="\[\033[7;32m\]\u@\h\[\033[7;34m\] \W\[\033[7;35m\]\$(parse_git_branch)\[\033[00m\] \$ "
 
 # Ensure ssh agent is running
 if [ -z "$SSH_AUTH_SOCK" ] ; then
@@ -152,6 +164,30 @@ fi
 if command -v xclip >/dev/null; then
   alias pbcopy='xclip -sel clip -i'
   alias pbpaste='xclip -sel clip -o'
+fi
+
+# phpenv
+if [ -d $HOME/.phpenv ] ; then
+  PHPENV_HOME="$HOME/.phpenv"
+  export PATH="$PHPENV_HOME/bin:$HOME/.composer/vendor/bin:$PATH"
+  eval "$(phpenv init -)"
+fi
+
+if command -v perl6 > /dev/null; then
+  alias rp='rlwrap perl6'
+  alias prove6='prove -r -e perl6'
+  alias p6='perl6'
+fi
+
+export MOAR_BINDIR=`perl6 -V | grep moar::bindir | cut -d= -f2`
+export MOAR_SHAREDIR=`perl6 -V | grep perl6::libdir | cut -d= -f2`
+export PERL6LIB="$HOME/.perl6/lib"
+export PATH="$MOAR_BINDIR:$MOAR_SHAREDIR/perl6/site/bin:$PATH"
+
+if [ -d $HOME/.rakudobrew ] ; then
+  RAKUDOBREW_HOME="$HOME/.rakudobrew"
+  export PATH="$RAKUDOBREW_HOME/bin:$RAKUDOBREW_HOME/moar-nom/install/share/perl6/site/bin:$PATH"
+  eval "$(rakudobrew init -)"
 fi
 
 # For a ipython notebook and pyspark integration
