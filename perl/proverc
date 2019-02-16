@@ -1,0 +1,9 @@
+-PPretty
+--verbose
+--lib
+--recurse
+--color
+--failures
+--merge
+--trap
+--timer

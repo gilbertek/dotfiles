@@ -4,8 +4,7 @@
 "   1.2) Leader #leader
 "   1.3) Omni #omni
 "   1.4) UI Basics #ui-basics
-"   1.5) Searching #Searching
-"   1.6) Folding #Folding
+"   1.5) Folding #Folding
 " 2) Plugins #plugins
 "   2.1) Filetypes #filetypes
 "   2.2) Utilities #utilities
@@ -21,9 +20,7 @@
 
 " **[ 1) Basics #basics ]********************
 " **[ 1.1) Tabs & Indent #tabs ]********************
-set expandtab                   " Use spaces instead of tabs
-set shiftwidth=4                " 1 tab == 4 spaces
-set tabstop=4                   " Spaces that a <Tab> in file counts for.
+set expandtab shiftwidth=4 tabstop=4 " Use spaces for tabs 1 tab == 4 spaces
 
 " **[ 1.2) Leader #leader ]********************
 let g:mapleader=','
@@ -48,10 +45,8 @@ set winfixwidth                 " Keep Nerdtree window fixed between toggles
 set inccommand=nosplit          " Search and substitutions
 set clipboard+=unnamedplus      " +p paste OS clipboard
 set undofile                    " Set persistent undo
+set ignorecase smartcase        " Ignore case when searching
 set undodir=~/.config/nvim/undo
-"""" 1.5) Searching #Searching
-set ignorecase                  " Ignore case when searching
-set smartcase                   " Ignore case if search pattern is all lowercase,
 """" 1.6) Folding & scrolling #Folding & scrolling
 set foldmethod=syntax           " fold based on indent/syntax
 set foldlevelstart=99
@@ -118,6 +113,7 @@ let g:erlang_tags_ignore = '_build'
 
 " Markdown Preview
 Plug 'shime/vim-livedown', {'for': 'markdown', 'do': 'npm install -g livedown'}
+nmap gm :LivedownToggle<CR>
 
 Plug 'junegunn/goyo.vim',     { 'on': 'Goyo' } " Distraction free
 Plug 'junegunn/limelight.vim' " To accompany goyo
@@ -190,6 +186,7 @@ let g:necoghc_use_stack               = 1
 Plug 'vim-perl/vim-perl6', { 'for': 'perl6' } " Vim support for Perl 6
 Plug 'c9s/perlomni.vim'    " Perl completion
 Plug 'zerodogg/vim-mason'
+Plug 'wlangstroth/vim-racket'
 
 " Plugins for Database support
 Plug 'tpope/vim-db'
@@ -342,7 +339,6 @@ nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit -v<CR>
-nnoremap <leader>gca :Gcommit --amend -v<CR>
 nnoremap <leader>gp :Git push<cr>
 nnoremap <leader>gl :Glog<cr>
 nnoremap <leader>ga :silent !git add % &<cr><cr>
@@ -385,6 +381,7 @@ Plug 'thanthese/Tortoise-Typing'
 Plug 'easymotion/vim-easymotion'
 Plug 'metakirby5/codi.vim'         " The interactive scratchpad for hackers.
 Plug 'ryanoasis/vim-devicons'
+Plug 'fmoralesc/vim-tutor-mode'         " Interactive Vim tutorials
 " **[ 2.3) UI Plugins #ui-plugins ]********************
 Plug 'nightsense/cosmic_latte'
 Plug 'w0ng/vim-hybrid'
@@ -395,6 +392,7 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'tyrannicaltoucan/vim-quantum'
 let g:quantum_black = 1
 Plug 'rakr/vim-one'
+Plug 'romainl/Apprentice'
 Plug 'chriskempson/base16-vim'
 let base16colorspace=256
 
@@ -425,7 +423,7 @@ endif
 " Autocompletion Engine (neovim) Autocompletion Engine (neovim)
 Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-go',                  { 'do': 'make'}
-Plug 'zchee/deoplete-clang'
+Plug 'tweekmonster/deoplete-clang2'        " C/C++ and Objective-C/C++
 Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
 let g:deoplete#sources#ternjs#types        = 1
 let g:deoplete#sources#ternjs#docs         = 1
@@ -439,6 +437,7 @@ let g:deoplete#keyword_patterns            = {}
 let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:deoplete#omni_patterns               = {}
 let g:deoplete#sources#go#gocode_binary    = $GOPATH . '/bin/gocode'
+" Deoplete-Clang settings
 let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
 let g:deoplete#sources#clang#clang_header  = '/usr/local/opt/llvm/lib/clang'
 
@@ -452,8 +451,9 @@ call plug#end()
 set termguicolors
 set background=dark
 " silent! colorscheme quantum
-colorscheme base16-default-dark
+" colorscheme base16-default-dark
 " colorscheme cosmic_latte
+colorscheme apprentice
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -471,23 +471,16 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 if has("nvim")
   " Quit terminal Exit/Navigation
-  tnoremap <c-\> <Esc>
   tnoremap jk <C-\><C-n>
-  nnoremap <c-\> i<Esc><c-\><c-n>
-  tnoremap <Esc> <C-\><C-n>
-  tnoremap <C-h> <C-\><C-n><C-w>h
-  tnoremap <C-j> <C-\><C-n><C-w>j
-  tnoremap <C-k> <C-\><C-n><C-w>k
-  tnoremap <C-l> <C-\><C-n><C-w>l
   " Terminal Mode Configuration
   nnoremap <silent><bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
 endif
 
 "Use <tab>/<shift> + <tab> to navigate to tabs
-nmap <tab>      :tabnext<CR>
-nmap <S-tab>    :tabprevious<CR>
-nmap <silent>tt :tabnew<CR>
-nmap <silent>tc :tabclose<cr>
+nnoremap <tab>      :tabnext<CR>
+nnoremap <S-tab>    :tabprevious<CR>
+nnoremap <silent>tt :tabnew<CR>
+nnoremap <silent>tc :tabclose<cr>
 nnoremap [t gT
 nnoremap ]t gt
 nnoremap ]T :tablast<CR>
@@ -568,16 +561,10 @@ set iskeyword+=-
 " jj/kk to exit insert mode
 inoremap jj <Esc>
 inoremap kk <Esc>
-nnoremap <leader>x :wq<cr>
-nnoremap <leader>Q :q<CR>    " Quickly close the current window
-nnoremap <leader>q :bd<CR>   " Quickly close the current buffer
-" Custom split opening / closing behaviour
-map <C-C> :q<CR>
 
-" Experiment
+" Close a buffer without closing the split
 nnoremap <leader>q :bp\|bd#<cr>
 nnoremap <leader>Q :bp!\|bd!#<cr>
-" nnoremap <leader>x :w\|bd<cr>
 
 " Quick-save
 nnoremap <Leader>w :w<CR>
@@ -620,12 +607,6 @@ nnoremap - <c-x>
 
 " space open/closes folds
 nnoremap <space> za
-
-" tab: Indent (allow recursive)
-xmap <tab> >
-
-" shift-tab: unindent (allow recursive)
-xmap <s-tab> <
 
 "Grep for current word in git
 noremap <c-g> :Ggrep <cword><CR>
@@ -683,39 +664,42 @@ augroup general
   autocmd Filetype markdown nnoremap <Leader>, :w<cr>:!pandoc % \| lynx -stdin<cr>:redraw!<cr>
 augroup END
 
-augroup cursorline
+augroup Cursorline
   autocmd!
   " Switch between normal/relative line numbers and cursorline
   autocmd InsertEnter,WinEnter * setlocal number cursorline norelativenumber
   autocmd InsertLeave,WinEnter * setlocal relativenumber nocursorline
 augroup END
 
-augroup language_server
+augroup Language-Server
   autocmd!
   nnoremap <silent><leader>h :call LanguageClient_textDocument_hover()<CR>
   nnoremap <silent><leader>d :call LanguageClient_textDocument_definition()<CR>
   nnoremap <silent><leader>r :call LanguageClient#textDocument_rename()<CR>
 augroup END
 
-augroup elm
+augroup JS-Family
+  autocmd!
+  autocmd FileType javascript,ocaml setl sw=2 sts=2 et
+  autocmd BufNewFile,BufRead .babelrc,.eslintrc setlocal filetype=json
+augroup END
+
+augroup ELM-Files
   autocmd!
   autocmd FileType elm nn <buffer><leader>h :ElmShowDocs<CR>
   autocmd FileType elm nn <buffer><leader>m :ElmMakeMain<CR>
   autocmd FileType elm nn <buffer><leader>r :ElmRepl<CR>
 augroup END
 
-augroup clojure
+augroup Lisp-Family
   autocmd!
   " Line up doc strings vertically
   let g:clojure_align_multiline_strings = 1
-
-  "  au BufNewFile,BufRead *.asd setlocal filetype=lisp
-  " autocmd BufReadPost *.wast set ft=lisp
-  " autocmd BufNewFile,BufRead  *.{cljs.hl,boot,edn} set filetype=clojure
   autocmd FileType clojure nnoremap <buffer><leader>e :Eval<CR>
   autocmd FileType clojure nnoremap <buffer><leader>rf :%Eval<cr>
   autocmd FileType clojure,timl,scheme,lisp,racket :RainbowToggle
   autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
+
   " command MFigwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
   autocmd FileType clojure nnoremap <buffer> <Leader>rc :FireplaceConnect<cr>
 
@@ -728,7 +712,7 @@ augroup clojure
 augroup END
 
 " Vim-Alchemist Mappings
-augroup elixir
+augroup OTP-Family
   autocmd!
   autocmd FileType elixir nnoremap <buffer><leader>h :call alchemist#exdoc()<CR>
   autocmd FileType elixir nnoremap <buffer><leader>d :call alchemist#exdef()<CR>
@@ -743,9 +727,10 @@ augroup elixir
   command! Iex :!iex %<cr>
   autocmd FileType elixir nnoremap <leader>e :!elixir %<CR>
   autocmd FileType elixir nnoremap <leader>ee :!iex -r % -S mix<CR>
+  autocmd BufNewFile,BufRead *.{erl,hrl,xrl,yrl}, relx.config setl filetype=erlang
 augroup END
 
-augroup golang
+augroup Golang-mappings
   autocmd!
   autocmd FileType go nmap <leader>r <Plug>(go-run)
   autocmd FileType go nmap <leader>b <Plug>(go-build)
@@ -763,18 +748,7 @@ augroup golang
   autocmd Filetype go nmap <leader>gav <Plug>(go-alternate-vertical)
 augroup END
 
-augroup erlang
-  autocmd!
-  autocmd BufNewFile,BufRead *.{erl,hrl,xrl,yrl}, relx.config setl filetype=erlang
-augroup END
-
-augroup javascript
-  autocmd!
-  autocmd FileType javascript,ocaml setl sw=2 sts=2 et
-  autocmd BufNewFile,BufRead .babelrc,.eslintrc setlocal filetype=json
-augroup END
-
-augroup viml
+augroup Terminal
   autocmd!
   " Always enter terminal in insert mode
   autocmd BufWinEnter,WinEnter,TermOpen term://* startinsert
@@ -787,7 +761,7 @@ augroup viml
   command! PU PlugClean <bar> PlugUpdate <bar> PlugUpgrade
 augroup END
 
-augroup haskell
+augroup Haskell-Maps
   autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
   autocmd FileType haskell nnoremap <silent> <leader>b :!stack build --fast<CR>
   autocmd FileType haskell let g:neoformat_run_all_formatters = 1
@@ -796,7 +770,7 @@ augroup haskell
   autocmd FileType haskell map <silent> <leader><cr> :noh<cr>:GhcModTypeClear<cr>
 augroup END
 
-augroup interoMaps
+augroup intero-Maps
   autocmd!
   autocmd BufWritePost *.hs InteroReload " autocmdtomatically reload on save.
   autocmd FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR><C-W>H
@@ -809,7 +783,7 @@ augroup interoMaps
 augroup END
 
 " Quick breakpoints
-augroup AutoBreakpoint
+augroup Auto-Breakpoint
   autocmd!
   autocmd FileType python nnoremap <leader>db oimport ipdb; ipdb.set_trace()<esc>:w<CR>
   autocmd FileType javascript map <silent> <leader>db odebugger;<esc>

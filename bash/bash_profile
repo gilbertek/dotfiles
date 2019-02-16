@@ -120,7 +120,7 @@ LIGHT_RED='\[\033[1;31m\]'
 COLOR_RED='\[\e[31m\]'
 COLOR_RESET='\[\e[m\]'
 COLOR_PURPLE='\[\e[35m\]'
-COLOR_FUSHIA='\[\e[33m\]'
+COLOR_ORANGE='\[\e[33m\]'
 COLOR_BLUE='\[\e[0;34m\]'
 COLOR_CYAN='\[\e[36m\]'
 COLOR_GREY='\[\e[0;37m\]'
@@ -129,9 +129,13 @@ COLOR_GREEN='\[\e[0;32m\]'
 LIGHT_BLUE="\[\033[0;38;05;74m\]"
 YELLOW="\[\033[0;38;05;184m\]"
 GREEN="\[\033[0;38;05;77m\]"
+GREY_SHADOW='\[\e[37;40m\]'
+PINK_SHADOW='\[\e[35;40m\]'
+GREEN_SHADOW='\[\e[32;40m\]'
+ORANGE_SHADOW='\[\e[33;40m\]'
 
 # ♥ ☆ ⚡ λ ❯ » ▸ → 💥 ✚ - Keeping some cool ASCII Characters for reference
-CHAR='✚'
+CHAR='λ'
 GITBRANCH='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\\(\\\\\1\)/`'
 # do not create .pyc files
 export PYTHONDONTWRITEBYTECODE=x
@@ -152,8 +156,10 @@ function parse_git_branch {
 
 # PS1="\[\e[1;49;93m\]\`ts\` \[\e[1;32;40m\]< \[\e[m\]\[\e[30;42m\]\w\[\e[1;32;40m\] >\[\e[m\] $ "
 
-export GIT_PS1_SHOWSTASHSTATE=1
-export PS1="\[\033[7;32m\]\u@\h\[\033[7;34m\] \W\[\033[7;35m\]\$(parse_git_branch)\[\033[00m\] \$ "
+# export GIT_PS1_SHOWSTASHSTATE=1
+# export PS1="\[\033[7;32m\]\u@\h\[\033[7;34m\] \W\[\033[7;35m\]\$(parse_git_branch)\[\033[00m\] \$ "
+
+PS1="${PINK_SHADOW}\u ${GREY_SHADOW}at ${ORANGE_SHADOW}\h ${GREY_SHADOW}in ${GREEN_SHADOW}\W$(parse_git_branch) ${GREY_SHADOW}${CHAR}${COLOR_RESET} "
 
 # Ensure ssh agent is running
 if [ -z "$SSH_AUTH_SOCK" ] ; then
@@ -177,6 +183,10 @@ if command -v perl6 > /dev/null; then
   alias rp='rlwrap perl6'
   alias prove6='prove -r -e perl6'
   alias p6='perl6'
+fi
+
+if command -v racket > /dev/null; then
+  alias rkt='rlwrap racket'
 fi
 
 export MOAR_BINDIR=`perl6 -V | grep moar::bindir | cut -d= -f2`
