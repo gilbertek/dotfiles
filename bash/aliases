@@ -9,6 +9,9 @@ alias readings='cd ~/Documents/Readings'
 alias work='cd ~/Projects'
 alias trash="sudo rm -rvf ~/.Trash/*"
 alias blogs="cd ~/Projects/BLOG/leftaxe"
+alias ldir='find . -type d -maxdepth 1 -mindepth 1 -exec basename {} \;'
+alias grep='grep --color'
+alias top='top -F -R -o cpu'
 
 alias weather="curl -4 http://wttr.in/New_York"
 alias whatsmyip='curl -s https://am.i.mullvad.net/json | jq'
@@ -59,9 +62,9 @@ if [[ -x "$(command -v ncdu)" ]]; then
   alias du='ncdu'
 fi
 
-if [[ -x "$(command -v pnpm)" ]]; then
-  alias npm='pnpm'
-fi
+# if [[ -x "$(command -v pnpm)" ]]; then
+#   alias npm='pnpm'
+# fi
 
 if [[ -x "$(command -v terraform)" ]]; then
   alias tf='terraform'
@@ -241,11 +244,21 @@ alias ing="get ing"
 alias configmaps="get configmaps"
 alias secrets="get secrets"
 
+# ** [TIG SHORTCUTS ] ******************
+alias tigu='tig HEAD@{u}..'
+alias tiga='tig ..@{u}'
+
+# ** [ML SHORTCUTS ] ******************
+export BREAK_CHARS="\"#'(),;\`\\|"
+alias sbcl="rlwrap -b \$BREAK_CHARS sbcl"
+
 # ** [CLOJURE SHORTCUTS ] ******************
 alias l='lein'
 alias b='boot'
 alias shadow='shadow-cljs'
 alias shdw='shadow-cljs'
+alias lein-debug='JVM_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=${debug_port:-5005} lein'
+alias cljsbuild="lein trampoline cljsbuild $@"
 # alias clj-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept clojure.core.server/repl}" -A:rebel; }; do_repl'
 alias clj-repl='clojure -Sdeps "{:deps {com.bhauman/rebel-readline {:mvn/version \"0.1.4\"}}}" -m rebel-readline.main'
 alias cljs-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept cljs.server.node/repl}" -R:cljs-canary -A:rebel-cljs -m cljs.main -re node -r; }; do_repl'

@@ -54,14 +54,11 @@ set foldlevelstart=99
 call plug#begin()
 
 """" 2.1) Filetypes #filetypes
-Plug 'elmcast/elm-vim',        { 'for': [ 'elm' ] }
-let g:elm_format_autosave      = 1
-let g:elm_detailed_complete    = 1
-let g:elm_format_fail_silently = 1
-let g:elm_browser_command      = 'open'
-let g:elm_make_show_warnings   = 1
-let g:elm_setup_keybindings    = 1
-let g:javascript_plugin_jsdoc  = 1
+Plug 'elmcast/elm-vim',      { 'for': [ 'elm' ] }
+let g:elm_format_autosave    = 1
+let g:elm_detailed_complete  = 1
+let g:elm_make_show_warnings = 1
+let g:elm_setup_keybindings  = 1
 
 " Plugins for Go support
 Plug 'fatih/vim-go',           { 'do': ':GoUpdateBinaries' }
@@ -78,14 +75,13 @@ let g:go_auto_sameids        = 1
 " Plug 'vim-scripts/slimv.vim'
 Plug 'guns/vim-clojure-static'
 Plug 'guns/vim-sexp'
-Plug 'clojure-vim/async-clj-omni'  " Provides completion through deoplete or ncm
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-sexp-mappings-for-regular-people' , { 'for': ['clojure', 'clojurescript'] }
-Plug 'eraserhd/parinfer-rust',           { 'do': 'cargo build --release' }
-Plug 'snoe/clj-refactor.nvim',           { 'do': ':UpdateRemotePlugins' }
-Plug 'humorless/vim-kibit',              { 'for': ['clojure', 'clojurescript'] }
-Plug 'guns/vim-slamhound',               { 'for': ['clojure', 'clojurescript'] }
-Plug 'venantius/vim-cljfmt',             { 'for': ['clojure', 'clojurescript'] }
+Plug 'clojure-vim/async-clj-omni'  " Provides completion through deoplete or ncm
+Plug 'eraserhd/parinfer-rust',     { 'do': 'cargo build --release' }
+Plug 'humorless/vim-kibit',        { 'for': ['clojure', 'clojurescript'] }
+Plug 'guns/vim-slamhound',         { 'for': ['clojure', 'clojurescript'] }
+Plug 'venantius/vim-cljfmt',       { 'for': ['clojure', 'clojurescript'] }
 let g:clj_fmt_autosave = 1
 Plug 'luochen1990/rainbow'
 let g:rainbow_active = 0
@@ -264,7 +260,7 @@ let g:NERDTreeMinimalUI     = 1
 let g:NERDTreeBookmarksFile = expand('~/.config/nvim/NERDTreeBookmarks')
 nnoremap <leader>nb :NERDTreeFromBookmark<Space>
 nnoremap <leader>nf :NERDTreeFind<CR>
-nnoremap <leader>nn :NERDTreeToggle<cr>
+nnoremap <C-b> :NERDTreeToggle<enter>
 
 " Move blocks of code with Control+j/k
 Plug 'matze/vim-move'
@@ -392,7 +388,6 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'tyrannicaltoucan/vim-quantum'
 let g:quantum_black = 1
 Plug 'rakr/vim-one'
-Plug 'romainl/Apprentice'
 Plug 'chriskempson/base16-vim'
 let base16colorspace=256
 
@@ -451,9 +446,8 @@ call plug#end()
 set termguicolors
 set background=dark
 " silent! colorscheme quantum
-" colorscheme base16-default-dark
+colorscheme base16-default-dark
 " colorscheme cosmic_latte
-colorscheme apprentice
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -700,7 +694,7 @@ augroup Lisp-Family
   autocmd FileType clojure,timl,scheme,lisp,racket :RainbowToggle
   autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
 
-  " command MFigwheel :Piggieback (figwheel-sidecar.repl-api/repl-env)
+  command! CljsConnect :Piggieback (figwheel-sidecar.repl-api/repl-env)
   autocmd FileType clojure nnoremap <buffer> <Leader>rc :FireplaceConnect<cr>
 
   autocmd FileType clojure nnoremap <A-e> :Eval<CR>
