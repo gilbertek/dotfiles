@@ -20,7 +20,7 @@
 
 " **[ 1) Basics #basics ]********************
 " **[ 1.1) Tabs & Indent #tabs ]********************
-set expandtab shiftwidth=4 tabstop=4 " Use spaces for tabs 1 tab == 4 spaces
+set tabstop=4 shiftwidth=4 expandtab " Use spaces for tabs 1 tab == 4 spaces
 
 " **[ 1.2) Leader #leader ]********************
 let g:mapleader=','
@@ -204,6 +204,7 @@ let g:SuperTabDefaultCompletionType    = "<c-x><c-o>"
 let g:SuperTabClosePreviewOnPopupClose = 1
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'ntpeters/vim-better-whitespace'
+let g:strip_whitespace_on_save         = 1
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'editorconfig/editorconfig-vim'
 
@@ -291,21 +292,21 @@ nmap ga <Plug>(EasyAlign)
 
 " Asynchronous file linter
 Plug 'w0rp/ale'
-let g:ale_javascript_prettier_use_local_config = 1
+let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
 let g:ale_linters = {
       \ 'javascript': ['eslint', 'prettier'],
+      \ 'typescript': ['tslint', 'eslint', 'prettier'],
       \ 'go':         ['gofmt', 'gometalinter'],
       \ 'haskell':    ['ghc', 'hlint'],
       \ 'reason':     ['merlin'],
       \ 'ocaml':      ['merlin'],
-      \ 'vue':        ['eslint', 'stylelint'],
+      \ 'vue':        ['eslint', 'vls'],
       \ 'perl':       ['perl', 'perlcritic'],
       \ }
 
 let g:ale_fixers = {
-      \ 'javascript': ['prettier'],
+      \ 'typescript': ['prettier'],
       \ 'python':     ['yapf', 'isort', 'autopep8'],
-      \ 'elm':        ['elm-format'],
       \ 'reason':     ['refmt'],
       \ 'ruby':       ['rubocop'],
       \ 'elixir':     ['mix_format'],
@@ -316,12 +317,13 @@ let g:ale_fixers = {
       \ 'sh':         ['shfmt'],
       \ 'perl':       ['perltidy'],
       \ }
+" ☯ ☢ ☣ ☹ ⚑ ⚐ ⚠ 𥉉 ⚓ ⚔ △ ✖ ✗✗ ✔ 👌❗️ Emojis
 let g:ale_fix_on_save                 = 1
 let g:ale_python_auto_pipenv          = 1
-let g:ale_sign_error                  = '✗✗' " '△' '✖' could use emoji
-let g:ale_sign_warning                = '⚠ ' " '✕' could use emoji '?'
-let g:ale_echo_msg_format             = '[%linter% %severity%]: %(code) %%s'
-let g:ale_statusline_format           = ['✗✗%d', '⚠ %d', '✔ Ok']
+let g:ale_sign_error                  = '✗'
+let g:ale_sign_warning                = '𥉉'
+" let g:ale_echo_msg_format             = '[%linter% %severity%]: %(code) %%s'
+let g:ale_echo_msg_format             = '%code: %%s [%linter%/%severity%]'
 let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
 let g:ale_rust_cargo_use_clippy       = executable('cargo-clippy')
 let g:ale_perl_perl_options           = '-c -Mwarnings -Ilib -It/lib'
@@ -399,9 +401,13 @@ let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
-      \            [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \            [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
       \ },
-      \ 'component_function': { 'gitbranch': 'fugitive#head' }
+      \ 'component': {
+      \   'fugitive': ' %{exists("*fugitive#head") ? fugitive#head() : ""}',
+      \ },
+      \ 'component_visible_condition': {
+      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())' }
       \ }
 " **[ 2.3) End UI Plugins #ui-plugins ]*****************
 
@@ -420,17 +426,18 @@ Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
 Plug 'zchee/deoplete-go',                  { 'do': 'make'}
 Plug 'tweekmonster/deoplete-clang2'        " C/C++ and Objective-C/C++
 Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
+Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
+Plug 'zchee/deoplete-jedi'                   " source for Python
+let g:deoplete#enable_at_startup           = 1
 let g:deoplete#sources#ternjs#types        = 1
 let g:deoplete#sources#ternjs#docs         = 1
+let g:deoplete#omni#input_patterns         = {}
+let g:deoplete#keyword_patterns            = {}
 let g:tern#command                         = ['tern']
 let g:tern#arguments                       = ['--persistent']
-Plug 'zchee/deoplete-jedi'                   " source for Python
 let g:deoplete#sources#jedi#show_docstring = 1
-Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
-let g:deoplete#enable_at_startup           = 1 " Enable deoplete on startup.
-let g:deoplete#keyword_patterns            = {}
 let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
-let g:deoplete#omni_patterns               = {}
+let g:deoplete#omni#input_patterns.elm     = '[^ \t]+'
 let g:deoplete#sources#go#gocode_binary    = $GOPATH . '/bin/gocode'
 " Deoplete-Clang settings
 let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
@@ -446,8 +453,8 @@ call plug#end()
 set termguicolors
 set background=dark
 " silent! colorscheme quantum
-colorscheme base16-default-dark
-" colorscheme cosmic_latte
+" colorscheme base16-default-dark
+colorscheme cosmic_latte
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -455,6 +462,8 @@ nnoremap <Left>  :echo "ಠ_ಠ!"<cr>
 nnoremap <Right> :echo "ಠ_ಠ!"<cr>
 nnoremap <Up>    :echo "ಠ_ಠ!"<cr>
 nnoremap <Down>  :echo "ಠ_ಠ!"<cr>
+
+" Jump to previous / next cursor position
 nnoremap <A-Left> <C-o>
 nnoremap <A-Right> <C-i>
 
@@ -471,10 +480,10 @@ if has("nvim")
 endif
 
 "Use <tab>/<shift> + <tab> to navigate to tabs
-nnoremap <tab>      :tabnext<CR>
-nnoremap <S-tab>    :tabprevious<CR>
-nnoremap <silent>tt :tabnew<CR>
-nnoremap <silent>tc :tabclose<cr>
+" nnoremap <tab>      :tabnext<CR>
+nnoremap <C-t> :tabnew<CR>
+nnoremap <C-k> :tabnext<CR>
+nnoremap <C-j> :tabprevious<CR>
 nnoremap [t gT
 nnoremap ]t gt
 nnoremap ]T :tablast<CR>
@@ -497,9 +506,8 @@ nnoremap ]l :lnext<CR>
 " Buffer nav
 nnoremap <silent>[b :bprevious<CR>
 nnoremap <silent>]b :bnext<CR>
-nnoremap <leader>c  :bd<CR>
 
-" Open the alternate file
+" Open the alternate file with ,, instead of CTRL+SHIFT+6
 map ,, <C-^>
 
 " In the quickfix window, <CR> is used to jump to the error under the
@@ -539,7 +547,7 @@ cnoremap <c-v> <c-r>
 noremap gV `[v`]
 
 " U: Redos since 'u' undos
-" nnoremap U :redo<cr>
+nnoremap U :redo<cr>
 nnoremap <C-z> :redo<cr>
 
 " Keep the cursor in place while joining lines
@@ -565,9 +573,6 @@ nnoremap <Leader>w :w<CR>
 
 " find merge conflict markers
 nnoremap <silent><leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
-
-" re-indent entire file
-nmap <leader>i ggVG=
 
 " Unselect the search result
 map <Leader><Space> :noh<CR>
@@ -611,9 +616,6 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>"
 " Hit Ctrl+A to select all in current buffer
 nnoremap <C-a> ggVG
 
-" Make <c-h> work like <c-h> again (this is a problem with libterm)
-nnoremap <BS> <C-w>h
-
 " Open in TeXShop
 nnoremap <leader>tx :!open -a TeXShop %<cr><cr>
 " build sphinx docs
@@ -644,17 +646,11 @@ augroup general
   autocmd BufLeave,FocusLost * :silent! wall " Save on buffer or leave/loses focus
   autocmd CursorHold * silent! checktime
 
-  " Vuejs mix of different languages in one file
-  autocmd FileType vue syntax sync fromstart
-
-  " autocmd BufWritePre,BufLeave,FocusLost * StripWhitespace
   autocmd Filetype gitcommit,markdown setlocal spell textwidth=72
   autocmd InsertLeave * set nopaste " Leave paste mode when leaving insert mode
   autocmd InsertLeave * pc          " Close preview on insert leave
   autocmd BufWinEnter * silent! :%foldopen! " Expand all folds when entering a file
-  autocmd BufWritePre *.{js,jsx,ts,tsx,scss,less,rb,mjs,json,graphql,md} Neoformat
   autocmd FileType toml setl ts=2 sw=2 sts=2 et
-
   autocmd Filetype markdown nnoremap <Leader>, :w<cr>:!pandoc % \| lynx -stdin<cr>:redraw!<cr>
 augroup END
 
@@ -674,8 +670,12 @@ augroup END
 
 augroup JS-Family
   autocmd!
+  " Vuejs mix of different languages in one file
+  autocmd FileType vue syntax sync fromstart
   autocmd FileType javascript,ocaml setl sw=2 sts=2 et
   autocmd BufNewFile,BufRead .babelrc,.eslintrc setlocal filetype=json
+  autocmd BufWritePre *.{js,jsx,ts,tsx,scss,less,rb,mjs,json,graphql,md} Neoformat
+  autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ es5
 augroup END
 
 augroup ELM-Files
@@ -751,7 +751,7 @@ augroup Terminal
 
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew ~/.config/nvim/init.vim
-  command! Loadrc source ~/.config/nvim/init.vim
+  command! Loadrc source ~/.config/nvim/init.vim | redraw | echo 'Init reloaded'
   command! PU PlugClean <bar> PlugUpdate <bar> PlugUpgrade
 augroup END
 

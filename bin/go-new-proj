@@ -4,7 +4,7 @@
 # Require: valid installation of `dep` via `brew install dep`
 
 set -euo pipefail
-
+IFS=$'\n\t'
 EXPECTED_ARGS=1
 E_BADARGS=65
 

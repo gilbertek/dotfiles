@@ -3,6 +3,7 @@
 # Open project in CircleCI
 
 set -euo pipefail
+IFS=$'\n\t'
 
 repo=$(git config --get remote.origin.url | perl -ne 'm|/([^/]+/[^/]+)\.git$| and print $1')
 

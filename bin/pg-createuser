@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+IFS=$'\n\t'
+
 read -p "User name? " user
 
 sudo -u postgres createuser \

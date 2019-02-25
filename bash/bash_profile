@@ -113,23 +113,22 @@ export KUBECTL_CONTEXT=$(kubectl config current-context)
 
 ### Foreground Colours #######################################################
 LIGHT_GREEN='\[\e[32m\]'
-LIGHT_RED='\[\033[1;31m\]'
+LIGHT_RED='\[\e[0;91m\]'
 COLOR_RED='\[\e[31m\]'
 COLOR_RESET='\[\e[m\]'
 COLOR_PURPLE='\[\e[35m\]'
 COLOR_ORANGE='\[\e[33m\]'
-COLOR_BLUE='\[\e[0;34m\]'
+COLOR_BLUE='\[\e[34m\]'
 COLOR_CYAN='\[\e[36m\]'
 COLOR_GREY='\[\e[0;37m\]'
 COLOR_WHITE='\[\033[0m\]'
-COLOR_GREEN='\[\e[0;32m\]'
-LIGHT_BLUE="\[\033[0;38;05;74m\]"
-YELLOW="\[\033[0;38;05;184m\]"
-GREEN="\[\033[0;38;05;77m\]"
-GREY_SHADOW='\[\e[37;40m\]'
-PINK_SHADOW='\[\e[35;40m\]'
-GREEN_SHADOW='\[\e[32;40m\]'
-ORANGE_SHADOW='\[\e[33;40m\]'
+COLOR_GREEN='\[\e[32m\]'
+LIGHT_BLUE='\[\e[0;94m\]'
+GREY_SHADE='\[\e[37;40m\]'
+PINK_SHADE='\[\e[35;40m\]'
+GREEN_SHADE='\[\e[32;40m\]'
+ORANGE_SHADE='\[\e[33;40m\]'
+YELLOW_SHADE='\[\e[93;40m\]'
 
 # ♥ ☆ ⚡ λ ❯ » ▸ → 💥 ✚ - Keeping some cool ASCII Characters for reference
 CHAR='λ'
@@ -146,7 +145,7 @@ function parse_git_dirty {
 }
 
 function parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ (\1$(parse_git_dirty))/"
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ [\1$(parse_git_dirty)]/"
 }
 
 # PS1="[\[\e[30;1m\]\t\[\e[0m\]]$COLOR_RED\$(parse_git_branch) \[\e[0;34m\]\W\[\e[0m\] "
@@ -157,7 +156,7 @@ function parse_git_branch {
 # export GIT_PS1_SHOWSTASHSTATE=1
 # export PS1="\[\033[7;32m\]\u@\h\[\033[7;34m\] \W\[\033[7;35m\]\$(parse_git_branch)\[\033[00m\] \$ "
 
-PS1="${PINK_SHADOW}\u ${GREY_SHADOW}at ${ORANGE_SHADOW}\h ${GREY_SHADOW}in ${GREEN_SHADOW}\W$(parse_git_branch) ${GREY_SHADOW}${CHAR}${COLOR_RESET} "
+PS1="${PINK_SHADE}\u ${GREY_SHADE}at ${ORANGE_SHADE}\h ${GREY_SHADE}in ${GREEN_SHADE}\W${YELLOW_SHADE}$(parse_git_branch) ${GREY_SHADE}${CHAR}${COLOR_RESET} "
 
 # Ensure ssh agent is running
 if [ -z "$SSH_AUTH_SOCK" ] ; then

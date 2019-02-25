@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+IFS=$'\n\t'
 
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 parent_branch=$(git show-branch -a 2>/dev/null | grep '\*' | grep -v "$current_branch" | head -n1 | sed 's/.*\[\(.*\)\].*/\1/' | sed 's/[\^~].*//')
