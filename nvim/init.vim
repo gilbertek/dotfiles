@@ -322,7 +322,6 @@ let g:ale_fix_on_save                 = 1
 let g:ale_python_auto_pipenv          = 1
 let g:ale_sign_error                  = '✗'
 let g:ale_sign_warning                = '𥉉'
-" let g:ale_echo_msg_format             = '[%linter% %severity%]: %(code) %%s'
 let g:ale_echo_msg_format             = '%code: %%s [%linter%/%severity%]'
 let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
 let g:ale_rust_cargo_use_clippy       = executable('cargo-clippy')
