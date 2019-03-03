@@ -428,8 +428,6 @@ Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.j
 Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
 Plug 'zchee/deoplete-jedi'                   " source for Python
 let g:deoplete#enable_at_startup           = 1
-let g:deoplete#sources#ternjs#types        = 1
-let g:deoplete#sources#ternjs#docs         = 1
 let g:deoplete#omni#input_patterns         = {}
 let g:deoplete#keyword_patterns            = {}
 let g:tern#command                         = ['tern']
@@ -452,8 +450,8 @@ call plug#end()
 set termguicolors
 set background=dark
 " silent! colorscheme quantum
-" colorscheme base16-default-dark
-colorscheme cosmic_latte
+colorscheme base16-default-dark
+" colorscheme cosmic_latte
 """"""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
@@ -483,10 +481,6 @@ endif
 nnoremap <C-t> :tabnew<CR>
 nnoremap <C-k> :tabnext<CR>
 nnoremap <C-j> :tabprevious<CR>
-nnoremap [t gT
-nnoremap ]t gt
-nnoremap ]T :tablast<CR>
-nnoremap [T :tabfirst<CR>
 
 " map tab navigation to Cmd-1 to 9.
 map <silent> <D-1> :tabn 1<cr>
@@ -643,7 +637,7 @@ command! -nargs=* TmuxSendKeys call TmuxSendKeys(<q-args>)
 augroup general
   autocmd!
   autocmd BufLeave,FocusLost * :silent! wall " Save on buffer or leave/loses focus
-  autocmd CursorHold * silent! checktime
+  autocmd CursorHold,CursorHoldI,FocusGained,BufEnter * checktime
 
   autocmd Filetype gitcommit,markdown setlocal spell textwidth=72
   autocmd InsertLeave * set nopaste " Leave paste mode when leaving insert mode
