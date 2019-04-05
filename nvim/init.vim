@@ -20,7 +20,7 @@
 
 " **[ 1) Basics #basics ]********************
 " **[ 1.1) Tabs & Indent #tabs ]********************
-set tabstop=4 shiftwidth=4 expandtab " Use spaces for tabs 1 tab == 4 spaces
+set tabstop=4 shiftwidth=4 softtabstop=4 expandtab " Use spaces for tabs 1 tab == 4 spaces
 
 " **[ 1.2) Leader #leader ]********************
 let g:mapleader=','
@@ -60,8 +60,10 @@ let g:elm_detailed_complete  = 1
 let g:elm_make_show_warnings = 1
 let g:elm_setup_keybindings  = 1
 
+" Plug 'lambdatoast/elm.vim', { 'for': 'elm' }
+
 " Plugins for Go support
-Plug 'fatih/vim-go',           { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go', { 'for': 'go', 'do': 'nvim +GoInstallBinaries +qall' }
 Plug 'jodosha/vim-godebug'
 Plug 'buoto/gotests-vim'
 let g:go_list_type           = 'quickfix' " Fix for location list
@@ -72,7 +74,6 @@ let g:go_highlight_functions = 1
 let g:go_auto_sameids        = 1
 
 " Clojure & Lisp development plugins
-" Plug 'vim-scripts/slimv.vim'
 Plug 'guns/vim-clojure-static'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-fireplace'
@@ -102,8 +103,8 @@ let g:alchemist_tag_map           = '<C-]>'
 let g:alchemist_tag_stack_map     = '<C-T>'
 let g:alchemist_iex_term_split    = 'split'
 
-Plug 'vim-erlang/vim-erlang-tags',          {'for': 'erlang'}
-Plug 'vim-erlang/vim-erlang-omnicomplete',  {'for': 'erlang'}
+Plug 'vim-erlang/vim-erlang-tags',          { 'for': 'erlang' }
+Plug 'vim-erlang/vim-erlang-omnicomplete',  { 'for': 'erlang' }
 Plug 'vim-erlang/vim-erlang-compiler'
 let g:erlang_tags_ignore = '_build'
 
@@ -203,6 +204,9 @@ Plug 'ervandew/supertab'
 let g:SuperTabDefaultCompletionType    = "<c-x><c-o>"
 let g:SuperTabClosePreviewOnPopupClose = 1
 Plug 'christoomey/vim-tmux-navigator'
+" Plug 'jpalardy/vim-slime'
+" let g:slimv_swank_cmd = '!osascript -e "! tmux new-window -d -n REPL-SBCL "sbcl --load ~/.vim/bundle/slimv/slime/start-swank.lisp"'
+
 Plug 'ntpeters/vim-better-whitespace'
 let g:strip_whitespace_on_save         = 1
 Plug 'powerman/vim-plugin-AnsiEsc'
@@ -277,13 +281,13 @@ nmap <silent><leader>gcp <c-_>p
 " Jump between quicklist, location items with ease, among other things
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
-nmap s <Plug>Ysurround
-nmap S <Plug>YSurround
+nmap s  <Plug>Ysurround
+nmap S  <Plug>YSurround
 nmap ss <Plug>Yssurround
 nmap Ss <Plug>YSsurround
 nmap SS <Plug>YSsurround
-xmap s <Plug>VSurround
-xmap S <Plug>VgSurround
+xmap s  <Plug>VSurround
+xmap S  <Plug>VgSurround
 
 " Start interactive EasyAlign in visual mode (e.g. vipga/gaip)
 Plug 'junegunn/vim-easy-align'
@@ -325,6 +329,7 @@ let g:ale_sign_warning                = '𥉉'
 let g:ale_echo_msg_format             = '%code: %%s [%linter%/%severity%]'
 let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
 let g:ale_rust_cargo_use_clippy       = executable('cargo-clippy')
+let g:ale_cpp_clangcheck_options      = '-std=c++14'
 let g:ale_perl_perl_options           = '-c -Mwarnings -Ilib -It/lib'
 let g:ale_perl_perlcritic_showrules = 1
 nmap [a <Plug>(ale_next_wrap)
@@ -476,11 +481,9 @@ if has("nvim")
   nnoremap <silent><bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
 endif
 
-"Use <tab>/<shift> + <tab> to navigate to tabs
-" nnoremap <tab>      :tabnext<CR>
-nnoremap <C-t> :tabnew<CR>
-nnoremap <C-k> :tabnext<CR>
-nnoremap <C-j> :tabprevious<CR>
+" Tab navigation
+nnoremap <silent> ]t :tabprev<CR>
+nnoremap <silent> [t :tabnext<CR>
 
 " map tab navigation to Cmd-1 to 9.
 map <silent> <D-1> :tabn 1<cr>
@@ -640,6 +643,7 @@ augroup general
   autocmd CursorHold,CursorHoldI,FocusGained,BufEnter * checktime
 
   autocmd Filetype gitcommit,markdown setlocal spell textwidth=72
+  autocmd BufEnter PULLREQ_EDITMSG setlocal filetype=gitcommit
   autocmd InsertLeave * set nopaste " Leave paste mode when leaving insert mode
   autocmd InsertLeave * pc          " Close preview on insert leave
   autocmd BufWinEnter * silent! :%foldopen! " Expand all folds when entering a file
@@ -775,7 +779,7 @@ augroup Auto-Breakpoint
   autocmd FileType python nnoremap <leader>db oimport ipdb; ipdb.set_trace()<esc>:w<CR>
   autocmd FileType javascript map <silent> <leader>db odebugger;<esc>
   autocmd FileType javascript map<leader>ll yiwoconsole.log('<c-r>"', <c-r>");<esc>^
-  autocmd FileType ruby nnoremap <leader>db obinding.pry<esc>:w<CR>
+  autocmd FileType ruby nnoremap <leader>bp obinding.pry<esc>:w<CR>
   autocmd FileType clojure map <silent> <leader>db o(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
 augroup END
 
