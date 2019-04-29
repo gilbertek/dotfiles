@@ -20,7 +20,7 @@
 
 " **[ 1) Basics #basics ]********************
 " **[ 1.1) Tabs & Indent #tabs ]********************
-set tabstop=4 shiftwidth=4 softtabstop=4 expandtab " Use spaces for tabs 1 tab == 4 spaces
+set shiftwidth=4 tabstop=4 expandtab
 
 " **[ 1.2) Leader #leader ]********************
 let g:mapleader=','
@@ -85,7 +85,7 @@ Plug 'guns/vim-slamhound',         { 'for': ['clojure', 'clojurescript'] }
 Plug 'venantius/vim-cljfmt',       { 'for': ['clojure', 'clojurescript'] }
 let g:clj_fmt_autosave = 1
 Plug 'luochen1990/rainbow'
-let g:rainbow_active = 0
+let g:rainbow_active = 1
 
 Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled       = ['elm', 'go']
@@ -94,14 +94,15 @@ let g:jsx_ext_required        = 0
 let g:rustfmt_autosave        = 1
 
 " Elixir
-Plug 'elixir-lang/vim-elixir'
-Plug 'slashmili/alchemist.vim'
-let g:alchemist#elixir_erlang_src = expand('~/.asdf/installs/elixir/1.7.4/bin/elixir')
-let g:alchemist_tag_disable       = 1 "Use Universal ctags instead
-let g:alchemist_iex_term_size     = 10
-let g:alchemist_tag_map           = '<C-]>'
-let g:alchemist_tag_stack_map     = '<C-T>'
-let g:alchemist_iex_term_split    = 'split'
+Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
+Plug 'elixir-lang/vim-elixir',  { 'for': 'elixir' }
+let g:alchemist#elixir_erlang_src  = expand('~/.asdf/installs/elixir/1.8.1/bin/elixir')
+let g:elixir_use_markdown_for_docs = 1
+let g:alchemist_tag_disable        = 1 "Use Universal ctags instead
+let g:alchemist_iex_term_size      = 10
+let g:alchemist_tag_map            = '<C-]>'
+let g:alchemist_tag_stack_map      = '<C-T>'
+let g:alchemist_iex_term_split     = 'split'
 
 Plug 'vim-erlang/vim-erlang-tags',          { 'for': 'erlang' }
 Plug 'vim-erlang/vim-erlang-omnicomplete',  { 'for': 'erlang' }
@@ -156,13 +157,15 @@ let g:LanguageClient_autoStart      = 1
 
 " HTML / CSS / SCSS
 Plug 'ap/vim-css-color'
-Plug 'mattn/emmet-vim',     { 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html'] }
+Plug 'mattn/emmet-vim', {
+  \ 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html', 'eruby',
+  \ 'eelixir']
+  \ }
 let g:user_emmet_mode       = 'a'     " Only enable Insert mode functions.
 let g:user_emmet_leader_key = '<tab>' " Using Tab to expand
-let g:user_emmet_settings   = { 'javascript.jsx': { 'extends': 'jsx' } }
 
-Plug 'flowtype/vim-flow'
 Plug 'ternjs/tern_for_vim',     { 'do': 'npm install' }
+Plug 'jparise/vim-graphql'
 
 " Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Haskell
 let g:haskell_enable_quantification   = 1 " to enable highlighting of `forall`
@@ -183,6 +186,7 @@ let g:necoghc_use_stack               = 1
 Plug 'vim-perl/vim-perl6', { 'for': 'perl6' } " Vim support for Perl 6
 Plug 'c9s/perlomni.vim'    " Perl completion
 Plug 'zerodogg/vim-mason'
+
 Plug 'wlangstroth/vim-racket'
 
 " Plugins for Database support
@@ -209,6 +213,7 @@ Plug 'christoomey/vim-tmux-navigator'
 
 Plug 'ntpeters/vim-better-whitespace'
 let g:strip_whitespace_on_save         = 1
+
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'editorconfig/editorconfig-vim'
 
@@ -246,10 +251,6 @@ let g:vimwiki_list = [{
 
 " VimWiki Config
 autocmd BufWritePost ~/Dropbox/Personal/notes/* call AutoCommit()
-function! MakeDiaryLink()
-  return "~/vimwiki/diary/" . strftime('%Y-%m-%d') . ".md"
-endfunction
-" nmap <Leader>w<Leader>w :exec "e " . MakeDiaryLink()<CR>
 
 Plug 'scrooloose/nerdtree',      { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 let g:NERDTreeIgnore = [
@@ -265,7 +266,7 @@ let g:NERDTreeMinimalUI     = 1
 let g:NERDTreeBookmarksFile = expand('~/.config/nvim/NERDTreeBookmarks')
 nnoremap <leader>nb :NERDTreeFromBookmark<Space>
 nnoremap <leader>nf :NERDTreeFind<CR>
-nnoremap <C-b> :NERDTreeToggle<enter>
+nnoremap <leader>n  :NERDTreeToggle<enter>
 
 " Move blocks of code with Control+j/k
 Plug 'matze/vim-move'
@@ -276,7 +277,7 @@ Plug 'tomtom/tcomment_vim'
 map <silent> <Leader>cc :TComment<CR>
 map <silent> <leader>cl :TCommentInline<cr>
 " Adds 'gcp' comment current paragraph (block) using tComment's built-in <c-_>p
-nmap <silent><leader>gcp <c-_>p
+nmap <silent><leader>cp <c-_>p
 
 " Jump between quicklist, location items with ease, among other things
 Plug 'tpope/vim-unimpaired'
@@ -321,17 +322,16 @@ let g:ale_fixers = {
       \ 'sh':         ['shfmt'],
       \ 'perl':       ['perltidy'],
       \ }
-" ☯ ☢ ☣ ☹ ⚑ ⚐ ⚠ 𥉉 ⚓ ⚔ △ ✖ ✗✗ ✔ 👌❗️ Emojis
+let g:ale_virtualtext_cursor          = 1 "Enable neovim's virtualtext support
 let g:ale_fix_on_save                 = 1
 let g:ale_python_auto_pipenv          = 1
+let g:ale_completion_enabled          = 1
 let g:ale_sign_error                  = '✗'
-let g:ale_sign_warning                = '𥉉'
-let g:ale_echo_msg_format             = '%code: %%s [%linter%/%severity%]'
+let g:ale_sign_warning                = '⚠'
 let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
 let g:ale_rust_cargo_use_clippy       = executable('cargo-clippy')
 let g:ale_cpp_clangcheck_options      = '-std=c++14'
 let g:ale_perl_perl_options           = '-c -Mwarnings -Ilib -It/lib'
-let g:ale_perl_perlcritic_showrules = 1
 nmap [a <Plug>(ale_next_wrap)
 nmap ]a <Plug>(ale_previous_wrap)
 
@@ -341,7 +341,8 @@ nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit -v<CR>
-nnoremap <leader>gp :Git push<cr>
+" nnoremap <leader>gp :Git push<cr>
+nnoremap <leader>gp :Dispatch Git push<CR>
 nnoremap <leader>gl :Glog<cr>
 nnoremap <leader>ga :silent !git add % &<cr><cr>
 nnoremap <Leader>gac :silent !git add -A<CR>:Gcommit<CR>
@@ -378,12 +379,14 @@ nnoremap <silent> <leader>a :Ag<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>h :History<cr>
 nnoremap <leader>f :Files<cr>
+nnoremap <C-p> :Files<CR>
 
+Plug 'thanthese/Tortoise-Typing'
 Plug 'rhysd/vim-grammarous'        " Grammarous
 let g:grammarous#use_vim_spelllang = 1
-Plug 'thanthese/Tortoise-Typing'
+
 Plug 'easymotion/vim-easymotion'
-Plug 'metakirby5/codi.vim'         " The interactive scratchpad for hackers.
+Plug 'metakirby5/codi.vim'              " The interactive scratchpad for hackers.
 Plug 'ryanoasis/vim-devicons'
 Plug 'fmoralesc/vim-tutor-mode'         " Interactive Vim tutorials
 " **[ 2.3) UI Plugins #ui-plugins ]********************
@@ -439,6 +442,7 @@ let g:deoplete#omni#input_patterns         = {}
 let g:deoplete#keyword_patterns            = {}
 let g:tern#command                         = ['tern']
 let g:tern#arguments                       = ['--persistent']
+let g:deoplete#sources                     = {'_': ['ale']}
 let g:deoplete#sources#jedi#show_docstring = 1
 let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:deoplete#omni#input_patterns.elm     = '[^ \t]+'
@@ -484,14 +488,12 @@ if has("nvim")
 endif
 
 " Tab navigation
-nnoremap <silent> ]t :tabprev<CR>
-nnoremap <silent> [t :tabnext<CR>
+nnoremap <Leader>tt :tabnew<CR>
+nnoremap <Leader>[ :tabprev<CR>
+nnoremap <Leader>] :tabnext<CR>
 
 " map tab navigation to Cmd-1 to 9.
 map <silent> <D-1> :tabn 1<cr>
-
-" Alt based mapping
-noremap <silent><A-t> :$tabnew<cr>
 
 " quickfix
 nnoremap [q :cprevious<CR>
@@ -625,11 +627,6 @@ if exists("*mkdir")
   au BufWritePre,FileWritePre * silent! call mkdir(expand('<afile>:p:h'), 'p')
 endif
 
-ab teh the
-ab thne then
-ab tehn then
-ab wnat want
-
 function! TmuxSendKeys(cmd)
   execute 'silent !tmux send-keys -t 2 "' . a:cmd . '" C-m'
   execute 'redraw!'
@@ -651,6 +648,7 @@ augroup general
   autocmd BufWinEnter * silent! :%foldopen! " Expand all folds when entering a file
   autocmd FileType toml setl ts=2 sw=2 sts=2 et
   autocmd Filetype markdown nnoremap <Leader>, :w<cr>:!pandoc % \| lynx -stdin<cr>:redraw!<cr>
+  autocmd FileType make setlocal noexpandtab
 augroup END
 
 augroup Cursorline
@@ -690,18 +688,15 @@ augroup Lisp-Family
   let g:clojure_align_multiline_strings = 1
   autocmd FileType clojure nnoremap <buffer><leader>e :Eval<CR>
   autocmd FileType clojure nnoremap <buffer><leader>rf :%Eval<cr>
-  autocmd FileType clojure,timl,scheme,lisp,racket :RainbowToggle
   autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
 
   command! CljsConnect :Piggieback (figwheel-sidecar.repl-api/repl-env)
   autocmd FileType clojure nnoremap <buffer> <Leader>rc :FireplaceConnect<cr>
 
-  autocmd FileType clojure nnoremap <A-e> :Eval<CR>
-  autocmd FileType clojure vnoremap <A-e> :Eval<CR>
-  autocmd FileType clojure nnoremap <C-q> :Last<CR>
-  autocmd FileType clojure inoremap <C-q> <Esc>:Last<CR>
   autocmd FileType clojure nnoremap <C-e> :%Eval<CR>
   autocmd FileType clojure inoremap <C-e> <Esc>:%Eval<CR>
+  autocmd FileType clojure nnoremap <Leader>pp :let parinfer_mode = "paren"<CR>:echo 'Switched to paren mode'<CR>
+  autocmd FileType clojure nnoremap <Leader>pi :let parinfer_mode = "indent"<CR>:echo 'Switched to indent mode'<CR>
 augroup END
 
 " Vim-Alchemist Mappings
@@ -725,6 +720,7 @@ augroup END
 
 augroup Golang-mappings
   autocmd!
+  autocmd FileType go setlocal noexpandtab
   autocmd FileType go nmap <leader>r <Plug>(go-run)
   autocmd FileType go nmap <leader>b <Plug>(go-build)
   autocmd FileType go nmap <leader>e <Plug>(go-install)

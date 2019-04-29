@@ -12,6 +12,8 @@ alias blogs="cd ~/Projects/BLOG/leftaxe"
 alias ldir='find . -type d -maxdepth 1 -mindepth 1 -exec basename {} \;'
 alias grep='grep --color'
 alias top='top -F -R -o cpu'
+alias flushdns="dscacheutil -flushcache"
+alias hist="history | grep $1"
 
 alias weather="curl -4 http://wttr.in/New_York"
 alias whatsmyip='curl -s https://am.i.mullvad.net/json | jq'
@@ -148,6 +150,7 @@ alias cucumber='bundle exec cucumber'
 alias rspec='bundle exec rspec'
 alias rake='bundle exec rake'
 alias cap='bundle exec cap'
+alias binstubs="bundle --binstubs --standalone"
 
 # ** [ PYTHON ALIASES ] ******************
 alias pjson='python -mjson.tool'
@@ -263,6 +266,7 @@ alias cljsbuild="lein trampoline cljsbuild $@"
 alias clj-repl='clojure -Sdeps "{:deps {com.bhauman/rebel-readline {:mvn/version \"0.1.4\"}}}" -m rebel-readline.main'
 alias cljs-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept cljs.server.node/repl}" -R:cljs-canary -A:rebel-cljs -m cljs.main -re node -r; }; do_repl'
 alias cljs='clj -Sdeps "{:deps {org.clojure/clojurescript {:mvn/version \"1.9.946\"}}}" -m cljs.repl.node'
+alias rebel='clojure -A:rebel'
 
 # ** [MAVEN SHORTCUTS ] ******************
 alias mc='mvn --quiet clean'
