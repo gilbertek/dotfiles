@@ -78,6 +78,7 @@ Plug 'guns/vim-clojure-static'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-sexp-mappings-for-regular-people' , { 'for': ['clojure', 'clojurescript'] }
+let g:clojure_align_multiline_strings = 1
 Plug 'clojure-vim/async-clj-omni'  " Provides completion through deoplete or ncm
 Plug 'eraserhd/parinfer-rust',     { 'do': 'cargo build --release' }
 Plug 'humorless/vim-kibit',        { 'for': ['clojure', 'clojurescript'] }
@@ -325,7 +326,6 @@ let g:ale_fixers = {
 let g:ale_virtualtext_cursor          = 1 "Enable neovim's virtualtext support
 let g:ale_fix_on_save                 = 1
 let g:ale_python_auto_pipenv          = 1
-let g:ale_completion_enabled          = 1
 let g:ale_sign_error                  = '✗'
 let g:ale_sign_warning                = '⚠'
 let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
@@ -442,7 +442,6 @@ let g:deoplete#omni#input_patterns         = {}
 let g:deoplete#keyword_patterns            = {}
 let g:tern#command                         = ['tern']
 let g:tern#arguments                       = ['--persistent']
-let g:deoplete#sources                     = {'_': ['ale']}
 let g:deoplete#sources#jedi#show_docstring = 1
 let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:deoplete#omni#input_patterns.elm     = '[^ \t]+'
@@ -488,7 +487,8 @@ if has("nvim")
 endif
 
 " Tab navigation
-nnoremap <Leader>tt :tabnew<CR>
+nnoremap <silent>nt :tabnew<CR>
+nnoremap <silent><M-t> :tabnew<CR>
 nnoremap <Leader>[ :tabprev<CR>
 nnoremap <Leader>] :tabnext<CR>
 
