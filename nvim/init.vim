@@ -209,8 +209,11 @@ Plug 'ervandew/supertab'
 let g:SuperTabDefaultCompletionType    = "<c-x><c-o>"
 let g:SuperTabClosePreviewOnPopupClose = 1
 Plug 'christoomey/vim-tmux-navigator'
-" Plug 'jpalardy/vim-slime'
-" let g:slimv_swank_cmd = '!osascript -e "! tmux new-window -d -n REPL-SBCL "sbcl --load ~/.vim/bundle/slimv/slime/start-swank.lisp"'
+
+Plug 'wlangstroth/vim-racket', { 'for': 'racket' }
+Plug 'kovisoft/slimv', { 'for': ['clojure', 'scheme', 'racket'] }
+let g:slime_target = "tmux"
+let g:slime_default_config = {"socket_name": "default", "target_pane": "2"}
 
 Plug 'ntpeters/vim-better-whitespace'
 let g:strip_whitespace_on_save         = 1

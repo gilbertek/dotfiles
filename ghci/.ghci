@@ -14,3 +14,7 @@ import Prelude
 :def clear const . return $ ":! clear"
 
 :set prompt "\n \ESC[34mλ\ESC[m\STX   "
+
+
+-- :set prompt "\ESC[1;34m%s\n\ESC[0;34mλ> \ESC[m"
+-- :set -XOverloadedStrings
