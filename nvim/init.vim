@@ -63,7 +63,7 @@ let g:elm_setup_keybindings  = 1
 " Plug 'lambdatoast/elm.vim', { 'for': 'elm' }
 
 " Plugins for Go support
-Plug 'fatih/vim-go', { 'for': 'go', 'do': 'nvim +GoInstallBinaries +qall' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jodosha/vim-godebug'
 Plug 'buoto/gotests-vim'
 let g:go_list_type           = 'quickfix' " Fix for location list
@@ -71,7 +71,8 @@ let g:go_fmt_command         = 'goimports'
 let g:go_highlight_methods   = 1
 let g:go_highlight_structs   = 1
 let g:go_highlight_functions = 1
-let g:go_auto_sameids        = 1
+let g:go_auto_sameids        = 1 " Highlight variable uses
+let g:go_auto_type_info      = 1 " Show type information
 
 " Clojure & Lisp development plugins
 Plug 'guns/vim-clojure-static'
@@ -188,8 +189,6 @@ Plug 'vim-perl/vim-perl6', { 'for': 'perl6' } " Vim support for Perl 6
 Plug 'c9s/perlomni.vim'    " Perl completion
 Plug 'zerodogg/vim-mason'
 
-Plug 'wlangstroth/vim-racket'
-
 " Plugins for Database support
 Plug 'tpope/vim-db'
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
@@ -210,10 +209,9 @@ let g:SuperTabDefaultCompletionType    = "<c-x><c-o>"
 let g:SuperTabClosePreviewOnPopupClose = 1
 Plug 'christoomey/vim-tmux-navigator'
 
-Plug 'wlangstroth/vim-racket', { 'for': 'racket' }
-Plug 'kovisoft/slimv', { 'for': ['clojure', 'scheme', 'racket'] }
-let g:slime_target = "tmux"
-let g:slime_default_config = {"socket_name": "default", "target_pane": "2"}
+" Plug 'kovisoft/slimv', { 'for': ['clojure', 'scheme', 'racket'] }
+" let g:slime_target = "tmux"
+" let g:slime_default_config = {"socket_name": "default", "target_pane": "2"}
 
 Plug 'ntpeters/vim-better-whitespace'
 let g:strip_whitespace_on_save         = 1
@@ -382,7 +380,6 @@ nnoremap <silent> <leader>a :Ag<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>h :History<cr>
 nnoremap <leader>f :Files<cr>
-nnoremap <C-p> :Files<CR>
 
 Plug 'thanthese/Tortoise-Typing'
 Plug 'rhysd/vim-grammarous'        " Grammarous
@@ -435,7 +432,7 @@ endif
 
 " Autocompletion Engine (neovim) Autocompletion Engine (neovim)
 Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-go',                  { 'do': 'make'}
+Plug 'deoplete-plugins/deoplete-go',       { 'do': 'make'}
 Plug 'tweekmonster/deoplete-clang2'        " C/C++ and Objective-C/C++
 Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
@@ -491,7 +488,8 @@ endif
 
 " Tab navigation
 nnoremap <silent>nt :tabnew<CR>
-nnoremap <silent><M-t> :tabnew<CR>
+nnoremap <silent><A-t> :tabnew<CR>
+nnoremap <leader>tt :tabedit %<cr>
 nnoremap <Leader>[ :tabprev<CR>
 nnoremap <Leader>] :tabnext<CR>
 
@@ -644,19 +642,18 @@ augroup general
   autocmd BufLeave,FocusLost * :silent! wall " Save on buffer or leave/loses focus
   autocmd CursorHold,CursorHoldI,FocusGained,BufEnter * checktime
 
-  autocmd Filetype gitcommit,markdown setlocal spell textwidth=72
+  autocmd Filetype gitcommit,markdown setlocal spell textwidth=72 conceallevel=0
   autocmd BufEnter PULLREQ_EDITMSG setlocal filetype=gitcommit
   autocmd InsertLeave * set nopaste " Leave paste mode when leaving insert mode
   autocmd InsertLeave * pc          " Close preview on insert leave
   autocmd BufWinEnter * silent! :%foldopen! " Expand all folds when entering a file
-  autocmd FileType toml setl ts=2 sw=2 sts=2 et
   autocmd Filetype markdown nnoremap <Leader>, :w<cr>:!pandoc % \| lynx -stdin<cr>:redraw!<cr>
   autocmd FileType make setlocal noexpandtab
+  autocmd FileType java setlocal omnifunc=javacomplete#Complete
 augroup END
 
 augroup Cursorline
   autocmd!
-  " Switch between normal/relative line numbers and cursorline
   autocmd InsertEnter,WinEnter * setlocal number cursorline norelativenumber
   autocmd InsertLeave,WinEnter * setlocal relativenumber nocursorline
 augroup END
@@ -738,6 +735,7 @@ augroup Golang-mappings
   autocmd FileType go nmap <Leader>db :GoDebug<CR>
   autocmd Filetype go nmap <leader>ga <Plug>(go-alternate-edit)
   autocmd Filetype go nmap <leader>gav <Plug>(go-alternate-vertical)
+  autocmd FileType go nmap <leader>gt :GoDeclsDir<cr>
 augroup END
 
 augroup Terminal

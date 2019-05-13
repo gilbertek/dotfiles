@@ -87,6 +87,9 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
+# Dart
+export PATH="$PATH":"$HOME/.pub-cache/bin"
+
 # LLVM Bindings
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 
