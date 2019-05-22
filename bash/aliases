@@ -13,14 +13,19 @@ alias ldir='find . -type d -maxdepth 1 -mindepth 1 -exec basename {} \;'
 alias grep='grep --color'
 alias top='top -F -R -o cpu'
 alias flushdns="dscacheutil -flushcache"
+alias flushDNSMac="sudo killall -HUP mDNSResponder"
 alias hist="history | grep $1"
 
 alias weather="curl -4 http://wttr.in/New_York"
 alias whatsmyip='curl -s https://am.i.mullvad.net/json | jq'
 alias shrug="echo '¯\_(ツ)_/¯'"
 
-# AWS
-alias ecr-login='eval $(aws ecr get-login --no-include-email --region us-east-1)'
+# ** [ Some AWS Conveniences ] *************
+alias ecr-login='eval $(aws ecr get-login --no-include-email --regison us-east-1)'
+# ** [ Some Java Conveniences ] *************
+alias j11="export JAVA_HOME=/usr/libexec/java_home -v 11; java -version"
+alias j12="export JAVA_HOME=/usr/libexec/java_home -v 10; java -version"
+alias j8="export JAVA_HOME=/usr/libexec/java_home -v 1.8; java -version"
 
 # ** [ Some Conveniences ] *************
 alias mkdir='mkdir -p'
@@ -104,6 +109,7 @@ alias gh='git history'
 alias gha='git history --all'
 alias gmt='git mergetool'
 
+alias up:module='git submodule update --remote --recursive'
 alias gsu='git submodule foreach git pull origin master'
 alias changelog='git log --format="%h %ai %an %s"'
 alias ggpull='git pull --rebase'

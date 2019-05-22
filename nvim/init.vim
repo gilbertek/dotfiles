@@ -20,10 +20,11 @@
 
 " **[ 1) Basics #basics ]********************
 " **[ 1.1) Tabs & Indent #tabs ]********************
-set shiftwidth=4 tabstop=4 expandtab
+" Make tabs into spaces and indent with 4 spaces
+set expandtab tabstop=4 shiftwidth=0 softtabstop=0
 
 " **[ 1.2) Leader #leader ]********************
-let g:mapleader=','
+let g:mapleader = ','
 
 " **[ 1.3) Omni completion ]********************
 set omnifunc=syntaxcomplete#Complete
@@ -35,7 +36,7 @@ set colorcolumn=80              " Show right column in a highlighted colour.
 set diffopt+=vertical           " Vertical display with vimdiff
 set splitbelow                  " Put a split beneath the current one
 set splitright                  " Put a split to the right the current one
-set virtualedit=block           " Visual block mode to go beyond the characters at eof
+set virtualedit=block           " Virtual cursor go beyond the characters at eof
 set showmatch                   " Show matching brackets/parenthesis.
 set title                       " Set the title of the iterm tab
 set noswapfile                  " Don't save with swap files
@@ -45,7 +46,7 @@ set winfixwidth                 " Keep Nerdtree window fixed between toggles
 set inccommand=nosplit          " Search and substitutions
 set clipboard+=unnamedplus      " +p paste OS clipboard
 set undofile                    " Set persistent undo
-set ignorecase smartcase        " Ignore case when searching
+set ignorecase smartcase        " Searching behaves like a web browser
 set undodir=~/.config/nvim/undo
 """" 1.6) Folding & scrolling #Folding & scrolling
 set foldmethod=syntax           " fold based on indent/syntax
@@ -59,8 +60,6 @@ let g:elm_format_autosave    = 1
 let g:elm_detailed_complete  = 1
 let g:elm_make_show_warnings = 1
 let g:elm_setup_keybindings  = 1
-
-" Plug 'lambdatoast/elm.vim', { 'for': 'elm' }
 
 " Plugins for Go support
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -81,7 +80,7 @@ Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-sexp-mappings-for-regular-people' , { 'for': ['clojure', 'clojurescript'] }
 let g:clojure_align_multiline_strings = 1
 Plug 'clojure-vim/async-clj-omni'  " Provides completion through deoplete or ncm
-Plug 'eraserhd/parinfer-rust',     { 'do': 'cargo build --release' }
+Plug 'eraserhd/parinfer-rust',     { 'for': ['clojure'], 'do': 'cargo build --release' }
 Plug 'humorless/vim-kibit',        { 'for': ['clojure', 'clojurescript'] }
 Plug 'guns/vim-slamhound',         { 'for': ['clojure', 'clojurescript'] }
 Plug 'venantius/vim-cljfmt',       { 'for': ['clojure', 'clojurescript'] }
@@ -93,12 +92,11 @@ Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled       = ['elm', 'go']
 let g:vim_json_syntax_conceal = 0
 let g:jsx_ext_required        = 0
-let g:rustfmt_autosave        = 1
 
 " Elixir
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'elixir-lang/vim-elixir',  { 'for': 'elixir' }
-let g:alchemist#elixir_erlang_src  = expand('~/.asdf/installs/elixir/1.8.1/bin/elixir')
+let g:alchemist#elixir_erlang_src  = expand('$HOME/.asdf/shims/elixir')
 let g:elixir_use_markdown_for_docs = 1
 let g:alchemist_tag_disable        = 1 "Use Universal ctags instead
 let g:alchemist_iex_term_size      = 10
@@ -111,9 +109,8 @@ Plug 'vim-erlang/vim-erlang-omnicomplete',  { 'for': 'erlang' }
 Plug 'vim-erlang/vim-erlang-compiler'
 let g:erlang_tags_ignore = '_build'
 
-" Markdown Preview
-Plug 'shime/vim-livedown', {'for': 'markdown', 'do': 'npm install -g livedown'}
-nmap gm :LivedownToggle<CR>
+" Instantly preview markdown
+Plug 'euclio/vim-markdown-composer', { 'do': 'cargo build --release' }
 
 Plug 'junegunn/goyo.vim',     { 'on': 'Goyo' } " Distraction free
 Plug 'junegunn/limelight.vim' " To accompany goyo
@@ -303,7 +300,7 @@ let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
 let g:ale_linters = {
       \ 'javascript': ['eslint', 'prettier'],
       \ 'typescript': ['tslint', 'eslint', 'prettier'],
-      \ 'go':         ['gofmt', 'gometalinter'],
+      \ 'go':         ['golint', 'go vet', 'go build', 'gometalinter'],
       \ 'haskell':    ['ghc', 'hlint'],
       \ 'reason':     ['merlin'],
       \ 'ocaml':      ['merlin'],
@@ -531,7 +528,7 @@ nnoremap <leader>4 :vnew<CR>:bn<CR>:vnew<CR>:bn<CR><C-W><C-L><C-W><C-L>:split<CR
 nnoremap H ^
 nnoremap L $
 
-" Remap j and k to act as expected when used on long, wrapped, lines
+" Remap j and k to move cursor as usual through wrapped lines
 nnoremap j gj
 nnoremap k gk
 
@@ -623,10 +620,14 @@ nnoremap <leader>tx :!open -a TeXShop %<cr><cr>
 nnoremap <leader>bs :!make html<cr>
 
 nmap <Leader>// :silent !open -a Devdocs.app '%:p'<CR>
+
 " Auto-create directories for new files.
 if exists("*mkdir")
   au BufWritePre,FileWritePre * silent! call mkdir(expand('<afile>:p:h'), 'p')
 endif
+
+" copy the path of the current file
+nno <leader>cp :let @" = expand('%:h')<cr>
 
 function! TmuxSendKeys(cmd)
   execute 'silent !tmux send-keys -t 2 "' . a:cmd . '" C-m'
@@ -639,8 +640,8 @@ command! -nargs=* TmuxSendKeys call TmuxSendKeys(<q-args>)
 " **[ 4.3) Filetypes Config ]**
 augroup general
   autocmd!
-  autocmd BufLeave,FocusLost * :silent! wall " Save on buffer or leave/loses focus
-  autocmd CursorHold,CursorHoldI,FocusGained,BufEnter * checktime
+  autocmd BufLeave,FocusLost * :silent! wall
+  autocmd BufEnter,FocusGained * checktime
 
   autocmd Filetype gitcommit,markdown setlocal spell textwidth=72 conceallevel=0
   autocmd BufEnter PULLREQ_EDITMSG setlocal filetype=gitcommit
@@ -742,7 +743,6 @@ augroup Terminal
   autocmd!
   " Always enter terminal in insert mode
   autocmd BufWinEnter,WinEnter,TermOpen term://* startinsert
-  autocmd BufLeave term://* stopinsert
   autocmd TermOpen * setlocal nonumber norelativenumber
 
   " Reload & easy edit Neovim configuration

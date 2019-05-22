@@ -1,3 +1,3 @@
 # Dotfiles
 
-System settings, always a WIP.
+System settings and tools I use everyday, always a WIP.
