@@ -24,7 +24,7 @@
 set expandtab tabstop=4 shiftwidth=0 softtabstop=0
 
 " **[ 1.2) Leader #leader ]********************
-let g:mapleader = ','
+let g:mapleader=' '
 
 " **[ 1.3) Omni completion ]********************
 set omnifunc=syntaxcomplete#Complete
@@ -99,10 +99,6 @@ Plug 'elixir-lang/vim-elixir',  { 'for': 'elixir' }
 let g:alchemist#elixir_erlang_src  = expand('$HOME/.asdf/shims/elixir')
 let g:elixir_use_markdown_for_docs = 1
 let g:alchemist_tag_disable        = 1 "Use Universal ctags instead
-let g:alchemist_iex_term_size      = 10
-let g:alchemist_tag_map            = '<C-]>'
-let g:alchemist_tag_stack_map      = '<C-T>'
-let g:alchemist_iex_term_split     = 'split'
 
 Plug 'vim-erlang/vim-erlang-tags',          { 'for': 'erlang' }
 Plug 'vim-erlang/vim-erlang-omnicomplete',  { 'for': 'erlang' }
@@ -193,7 +189,6 @@ Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 """" 2.2) Utilities #utilities
 Plug 'sbdchd/neoformat'
 let g:neoformat_try_formatprg      = 1
-let g:neoformat_basic_format_align = 1
 
 " Automatically match any brackets, parentheses or quotes
 Plug 'jiangmiao/auto-pairs'
@@ -215,7 +210,6 @@ let g:strip_whitespace_on_save         = 1
 
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'editorconfig/editorconfig-vim'
-
 Plug 'janko-m/vim-test' " Run tests with varying granularity
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
@@ -748,7 +742,7 @@ augroup Terminal
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew ~/.config/nvim/init.vim
   command! Loadrc source ~/.config/nvim/init.vim | redraw | echo 'Init reloaded'
-  command! PU PlugClean <bar> PlugUpdate <bar> PlugUpgrade
+  command! PU PlugClean! <bar> PlugUpdate! <bar> PlugUpgrade<CR>
 augroup END
 
 augroup Haskell-Maps
