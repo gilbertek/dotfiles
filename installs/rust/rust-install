@@ -20,6 +20,16 @@ cargo uninstall racer 2> /dev/null
 rustup toolchain add nightly
 cargo +nightly install racer
 
+# Generate a new Rust project by leveraging a pre-existing git repository as a template.
+cargo install cargo-generate
+
+# WebAssembly
+cargo install wasm-pack
+cargo install wasm-gc
+
+# Built in http server
+# cargo install https
+
 # Enable tab completion for Bash
 rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion
 asdf reshim rust

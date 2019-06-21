@@ -24,7 +24,7 @@
 set expandtab tabstop=4 shiftwidth=0 softtabstop=0
 
 " **[ 1.2) Leader #leader ]********************
-let g:mapleader=' '
+let g:mapleader = ","
 
 " **[ 1.3) Omni completion ]********************
 set omnifunc=syntaxcomplete#Complete
@@ -188,7 +188,7 @@ Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 " Plug 'vyzyv/vimpyter' " Plugins for Jupyter notebooks
 """" 2.2) Utilities #utilities
 Plug 'sbdchd/neoformat'
-let g:neoformat_try_formatprg      = 1
+let g:neoformat_try_formatprg = 1
 
 " Automatically match any brackets, parentheses or quotes
 Plug 'jiangmiao/auto-pairs'
@@ -207,6 +207,9 @@ Plug 'christoomey/vim-tmux-navigator'
 
 Plug 'ntpeters/vim-better-whitespace'
 let g:strip_whitespace_on_save         = 1
+
+Plug 'unblevable/quick-scope'
+let g:qs_highlight_on_keys = ['f', 'F']
 
 Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'editorconfig/editorconfig-vim'
@@ -257,9 +260,9 @@ let g:NERDTreeIgnore = [
 let g:NERDTreeQuitOnOpen    = 1
 let g:NERDTreeMinimalUI     = 1
 let g:NERDTreeBookmarksFile = expand('~/.config/nvim/NERDTreeBookmarks')
-nnoremap <leader>nb :NERDTreeFromBookmark<Space>
+nnoremap <leader>nb :NERDTreeFromBookmark<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
-nnoremap <leader>n  :NERDTreeToggle<enter>
+nnoremap <leader>n  :NERDTreeToggle<CR>
 
 " Move blocks of code with Control+j/k
 Plug 'matze/vim-move'
@@ -267,8 +270,8 @@ let g:move_key_modifier = 'C'
 
 " Dependencies For tcomment
 Plug 'tomtom/tcomment_vim'
-map <silent> <Leader>cc :TComment<CR>
-map <silent> <leader>cl :TCommentInline<cr>
+map <silent> <Leader>/ :TComment<CR>
+map <silent> <leader>/ :TCommentInline<cr>
 " Adds 'gcp' comment current paragraph (block) using tComment's built-in <c-_>p
 nmap <silent><leader>cp <c-_>p
 
@@ -304,6 +307,11 @@ let g:ale_linters = {
 
 let g:ale_fixers = {
       \ 'typescript': ['prettier'],
+      \ 'javascript': ['prettier'],
+      \ 'json':       ['prettier'],
+      \ 'scss':       ['prettier'],
+      \ 'sass':       ['prettier'],
+      \ 'css':        ['prettier'],
       \ 'python':     ['yapf', 'isort', 'autopep8'],
       \ 'reason':     ['refmt'],
       \ 'ruby':       ['rubocop'],
@@ -360,7 +368,7 @@ endif
 
 " Tagbar: a class outline viewer for Vim
 Plug 'majutsushi/tagbar'
-nnoremap <Space>t :TagbarToggle<CR>
+nnoremap <Space>tb :TagbarToggle<CR>
 let g:tagbar_autoclose  = 1
 
 " fzf fuzzy finder
@@ -477,12 +485,12 @@ if has("nvim")
   nnoremap <silent><bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
 endif
 
-" Tab navigation
-nnoremap <silent>nt :tabnew<CR>
-nnoremap <silent><A-t> :tabnew<CR>
-nnoremap <leader>tt :tabedit %<cr>
+" Tab navigation keymaps
+nnoremap <silent>tn :tabnew<CR>
+nnoremap <leader>te :tabedit %<cr>
 nnoremap <Leader>[ :tabprev<CR>
 nnoremap <Leader>] :tabnext<CR>
+nnoremap tq :tabclose<CR>
 
 " map tab navigation to Cmd-1 to 9.
 map <silent> <D-1> :tabn 1<cr>
@@ -501,6 +509,9 @@ nnoremap <silent>]b :bnext<CR>
 
 " Open the alternate file with ,, instead of CTRL+SHIFT+6
 map ,, <C-^>
+
+" Search and replace
+nnoremap <leader>sr :%s/
 
 " In the quickfix window, <CR> is used to jump to the error under the
 " cursor, so undefine the mapping there.
@@ -666,7 +677,7 @@ augroup JS-Family
   autocmd FileType vue syntax sync fromstart
   autocmd FileType javascript,ocaml setl sw=2 sts=2 et
   autocmd BufNewFile,BufRead .babelrc,.eslintrc setlocal filetype=json
-  autocmd BufWritePre *.{js,jsx,ts,tsx,scss,less,rb,mjs,json,graphql,md} Neoformat
+  " autocmd BufWritePre *.{js,jsx,ts,tsx,scss,less,rb,mjs,json,graphql,md} Neoformat
   autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ es5
 augroup END
 
@@ -690,8 +701,8 @@ augroup Lisp-Family
 
   autocmd FileType clojure nnoremap <C-e> :%Eval<CR>
   autocmd FileType clojure inoremap <C-e> <Esc>:%Eval<CR>
-  autocmd FileType clojure nnoremap <Leader>pp :let parinfer_mode = "paren"<CR>:echo 'Switched to paren mode'<CR>
-  autocmd FileType clojure nnoremap <Leader>pi :let parinfer_mode = "indent"<CR>:echo 'Switched to indent mode'<CR>
+  autocmd FileType clojure nnoremap <leader>pp :let parinfer_mode = "paren"<CR>:echo 'Switched to paren mode'<CR>
+  autocmd FileType clojure nnoremap <leader>pi :let parinfer_mode = "indent"<CR>:echo 'Switched to indent mode'<CR>
 augroup END
 
 " Vim-Alchemist Mappings
@@ -742,7 +753,7 @@ augroup Terminal
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew ~/.config/nvim/init.vim
   command! Loadrc source ~/.config/nvim/init.vim | redraw | echo 'Init reloaded'
-  command! PU PlugClean! <bar> PlugUpdate! <bar> PlugUpgrade<CR>
+  command! PU PlugClean! <bar> PlugUpdate! <bar> PlugUpgrade!<CR>
 augroup END
 
 augroup Haskell-Maps

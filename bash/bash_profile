@@ -322,3 +322,16 @@ if [[ -f `which azure` ]]; then
   azure --completion > ~/azure.completion.sh
   source ~/azure.completion.sh
 fi
+
+MESSAGE=(
+	"Amazing THINGS will HAPPEN!"
+	"Be the best version of you"
+	"Life is like riding a bicycle. To keep your balance, you must keep moving"
+	"You never know how strong you are until being strong is the only choice you have"
+	"Start today!"
+	"Why complicate life? We just have one Life. Keep it simple"
+	"think positive. talk positive. feel positive"
+	"if opportunity does not knock, build a door"
+)
+RANDOM=$$$(date +%s)
+echo ${MESSAGE[$RANDOM % ${#MESSAGE[@]}]}

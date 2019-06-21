@@ -25,9 +25,12 @@ if [[ -n "$1" ]]; then
 
     echo "${APP_DIR}"
 
-    tmux new-session -d -s "$APP_NAME" 'sleep 5;nvim .'
+    tmux new-session -s $APP_NAME -n $APP_NAME -d
+    tmux send-keys -t $APP_NAME "sleep 5;$EDITOR ." C-m
+
     tmux split-window -h -p 40 'lein repl'
     tmux split-window -v
+
     tmux selectp -t 1
     tmux -2 attach-session
   fi
