@@ -572,7 +572,8 @@ nnoremap <leader>q :bp\|bd#<cr>
 nnoremap <leader>Q :bp!\|bd!#<cr>
 
 " Quick-save
-nnoremap <Leader>w :w<CR>
+nnoremap <leader>w :w<CR>
+nnoremap <silent><C-S>          :update<CR>
 
 " find merge conflict markers
 nnoremap <silent><leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
