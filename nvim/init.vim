@@ -270,8 +270,8 @@ let g:move_key_modifier = 'C'
 
 " Dependencies For tcomment
 Plug 'tomtom/tcomment_vim'
-map <silent> <Leader>/ :TComment<CR>
-map <silent> <leader>/ :TCommentInline<cr>
+map <silent> <Leader>cc :TComment<CR>
+map <silent> <leader>cl :TCommentInline<cr>
 " Adds 'gcp' comment current paragraph (block) using tComment's built-in <c-_>p
 nmap <silent><leader>cp <c-_>p
 
