@@ -12,13 +12,25 @@ alias blogs="cd ~/Projects/BLOG/leftaxe"
 alias ldir='find . -type d -maxdepth 1 -mindepth 1 -exec basename {} \;'
 alias grep='grep --color'
 alias top='top -F -R -o cpu'
-alias flushdns="dscacheutil -flushcache"
-alias flushDNSMac="sudo killall -HUP mDNSResponder"
 alias hist="history | grep $1"
+alias diary='mkdir -p ~/diary && vim ~/diary/`date +"%Y-%m-%d"`.md'
+
+alias redshift='nohup redshift -l 30.267153:-97.7430608 -t 6500:4000 &'
+alias pp='python -mjson.tool'
+alias curlpj='curl -X POST -H "Content-Type: application/json" - '
+
+# Flush Directory Service cache
+alias flushdns="dscacheutil -flushcache && killall -HUP mDNSResponder"
 
 alias weather="curl -4 http://wttr.in/New_York"
 alias whatsmyip='curl -s https://am.i.mullvad.net/json | jq'
 alias shrug="echo '¯\_(ツ)_/¯'"
+
+# Enhanced WHOIS lookups
+alias whois="whois -h whois-servers.net"
+
+# Clean up LaunchServices to remove duplicates in the “Open With” menu
+alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
 
 # ** [ Some AWS Conveniences ] *************
 alias ecr-login='eval $(aws ecr get-login --no-include-email --regison us-east-1)'
@@ -61,6 +73,9 @@ alias anki="anki -b ~/.anki"
 alias filemerge="open -a '/Applications/Xcode.app/Contents/Applications/FileMerge.app'"
 alias xcode="open -a '/Applications/Xcode.app'"
 
+# take a screenshot
+alias screenshot="import -window root -crop 1920x1200+1680+0 -quality 100 ~/screenshot-\$(date +\"%F-%T\").png"
+
 if [[ -x "$(command -v bat)" ]]; then
   alias cat='bat'
 fi
@@ -89,7 +104,6 @@ alias untar="tar -zxvf"
 alias stream="youtube-dl -q -o- $1 | vlc -"
 
 # ** [ GIT ALIASES ] ******************
-alias g=git
 alias gs='git status'
 alias gb='git branch -a'
 alias ga='git add -p'
@@ -137,6 +151,9 @@ alias dk:rd='docker run -d '
 alias dk:clean='docker system prune --all --volumes'
 
 # ** [ GOLANG ALIASES ] ******************
+
+# ** [ RUST ALIASES ] ******************
+alias cck="cargo watch -s 'cargo check --color always 2>&1 | head -n 50'"
 
 # ** [ RUBY ALIASES ] ******************
 alias web='ruby -run -e httpd . -p 5000'
@@ -192,7 +209,7 @@ function redis:stop {
 alias tmx:l='tmux list-sessions'
 alias tmx:a="tmux attach-session -t ${1}"
 alias tmx:k="tmux kill-session -t $1"
-alias mux='tmuxinator'
+alias mux='TERM=screen-256color tmuxinator'
 
 # ** [ YOUTUBE-DL SHORTCUTS ] ******************
 # youtube downloader
@@ -295,6 +312,11 @@ fi
 alias nvu="nvim +PlugInstall +UpdateRemotePlugins +qa"
 
 # ** [ NETWORKING SHORTCUTS ] ******************
+
+# View HTTP traffic
+alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET \/.*\""
+
 alias myip='curl ip.appspot.com'                    # myip:         Public facing IP Address
 alias netCons='lsof -i'                             # netCons:      Show all open TCP/IP sockets
 alias flushDNS='dscacheutil -flushcache'            # flushDNS:     Flush out the DNS Cache
@@ -316,3 +338,17 @@ alias ww='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_f
 alias wwss='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:/dev/stdout -r cap.pcapng'
 alias wws='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:ssldebug -r cap.pcapng & truncate -s0 ssldebug'
 alias wwso='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:ssldebug-orig -r cap.pcapng & truncate -s0 ssldebug-orig'
+
+# ** [ MACOS SHORTCUTS ] ******************
+# Empty the Trash on all mounted volumes and the main HDD
+# Also, clear Apple’s System Logs to improve shell startup speed
+# Also, run periodic maintenence tasks
+alias emptytrash="echo Emptying trashes...; \
+  sudo rm -rfv /Volumes/*/.Trashes; \
+  sudo rm -rfv ~/.Trash; \
+  echo Running all periodic maintenence tasks...; \
+  sudo periodic daily weekly monthly; \
+  echo Removing old logs...; \
+  sudo rm -rfv /private/var/log/asl/*.asl; \
+  sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'delete from LSQuarantineEvent' >/dev/null 2>&1; \
+  sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2 'vacuum' >/dev/null 2>&1"

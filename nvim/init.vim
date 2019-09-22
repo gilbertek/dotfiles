@@ -62,16 +62,16 @@ let g:elm_make_show_warnings = 1
 let g:elm_setup_keybindings  = 1
 
 " Plugins for Go support
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'jodosha/vim-godebug'
-Plug 'buoto/gotests-vim'
-let g:go_list_type           = 'quickfix' " Fix for location list
-let g:go_fmt_command         = 'goimports'
-let g:go_highlight_methods   = 1
-let g:go_highlight_structs   = 1
-let g:go_highlight_functions = 1
-let g:go_auto_sameids        = 1 " Highlight variable uses
-let g:go_auto_type_info      = 1 " Show type information
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'jodosha/vim-godebug'
+" Plug 'buoto/gotests-vim'
+" let g:go_list_type           = 'quickfix' " Fix for location list
+" let g:go_fmt_command         = 'goimports'
+" let g:go_highlight_methods   = 1
+" let g:go_highlight_structs   = 1
+" let g:go_highlight_functions = 1
+" let g:go_auto_sameids        = 1 " Highlight variable uses
+" let g:go_auto_type_info      = 1 " Show type information
 
 " Clojure & Lisp development plugins
 Plug 'guns/vim-clojure-static'
@@ -146,6 +146,7 @@ let g:LanguageClient_serverCommands = {
       \ 'purescript': ['purescript-language-server --stdio'],
       \ 'ruby':       ['solargraph', 'stdio'],
       \ 'rust':       ['rustup', 'run', 'stable', 'rls'],
+      \ 'go':         ['gopls'],
       \ }
 " Automatically start language servers
 let g:LanguageClient_autoStart      = 1
@@ -162,6 +163,7 @@ let g:user_emmet_leader_key = '<tab>' " Using Tab to expand
 Plug 'ternjs/tern_for_vim',     { 'do': 'npm install' }
 Plug 'jparise/vim-graphql'
 
+Plug 'ndmitchell/ghcid',              { 'rtp': 'plugins/nvim' }
 " Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Haskell
 let g:haskell_enable_quantification   = 1 " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo      = 1 " to enable highlighting of `mdo` and `rec`
@@ -172,7 +174,7 @@ let g:haskell_enable_static_pointers  = 1 " to enable highlighting of `static`
 let g:haskell_backpack                = 1 " to enable highlighting of backpack keywords
 
 Plug 'Shougo/vimproc.vim',            { 'do' : 'make' }
-Plug 'parsonsmatt/intero-neovim'
+" Plug 'parsonsmatt/intero-neovim'
 Plug 'eagletmt/neco-ghc',             { 'for': 'haskell' } " Haskell completion
 let g:haskellmode_completion_ghc      = 0
 let g:necoghc_enable_detailed_browse  = 1
@@ -189,9 +191,13 @@ Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 """" 2.2) Utilities #utilities
 Plug 'sbdchd/neoformat'
 let g:neoformat_try_formatprg = 1
+let g:neoformat_enabled_javascript = ['prettier']
+let g:neoformat_enabled_typescript = ['prettier']
+let g:neoformat_enabled_json       = ['prettier']
 
 " Automatically match any brackets, parentheses or quotes
 Plug 'jiangmiao/auto-pairs'
+Plug 'andymass/vim-matchup'
 Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']}
 Plug 'machakann/vim-highlightedyank'
 
@@ -297,15 +303,17 @@ let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
 let g:ale_linters = {
       \ 'javascript': ['eslint', 'prettier'],
       \ 'typescript': ['tslint', 'eslint', 'prettier'],
-      \ 'go':         ['golint', 'go vet', 'go build', 'gometalinter'],
-      \ 'haskell':    ['ghc', 'hlint'],
+      \ 'go':         ['gopls'],
+      \ 'haskell':    ['ghc', 'hlint', 'stack_build'],
       \ 'reason':     ['merlin'],
       \ 'ocaml':      ['merlin'],
       \ 'vue':        ['eslint', 'vls'],
       \ 'perl':       ['perl', 'perlcritic'],
+      \ 'clojure':    ['clj-kondo', 'joker'],
       \ }
 
 let g:ale_fixers = {
+      \ '*':          ['remove_trailing_lines', 'trim_whitespace'],
       \ 'typescript': ['prettier'],
       \ 'javascript': ['prettier'],
       \ 'json':       ['prettier'],
@@ -375,7 +383,7 @@ let g:tagbar_autoclose  = 1
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 let g:fzf_layout        = { 'down': '35%' }
 let g:fzf_files_options = "--preview 'bat --color \"always\" {}'"
-nnoremap <silent> <leader>a :Ag<cr>
+nnoremap <silent> <leader>a :Rg<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>h :History<cr>
 nnoremap <leader>f :Files<cr>
@@ -406,7 +414,7 @@ let g:indentLine_char = '⋮'   " Other options ┆│┊︙¦⋮⋮
 
 Plug 'itchyny/lightline.vim' " wombat onedark quantum
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'onedark',
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
       \            [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
@@ -431,7 +439,6 @@ endif
 
 " Autocompletion Engine (neovim) Autocompletion Engine (neovim)
 Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
-Plug 'deoplete-plugins/deoplete-go',       { 'do': 'make'}
 Plug 'tweekmonster/deoplete-clang2'        " C/C++ and Objective-C/C++
 Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
 Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
@@ -444,7 +451,6 @@ let g:tern#arguments                       = ['--persistent']
 let g:deoplete#sources#jedi#show_docstring = 1
 let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 let g:deoplete#omni#input_patterns.elm     = '[^ \t]+'
-let g:deoplete#sources#go#gocode_binary    = $GOPATH . '/bin/gocode'
 " Deoplete-Clang settings
 let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
 let g:deoplete#sources#clang#clang_header  = '/usr/local/opt/llvm/lib/clang'
@@ -459,9 +465,10 @@ call plug#end()
 set termguicolors
 set background=dark
 " silent! colorscheme quantum
-colorscheme base16-default-dark
-" colorscheme cosmic_latte
-""""""""""""" 3) End UI Tweaks #ui-tweaks
+" colorscheme base16-default-dark
+colorscheme cosmic_latte
+" colorscheme onedark
+"""""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
 nnoremap <Left>  :echo "ಠ_ಠ!"<cr>
@@ -507,8 +514,8 @@ nnoremap ]l :lnext<CR>
 nnoremap <silent>[b :bprevious<CR>
 nnoremap <silent>]b :bnext<CR>
 
-" Open the alternate file with ,, instead of CTRL+SHIFT+6
-map ,, <C-^>
+" Toggle between last 2 buffers
+nnoremap <leader><tab> <c-^>
 
 " Search and replace
 nnoremap <leader>sr :%s/
@@ -727,22 +734,23 @@ augroup END
 
 augroup Golang-mappings
   autocmd!
-  autocmd FileType go setlocal noexpandtab
-  autocmd FileType go nmap <leader>r <Plug>(go-run)
-  autocmd FileType go nmap <leader>b <Plug>(go-build)
-  autocmd FileType go nmap <leader>e <Plug>(go-install)
-  autocmd FileType go nmap <leader>t <Plug>(go-test)
-  autocmd FileType go nmap <leader>c <Plug>(go-coverage)
-  autocmd FileType go nmap <leader>rt <Plug>(go-run-tab)
-  autocmd FileType go nmap <Leader>rs <Plug>(go-run-split)
-  autocmd FileType go nmap <Leader>d <Plug>(go-doc)
-  autocmd FileType go nmap <Leader>rv <Plug>(go-run-vertical)
-  autocmd FileType go nmap <Leader>/ :GoInfo<CR>
-  autocmd FileType go nmap <Leader>bp :GoToggleBreakpoint<CR>
-  autocmd FileType go nmap <Leader>db :GoDebug<CR>
-  autocmd Filetype go nmap <leader>ga <Plug>(go-alternate-edit)
-  autocmd Filetype go nmap <leader>gav <Plug>(go-alternate-vertical)
-  autocmd FileType go nmap <leader>gt :GoDeclsDir<cr>
+  autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
+"   autocmd FileType go setlocal noexpandtab
+"   autocmd FileType go nmap <leader>r <Plug>(go-run)
+"   autocmd FileType go nmap <leader>b <Plug>(go-build)
+"   autocmd FileType go nmap <leader>e <Plug>(go-install)
+"   autocmd FileType go nmap <leader>t <Plug>(go-test)
+"   autocmd FileType go nmap <leader>c <Plug>(go-coverage)
+"   autocmd FileType go nmap <leader>rt <Plug>(go-run-tab)
+"   autocmd FileType go nmap <Leader>rs <Plug>(go-run-split)
+"   autocmd FileType go nmap <Leader>d <Plug>(go-doc)
+"   autocmd FileType go nmap <Leader>rv <Plug>(go-run-vertical)
+"   autocmd FileType go nmap <Leader>/ :GoInfo<CR>
+"   autocmd FileType go nmap <Leader>bp :GoToggleBreakpoint<CR>
+"   autocmd FileType go nmap <Leader>db :GoDebug<CR>
+"   autocmd Filetype go nmap <leader>ga <Plug>(go-alternate-edit)
+"   autocmd Filetype go nmap <leader>gav <Plug>(go-alternate-vertical)
+"   autocmd FileType go nmap <leader>gt :GoDeclsDir<cr>
 augroup END
 
 augroup Terminal
@@ -754,7 +762,7 @@ augroup Terminal
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew ~/.config/nvim/init.vim
   command! Loadrc source ~/.config/nvim/init.vim | redraw | echo 'Init reloaded'
-  command! PU PlugClean! <bar> PlugUpdate! <bar> PlugUpgrade!<CR>
+  command! PU PlugClean! | PlugUpdate! | PlugUpgrade
 augroup END
 
 augroup Haskell-Maps
@@ -766,26 +774,34 @@ augroup Haskell-Maps
   autocmd FileType haskell map <silent> <leader><cr> :noh<cr>:GhcModTypeClear<cr>
 augroup END
 
-augroup intero-Maps
-  autocmd!
-  autocmd BufWritePost *.hs InteroReload " autocmdtomatically reload on save.
-  autocmd FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR><C-W>H
-  autocmd FileType haskell nnoremap <silent> <leader>ih :InteroHide<cr>
-  autocmd FileType haskell nnoremap <silent> <leader>if :InteroLoadCurrentFile<CR>
-  autocmd FileType haskell nnoremap <silent> <leader>d :InteroGoToDef<CR>
-  autocmd FileType haskell nnoremap <silent> <leader>it :InteroType<CR>
-  autocmd FileType haskell map <silent> <leader>ii :InteroInfo<cr>
-  autocmd FileType haskell map <leader>ic :!echo ":ctags" \| stack ghci<cr>
-augroup END
+" augroup intero-Maps
+"   autocmd!
+"   autocmd BufWritePost *.hs InteroReload " autocmdtomatically reload on save.
+"   autocmd FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR><C-W>H
+"   autocmd FileType haskell nnoremap <silent> <leader>ih :InteroHide<cr>
+"   autocmd FileType haskell nnoremap <silent> <leader>if :InteroLoadCurrentFile<CR>
+"   autocmd FileType haskell nnoremap <silent> <leader>d :InteroGoToDef<CR>
+"   autocmd FileType haskell nnoremap <silent> <leader>it :InteroType<CR>
+"   autocmd FileType haskell map <silent> <leader>ii :InteroInfo<cr>
+"   autocmd FileType haskell map <leader>ic :!echo ":ctags" \| stack ghci<cr>
+" augroup END
 
 " Quick breakpoints
 augroup Auto-Breakpoint
   autocmd!
   autocmd FileType python nnoremap <leader>db oimport ipdb; ipdb.set_trace()<esc>:w<CR>
   autocmd FileType javascript map <silent> <leader>db odebugger;<esc>
-  autocmd FileType javascript map<leader>ll yiwoconsole.log('<c-r>"', <c-r>");<esc>^
+  autocmd FileType javascript map<leader>lg yiwoconsole.log('<c-r>":', <c-r>");<Esc>^
+  autocmd FileType javascript map<leader>log yiwoconsole.log(`%s=${%s}`);<Esc>^
+
+  autocmd FileType rust map<Leader>db yiwodebug!("<c-r>"={:?}", &<c-r>");<Esc>^
   autocmd FileType ruby nnoremap <leader>bp obinding.pry<esc>:w<CR>
   autocmd FileType clojure map <silent> <leader>db o(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
+  autocmd FileType clojure map <silent><leader><leader>b 'saa((i./spy <esc>'
+  " let b:printf_pattern = 'System.out.println(String.format("%s", %s));'
+  autocmd FileType java map <silent><leader>lg oLog.info("XXX: ");<esc>
+
+  autocmd FileType lua map  <silent><leader>lg owrite_file('dbg.txt', require('inspect')(foo)..'\n', true, true)<esc>
 augroup END
 
 augroup ruby

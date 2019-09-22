@@ -199,6 +199,15 @@ offwifi() {
   networksetup -setairportpower en0 on
 }
 
+# GIT SCRIPTS
+g() {
+  if [[ $# > 0 ]]; then
+    git $@
+  else
+    git status
+  fi
+}
+
 gcap() {
   git add . && git ci -m "$*" && gp
 }

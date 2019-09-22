@@ -2,7 +2,7 @@
 # Set default channel
 # rustup default <stable> | <nightly>
 
-RUST_VERSION=1.34.0
+RUST_VERSION=1.37.0
 
 asdf install rust $RUST_VERSION
 asdf global rust $RUST_VERSION
@@ -30,8 +30,12 @@ cargo install wasm-gc
 # Built in http server
 # cargo install https
 
-# Enable tab completion for Bash
-rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion
+# Enable tab completion for Bash MACOS
+# rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion
+
+# Enable tab completion for Bash LINUX
+# rustup completions bash > ~/.local/share/bash-completion/completions/rustup
+
 asdf reshim rust
 
 # Test racer on the command line:

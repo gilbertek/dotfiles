@@ -1,6 +1,9 @@
 AllCops:
   DisabledByDefault: true
 
+Documentation:
+  Enabled: false
+
 Style/AlignArray:
   Enabled: true
 

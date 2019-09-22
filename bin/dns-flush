@@ -4,4 +4,3 @@
 # because it changes every damn update).
 
 sudo killall -HUP mDNSResponder
-
