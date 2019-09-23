@@ -50,9 +50,9 @@ done
 
 # neovim and vim config
 echo -e "\nCreating config symlinks"
-if [ ! -d $HOME/.config ]; then
+# if [ ! -d $HOME/.config ]; then
   mkdir -p $HOME/.config/{nvim,git}
-fi
+# fi
 
 # for config in $DOTFILES/config/*; do
 #   filename="$(basename $config)"
