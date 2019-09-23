@@ -24,9 +24,12 @@
   add-untracked = !"git status --porcelain | awk '/\\?\\?/{ print $2 }' | xargs git add"
   snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
   last = log -1 HEAD
+  stash-all = stash save --include-untracked
 [branch]
   autosetuprebase = always
   autosetupmerge = true
+[commit]
+  template = ~/.config/git/message
 [credential]
 	helper = osxkeychain
 [core]

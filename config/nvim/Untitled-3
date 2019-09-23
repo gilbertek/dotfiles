@@ -1,0 +1,1892 @@
+" Increase/decrease size and width (left, down, up and right) using ctrl-alt
+nnoremap <C-A-h> <C-w>2<
+nnoremap <C-A-j> <C-w>2+
+nnoremap <C-A-k> <C-w>2-
+nnoremap <C-A-l> <C-w>2><Paste>
+
+
+
+
+
+" Make current window the only one on screen
+nnoremap <A-o> <C-w>ozv
+
+
+
+
+" Switch buffers (we don't use Ctrl + Tab because when working inside a terminal
+" this is what is generally used to switch between terminal tabs)
+noremap <silent> <C-n> :bn<CR>
+noremap <silent> <C-p> :bp<CR>
+
+
+" Use [h and ]h for jumping between hunks (changes)
+nnoremap <expr> ]h &diff ? ']c' : ']h'
+nnoremap <expr> [h &diff ? '[c' : '[h'
+
+
+
+" Make horizontal window vertical and viceversa
+nnoremap <silent> <Leader>hv <C-W>H<C-W>x
+nnoremap <silent> <Leader>vh <C-W>K
+
+
+" Emacs/readline bindings (similar to rsi.vim)
+cnoremap <C-a> <home>
+cnoremap <C-e> <end>
+cnoremap <C-h> <left>
+cnoremap <C-l> <right>
+cnoremap <A-f> <S-Right>
+cnoremap <A-b> <S-Left>
+cnoremap <A-x> <C-W>
+cnoremap <C-x> <C-U>
+
+
+
+let g:neomake_javascript_eslint_args = ['--no-color', '--format', 'compact',
+            \ '--config', expand($HOME . '/.eslintrc.yaml'), '--fix']
+let g:neomake_javascript_eslint_errorformat = ''.
+        \ '%E%f: line %l\, col %c\, Error - %m,' .
+        \ '%W%f: line %l\, col %c\, Warning - %m, %-G%.%#'
+" Html
+let g:neomake_html_enabled_makers = ['htmlhint']
+let g:neomake_html_htmlhint_args = ['--format', 'unix', '--config',
+            \ expand($HOME . '/.htmlhintrc')]
+
+
+
+" ----------------------------------------------------------------------------
+" Quickfix
+" ----------------------------------------------------------------------------
+nnoremap <silent> ]q :cnext<CR>zz
+nnoremap <silent> [q :cprev<CR>zz
+nnoremap <silent> ]l :lnext<cr>zz
+nnoremap <silent> [l :lprev<cr>zz
+nnoremap <silent> <localleader>q :cclose<cr>:lclose<cr>:pclose<cr>
+" ----------------------------------------------------------------------------
+" Tabs
+" ----------------------------------------------------------------------------
+" Tab navigation
+nnoremap <silent> ]t :tabprev<CR>
+nnoremap <silent> [t :tabnext<CR>
+
+" Useful <silent> mappings for managing tabs
+nnoremap <silent> <silent> tn :tab split<cr>
+nnoremap <silent> to :tabonly<cr>
+nnoremap <silent> tc :tabclose<cr>
+nnoremap <silent> tm :tabmove<Space>
+
+
+" buffer keys
+nnoremap <Leader>bb :b#<CR>
+nnoremap <Leader>bn :bn<CR>
+nnoremap <Leader>bp :bp<CR>
+nnoremap <Leader>bf :bf<CR>
+nnoremap <Leader>bl :bl<CR>
+nnoremap <Leader>bw :w<CR>:bd<CR>
+nnoremap <Leader>bd :bd!<CR>
+" new buffer/tab
+nnoremap <Leader>e :enew<CR>
+
+
+
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
+
+map  <Leader>ls :ls<CR>:b
+map  <Leader>lf :find *
+
+map <silent> [a :prev<CR>
+map <silent> ]a :next<CR>
+map <silent> [A :first<CR>
+map <silent> ]A :last<CR>
+
+map <silent> [c :cprev<CR>
+map <silent> ]c :cnext<CR>
+map <silent> [C :cfirst<CR>
+map <silent> ]C :clast<CR>
+
+map <silent> [l :lprev<CR>
+map <silent> ]l :lnext<CR>
+map <silent> [L :lfirst<CR>
+map <silent> ]L :llast<CR>
+
+
+" Shortcuts using <leader>
+map <leader>sn ]s
+map <leader>sp [s
+map <leader>sa zg
+map <leader>s? z=
+
+
+
+" Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
+nmap <M-j> mz:m+<cr>`z
+nmap <M-k> mz:m-2<cr>`z
+vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+"------------------------------------------------------------------------------
+" Fugitive
+"------------------------------------------------------------------------------
+map ]] ]c
+map [[ [c
+map <leader>gdi :Gdiff<cr>
+map <leader>gst :Gstatus<cr>
+map <leader>dup :diffupdate<cr>
+
+
+"------------------------------------------------------------------------------
+" Vim-go
+"------------------------------------------------------------------------------
+let g:go_fmt_fail_silently = 1
+let g:go_fmt_command = "gofmt" "Explicited the formater plugin (gofmt, goimports, goreturn...)
+
+" Show a list of interfaces which is implemented by the type under your cursor
+au FileType go nmap <Leader>s <Plug>(go-implements)
+
+" Show type info for the word under your cursor
+au FileType go nmap <Leader>i <Plug>(go-info)
+
+" Open the relevant Godoc for the word under the cursor
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+
+" Open the Godoc in browser
+au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+
+" Run/build/test/coverage
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
+
+
+alias FAKES3='rm -rf /tmp/fakes3 ; mkdir /tmp/fakes3 ; fakes3 server -p 4567 -r /tmp/fakes3 > /dev/null 2> /dev/null &'
+alias DEV_REDIS_TUNNEL='ssh -L 6969:dev-rata2.jczmkl.0001.use1.cache.amazonaws.com:6379 conlin@lidr.mimir.cloud'
+alias ES_DOCKER='docker run --name elasticsearch --restart=always -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" -d -p 9200:9200 elasticsearch:5.6.8-alpine'
+
+
+
+alias gcd='if [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) == true ]]; then cd $(git rev-parse --show-toplevel); else echo "not in a git repository"; fi'
+
+alias e="emacs --no-window-system"
+
+alias gpox='git push origin `git rev-parse --abbrev-ref HEAD`'
+
+
+
+# EC2
+if [ -d "$HOME/.ec2" ]; then
+    export EC2_PRIVATE_KEY="$(/bin/ls "$HOME"/.ec2/pk-*.pem | /usr/bin/head -1)"
+    export EC2_CERT="$(/bin/ls "$HOME"/.ec2/cert-*.pem | /usr/bin/head -1)"
+    export EC2_HOME="/usr/local/Library/LinkedKegs/ec2-api-tools/jars"
+fi
+
+
+autocmd BufNewFile,BufRead *.conf setfiletype conf
+
+autocmd BufNewFile,BufRead *.mutt setfiletype muttrc
+
+
+autocmd BufNewFile,BufRead *.ssh setfiletype sshconfig
+
+pyenv install -l | grep -e "^\s*2.7" | grep -v dev | tail -n1 | xargs pyenv install
+pyenv install -l | grep -e "^\s*3" | grep -v dev | tail -n1 | xargs pyenv install
+pyenv versions | grep -e "^\s*2\\.7" | grep -v / | tail -n1 | xargs -I{} pyenv virtualenv {} neovim2
+pyenv versions | grep -e "^\s*3\\." | grep -v / | tail -n1 | xargs -I{} pyenv virtualenv {} neovim3
+
+
+" Activate skim
+nmap <leader>lv :w<CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline -r <C-r>=line('.')<CR> %<.pdf %<CR><CR>
+nmap <leader>lp :w<CR>:silent !xelatex -synctex=1 --interaction=nonstopmode %:p <CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline -r <C-r>=line('.')<CR> %<.pdf %<CR><CR>
+nmap <leader>lm :w<CR>:silent !make <CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline -r <C-r>=line('.')<CR> %<.pdf %<CR><CR>
+" Reactivate VIM
+nmap <leader>lr :w<CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline -r <C-r>=line('.')<CR> %<.pdf %<CR>:silent !osascript -e "tell application \"MacVim\" to activate" <CR><CR>
+nmap <leader>lt :w<CR>:silent !xelatex -synctex=1 --interaction=nonstopmode %:p <CR>:silent !/Applications/Skim.app/Contents/SharedSupport/displayline -r <C-r>=line('.')<CR> %<.pdf %<CR>:silent !osascript -e "tell application \"MacVim\" to activate" <CR><CR>
+
+
+
+
+:cause Could not locate clojure/core/async_
+_init.class, clojure/core/async.clj or cloju
+re/core/async.cljc on classpath.
+ :via
+
+:cd %:p:h
+silent! !git pull > /dev/null
+:e!
+autocmd! BufWritePost * silent! !git add .;git commit -m "vim autocommit" > /dev/null; git push > /dev/null&
+
+
+
+" Open current file in Marked {{{
+function! MarkedPreview()
+  :w
+  exec ':silent !open -a "Marked 2.app" ' . shellescape('%:p')
+  redraw!
+endfunction
+nnoremap <leader>md :call MarkedPreview()<CR>
+" }}}
+" Open current repo in Tower {{{
+function! OpenInGitTower()
+  call system('gittower `git rev-parse --show-toplevel`')
+endfunction
+nnoremap <leader>gt :call OpenInGitTower()<CR>
+
+
+
+let g:UltiSnipsExpandTrigger='<C-j>'
+let g:UltiSnipsJumpForwardTrigger='<C-j>'
+let g:UltiSnipsJumpBackwardTrigger='<C-k>'
+
+
+" Cycle through deopletes auto-completion with the tab key
+" Plug 'ervandew/supertab'
+" let g:SuperTabDefaultCompletionType    = "<c-x><c-o>"
+" let g:SuperTabClosePreviewOnPopupClose = 1
+
+
+" Shortcut to save a document in INSERT and NORMAL mode
+:inoremap <c-d> <esc>:w<cr>a
+:nnoremap <c-d> :w<cr>
+
+" Shortcut to jump to the next buffer
+:nnoremap <c-n> :bn<cr>
+
+""Automatically insert header guards for header files of C/C++
+function! s:insert_gates()
+  let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
+  execute "normal! i#ifndef _" . gatename ."_"
+  execute "normal! o#define _" . gatename . "_ "
+  execute "normal! Go#endif /* _" . gatename . "_ */"
+  normal! kk
+endfunction
+autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+
+"" Set up automatic code folding save and restore
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
+
+
+" Custom mapping shortcut to capitalize an entire word in INSERT MODE using Ctrl+u
+:inoremap <c-u> <esc>vBU<esc>A
+
+" Create a shortcut to insert if condition in C files
+:autocmd FileType c :iabbrev <buffer> iff if(){}<esc>i
+
+" Shortcut to codefold a C function
+:nnoremap <leader>} :mark a<cr>%zf'a
+
+
+nnoremap <leader>nf :NERDTreeFind<cr>
+nnoremap <leader>nn :e .<cr>
+nnoremap <leader>nd :e %:h<cr>
+nnoremap <leader>] :TagbarToggle<cr>
+nnoremap <leader>f :CtrlP<cr>
+nnoremap <leader>b :CtrlPBuffer<cr>
+nnoremap <leader>p :CtrlPCmdPalette<cr>
+nnoremap <c-f> :CtrlP<cr>
+nnoremap <c-b> :CtrlPBuffer<cr>
+
+"ultisnips settings
+let g:UltiSnipsListSnippets = "<c-s>"
+augroup Ultisnips
+    autocmd bufenter,bufnewfile */factories/*.rb UltiSnipsAddFiletypes factory_girl
+    autocmd bufenter,bufnewfile */app/admin/*.rb,*/app/views/activeadmin/*.{rb,arb},*.erb UltiSnipsAddFiletypes formtastic
+augroup END
+
+if has("nvim")
+    tnoremap <silent> <Esc> <C-\><C-n>`.$
+    tnoremap <A-h> <C-\><C-n><C-w>h
+    tnoremap <A-j> <C-\><C-n><C-w>j
+    tnoremap <A-k> <C-\><C-n><C-w>k
+    tnoremap <A-l> <C-\><C-n><C-w>l
+    autocmd BufEnter term://* startinsert
+endif
+
+"make Y consistent with C and D
+nnoremap Y y$
+
+
+"tmux-vim-navigator setup
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <m-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <m-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <m-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <m-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <m-w> :TmuxNavigatePrevious<cr>
+
+
+" Opens a new tab with the current buffer's path
+" Super useful when editing files in the same directory
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+" Return to last edit position when opening files (You want this!)
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+function git_fix_conflicts {
+  git diff --name-only | uniq | xargs $EDITOR
+}
+alias gfc=git_fix_conflicts
+
+function nb {
+  NEW_BRANCH_NAME=$1
+  git checkout -b $NEW_BRANCH_NAME
+  git branch --set-upstream-to origin/$NEW_BRANCH_NAME
+}
+
+function open_gem {
+  gem_name=$1
+  (cd `bundle show $gem_name` && nvim .)
+}
+alias og=open_gem
+
+function remote_console {
+  environment=$1
+  bundle exec cap $environment remote:console
+}
+alias rc=remote_console
+
+function specs_for {
+  #TODO: cleanup
+  bundle exec rspec `find spec/ -path spec/factories -prune -o -name '*$1*'`
+}
+
+
+function new_gem {
+  gem_name=$1
+  mkdir $gem_name
+
+  mkdir $gem_name/lib
+  mkdir $gem_name/bin
+  mkdir $gem_name/spec
+
+  echo 2.2.2 > $gem_name/.ruby-version
+
+  echo 'source "https://rubygems.org"' > $gem_name/Gemfile
+  echo gemspec >> $gem_name/Gemfile
+
+  echo 'Gem::Specification.new do |gem|' > $gem_name/$gem_name.gemspec
+  echo "  gem.name = '$gem_name'" >>  $gem_name/$gem_name.gemspec
+  echo "  gem.version = '0.0.0'" >>  $gem_name/$gem_name.gemspec
+  echo end >>  $gem_name/$gem_name.gemspec
+}
+
+function new_ruby_bin {
+  filename=$1
+  echo "#!/usr/bin/env ruby" > $filename
+  chmod u+x $filename
+}
+
+
+
+" make arrow keys do something useful
+nnoremap <unique> <Left> :vertical resize +2<CR>
+nnoremap <unique> <Right> :vertical resize -2<CR>
+nnoremap <unique> <Up> :resize +2<CR>
+nnoremap <unique> <Down> :resize -2<CR>
+
+" Easily upcase a word in normal mode
+nnoremap <unique> <leader><c-u> viWU
+"
+" inoremap <leader><c-u> <esc>viWUi
+
+" vertical split with previous buffer
+nnoremap <unique> <leader>vs :execute "rightbelow vsplit " . bufname("#")<cr>
+
+" change working directory to that of the current file
+nnoremap <unique> <silent><leader>cd :cd %:p:h<cr>
+
+" edit the previous buffer
+nnoremap <unique> <BS> <C-^>
+
+" move to next and previous location
+nnoremap <unique> [l :lprevious<cr>
+nnoremap <unique> ]l :lnext<cr>
+
+" move to next previous quickfix
+nnoremap <unique> [q :cprevious<cr>
+nnoremap <unique> ]q :cnext<cr>
+
+" move to next and previous buffer
+nnoremap <unique> [b :bprevious<cr>
+nnoremap <unique> ]b :bnext<cr>
+
+
+autocmd FileType scheme nnoremap <buffer> <localleader>rc :SchemeConnect<cr>
+autocmd FileType scheme nnoremap <buffer> <localleader>re :normal mscpaF<cr>`s
+autocmd FileType scheme nnoremap <buffer> <localleader>rf :normal msggcpG<cr>`s
+
+deoplete.nvim.vim
+let g:deoplete#enable_at_startup = 1
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+set completeopt-=preview
+
+call deoplete#custom#option('omni_patterns', {
+\ 'clojure': '\w\|-\|\.\|+\|*\|/',
+\})
+
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --hidden -g "!.git/" --column --line-number --no-heading --color=never '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+map <leader>j <plug>(easymotion-prefix)
+
+
+abbrev break! (com.gfredericks.debug-repl.http-intercept/break!)
+command! -buffer LoadDebugger :Eval (require 'com.gfredericks.debug-repl.http-intercept 'com.gfredericks.debug-repl)<CR>
+command! -buffer Unbreak :Eval (com.gfredericks.debug-repl/unbreak!)
+command! -buffer WaitForBreak :Eval (com.gfredericks.debug-repl.http-intercept/wait-for-breaks)
+
+
+
+# ssh agent stuff (via https://wiki.archlinux.org/index.php/SSH_keys#ssh-agent)
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+  ssh-agent > ~/.ssh-agent-thing
+fi
+if [[ "$SSH_AGENT_PID" == "" ]]; then
+  eval "$(<~/.ssh-agent-thing)"
+fi
+
+" map control + l to commentary toggle comment for one line or visual
+" selection
+nmap <C-l> gcc
+vmap <C-l> gcgv
+imap <C-l> <ESC>gcc
+
+
+command! -nargs=* Things :silent !open "things:///add?show-quick-entry=true&title=%:t&notes=%<cr>"
+nnoremap <Leader>T :Things<cr>
+
+#}}}
+#-------- BASH Exports {{{
+#------------------------------------------------------
+# http://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
+shopt -s histappend	# append history not overwrite it
+shopt -s checkwinsize	# check window on resize; for word wrapping
+shopt -s autocd		# instead of 'cd Pictures', just run Pictures
+shopt -s cdspell	# auto correct cd; cd /sur/src/linus' >> 'cd /usr/src/linux'
+shopt -s cmdhist	# If set, Bash attempts to save all lines of a multiple-line command in the same history entry. This allows easy re-editing of multi-line commands.
+
+HISTCONTROL=erasedups:ignoreboth
+HISTSIZE=1000000
+HISTFILESIZE=1000000
+HISTIGNORE="&:ls:[bf]g:history:exit"  #ignore these commands from history
+
+# setopt autocd
+# appendhistory all your open shells share the same history which is handy if you want to refer commands from one shell in another with say Ctrl+R(reverse-history-search)
+# extendedglob
+# http://batsov.com/articles/2011/04/29/one-shell-to-rule-them-all/
+
+#}}}
+#-------- Keybinding {{{
+#------------------------------------------------------
+# movement and autocompeletion at the prompt
+bind 'set completion-ignore-case on'	# case insensitive on tab completion
+bind '"\t":menu-complete' 		# Tab: Cycle thru completion
+bind '"\e[1;3D":backward-kill-word' 	# Alt + arrowleft : delete word backward
+bind '"\e\e[D":backward-kill-word' 	# Alt + arrowleft : delete word backward
+bind '"\e[1;3A":kill-whole-line' 	# Alt + arrowup : delete whole line
+bind '"\e[1;3B":undo'			# Alt + arrowdown : undo
+bind '"\e[1;5C":forward-word'		# Ctrl + arrowright : Jump a word forward
+bind '"\e[1;5D":backward-word'		# Ctrl + arrowleft : Jump a word backward
+bind '"\e[Z":menu-complete-backward'	# Shift+Tab: Cycle backwards
+bind '"\e[A": history-search-backward'	# ArrowUp: history completion backwards
+bind '"\e[B": history-search-forward'	# ArrowDown: history completion forward
+
+
+ http://www.reddit.com/r/linux/comments/12wxsl/whats_in_your_bashrc/
+# export PROMPT_COMMAND='q="- $(date +%T)"; while [[ ${#q} -lt $COLUMNS ]]; do q="${q:0:1}$q"; done; echo -e "\033[0;90m$q";'
+
+# http://pastebin.com/bcsvkKVF
+# PS1='\n \[\e[1;37m\]$(echo -e "\033(0lq\033(B")[\[\e[0m\] \[\e[1;36m\]\u \D{%F %a %T %p} \w\[\e[0m\]\n \[\e[1;37m\]$(echo -e "\033(0mq\033(B")[ --->\[\e[0m\] \[\e[1;32m\]'
+
+# PS1='\e[${PROMPT_COLOR}\e[${PROMPT_COLOR2}\u@${PROMPT_HOSTNAME}\e[${PROMPT_COLOR}\[\e[1;30m\] - \[\e[34;1m\]\t\[\e[30;1m\] - \[\e[37;1m\]\w\[\e[30;1m\]\[\e[1;30m\] \nhist:\! \[\e[0;33m\] \[\e[1;31m\]$\[\e[1;32m\] '
+#-------- Color Bash Prompt {{{
+#------------------------------------------------------
+
+# Bash Prompts 2012
+#PS1="\[$BBlue\]\u \t \[$BWhite\]\w \n\[$BRed\]$\[$BGreen\] "
+
+#  \n \[\e[1;37m\]+-[\[\e[1;36m\] \d \[\e[1;31m\]\T \[\e[1;37m\]] \n\[\e[1;37m\] +-[ \[\e[1;34m\]@ \[\e[1;32m\]\w \[\e[1;37m\]]\[\e[1;35m\]---> \[\e[0;37m\]
+
+
+# Newest, use man strftime - Tron
+#PS1="\n \[$BWhite\]+-[ \[$BCyan\]\u \D{%F %a %r} \w \n \[$BWhite\]+-[ ---> \[$BGreen\]"
+#}}}
+
+PS1="\[\e[30;1m\](\[\e[34;1m\]\u@\h\[\e[30;1m\])-(\[\e[34;1m\]\t\[\e[30;1m\])-(\[\e[32;1m\]\w\[\e[30;1m\])\[\e[30;1m\]\nhist:\! \[\e[0;33m\] \[\e[1;31m\](jobs:\[\e[34;1m\]\j\[\e[30;1m\])\`if [ \$? -eq 0 ]; then echo \[\e[32m\] \:\-\); else echo \[\e[31m\] \:\-\( ; fi\`\[\e[0m\] $ "
+
+let g:deoplete#sources#ternjs#types = 1
+let g:deoplete#sources#ternjs#docs = 1
+
+autocmd MyAutoCmd CompleteDone * silent! pclose!
+
+" Movement within 'ins-completion-menu'
+imap <expr><C-j>   pumvisible() ? "\<Down>" : "\<C-j>"
+imap <expr><C-k>   pumvisible() ? "\<Up>" : "\<C-k>"
+
+" Scroll pages in menu
+inoremap <expr><C-f> pumvisible() ? "\<PageDown>" : "\<Right>"
+inoremap <expr><C-b> pumvisible() ? "\<PageUp>" : "\<Left>"
+imap     <expr><C-d> pumvisible() ? "\<PageDown>" : "\<C-d>"
+imap     <expr><C-u> pumvisible() ? "\<PageUp>" : "\<C-u>"
+
+" <CR>: If popup menu visible, expand snippet or close popup with selection,
+"       Otherwise, check if within empty pair and use delimitMate.
+inoremap <silent><expr><CR> pumvisible() ? deoplete#close_popup()
+	\ : (delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
+
+" <Tab> completion:
+" 1. If popup menu is visible, select and insert next item
+" 2. Otherwise, if within a snippet, jump to next input
+" 3. Otherwise, if preceding chars are whitespace, insert tab char
+" 4. Otherwise, start manual autocomplete
+imap <silent><expr><Tab> pumvisible() ? "\<Down>"
+	\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+	\ : (<SID>is_whitespace() ? "\<Tab>"
+	\ : deoplete#manual_complete()))
+
+smap <silent><expr><Tab> pumvisible() ? "\<Down>"
+	\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+	\ : (<SID>is_whitespace() ? "\<Tab>"
+	\ : deoplete#manual_complete()))
+
+inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
+
+function! s:is_whitespace() "{{{
+	let col = col('.') - 1
+	return ! col || getline('.')[col - 1] =~? '\s'
+endfunction "}}}
+" }}}
+
+f has('mac')
+	" Open the macOS dictionary on current word
+	nmap <Leader>? :!open dict://<cword><CR><CR>
+
+	" Use Marked for real-time Markdown preview
+	if executable('/Applications/Marked 2.app/Contents/MacOS/Marked 2')
+		autocmd MyAutoCmd FileType markdown
+			\ nmap <buffer><Leader>P :silent !open -a Marked\ 2.app '%:p'<CR>
+	endif
+
+	" Use Dash on Mac, for context help
+	if executable('/Applications/Dash.app/Contents/MacOS/Dash')
+		autocmd MyAutoCmd FileType yaml.ansible,php,css,less,html,markdown
+			\ nmap <silent><buffer> K :!open -g dash://"<C-R>=split(&ft, '\.')[0]<CR>:<cword>"&<CR><CR>
+		autocmd MyAutoCmd FileType javascript,javascript.jsx,sql,ruby,conf,sh
+			\ nmap <silent><buffer> K :!open -g dash://"<cword>"&<CR><CR>
+	endif
+
+" Use Zeal on Linux for context help
+elseif executable('zeal')
+	autocmd MyAutoCmd FileType yaml.ansible,php,css,less,html,markdown
+		\ nmap <silent><buffer> K :!zeal --query "<C-R>=split(&ft, '\.')[0]<CR>:<cword>"&<CR><CR>
+	autocmd MyAutoCmd FileType javascript,javascript.jsx,sql,ruby,conf,sh
+		\ nmap <silent><buffer> K :!zeal --query "<cword>"&<CR><CR>
+endif
+
+
+let g:vimwiki_use_calendar = 1
+    let g:vimwiki_hl_headers = 1
+    let g:vimwiki_hl_cb_checked = 1
+    let g:vimwiki_autowriteall = 0
+  hook_source: |
+    let g:vimwiki_list = [
+    \   { 'diary_header': 'Diary',
+    \     'diary_link_fmt': '%Y-%m/%d',
+    \     'auto_toc': 1,
+    \     'path': '~/docs/wiki/',
+    \     'syntax': 'markdown',
+    \     'ext': '.md' },
+    \   { 'path': '~/docs/blog/',
+    \     'syntax': 'markdown',
+    \     'ext': '.md' }
+    \ ]
+
+
+
+
+"to disable preview mode
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+set completeopt-=preview
+
+let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+let g:SuperTabDefaultCompletionType = "context"
+
+
+" for vim-fireplace dinamic evaluation of Clojure code
+map <leader>e :Eval<CR>
+
+" This is a very minimal example that shows how to compile and run a
+" single Java test file from you Vim session
+" A quick explaination:
+"    map: map statements tell Vim to associated certain key strokes with
+"         actions.
+"    <leader>jc (leader is usually just a comma, but you can
+"         define it as you like) now maps to command :!javac %<CR>
+"    :!javac %<CR>
+"         '!' gets you into the system command line,
+"         'javac' is the standard Java compiler,
+"         '%' is the current filename (Test.java)
+"         ':r' gets the filename without the extension (in the second line)
+"         '<CR>' tells Vim to go ahead and enter the command (carriage return)
+map <leader>jjc :!javac %<CR>
+map <leader>jjj :!java %:r
+
+
+set completeopt=noinsert,menuone
+
+
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+
+
+" ***** .vimrc *****
+" TODO - reuse here
+noremap <leader>dot :vsplit ~/.vimrc<cr>:execute ":nnoremap <buffer> q :w\<lt>cr>:bd\<lt>cr>"<cr>
+noremap <leader>cheat :vsplit ~/source/scratch/cheatsheet/<cr>:execute ":nnoremap <buffer> q :w\<lt>cr>:bd\<lt>cr>"<cr>
+noremap <leader>log :vsplit ~/source/scratch/logbook/<cr>:execute ":nnoremap <buffer> q :w\<lt>cr>:bd\<lt>cr>"<cr>
+noremap <leader>todo :split TODO<cr>:set ft=votl<cr>:execute ":nnoremap <buffer> q :w\<lt>cr>:bd\<lt>cr>"<cr>
+
+nnoremap <leader>sdot :source ~/.vimrc<cr>
+
+
+
+
+
+
+
+
+
+" Disable hlint-refactor-vim's default keybindings
+let g:hlintRefactor#disableDefaultKeybindings = 1
+
+" hlint-refactor-vim keybindings
+map <silent> <leader>hr :call ApplyOneSuggestion()<CR>
+map <silent> <leader>hR :call ApplyAllSuggestions()<CR>
+
+" Show types in completion suggestions
+let g:necoghc_enable_detailed_browse = 1
+" Resolve ghcmod base directory
+au FileType haskell let g:ghcmod_use_basedir = getcwd()
+
+" Type of expression under cursor
+nmap <silent> <leader>ht :GhcModType<CR>
+" Insert type of expression under cursor
+nmap <silent> <leader>hT :GhcModTypeInsert<CR>
+
+" GHC errors and warnings
+nmap <silent> <leader>hc :Neomake ghcmod<CR>
+
+" open the neomake error window automatically when an error is found
+let g:neomake_open_list = 2
+
+" Haskell Lint
+nmap <silent> <leader>hl :Neomake hlint<CR>
+
+" Options for Haskell Syntax Check
+let g:neomake_haskell_ghc_mod_args = '-g-Wall'
+
+
+let g:tagbar_type_haskell = {
+    \ 'ctagsbin'  : 'hasktags',
+    \ 'ctagsargs' : '-x -c -o-',
+    \ 'kinds'     : [
+        \  'm:modules:0:1',
+        \  'd:data: 0:1',
+        \  'd_gadt: data gadt:0:1',
+        \  't:type names:0:1',
+        \  'nt:new types:0:1',
+        \  'c:classes:0:1',
+        \  'cons:constructors:1:1',
+        \  'c_gadt:constructor gadt:1:1',
+        \  'c_a:constructor accessors:1:1',
+        \  'ft:function types:1:1',
+        \  'fi:function implementations:0:1',
+        \  'o:others:0:1'
+    \ ],
+    \ 'sro'        : '.',
+    \ 'kind2scope' : {
+        \ 'm' : 'module',
+        \ 'c' : 'class',
+        \ 'd' : 'data',
+        \ 't' : 'type'
+    \ },
+    \ 'scope2kind' : {
+        \ 'module' : 'm',
+        \ 'class'  : 'c',
+        \ 'data'   : 'd',
+        \ 'type'   : 't'
+    \ }
+\ }
+
+
+" HVN paths {{{
+" stack bin path symlink
+let hvn_stack_bin = expand(resolve(hvn_config_dir . "/.stack-bin"))
+" Find custom built hasktags, codex etc
+let $PATH = expand(hvn_stack_bin) . ':' . $PATH
+
+
+
+" Make <c-h> work like <c-h> again (this is a problem with libterm)
+if has('nvim')
+  nnoremap <BS> <C-w>h
+endif
+
+
+
+" Hoogle the word under the cursor
+nnoremap <silent> <leader>hh :Hoogle<CR>
+
+" Hoogle and prompt for input
+nnoremap <leader>hH :Hoogle
+
+" Hoogle for detailed documentation (e.g. "Functor")
+nnoremap <silent> <leader>hi :HoogleInfo<CR>
+
+" Hoogle for detailed documentation and prompt for input
+nnoremap <leader>hI :HoogleInfo
+
+" Hoogle, close the Hoogle window
+nnoremap <silent> <leader>hz :HoogleClose<CR>
+
+
+autocmd FileType java setlocal omnifunc=javacomplete#Complete completefunc=javacomplete#CompleteParamsInfo
+
+autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
+
+autocmd BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,config.ru,*.rake} set ft=ruby
+
+
+
+"""" Navigate through autocompletion
+inoremap <C-j> <C-n>
+inoremap <C-k> <C-p>
+
+""""" Navigate through location list
+nmap <C-n> <Plug>(qf_loc_next)<bar><Plug>(qf_qf_next)
+nmap <C-p> <Plug>(qf_loc_previous)<bar><Plug>(qf_qf_previous)
+
+"""" Scroll command history
+cnoremap <C-j> <Down>
+cnoremap <C-k> <Up>
+
+"""" Increment
+nmap <C-Up> <C-a>
+nmap <C-Down> <C-x>
+
+
+"""" Jump to previous / next cursor position
+nnoremap <A-Left> <C-o>
+nnoremap <A-Right> <C-i>
+
+"""" Hlint refactor
+let g:hlintRefactor#disableDefaultKeybindings = 1
+
+nnoremap <silent> <leader>hr :call ApplyOneSuggestion()<CR>
+nnoremap <silent> <leader>hR :call ApplyAllSuggestions()<CR>
+
+
+"""" Markdown composer
+let g:markdown_composer_open_browser = 0
+let g:markdown_composer_custom_css = ['https://cdn.rawgit.com/maximbaz/github-markdown-css/gh-pages/github-markdown.css']
+
+"""" Neco-ghc
+let g:necoghc_enable_detailed_browse = 1
+
+
+" Ruby
+" Load system ruby for vim (avoid JRuby slowdowns)
+let g:ruby_path=system('which -a ruby | tail -n1')
+
+" workaround slow ruby file handling
+if !empty(matchstr($MY_RUBY_HOME, 'jruby'))
+  let g:ruby_path = join(split(glob($MY_RUBY_HOME.'/lib/ruby/*.*')."\n".glob($MY_RUBY_HOME.'/lib/rubysite_ruby/*'),"\n"),',')
+endif
+
+
+" collect programming metrics
+Plugin 'wakatime/vim-wakatime'
+
+
+
+let g:UltiSnipsExpandTrigger = "<C-k>"
+let g:UltiSnipsListSnippets = '<c-j>'
+let g:UltiSnipsJumpForwardTrigger = '<c-l>'
+let g:UltiSnipsJumpBackwardTrigger = '<c-h>'
+
+
+let g:javascript_plugin_jsdoc  = v:true " Enables syntax highlighting for JSDocs.
+let g:javascript_plugin_flow   = v:true " Enables Flow syntax support.
+
+" Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] } " Better syntax highlight and indentation
+let g:haskell_enable_quantification   = 1 " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo      = 1 " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax      = 1 " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles        = 1 " to enable highlighting of type roles
+let g:haskell_enable_static_pointers  = 1 " to enable highlighting of `static`
+let g:haskell_backpack                = 1 " to enable highlighting of backpack keywords
+
+Plug 'parsonsmatt/intero-neovim'
+Plug 'eagletmt/neco-ghc',             { 'for': 'haskell' } "Haskell completion
+let g:haskellmode_completion_ghc      = 0
+let g:necoghc_enable_detailed_browse  = 1
+let g:necoghc_use_stack               = 1
+
+Plug 'eagletmt/ghcmod-vim',           { 'for': 'haskell' } " Enable Ghc Mod
+Plug 'enomsg/vim-haskellConcealPlus', { 'for': 'haskell' } " Use unicode symbols for haskell keywords
+Plug 'Twinside/vim-hoogle',           { 'for': 'haskell' } " Query hoogle
+Plug 'mpickering/hlint-refactor-vim', { 'for': 'haskell' } " Fix lint issues
+
+
+autocmd vimrc FileType rust set tabstop=2 set shiftwidth=2 set softtabstop=2 set textwidth=80
+
+" Force some file types to load
+au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,Guardfile,config.ru,*.rake,*.jbuilder} set filetype=ruby
+au BufRead,BufNewFile *.ejs set filetype=javascript
+au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} set filetype=markdown textwidth=80 formatoptions+=t colorcolumn=80 expandtab
+au BufRead,BufNewFile *.{js,jsx} set colorcolumn=80
+
+
+" Map command-[ and command-] to indenting or outdenting
+" while keeping the original selection in visual mode
+vmap <A-]> >gv
+vmap <A-[> <gv
+
+nmap <A-]> >>
+nmap <A-[> <<
+
+omap <A-]> >>
+omap <A-[> <<
+
+imap <A-]> <Esc>>>i
+imap <A-[> <Esc><<i
+
+" Custom whitespace per file type
+autocmd FileType elm set tabstop=4
+autocmd FileType elm set shiftwidth=4
+autocmd FileType haskell set tabstop=8
+autocmd FileType haskell set softtabstop=4
+autocmd FileType haskell set shiftwidth=4
+autocmd FileType haskell set shiftround
+
+
+\ 'clojure': ['bash', '~/bin/clojure-lsp'],
+
+
+https://github.com/georgewfraser/java-language-server
+
+https://github.com/Alloyed/lua-lsp
+
+let g:LanguageClient_serverCommands = {
+	\ 'lua': ['lua-lsp'],
+	\ }https://github.com/nwolverson/purescript-language-server
+let g:LanguageClient_autoStart = 1
+
+https://github.com/nwolverson/purescript-language-server
+
+npm i -g purescript-language-server
+
+
+
+https://github.com/jaredly/reason-language-server
+
+youtube-dl -q -o- $1 | vlc -
+
+
+let g:ale_jshint_config_loc = "/home/fabian/.jshint-vim.json"
+let g:ale_c_clang_options = '-Wall -std=c11 -Wno-bitwise-op-parentheses -Wno-gnu-binary-literal'
+let g:ale_c_clangtidy_options = '-Wall -std=c11 -Wno-bitwise-op-parentheses -Wno-gnu-binary-literal'
+let g:ale_python_mypy_options = '--ignore-missing-imports --check-untyped-defs ' .
+            \'--disallow-untyped-calls --warn-return-any --no-implicit-optional ' .
+            \'--cache-dir /home/fabian/.cache/mypy'
+let g:ale_maximum_file_size = 1000000
+
+
+ augroup terminal
+        autocmd!
+        autocmd TermOpen * setlocal number relativenumber
+        autocmd BufEnter term://* startinsert
+        autocmd TermOpen term://* startinsert
+        autocmd TermOpen term://* call UndoEscMappingFzf()
+    augroup END
+    command! TT :tabe | :term
+    command! Test :tabe | :term jbuilder runtest
+
+
+
+" open a file in current file's directory
+nnoremap <Leader>e :w<CR>:e <C-R>=expand("%:p:h") . "/" <CR>
+nnoremap <Leader>sp :split <C-R>=expand("%:p:h") . "/" <CR>
+
+" find current word in current (adjustable) directory
+nnoremap <Leader>f :w<CR>yiw:vim /\<<C-R>"\>/ <C-R>=expand("%:p:h") . "/" <CR>
+
+" find current word in current directory
+nnoremap <Leader>ff :w<CR>yiw:vim /\<<C-R>"\>/ <C-R>=expand("%:p:h") . "/*" <CR><CR>
+
+
+inoremap <A-h> <LEFT>
+inoremap <A-l> <RIGHT>
+inoremap <A-k> <UP>
+inoremap <A-j> <DOWN>
+
+
+" Perl omnifunc
+Plug 'c9s/perlomni.vim', { 'for': 'perl' }
+
+
+compiler perl
+
+" Show perldoc for the current file
+if has('nvim')
+  nnoremap <silent> <leader>pd :split +terminal\ perldoc\ -T\ %<cr>
+else
+  nnoremap <silent> <leader>pd :silent !perldoc -T %<cr> <bar> :redraw!<cr>
+endif
+
+" Highlight known function tags as functions
+highlight link perlFunctionTag Function
+
+
+
+" Use Emacs-style keybindings in command mode (from :help emacs-keys)
+"
+" start of line
+cnoremap <C-A> <Home>
+" back one character
+cnoremap <C-B> <Left>
+" delete character under cursor
+cnoremap <C-D> <Del>
+" end of line
+cnoremap <C-E> <End>
+" forward one character
+cnoremap <C-F> <Right>
+" recall newer command-line
+cnoremap <C-N> <Down>
+" recall previous (older) command-line
+cnoremap <C-P> <Up>
+" back one word
+cnoremap <Esc><C-B> <S-Left>
+" forward one word
+cnoremap <Esc><C-F> <S-Right>
+
+
+
+" Undo inputted candidate
+  inoremap <expr><C-g>     deoplete#mappings#undo_completion()
+
+  " <C-h>, <BS>: close popup and delete backword char.
+  inoremap <expr><C-h> deoplete#mappings#smart_close_popup()."\<C-h>"
+  inoremap <expr><BS>  deoplete#mappings#smart_close_popup()."\<C-h>"
+
+  " <CR>: close popup and save indent
+  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+  function! s:my_cr_function() abort
+    return deoplete#mappings#close_popup() . "\<CR>"
+  endfunction
+
+  " <TAB>: completeion
+  imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+        \ "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+  inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<C-h>"
+  inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  inoremap <expr> '  pumvisible() ? deoplete#mappings#close_popup() : "'"
+
+
+#!/usr/bin/env sh
+
+gem install jekyll
+gem install lolcat
+gem install mdl
+gem install neovim
+gem install rubocop
+gem install rubocop-cask
+gem install ruby-beautify
+gem install scss_lint
+gem install travis
+
+
+
+#!/usr/bin/env sh
+
+pip install autoflake
+pip install editorconfig
+pip install isort
+pip install jedi
+pip install sqlparse
+pip install vim-vint
+pip install virtualenv
+pip install waybackpack
+pip install yamllint
+pip install yapf
+
+pip3 install pipenv
+
+pip install pylint
+pip3 install pylint
+
+pip2 install neovim
+pip3 install neovim
+
+pip install ipython
+pip3 install ipython
+
+#!/usr/bin/env sh
+
+npm install -g babel-eslint
+npm install -g bower
+npm install -g coffee-script
+npm install -g csslint
+npm install -g eslint
+npm install -g eslint-plugin-babel
+npm install -g grunt-cli
+npm install -g js-beautify
+npm install -g markdown-pdf
+npm install -g pug-beautifier
+npm install -g pug-cli
+npm install -g pug-lint
+npm install -g tern
+npm install -g typescript
+npm install -g typescript-formatter
+npm install -g typescript-tools
+npm install -g uglify
+npm install -g vimlint
+npm install -g vue-cli
+
+
+
+#!/usr/bin/env sh
+
+# Install Xcode Command Line Tools
+xcode-select --install
+
+# Install Homebrew
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# General Programs
+brew install bash
+brew install catimg
+brew install emacs
+brew install git
+brew install gpg
+brew install grep
+brew install homebrew/dupes/openssh
+brew install imagemagick
+brew install make --with-default-names
+brew install mercurial
+brew install mosh
+brew install neovim/neovim/neovim
+brew install qpdf
+brew install ranger
+brew install rename
+brew install ssh-copy-id
+brew install sshuttle
+brew install tig --with-docs
+brew install tmux
+brew install vim
+brew install webarchiver
+brew install zsh
+brew install z
+brew install diff-so-fancy
+
+brew install youtube-dl
+# ffmpeg is needed for some youtube-dl features
+brew install ffmpeg
+brew install lame
+brew install hub
+
+brew tap d12frosted/emacs-plus
+brew install emacs-plus --with-cocoa --with-gnutls --with-librsvg --with-imagemagick --with-spacemacs-icon
+brew linkapps
+
+brew install sqlite
+
+# Languages
+brew install go
+bash go-install.sh
+
+brew install python
+brew install python3
+brew install pyenv
+brew install pypy
+brew install pypy3
+bash py-install.sh
+
+brew install ruby
+brew install rbenv
+bash rb-install.sh
+
+brew install node
+bash js-install.sh
+
+brew install elixir
+
+brew install ghc
+brew install cabal-install
+
+brew cask install java
+
+# Utilities
+brew install ag
+brew install aspell
+brew install astyle
+brew install cloc
+brew install ctags
+brew install curl
+brew install git-extras
+brew install htop-osx
+brew install httpie
+brew install jlhonora/lsusb/lsusb
+brew install jq
+brew install sbdchd/macchanger/macchanger
+brew install shellcheck
+brew install trash
+brew install tree
+brew install uncrustify
+brew install unp
+brew install wakeonlan
+brew install wget
+
+# Other Utilities
+brew install cmatrix
+brew install cowsay
+brew install fortune
+brew install screenfetch
+
+# Netsec
+brew install aircrack-ng
+brew install john-jumbo
+brew install netcat6
+brew install nmap
+
+# Homebrew-Cask
+brew cask install firefox
+brew cask install firefoxnightly
+brew cask install google-chrome
+
+brew cask install 1password
+brew cask install arduino
+brew cask install audacity
+brew cask install basictex
+brew cask install clion
+brew cask install dash
+brew cask install discord
+brew cask install docker
+brew cask install dropbox
+brew cask install flux
+brew cask install gimp
+brew cask install grandperspective
+brew cask install handbrake
+brew cask install hashcat
+brew cask install imageoptim
+brew cask install insomnia
+brew cask install intellij-idea
+brew cask install iterm2
+brew cask install keepingyouawake
+brew cask install limechat
+brew cask install mactex
+brew cask install malwarebytes-anti-malware
+brew cask install microsoft-office
+brew cask install mobile-mouse-server
+brew cask install pgadmin3
+brew cask install soulseek
+brew cask install spectacle
+brew cask install sqlitebrowser
+brew cask install steam
+brew cask install sublime-text
+brew cask install the-unarchiver
+brew cask install torbrowser
+brew cask install transmission
+brew cask install vagrant
+brew cask install virtualbox
+brew cask install vlc
+brew cask install wireshark
+
+# git
+brew cask install gitup
+
+brew tap sbdchd/sleep-restart-shutdown
+brew cask install sleep
+brew cask install restart
+brew cask install shutdown
+
+brew tap sbdchd/neovim
+brew cask install neovim-automator-app
+
+brew tap caskroom/fonts
+brew cask install font-latin-modern
+brew cask install font-inconsolata
+brew cask install font-source-code-pro
+brew cask install font-lato
+brew cask install font-fira-sans
+brew cask install font-open-sans
+brew cask install font-montserrat
+brew cask install font-merriweather
+brew cask install font-pacifico
+
+# Install Vim Plug Package Manager
+bash vimplug-install.sh
+
+# Install TMUX Package Manager
+bash tpm-install.sh
+
+bash osx-defaults.sh
+
+# setup italics for tmux
+tic ./tmux-256color.terminfo
+
+
+
+" better window nav
+nnoremap <leader>wl <C-W>l
+nnoremap <leader>wh <C-W>h
+nnoremap <leader>wj <C-W>j
+nnoremap <leader>wk <C-W>k
+nnoremap <leader>w= <C-W>=
+nnoremap <leader>ww :Windows<CR>
+
+" window moving
+nnoremap <leader>wL <C-W>L
+nnoremap <leader>wH <C-W>H
+nnoremap <leader>wJ <C-W>J
+nnoremap <leader>wK <C-W>K
+
+" window splitting
+nnoremap <leader>wv <C-W>v
+nnoremap <leader>ws <C-W>s
+nnoremap <leader>bd :bd<CR>
+" <leader>[k]eep
+nnoremap <leader>k :w<CR>
+
+" kill window
+nnoremap <leader>wc <C-W>c
+nnoremap <leader>wd <C-W>c
+nnoremap <leader>wx <C-W>c
+
+
+" exit vim
+nnoremap <leader>q :qa<CR>
+
+
+
+pip3 install bpython pytest
+
+
+
+" ----------------------------------------------
+" Haskell
+" ----------------------------------------------
+
+let $PATH = $PATH . ':' . expand('~/.cabal/bin')
+
+" Reload
+map <silent> tu :call GHC_BrowseAll()<CR>
+
+" Type Lookup
+map tt :call GHC_ShowType(0)<CR>
+
+" Type Insertion
+map <silent> tw :GhcModTypeInsert<CR>
+
+au FileType haskell nnoremap <buffer> <F1> :GhcModType<CR>
+au FileType haskell nnoremap <buffer> <F2> :GhcModTypeClear<CR>
+
+noremap <silent> <C-S> :update<CR>
+
+
+
+autocmd FileType go setlocal noexpandtab shiftwidth=8 tabstop=8
+
+" Open preview window for tags (just jump with <C-]>)
+nnoremap <A-]> :<C-u>ptag <C-r><C-w><CR>
+
+" Simplify most common cscope command
+" (<C-\>s is defined in cscope_maps.vim)
+nmap <C-\><C-\> <C-\>s
+
+
+
+alias reply="PERL_RL=Caroline reply"
+alias gr='cd ./$(git rev-parse --show-cdup)';
+alias p=perl6
+
+
+
+" let g:slimv_swank_cmd = '! xterm -e sbcl --load /home/eilliot/.vim/bundle/slimv/slime/start-swank.lisp &'
+let g:slimv_swank_cmd = '! tmux new-window -d -n REPL-SBCL "sbcl --load ~/.vim/bundle/slimv/slime/start-swank.lisp"'
+let g:slimv_clhs_root = 'file:///usr/local/doc/HyperSpec/Body/'
+let g:paredit_electric_return = 0
+let g:slimv_browser_cmd = 'firefox-developer-edition'
+let g:slimv_browser_cmd_suffix = '&'
+let g:slimv_repl_split = 4
+let g:slimv_simple_compl = 1
+let g:slimv_disable_clojure = 1
+
+
+let g:ale_linters = {'c': ['gcc']}
+let g:ale_c_gcc_options="-std=gnu11 -Wall"
+
+
+Plug 'vim-pandoc/vim-pandoc'
+
+'wlangstroth/vim-racket'
+
+" clojure
+    call dein#add('guns/vim-clojure-static')
+    call dein#add('guns/vim-sexp')
+    call dein#add('clojure-vim/async-clj-omni')
+    call dein#add('clojure-vim/vim-cider')
+
+
+
+    " pandoc /home/ryan/Acronym/meetings/11-19-2014_Weekly_strategy_meeting.md -t mediawiki -o /home/ryan/Acronym/meetings/11-19-2014_Weekly_strategy_meeting.wiki2
+function! PandocFileToMediaWiki()
+	execute '!pandoc ' . buffer_name('%') . ' -t mediawiki -o ' . expand('%:r') . '.wiki'
+endfunction
+
+" convert markdown to mediawiki
+:command! PandocMediaWiki :call PandocFileToMediaWiki()<CR>
+
+" tabnew (:T)
+:command! -nargs=* T tabnew <args>
+" source: http://superuser.com/questions/376213/in-vi-how-do-i-map-t-equal-to-tabnew
+
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:DevIconsEnableFoldersOpenClose = 1
+let g:webdevicons_gui_glyph_fix = 1
+let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+
+" loading the plugin
+let g:webdevicons_enable = 1
+" adding the flags to NERDTree
+let g:webdevicons_enable_nerdtree = 1
+
+
+map <Leader>nn :sp ~/Dropbox/notes/programming_notes.txt<cr>
+map <Leader>nt :e! ~/Dropbox/docs/trailmix/todo.md<cr>
+map <Leader>pn :sp ~/Dropbox/work/tuple/project-notes.md<cr>
+
+
+map <Leader>f :call OpenFactoryFile()<CR>
+
+function! OpenFactoryFile()
+  if filereadable("test/factories.rb")
+    execute ":sp test/factories.rb"
+  else
+    execute ":sp spec/factories.rb"
+  end
+endfunction
+
+
+class Object
+  # list methods which aren't in superclass
+  def local_methods(obj = self)
+    (obj.methods - obj.class.superclass.instance_methods).sort
+  end
+
+  def find_ben
+    User.find_by_email 'ben@thoughtbot.com'
+  end
+end
+
+
+c9BpYCf#zjp0
+
+
+alias brucop='bundle exec rubocop -a -D $(git diff --cached --name-only --diff-filter=d HEAD | egrep ".(rb|rake)$" | egrep -v "db\/schema.rb" | egrep -v "lib\/pb") Gemfile'
+alias bife='bundle exec knife'
+alias bagrant='bundle exec vagrant'
+alias brake='bundle exec foreman run rake'
+alias brails='bundle exec foreman run rails'
+alias brespec='SHOW_COUNTS=on bundle exec rspec --color --drb'
+alias boreman='reset && bundle exec foreman start'
+alias bap='bundle exec cap'
+alias laptop_pg_create_user='createuser -d -s -P'
+alias npmlist='npm list -g --depth 0'
+
+
+function laptop_mysql_create_user() {
+  if [ "x$1" == "x" ]; then
+    echo "No username or password given.  Usage: laptop_mysql_create_user <user> <password>"
+    exit 1
+  fi
+  if [ "x$2" == "x" ]; then
+    echo "No password given.  Setting it to blank"
+  fi
+  mysql -uroot -p --password="" -e "GRANT ALL PRIVILEGES ON *.* TO '$1'@'localhost' IDENTIFIED BY '$2'"
+}
+
+function laptop_mysql_drop_user() {
+  if [ "x$1" == "x" ]; then
+    echo "No username given.  Usage: laptop_mysql_drop_user <user>"
+    exit 1
+  fi
+  mysql -uroot -p  --password="" -e "DROP USER '$1'@'localhost'"
+}
+
+
+Lif3LongLearn3r
+
+https://www.williamjbowman.com/resources/
+
+
+" \] slings content to tmux pane
+nnoremap <silent> <leader>]   :set opfunc=SlingOper<cr>g@
+nnoremap <silent> <leader>]]  :silent SlimuxREPLSendLine<cr>
+vnoremap <silent> <leader>]   :SlimuxREPLSendSelection<cr>
+
+
+
+# Bundler alias.
+alias buinstall="bundle install --binstubs --path vendor/bundle"
+
+
+export NODE_VERSION=`curl -s https://nodejs.org/en/download/current/ | grep -E 'v[0-9][0-9]' | grep "$ARCH" | sed -r s/.*\(v[0-9]+\.[0-9]+.[0-9]+\).*/\\1/g | head -1`
+
+
+clj -A:new figwheel-main heros.main -- --rum
+
+
+autocmd BufEnter PULLREQ_EDITMSG setlocal filetype=gitcommit
+
+
+autocmd BufNewFile,BufRead *.blade.php set filetype=blade
+
+" Tool-specific
+let g:ale_elixir_elixir_ls_release = expand('$HOME').'/Code/elixir-ls/rel'
+let g:ale_php_phpcs_options = '--warning-severity=0'
+
+ autocmd BufRead,BufNewFile *.eex setfiletype html
+
+augroup javascript
+  autocmd!
+  autocmd FileType javascript nmap <buffer><silent><C-]> <Plug>(JsGotoDefinition)
+  autocmd FileType javascript xmap <buffer><silent><C-]> <Plug>(JsGotoDefinition)
+  autocmd FileType javascript nmap <buffer><silent><Leader>] <C-W>v<Plug>(JsGotoDefinition)
+  autocmd FileType javascript xmap <buffer><silent><Leader>] <C-W>vgv<Plug>(JsGotoDefinition)
+augroup END
+
+
+augroup php
+  autocmd!
+  autocmd FileType php nmap <buffer><silent><Leader>if :call phpactor#UseAdd()<CR>
+  autocmd FileType php nmap <buffer><silent><Leader>ir :call phpactor#ContextMenu()<CR>
+  autocmd FileType php vmap <buffer><silent><Leader>ie :<C-U>call phpactor#ExtractMethod()<CR>
+  autocmd FileType php nmap <buffer><silent><C-]> :call phpactor#GotoDefinition()<CR>
+  autocmd FileType php setlocal omnifunc=phpactor#Complete
+augroup END
+
+augroup python
+  autocmd!
+  autocmd FileType python nmap <buffer><silent><Leader>if :ImportName<CR>
+  autocmd FileType python setlocal textwidth=79
+augroup END
+
+
+
+" CTRL-Tab is Next window
+noremap <C-Tab> <C-W>w
+inoremap <C-Tab> <C-O><C-W>w
+cnoremap <C-Tab> <C-C><C-W>w
+onoremap <C-Tab> <C-C><C-W>w
+
+
+" Use Emacs-style keybindings in command mode (from :help emacs-keys)
+"
+" start of line
+cnoremap <C-A> <Home>
+" back one character
+cnoremap <C-B> <Left>
+" delete character under cursor
+cnoremap <C-D> <Del>
+" end of line
+cnoremap <C-E> <End>
+" forward one character
+cnoremap <C-F> <Right>
+" recall newer command-line
+cnoremap <C-N> <Down>
+" recall previous (older) command-line
+cnoremap <C-P> <Up>
+" back one word
+cnoremap <Esc><C-B> <S-Left>
+" forward one word
+cnoremap <Esc><C-F> <S-Right>
+
+
+" Allow the virtual cursor to move one space beyond actual text
+set virtualedit=onemore
+
+
+" Toggle showing tabs and expanding tabs, in the case that the file already
+" uses tabs. Mnemonic: tt = toggle tab
+nnoremap <leader>tt :set expandtab! list!<CR>
+
+
+" Make Y behavior consistent with C and D
+nnoremap Y y$
+
+" Move cursor as usual through wrapped lines
+nnoremap j gj
+nnoremap k gk
+
+
+" Open new splits below and to the right of the current window
+set splitbelow splitright
+
+
+" Postpone redrawing the screen for things like repeated macros or reindenting
+set lazyredraw
+
+" When scrolling sideways, move the screen in smaller increments
+set sidescroll=1
+
+
+" Don't show line numbers in the terminal
+if has('nvim')
+  augroup term_open
+    autocmd!
+    autocmd TermOpen * setlocal nonumber norelativenumber
+  augroup END
+endif
+
+" Check if files have changed outside of vim and reload them if necessary.
+augroup auto_refresh
+  autocmd!
+  autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+        \ if mode() != 'c' |
+        \   checktime |
+        \ endif
+  autocmd FileChangedShellPost *
+        \ echohl WarningMsg |
+        \ echo "File changed on disk. Buffer reloaded." |
+        \ echohl None
+augroup END
+
+
+" Always show the sign column
+set signcolumn=yes
+
+
+" =============================================================================
+" Plugins & Local Configuration
+" =============================================================================
+
+" Plugin Manager Installation {{{
+let g:plugins=$VIMDATA . '/bundle'
+let s:plugin_manager=$VIMHOME . '/autoload/plug.vim'
+let s:plugin_url='https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+if empty(glob(s:plugin_manager))
+  echom 'vim-plug not found. Installing...'
+  if executable('curl')
+    silent exec '!curl -fLo ' . s:plugin_manager . ' --create-dirs ' .
+        \ s:plugin_url
+  elseif executable('wget')
+    call mkdir(fnamemodify(s:plugin_manager, ':h'), 'p')
+    silent exec '!wget --force-directories --no-check-certificate -O ' .
+        \ expand(s:plugin_manager) . ' ' . s:plugin_url
+  else
+    echom 'Could not download plugin manager. No plugins were installed.'
+    finish
+  endif
+  augroup vimplug
+    autocmd!
+    autocmd VimEnter * PlugInstall
+  augroup END
+endif
+" }}}
+
+
+
+" copy the path of the current file
+nno <leader>cf :let @" = expand('%:h')<cr>
+
+
+" Tab/split nav
+nmap <Leader>[ @='gT'<CR>
+nmap <Leader>] @='gt'<CR>
+nmap <Leader><Left> <C-w><Left>
+nmap <Leader><Right> <C-w><Right>
+nmap <Leader><Up> <C-w><Up>
+nmap <Leader><Down> <C-w><Down>
+
+" Move all windows in current tab-pane to be horizontally split.
+" Good for moving to a smaller/narrower display from a larger one.
+nmap <Leader>k :windo wincmd K<CR>
+
+" Resize a window to fit its contents. I.e. for small files.
+nmap <Leader>- :exe ":resize " . (line('$') + 1)<CR>
+
+" Switch to an open tab by name (note: tab-completes too!)
+nmap <Leader>t :tab sbuf
+
+" Paragraph formatting
+nmap <Leader>f gqap
+vmap <Leader>f gq
+
+
+
+" Up/down go visually instead of by physical lines (useful for long wraps)
+" Interactive ones need to check whether we're in the autocomplete popup (which
+" breaks if we remap to gk/gj)
+map <up> gk
+inoremap <up> <C-R>=pumvisible() ? "\<lt>up>" : "\<lt>C-o>gk"<Enter>
+map <down> gj
+inoremap <down> <C-R>=pumvisible() ? "\<lt>down>" : "\<lt>C-o>gj"<Enter>
+
+
+" Inject ipython embed
+nmap <Leader>i ofrom IPython import embed; embed()<C-C>
+nmap <Leader>pdb oimport ipdb; ipdb.set_trace()<C-C>
+" Inject python debug logs
+nmap <Leader>d oimport logging; logging.basicConfig(level=logging.DEBUG)<C-C>
+" Inject traceback print
+nmap <Leader>tb oimport traceback; traceback.print_stack()<C-C>
+
+
+" Make a WORD monospaced
+:no <leader>m gEwi`<esc>Ea`<esc>
+:vn <leader>m o<esc>i`<esc>Ea`<esc>
+
+" Make a WORD bold
+:no <leader>b gEwi**<esc>Ea**<esc>
+:vn <leader>b o<esc>i**<esc>Ea**<esc>
+
+
+" Make a WORD single or doublequoted
+:no <leader>' gEwi'<esc>Ea'<esc>
+:vn <leader>' o<esc>i'<esc>Ea'<esc>
+:no <leader>" gEwi"<esc>Ea"<esc>
+:vn <leader>" o<esc>i"<esc>Ea"<esc>
+
+
+
+
+GITHUB.COM
+
+"
+" Configuration for / override maps of, vimwiki
+"
+
+" Allow "normal" editor style tab/shift-tab indent/dedent. (Only in vimwiki
+" buffers!)
+let g:vimwiki_table_mappings = 0
+autocmd FileType vimwiki map <buffer> <Tab> <Plug>VimwikiIncreaseLvlSingleItem
+autocmd FileType vimwiki map <buffer> <S-Tab> <Plug>VimwikiDecreaseLvlSingleItem
+" Not only do we want regular edit-style tab, but we also want it to be useful
+" for completing the tag-based insert-completion when only one match is
+" displayed.
+" TODO: try making it useful even when >1 possible match has been narrowed down
+autocmd FileType vimwiki imap <buffer> <expr> <Tab> pumvisible()
+\    ? "\<C-N>\<C-Y>:"
+\    : "\<Plug>VimwikiIncreaseLvlSingleItem"
+autocmd FileType vimwiki imap <buffer> <S-Tab> <Plug>VimwikiDecreaseLvlSingleItem
+
+" Use Markdown plz
+let g:vimwiki_list = [{'path': '~/vimwiki', 'syntax': 'markdown', 'ext': '.md', 'auto_tags': 1}]
+
+" Don't make temporary wikis out of other .md files tho...sheesh. (Among other
+" things, this trips an auto-cd behavior I don't usually want.)
+let g:vimwiki_global_ext = 0
+
+" Allow 'gx' to open URLs (this technically works anywhere, not just in
+" vimwiki) that include question marks, hashes etc. Note: cWORD not cword.
+let g:netrw_gx = "<cWORD>"
+
+" Override behavior of (not actual mapping for) hitting Return in list items.
+" Specifically, change the 1st number from 1 to 3: Return always inserts a new
+" line item. 2nd number (set to 5) stays same: Enter on empty list item deletes
+" the list item.
+" TODO: except...this is firing even when not in a list item (i.e. it makes new
+" indented list items when mashing enter on an already blank line)! Clearly the
+" default isn't doing that; figure out how.
+"autocmd FileType vimwiki inoremap <buffer> <CR> <Esc>:VimwikiReturn 3 5<CR>
+
+" Always 'cd' to vimwiki directory when opening vimwiki pages. This means git,
+" search, etc should always 'just work'.
+" TODO: if I start using subdirs, see whether this goes to wiki root or not...
+let g:vimwiki_auto_chdir = 1
+
+" Prevent saving wiki files that didn't get tags. So easy to forget!
+function CheckForTags()
+    try
+        " Note: regexp here MUST be single-quoted to avoid slash problems
+        if getbufline("", 1)[0] !~ ':.\+:'
+            echoerr "Don't forget tags!!"
+        endif
+    endtry
+endfunction
+" TODO: make variable out of vimwiki root? used in 3x places now
+autocmd BufWritePre ~/vimwiki/*.md call CheckForTags()
+
+" Auto git commit/push on save for vimwiki files, every >=5min. Pauper's
+" Evernote sync.
+" TODO: this may or may not work w/ subdirs, forget exactly how pattern works
+autocmd BufWritePost ~/vimwiki/*.md execute 'silent ! ~/bin/checkpoint'
+
+" Explicit (save-and-)sync mapping, basically 'save harder'.
+" NOTE: the output of <Leader>s (i.e. git add+commit) seems to be hidden almost
+" instantly. Probably a good thing.
+function SaveAndPush()
+    " Make sure current page is written
+    :w
+    " Perform tag full-rebuild in case pages were deleted (ugh)
+    " TODO: improve vimwiki's own page-deletion so it nukes just that page's
+    " tags, and also works with markdown links heh
+    :!rm .tags
+    :VimwikiRebuildTags!
+    " Make sure all files are added/committed, even if mtime<5min
+    :!~/bin/checkpoint --force
+    " Push to server. Use fugitive's push as it's more silent...meh
+    :Gpush
+endfunction
+autocmd FileType vimwiki map <buffer> <Leader>ss :call SaveAndPush()<CR>
+
+" Index page (holding all non-child pages) sorts contents before saving
+autocmd BufWritePre ~/vimwiki/index.md 2,$sort i
+
+" When hitting Enter on a tag omnicomplete menu, do what it's supposed to.
+" Not sure what is preventing it from working as documented :(
+autocmd FileType vimwiki imap <buffer> <expr> <CR> pumvisible()
+\    ? "\<C-Y>:"
+\    : "\<Esc>:VimwikiReturn 1 5<CR>"
+
+
+
+
+
+https://github.com/ddrscott/config-nvim/blob/master/init.vim
+" Warning: Make capital U perform a Redo
+" Because of the <C-r> hacks above, I break <S-u> and make it redo. The default
+" because of <S-u> is undo the whole line. Sorry if you used it.
+nnoremap <S-u> <C-r>
+
+
+" Emacs Editing {{{
+cnoremap <C-e> <End>
+cnoremap <C-a> <Home>
+inoremap <C-a> <C-o>^
+inoremap <C-e> <End>
+nnoremap <a-bs> a<C-w>
+inoremap <a-bs> <C-w>
+" Ctrl-C to quit insert mode with AfterInsert callbacks
+inoremap <C-c> <ESC>
+" No need for normal mode mappings.
+" use <S-i> to insert begining
+" use <S-a> to append at end
+" }}}
+
+" Executes the Vim Explorer on startup, opening the current directory tree
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 20
+  " autocmd VimEnter * :Vexplore
+
+
+
+" C-TAB and C-SHIFT-TAB cycle tabs forward and backward
+nmap <c-tab> :tabnext<cr>
+imap <c-tab> <c-o>:tabnext<cr>
+vmap <c-tab> <c-o>:tabnext<cr>
+nmap <c-s-tab> :tabprevious<cr>
+imap <c-s-tab> <c-o>:tabprevious<cr>
+vmap <c-s-tab> <c-o>:tabprevious<cr>
+
+
+" Easy navigation with  when a line is wrapped {{{
+vmap <D-j> gj
+vmap <D-k> gk
+vmap <D-4> g$
+vmap <D-6> g^
+vmap <D-0> g^
+nmap <D-j> gj
+nmap <D-k> gk
+nmap <D-4> g$
+nmap <D-6> g^
+nmap <D-0> g^
+" }}}
+
+"  MacOS Comamnd key
+" Delete the current buffer with  + T {{{
+noremap <D-w> :bdelete<CR>
+" }}}
+
+
+" Django utilities {{{
+nnoremap <Leader>x :%s/{{\([A-Za-z0-9\.\|]*\)}}/{{ \1 }}/g<CR>" Replace {{var}} with {{ var }}
+" }}}
+
+
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+let g:deoplete#sources#go#align_class = 1
+
+
+" Use partial fuzzy matches like YouCompleteMe
+call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
+call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
+call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
+
+
+let g:go_metalinter_command = ""
+let g:go_metalinter_deadline = "5s"
+let g:go_metalinter_enabled = [
+    \ 'deadcode',
+    \ 'errcheck',
+    \ 'gas',
+    \ 'goconst',
+    \ 'gocyclo',
+    \ 'golint',
+    \ 'gosimple',
+    \ 'ineffassign',
+    \ 'vet',
+    \ 'vetshadow'
+\]
+
+
+let g:ale_python_flake8_args="--ignore=E501"
+let g:ale_python_flake8_options = '--ignore=E501'
+let g:ale_linters = {'python': ['flake8'], 'javascript': ['eslint'], 'go': ['go build']}
+let g:ale_go_langserver_executable = 'gopls'
+
+imap <C-n>     <Plug>(neosnippet_expand_or_jump)
+smap <C-n>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-n>     <Plug>(neosnippet_expand_target)
+
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+
+nnoremap <C-p> :<C-u>FZF<CR>

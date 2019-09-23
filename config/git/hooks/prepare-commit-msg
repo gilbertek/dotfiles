@@ -15,3 +15,30 @@ BRANCH_IN_COMMIT=$(grep -c "\[$BRANCH_NAME\]" $1)
 if [ -n "$BRANCH_NAME" ] && ! [[ $BRANCH_EXCLUDED -eq 1 ]] && ! [[ $BRANCH_IN_COMMIT -ge 1 ]]; then
   sed -i.bak -e "1s/^/[$BRANCH_NAME] /" $1
 fi
+
+
+### Context
+
+<why was this change necessary, or what should the reviewer know beforhand?>
+
+
+### Summary
+
+<tl;dr of changes, how change is broken up, etc.>
+
+
+### Testing
+
+<discuss a manual or automated testing strategy>
+
+
+##### A SIMPLER ONE
+Summary: 50 characters, imperative mood
+
+# Issue tracker link: full URLs are more permanent and more clear
+
+Details:
+
+# Why is this change necessary?
+# How does it address the issue?
+# What side effects does it have?

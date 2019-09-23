@@ -65,11 +65,11 @@ echo -e "\nCreating config symlinks"
 #     # ln -s $config $target
 #   fi
 # done
-ln -sfn "$DOTFILE_ROOT/nvim/init.vim" ~/.config/nvim/init.vim
+ln -sfn "$DOTFILES/config/nvim/init.vim" ~/.config/nvim/init.vim
 
 # Git and Hub config
 # mkdir -p ~/.config/git
-# ln -sfn "$DOTFILE_ROOT/git/.gitconfig" ~/.gitconfig
+# ln -sfn "$DOTFILES/config/git/.gitconfig" ~/.gitconfig
 
 ret="$?"
 success "Dotfiles have been configured! Done! 🤘"
