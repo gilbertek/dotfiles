@@ -36,8 +36,6 @@ sudo pacman -Sy ghc
 # sudo pacman -S redis postgresql sqlite
 # sudo -u postgres initdb --locale $LANG -E UTF8 -D '/var/lib/postgres/data'
 
-
-
 # Spotify
 # yaourt -S spotify
 

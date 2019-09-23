@@ -39,4 +39,25 @@ if defined?(PryByebug)
   Pry.commands.alias_command 's', 'step'
   Pry.commands.alias_command 'n', 'next'
   Pry.commands.alias_command 'f', 'finish'
+  Pry.commands.alias_command 'u', 'up'
+  Pry.commands.alias_command 'd', 'down'
+
+  # Hit Enter to repeat last command
+  Pry::Commands.command /^$/, "repeat last command" do
+    _pry_.run_command Pry.history.to_a.last
+  end
+
+  $stderr.puts <<-EOS
+## pry memo (pry-byebug extra commands are defined in ~/.pryrc)
+c              ... continue
+s              ... step
+n              ... next
+f              ... finish
+u              ... backward stack frame(back to caller)
+d              ... foward stack frame(inverse of 'u')
+[Enter]        ... repeat last command
+$ Clazz#method ... show method source
+obj.method(:method).source_location
+               ... show place of method definition
+  EOS
 end

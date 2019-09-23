@@ -52,7 +52,9 @@ export PATH=$PATH:$GOPATH/bin
 export GOAPPS=$GOPATH/src/github.com/gilbertek
 
 # Groovy Home path setup
-export GROOVY_HOME=/usr/local/opt/groovy/libexec
+if [ -d /usr/local/opt/groovy/libexec ]; then
+  export GROOVY_HOME=/usr/local/opt/groovy/libexec
+fi
 
 if [ -f /usr/libexec/java_home ]; then
   export JAVA_HOME=`/usr/libexec/java_home`
@@ -64,11 +66,6 @@ fi
 # export PATH=$PATH:$M2_HOME/bin
 # export MAVEN_OPTS="-Xmx2048m -Xms512m -XX:MaxPermSize=312M -XX:ReservedCodeCacheSize=128m -Dsun.lang.ClassLoader.allowArraySyntax=true -ea -Dfile.encoding=UTF-8"
 # export MAVEN_JMX="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=6969 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
-
-# Boot
-export BOOT_JVM_OPTIONS="-Xmx8g -client -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -Xverify:none -XX:-OmitStackTraceInFastThrow"
-export BOOT_COLOR=1
-export BOOT_GPG_COMMAND=gpg2
 
 # Haskell/hdevtools Home path setup
 export PATH=~/.local/bin:$PATH
@@ -85,14 +82,15 @@ export PATH="$PATH:$GHC_PATH"
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 # android
-export ANDROID_HOME=$HOME/Library/Android/sdk
-export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+if [ -d $HOME/Library/Android/sdk ]; then
+  export ANDROID_HOME=$HOME/Library/Android/sdk
+  export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+fi
 
-# Dart path setup
-export PATH="$PATH":"$HOME/.pub-cache/bin"
-
-# Flutter path setup
-
+# Dart and Flutter path setup
+if [ -d $HOME/.pub-cache/bin ]; then
+  export PATH="$PATH":"$HOME/.pub-cache/bin"
+fi
 
 # LLVM Bindings
 export PATH="/usr/local/opt/llvm/bin:$PATH"
@@ -120,8 +118,7 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
 export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-# Disable Homebrew analytics
-export HOMEBREW_NO_ANALYTICS=1
+# Disable DOTNET analytics
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 export PROJECT_HOME=$HOME/Projects
@@ -239,16 +236,16 @@ alias poly="rlwrap poly" # PolyML
 alias csi="rlwrap csi" # Chicken Scheme
 
 
-export MOAR_BINDIR=`perl6 -V | grep moar::bindir | cut -d= -f2`
-export MOAR_SHAREDIR=`perl6 -V | grep perl6::libdir | cut -d= -f2`
-export PERL6LIB="$HOME/.perl6/lib"
-export PATH="$MOAR_BINDIR:$MOAR_SHAREDIR/perl6/site/bin:$PATH"
+# export MOAR_BINDIR=`perl6 -V | grep moar::bindir | cut -d= -f2`
+# export MOAR_SHAREDIR=`perl6 -V | grep perl6::libdir | cut -d= -f2`
+# export PERL6LIB="$HOME/.perl6/lib"
+# export PATH="$MOAR_BINDIR:$MOAR_SHAREDIR/perl6/site/bin:$PATH"
 
-if [ -d $HOME/.rakudobrew ] ; then
-  RAKUDOBREW_HOME="$HOME/.rakudobrew"
-  export PATH="$RAKUDOBREW_HOME/bin:$RAKUDOBREW_HOME/moar-nom/install/share/perl6/site/bin:$PATH"
-  eval "$(rakudobrew init -)"
-fi
+# if [ -d $HOME/.rakudobrew ] ; then
+#   RAKUDOBREW_HOME="$HOME/.rakudobrew"
+#   export PATH="$RAKUDOBREW_HOME/bin:$RAKUDOBREW_HOME/moar-nom/install/share/perl6/site/bin:$PATH"
+#   eval "$(rakudobrew init -)"
+# fi
 
 # For a ipython notebook and pyspark integration
 if which pyspark > /dev/null; then
