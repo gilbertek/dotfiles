@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+# ~/.bash_profile
 
 bind "set completion-ignore-case on"        # Case-Insensitive Auto Completion
 bind "set show-all-if-ambiguous on"         # Display matches for ambiguous patterns
