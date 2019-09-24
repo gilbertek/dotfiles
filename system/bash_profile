@@ -250,7 +250,7 @@ alias csi="rlwrap csi" # Chicken Scheme
 # fi
 
 # For a ipython notebook and pyspark integration
-if which pyspark > /dev/null; then
+if command -v pyspark > /dev/null; then
   export SPARK_HOME="$(brew --prefix apache-spark)/libexec"
   export PYSPARK_SUBMIT_ARGS="--master local[2]"
   export PYSPARK_DRIVER=python3
