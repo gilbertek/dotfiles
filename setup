@@ -44,7 +44,7 @@ do
     echo "$target already exists... Skipping."
   else
     echo "Creating symlink for $file"
-    ln -snf $DOTFILES/system/$src_file $target
+    ln -snf $DOTFILES/system/$file $target
   fi
 done
 

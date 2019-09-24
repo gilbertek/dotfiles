@@ -8,7 +8,7 @@ sudo pacman -Syyu
 
 # Tools and Utilities
 sudo pacman -Sy albert neovim tmux
-sudo pacman -Sy jq htop bat hub
+sudo pacman -Sy jq htop bat hub fzf
 
 # Memcached
 # sudo pacman -S memcached
