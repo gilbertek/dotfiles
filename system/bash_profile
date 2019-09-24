@@ -258,10 +258,17 @@ if which pyspark > /dev/null; then
   export PYSPARK_DRIVER_PYTHON_OPTS=notebook
 fi
 
-export PATH="$HOME/.cargo/bin:$PATH"
+# asdf package manager
+[[ -f /usr/local/opt/asdf/asdf.sh ]] && . /usr/local/opt/asdf/asdf.sh
+[[ -f ~/.asdf/plugins/java/set-java-home.sh ]] && . ~/.asdf/plugins/java/set-java-home.sh
+
+# Rust
 if command -v rustc &>/dev/null; then
   export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 fi
+
+# OPAM configuration
+. $HOME/.asdf/installs/ocaml/4.07.0/opam-init/init.sh > /dev/null 2> /dev/null || true
 
 # hub as git
 if command -v hub > /dev/null; then
@@ -280,13 +287,6 @@ fi
 #     eval "$(docker-machine env default)"
 #   fi
 # fi
-
-# asdf package manager
-[[ -f /usr/local/opt/asdf/asdf.sh ]] && . /usr/local/opt/asdf/asdf.sh
-. ~/.asdf/plugins/java/set-java-home.sh
-
-# OPAM configuration
-. $HOME/.asdf/installs/ocaml/4.07.0/opam-init/init.sh > /dev/null 2> /dev/null || true
 
 [ -f ~/.bashrc ]            && . ~/.bashrc
 [ -f ~/.bashrc.local ]      && . ~/.bashrc.local
