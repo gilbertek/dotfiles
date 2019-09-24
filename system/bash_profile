@@ -15,7 +15,6 @@ HISTIGNORE="&:ll:ls:c:cd:cd -:pwd:exit:logout:quit:reset" # Don't record some co
 export PROMPT_COMMAND='history -a;history -c;history -r'
 export CLICOLOR=1
 
-
 # Disable DOTNET analytics
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
@@ -324,16 +323,18 @@ paths=(
 # [[ -f "$opaminit" ]] && source "$opaminit"
 # unset opaminit
 
-if [[ -n "$(which brew)" ]]; then
-	export BREW_CELLAR=$(brew --cellar)
-	export BREW_PREFIX=$(brew --prefix)
-fi
+if [[ $OSTYPE == "darwin"* ]]; then
+  if [[ -n "$(which brew)" ]]; then
+    export BREW_CELLAR=$(brew --cellar)
+    export BREW_PREFIX=$(brew --prefix)
+  fi
 
-#Mac Completion
-if [[ ! ${#BREW_PREFIX} -eq 0 ]]; then
-	if [[ -d $BREW_PREFIX/etc/bash_completion.d ]]; then
-    source $BREW_PREFIX/etc/bash_completion.d/*
-	fi
+  #Mac Completion
+  if [[ ! ${#BREW_PREFIX} -eq 0 ]]; then
+    if [[ -d $BREW_PREFIX/etc/bash_completion.d ]]; then
+      source $BREW_PREFIX/etc/bash_completion.d/*
+    fi
+  fi
 fi
 
 #Linux Completion
