@@ -28,7 +28,7 @@
   autosetuprebase = always
   autosetupmerge  = true
 [commit]
-  template        = ~/.config/git/git-message
+  template        = ~/dotfiles/config/git/git-message
 [credential]
 	helper          = osxkeychain
 [core]
