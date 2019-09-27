@@ -32,9 +32,9 @@
 [credential]
 	helper          = osxkeychain
 [core]
-  excludesfile    = ~/.gitignore
   whitespace      = warn
   editor          = nvim
+  excludesfile    = ~/dotfiles/config/git/gitignore
 [merge]
   summary         = true
   tool            = vimdiff
