@@ -43,10 +43,10 @@ fi
 
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
-# for file in ~/.{path,bash_prompt,aliases,functions,extra}; do
-# 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
-# done;
-# unset file;
+for file in ~/.{aliases,functions,extra,bashrc,bashrc.local,aliases.local}; do
+	[ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+unset file;
 
 # GO Path setups
 export GO111MODULE=on
@@ -287,11 +287,7 @@ fi
 #   fi
 # fi
 
-[ -f ~/.bashrc ]            && . ~/.bashrc
-[ -f ~/.bashrc.local ]      && . ~/.bashrc.local
-[ -f ~/.aliases ]           && . ~/.aliases
-[ -f ~/.aliases.local ]     && . ~/.aliases.local
-[ -f ~/.functions ]         && . ~/.functions
+
 
 # Todo
 # Remove dups from path

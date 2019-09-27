@@ -1,52 +1,51 @@
 [user]
-	name = Gilbert F. Sewovoe-Ekoue
-	email = gilberts55@hotmail.com
+	name        = Gilbert F. Sewovoe-Ekoue
+	email       = gilberts55@hotmail.com
 [color]
-	status = auto
-  branch = auto
-  diff = auto
+	status      = auto
+  branch      = auto
+  diff        = auto
   interactive = auto
-  ui = always
+  ui          = always
 [alias]
-  aliases=!git config -l | grep '^alias' | cut -c 7- | sort
-  aa = add -A .
-  st = status
-  cheddar = commit --amend -CHEAD
-  co = checkout
-  cp = cherry-pick
-  put = push origin HEAD
-  find = !sh -c 'git ls-files | grep --color=always -i "$@" | less -FRSX' -
-  fixup = commit --fixup
-  squash = commit --squash
+  aliases     = !git config -l | grep '^alias' | cut -c 7- | sort
+  st          = status
+  cheddar     = commit --amend -CHEAD
+  co          = checkout
+  cp          = cherry-pick
+  put         = push origin HEAD
+  fixup       = commit --fixup
+  squash      = commit --squash
   pruneremote = remote prune origin
-  lg = "log --format='%Cgreen%h %Cred%cr %Creset%s %Cblue%cn'"
+  lg          = "log --format='%Cgreen%h %Cred%cr %Creset%s %Cblue%cn'"
+  find      = !sh -c 'git ls-files | grep --color=always -i "$@" | less -FRSX' -
   tree = log --pretty=format:'%C(auto)%h%d%Creset %s  %C(auto,bold blue)%an%Creset %C(auto,green)(%ar)%Creset' --graph --all
   add-untracked = !"git status --porcelain | awk '/\\?\\?/{ print $2 }' | xargs git add"
   snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
-  last = log -1 HEAD
-  stash-all = stash save --include-untracked
+  last            = log -1 HEAD
+  stash-all       = stash save --include-untracked
 [branch]
   autosetuprebase = always
-  autosetupmerge = true
+  autosetupmerge  = true
 [commit]
-  template = ~/.config/git/message
+  template        = ~/.config/git/git-message
 [credential]
-	helper = osxkeychain
+	helper          = osxkeychain
 [core]
-  excludesfile = ~/.gitignore
-  whitespace = warn
-  editor = nvim
+  excludesfile    = ~/.gitignore
+  whitespace      = warn
+  editor          = nvim
 [merge]
-  summary = true
-  tool = vimdiff
+  summary         = true
+  tool            = vimdiff
 [mergetool "vimdiff"]
   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w|only|diffoff!'
   # cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [push]
-  default = tracking
+  default         = tracking
 [diff]
-  algorithm = patience
+  algorithm       = patience
 [include]
-  path = ~/.gitconfig.local
+  path            = ~/.gitconfig.local
 [fetch]
-  prune = true
+  prune           = true

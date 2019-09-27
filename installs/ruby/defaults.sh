@@ -11,6 +11,7 @@ formulas=(
   pry
   solargraph
   rubocop
+  reek
   foodcritic
   neovim
   byebug

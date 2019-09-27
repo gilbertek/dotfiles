@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+# ~/.aliases
 
 # ** [ Folder Navigation ] *************
 alias ..="cd .."
@@ -113,6 +113,7 @@ alias gco='git checkout $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD
 alias stash:p='git stash pop $(git stash list | fzf | cut -d=: -f1)'
 alias grb='git rebase -i $(git log --all --graph --oneline --decorate | fzf --reverse | sed -Ee "s/.* ([a-f0-9]{6,}) .*/\1/")'
 alias gm='git merge --no-ff $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
+alias gpro="git pull --rebase origin"
 alias gca='git commit --amend --date="$(date)"'
 alias wip='gaa && gca -m "WIP"'
 alias stash='git stash'
@@ -122,6 +123,10 @@ alias grev='git diff master'
 alias gh='git history'
 alias gha='git history --all'
 alias gmt='git mergetool'
+alias gpull='git pull origin'
+alias gfetch='git fetch --prune'
+alias greset='git reset --hard HEAD~1'
+alias gv="gitk &"
 
 alias up:module='git submodule update --remote --recursive'
 alias gsu='git submodule foreach git pull origin master'
@@ -139,7 +144,9 @@ gfpush () { git fetch && git checkout "$1" && git push origin "$1"; }
 gt () { git checkout -b "$1" -t origin/"$1"; }
 
 # git version (tag and branch at a specific deploy point)
-gv () { git tag v$1 && git checkout -b $1 && git push origin v$1 && git push origin $1; }
+# gv () { git tag v$1 && git checkout -b $1 && git push origin v$1 && git push origin $1; }
+
+# scoreboard () { git log | grep Author | sort | uniq -ci | sort -r }
 
 # ** [ DOCKER ALIASES ] ******************
 alias dk='docker'
@@ -275,8 +282,6 @@ export BREAK_CHARS="\"#'(),;\`\\|"
 alias sbcl="rlwrap -b \$BREAK_CHARS sbcl"
 
 # ** [CLOJURE SHORTCUTS ] ******************
-alias l='lein'
-alias b='boot'
 alias shadow='shadow-cljs'
 alias shdw='shadow-cljs'
 alias lein-debug='JVM_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=${debug_port:-5005} lein'
