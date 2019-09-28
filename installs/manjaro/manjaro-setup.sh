@@ -4,18 +4,18 @@
 sudo pacman-mirrors --fasttrack
 
 # Update
-sudo pacman -Syyu
+sudo pacman -Syyu --noconfirm
 
 # Tools and Utilities
-sudo pacman -Sy albert neovim tmux
-sudo pacman -Sy jq htop bat hub fzf
+sudo pacman -S --noconfirm albert neovim tmux
+sudo pacman -S --noconfirm jq htop bat hub fzf ctags
 
 # Memcached
 # sudo pacman -S memcached
 
 # Haskell
-sudo pacman -Sy stack
-sudo pacman -Sy ghc
+sudo pacman -S --noconfirm stack
+sudo pacman -S --noconfirm ghc
 
 # Telegram Desktop
 # pacman -S telegram-desktop-bin
