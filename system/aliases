@@ -132,11 +132,14 @@ alias gh='git history'
 alias gha='git history --all'
 alias gmt='git mergetool'
 alias gpull='git pull origin'
-alias gfetch='git fetch --prune'
+alias gfetch='git fetch --all --prune'
 alias greset='git reset --hard HEAD~1'
 alias grstu="git reset --hard @{u}" # Reset and match upstream tracking branch
 alias gpub="git push --set-upstream origin $(git_branch)"
 alias gv="gitk &"
+alias gll='git log --graph --pretty=oneline --abbrev-commit'
+alias glg="git log --graph --pretty=format:'%C(bold)%h%Creset%C(magenta)%d%Creset %s %C(yellow)<%an> %C(cyan)(%cr)%Creset' --abbrev-commit --date=relative"
+alias gls="glg --stat"
 
 alias up:module='git submodule update --remote --recursive'
 alias gsu='git submodule foreach git pull origin master'
@@ -238,6 +241,11 @@ alias yt-audio="youtube-dl -citk --max-quality mp3 --audio-format mp3 --extract-
 
 # ** [ MACOS SHORTCUTS ] ******************
 alias mac-clean-logs='sudo rm -rf /private/var/log/asl/*.asl'
+
+# Language aliases
+alias rb='ruby'
+alias py='python'
+alias ipy='ipython'
 
 #Elm
 alias epi="elm package install"

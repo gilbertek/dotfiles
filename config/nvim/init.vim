@@ -565,6 +565,11 @@ set iskeyword+=-
 inoremap jj <Esc>
 inoremap kk <Esc>
 
+" When I'm working on a thinkpad
+inoremap <F1> <ESC>
+nnoremap <F1> <ESC>
+vnoremap <F1> <ESC>
+
 " Close a buffer without closing the split
 nnoremap <leader>q :bp\|bd#<cr>
 nnoremap <leader>Q :bp!\|bd!#<cr>
