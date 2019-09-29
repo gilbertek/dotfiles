@@ -18,6 +18,7 @@ DOTFILES="$HOME/dotfiles"
 
 _FILES=(
   bash_profile
+  bashrc
   aliases
   functions
   railsrc
