@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+# ~/.functions
 
 # Create a new directory and enter it
 function mkd() {
@@ -53,6 +53,10 @@ gpr () {
 
   git push -u origin "$branch"
   open "https://github.com/${BASH_REMATCH[1]}/compare/$branch?expand=1"
+}
+
+ssh-newkey() {
+  ssh-keygen -t rsa -f $HOME/.ssh/$1
 }
 
 # png - build a PNG from the given text

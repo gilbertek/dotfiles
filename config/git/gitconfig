@@ -49,3 +49,5 @@
   path            = ~/.gitconfig.local
 [fetch]
   prune           = true
+[github]
+	user = gilbertek

@@ -46,9 +46,16 @@ alias rmr="rm -rf"
 alias ports="lsof -i -P"
 alias tree='tree -C'
 alias p='pwd'
-alias ll='ls -alF'
-alias la='ls -A'
+# ls with some arguments
+if [ $(uname) = 'Darwin' ]; then
+  alias ls="ls -@FG"
+else
+  alias ls="ls -FG --color=auto"              # defaults
+fi
+alias ll='ls -al'
 alias l='ls -CF'
+alias lsnew="ls -rtl"           # list by new
+alias lsold="ls -tl"            # list by old
 alias halt='halt -p'
 alias v='nvim'
 alias s='source ~/.bash_profile'
@@ -104,11 +111,12 @@ alias untar="tar -zxvf"
 alias stream="youtube-dl -q -o- $1 | vlc -"
 
 # ** [ GIT ALIASES ] ******************
-alias gs='git status'
+alias gs='git status -sb'
 alias gb='git branch -a'
 alias ga='git add -p'
 alias gci='git commit'
 alias gd='git diff'
+alias gwd="git diff --word-diff"
 alias gco='git checkout $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
 alias stash:p='git stash pop $(git stash list | fzf | cut -d=: -f1)'
 alias grb='git rebase -i $(git log --all --graph --oneline --decorate | fzf --reverse | sed -Ee "s/.* ([a-f0-9]{6,}) .*/\1/")'
@@ -126,6 +134,8 @@ alias gmt='git mergetool'
 alias gpull='git pull origin'
 alias gfetch='git fetch --prune'
 alias greset='git reset --hard HEAD~1'
+alias grstu="git reset --hard @{u}" # Reset and match upstream tracking branch
+alias gpub="git push --set-upstream origin $(git_branch)"
 alias gv="gitk &"
 
 alias up:module='git submodule update --remote --recursive'
@@ -133,6 +143,9 @@ alias gsu='git submodule foreach git pull origin master'
 alias changelog='git log --format="%h %ai %an %s"'
 alias ggpull='git pull --rebase'
 alias gmu='git fetch origin -v; git fetch upstream -v; git merge upstream/master'
+
+# git checkout remote
+gcr() { git checkout -t origin/"$1"; }
 
 # git fetch pull
 gfpull () { git fetch && git checkout "$1" && git pull origin "$1"; }
@@ -146,7 +159,7 @@ gt () { git checkout -b "$1" -t origin/"$1"; }
 # git version (tag and branch at a specific deploy point)
 # gv () { git tag v$1 && git checkout -b $1 && git push origin v$1 && git push origin $1; }
 
-# scoreboard () { git log | grep Author | sort | uniq -ci | sort -r }
+scoreboard () { git log | grep Author | sort | uniq -ci | sort -r; }
 
 # ** [ DOCKER ALIASES ] ******************
 alias dk='docker'

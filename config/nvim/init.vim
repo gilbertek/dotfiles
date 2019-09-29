@@ -19,17 +19,13 @@
 " 5) Utilities
 
 " **[ 1) Basics #basics ]********************
-" **[ 1.1) Tabs & Indent #tabs ]********************
 " Make tabs into spaces and indent with 4 spaces
 set expandtab tabstop=4 shiftwidth=0 softtabstop=0
 
-" **[ 1.2) Leader #leader ]********************
 let g:mapleader = ","
 
-" **[ 1.3) Omni completion ]********************
 set omnifunc=syntaxcomplete#Complete
 
-" **[ 1.4) UI Basics #ui-basics ]********************
 set relativenumber              " Relative number
 set number                      " Precede each line with its line number.
 set colorcolumn=80              " Show right column in a highlighted colour.
@@ -48,13 +44,12 @@ set clipboard+=unnamedplus      " +p paste OS clipboard
 set undofile                    " Set persistent undo
 set ignorecase smartcase        " Searching behaves like a web browser
 set undodir=~/.config/nvim/undo
-"""" 1.6) Folding & scrolling #Folding & scrolling
 set foldmethod=syntax           " fold based on indent/syntax
 set foldlevelstart=99
+
 " **[ 2) Plugins #plugins ]***************
 call plug#begin()
 
-"""" 2.1) Filetypes #filetypes
 Plug 'elmcast/elm-vim',      { 'for': [ 'elm' ] }
 let g:elm_format_autosave    = 1
 let g:elm_detailed_complete  = 1
@@ -188,7 +183,7 @@ Plug 'zerodogg/vim-mason'
 Plug 'tpope/vim-db'
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 " Plug 'vyzyv/vimpyter' " Plugins for Jupyter notebooks
-"""" 2.2) Utilities #utilities
+
 Plug 'sbdchd/neoformat'
 let g:neoformat_try_formatprg = 1
 let g:neoformat_enabled_javascript = ['prettier']
@@ -393,9 +388,9 @@ Plug 'rhysd/vim-grammarous'        " Grammarous
 let g:grammarous#use_vim_spelllang = 1
 
 Plug 'easymotion/vim-easymotion'
-Plug 'metakirby5/codi.vim'              " The interactive scratchpad for hackers.
+Plug 'metakirby5/codi.vim'            " The interactive scratchpad for hackers.
 Plug 'ryanoasis/vim-devicons'
-Plug 'fmoralesc/vim-tutor-mode'         " Interactive Vim tutorials
+Plug 'fmoralesc/vim-tutor-mode'       " Interactive Vim tutorials
 " **[ 2.3) UI Plugins #ui-plugins ]********************
 Plug 'nightsense/cosmic_latte'
 Plug 'w0ng/vim-hybrid'
@@ -425,9 +420,7 @@ let g:lightline = {
       \ 'component_visible_condition': {
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())' }
       \ }
-" **[ 2.3) End UI Plugins #ui-plugins ]*****************
 
-"""" 2.4) Code completion & Navigation #code-navigation
 Plug 'epilande/vim-react-snippets'
 Plug 'SirVer/ultisnips'   " Track the snippets engine.
 Plug 'honza/vim-snippets' " Snippets are separated from the engine.
@@ -465,10 +458,9 @@ call plug#end()
 set termguicolors
 set background=dark
 " silent! colorscheme quantum
-" colorscheme base16-default-dark
-colorscheme cosmic_latte
+colorscheme base16-default-dark
+" colorscheme cosmic_latte
 " colorscheme onedark
-"""""""""""" 3) End UI Tweaks #ui-tweaks
 
 " **[ 4) Navigation #navigation ]*****************
 nnoremap <Left>  :echo "ಠ_ಠ!"<cr>
@@ -495,6 +487,7 @@ endif
 " Tab navigation keymaps
 nnoremap <silent>tn :tabnew<CR>
 nnoremap <leader>te :tabedit %<cr>
+nnoremap <leader>to :tabonly<cr>
 nnoremap <Leader>[ :tabprev<CR>
 nnoremap <Leader>] :tabnext<CR>
 nnoremap tq :tabclose<CR>
@@ -533,9 +526,7 @@ nnoremap <silent> <bar> :vsp<cr>
 " Automatic pane split layouts
 nnoremap <leader>3 :vsplit<CR>:bn<CR>:vsplit<CR>:bn<CR>
 nnoremap <leader>4 :vnew<CR>:bn<CR>:vnew<CR>:bn<CR><C-W><C-L><C-W><C-L>:split<CR>:bn<CR>
-"""" 4.1) End Keyboard
 
-"""" 4.2) Mappings
 " Use shift-H and shift-L for move to beginning/end. alt map 0 ^
 nnoremap H ^
 nnoremap L $
@@ -648,9 +639,7 @@ function! TmuxSendKeys(cmd)
 endfunction
 
 command! -nargs=* TmuxSendKeys call TmuxSendKeys(<q-args>)
-"""" 4.2) End Mappings
 
-" **[ 4.3) Filetypes Config ]**
 augroup general
   autocmd!
   autocmd BufLeave,FocusLost * :silent! wall
@@ -842,7 +831,6 @@ augroup END
 if filereadable(glob("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
-" **[ 4) End Navigation #navigation ]**
 
 " TIPS & TRICKS
 "
