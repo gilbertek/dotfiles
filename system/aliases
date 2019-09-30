@@ -12,6 +12,8 @@ alias blogs="cd ~/Projects/BLOG/leftaxe"
 alias ldir='find . -type d -maxdepth 1 -mindepth 1 -exec basename {} \;'
 alias grep='grep --color'
 alias top='top -F -R -o cpu'
+alias mv='mv -v'
+alias wget='wget -c'
 alias hist="history | grep $1"
 alias diary='mkdir -p ~/diary && vim ~/diary/`date +"%Y-%m-%d"`.md'
 

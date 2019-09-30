@@ -4,21 +4,63 @@
 sudo pacman-mirrors --fasttrack
 
 # Update
-sudo pacman -Syyu --noconfirm
+sudo pacman -Syu --noconfirm
 
+install() {
+  which $1 &> /dev/null
+
+  if [ $? -ne 0 ]; then
+    echo "Installing: ${1} ..."
+    sudo pacman -S --noconfirm $1
+  else
+    echo "Already installed: ${1}"
+  fi
+}
+
+PACKAGES=(
 # Tools and Utilities
-sudo pacman -S --noconfirm albert neovim tmux
-sudo pacman -S --noconfirm jq htop bat hub fzf ctags
+  albert
+  neovim
+  tmux
+  jq
+  htop
+  bat
+  hub
+  fzf
+  ctags
+  awscli
+  chromium-browser
+  curl
+  # exfat-utils
+  file
+  git
+  nmap
+  openvpn
 
-# Memcached
-# sudo pacman -S memcached
+  # Samba printer browse & configuration
+  manjaro-settings-samba
+  libreoffice-fresh
+  system-config-printer
 
-# Haskell
-sudo pacman -S --noconfirm stack
-sudo pacman -S --noconfirm ghc
+  # Image processing
+  gimp
+  jpegoptim
+  optipng
 
-# Telegram Desktop
-# pacman -S telegram-desktop-bin
+  # Memcached
+  memcached
+
+  # Haskell
+  stack
+  ghc
+
+  # Telegram Desktop
+  # telegram-desktop-bin
+)
+
+for package in ${PACKAGES[@]}; do
+  install $package
+done
 
 # PHP
 # sudo pacman -S composer

@@ -16,6 +16,9 @@ shopt -s histappend                             # Append to history from all ter
 shopt -s cdspell                                # spelling error correction
 shopt -s nocaseglob                             # Case-insensitive globbing (for pathname expansion)
 shopt -s expand_aliases
+shopt -s cmdhist
+shopt -s dotglob
+shopt -s extglob
 HISTCONTROL="ignoredups:ignorespace:erasedups"  # ignore duplicates(store command once)
 # export QT_SELECT=4
 
@@ -23,11 +26,14 @@ HISTSIZE=-1
 HISTFILESIZE=-1
 HISTIGNORE="&:[ ]*:ll:ls:c:h:cd:pwd:exit:quit:reset" # Don't record some commands
 
-for file in ~/.{aliases,functions,extra,bashrc.local,aliases.local}; do
-	[ -r "$file" ] && [ -f "$file" ] && source "$file";
+for file in ~/.{aliases,functions,bashrc.local,aliases.local}; do
+ [ -f "${file}" ] && source "${file}"
 done;
-unset file;
 
+# Add `~/bin` to the `$PATH`
+if [ -d "$HOME/bin" ] ; then
+  PATH="$HOME/bin:$PATH"
+fi
 
 # macOS-specific environment flags
 if [[ $OSTYPE == "darwin"* ]]; then
@@ -49,7 +55,35 @@ if [[ $OSTYPE == "darwin"* ]]; then
     export JAVA_HOME=`/usr/libexec/java_home`
     export NASHORN_HOME=$JAVA_HOME/bin
   fi
+
+  # For a ipython notebook and pyspark integration
+  if command -v pyspark > /dev/null; then
+    export SPARK_HOME="$(brew --prefix apache-spark)/libexec"
+    export PYSPARK_SUBMIT_ARGS="--master local[2]"
+    export PYSPARK_DRIVER=python3
+    export PYSPARK_DRIVER_PYTHON=jupyter
+    export PYSPARK_DRIVER_PYTHON_OPTS=notebook
+  fi
+
+  if [[ -n "$(which brew)" ]]; then
+    export BREW_CELLAR=$(brew --cellar)
+    export BREW_PREFIX=$(brew --prefix)
+  fi
+
+  #Mac Completion
+  if [[ ! ${#BREW_PREFIX} -eq 0 ]]; then
+    if [[ -d $BREW_PREFIX/etc/bash_completion.d ]]; then
+      source $BREW_PREFIX/etc/bash_completion.d/*
+    fi
+  fi
+else
+  # Linux configs
+  xhost +local:root > /dev/null 2>&1
+  complete -cf sudo
 fi
+
+# Disable DOTNET analytics
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 # GO Path setups
 export GO111MODULE=on
@@ -136,4 +170,3 @@ ex ()
     echo "'$1' is not a valid file"
   fi
 }
-

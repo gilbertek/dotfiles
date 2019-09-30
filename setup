@@ -14,6 +14,15 @@ success() {
   fi
 }
 
+warning(){
+  msg "\033[33mWarning:\033[0m ${1}${2}"
+}
+
+mkdir_path() {
+  echo "==> creating path : $1"
+  mkdir -p "$1"
+}
+
 DOTFILES="$HOME/dotfiles"
 
 _FILES=(
@@ -36,18 +45,25 @@ _FILES=(
 
 echo -e "\nCreating dotfile symlinks"
 
-for file in ${_FILES[@]}
-do
-  filename=".$(basename $file '.symlink')"
-  target="$HOME/$filename"
+create_symlinks() {
+  for file in ${_FILES[@]}; do
+    filename=".$(basename $file '.symlink')"
+    target="$HOME/$filename"
 
-  if [ -e $target ]; then
-    echo "$target already exists... Skipping."
-  else
-    echo "Creating symlink for $file"
-    ln -snf $DOTFILES/system/$file $target
-  fi
-done
+    if [ -e $target ]; then
+      echo "$filename already exists... Skipping."
+      # warning "${filename} alreadly exists in your home directory. Are you sure to overwrite it? ([y]/n)"
+      # read -r -n 1;
+      # msg ""
+      # if [[ ! $REPLY ]] || [[ $REPLY =~ ^[Yy]$ ]]; then
+      #   ln -snf $DOTFILES/system/$file $target
+      # fi
+    else
+      ln -snf $DOTFILES/system/$file $target
+    fi
+  done
+}
+
 
 # neovim and vim config
 echo -e "\nCreating config symlinks"
@@ -72,6 +88,8 @@ ln -sfn "$DOTFILES/config/nvim/init.vim" ~/.config/nvim/init.vim
 # Git and Hub config
 mkdir -p ~/.config/git
 ln -sfn "$DOTFILES/config/git/gitconfig" ~/.gitconfig
+
+create_symlinks
 
 ret="$?"
 success "Dotfiles have been configured! Done! 🤘"

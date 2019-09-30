@@ -13,6 +13,7 @@ formulas=(
   elm-test
   elm-format
   percollate
+  sass
 
   @elm-tooling/elm-language-server
   javascript-typescript-langserver
