@@ -20,7 +20,7 @@ for formula in "${formulas[@]}"; do
   if brew cask list $formula >/dev/null 2>&1; then
     echo "$formula already installed... skipping"
   else
-    brew tap caskroom/fonts
+    brew tap caskroom/cask-fonts
     brew cask install $formula
   fi
 done
