@@ -124,6 +124,7 @@ alias stash:p='git stash pop $(git stash list | fzf | cut -d=: -f1)'
 alias grb='git rebase -i $(git log --all --graph --oneline --decorate | fzf --reverse | sed -Ee "s/.* ([a-f0-9]{6,}) .*/\1/")'
 alias gm='git merge --no-ff $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
 alias gpro="git pull --rebase origin"
+alias gprom="git pull --rebase origin master"
 alias gca='git commit --amend --date="$(date)"'
 alias wip='gaa && gca -m "WIP"'
 alias stash='git stash'
@@ -137,7 +138,7 @@ alias gpull='git pull origin'
 alias gfetch='git fetch --all --prune'
 alias greset='git reset --hard HEAD~1'
 alias grstu="git reset --hard @{u}" # Reset and match upstream tracking branch
-alias gpub="git push --set-upstream origin $(git_branch)"
+# alias gpub="git push --set-upstream origin $(git_parse_branch);"
 alias gv="gitk &"
 alias gll='git log --graph --pretty=oneline --abbrev-commit'
 alias glg="git log --graph --pretty=format:'%C(bold)%h%Creset%C(magenta)%d%Creset %s %C(yellow)<%an> %C(cyan)(%cr)%Creset' --abbrev-commit --date=relative"
@@ -159,12 +160,12 @@ gfpull () { git fetch && git checkout "$1" && git pull origin "$1"; }
 gfpush () { git fetch && git checkout "$1" && git push origin "$1"; }
 
 # git track (create new tracking branch)
-gt () { git checkout -b "$1" -t origin/"$1"; }
+gt() { git checkout -b "$1" -t origin/"$1"; }
 
 # git version (tag and branch at a specific deploy point)
 # gv () { git tag v$1 && git checkout -b $1 && git push origin v$1 && git push origin $1; }
 
-scoreboard () { git log | grep Author | sort | uniq -ci | sort -r; }
+scoreboard() { git log | grep Author | sort | uniq -ci | sort -r; }
 
 # ** [ DOCKER ALIASES ] ******************
 alias dk='docker'
@@ -235,6 +236,9 @@ alias tmx:l='tmux list-sessions'
 alias tmx:a="tmux attach-session -t ${1}"
 alias tmx:k="tmux kill-session -t $1"
 alias mux='TERM=screen-256color tmuxinator'
+
+# ** [ ELASTIC SEARCH ALIASES ] ******************
+alias es:di="curl -XDELETE 'http://localhost:9200/_all'" # delete indexes
 
 # ** [ YOUTUBE-DL SHORTCUTS ] ******************
 # youtube downloader

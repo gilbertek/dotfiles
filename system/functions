@@ -23,10 +23,6 @@ function tre() {
   tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
 
-branch_is_dirty() {
-  if [ "$(git status --porcelain 2>/dev/null)" != "" ]; then echo '*'; fi
-}
-
 git_last_tag() {
   git for-each-ref --sort='*authordate' --format='%(tag)' refs/tags | egrep "^${branch}\.[0-9]+$" | tail -n1
 }
@@ -36,8 +32,11 @@ validate_yaml() {
  ruby -ryaml -e "puts YAML.load_file('${filename}')"
 }
 
-parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+parse_git_dirty () {
+  [[ $(git status 2> /dev/null | tail -n1 | cut -c 1-17) != "nothing to commit" ]] && echo "*"
+}
+parse_git_branch () {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }
 
 pman() { man -t "$@" | open -f -a Preview; }
@@ -93,6 +92,19 @@ if [ $? -eq 0 ]; then
     git diff --no-index --color-words "$@";
   }
 fi;
+
+function createCerts() {
+  openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mycert.pem -out mycert.pem
+  openssl pkcs12 -export -out mycert.pfx -in mycert.pem -name "My Certificate"
+  openssl x509 -inform pem -in mycert.pem -outform der -out mycert.cer
+}
+
+# Explains the shell cmd
+function explain() {
+    cmd=$@
+    open "http://explainshell.com/explain?cmd=${cmd}"
+}
+
 
 # Create a data URL from a file
 function dataurl() {

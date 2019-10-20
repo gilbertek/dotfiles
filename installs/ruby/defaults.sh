@@ -13,6 +13,7 @@ formulas=(
   rubocop
   reek
   foodcritic
+  rubycritic
   neovim
   byebug
   awesome_print

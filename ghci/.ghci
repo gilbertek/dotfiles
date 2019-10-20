@@ -1,7 +1,20 @@
-:set -Wall
-:set -fno-warn-type-defaults
+:set prompt "\001\ESC[33m\002λ \001\ESC[01;34m\002> "
+
+:set -fwarn-unused-binds -fwarn-unused-imports
+
+-- OverloadedStrings is often useful.
+-- :set -XOverloadedStrings
+
+-- Scoped type variables is often useful so we can specify the types
+-- of variables (for example, in lambda expressions).
+:set -XScopedTypeVariables
+
 -- Show the types of evaluated expressions
 :set +t
+
+-- and stats
+:set +s
+
 -- Enable multi-line expressions with :{ and :}
 :set +m
 
@@ -12,9 +25,3 @@ import Prelude
 :def devel-reload \_ -> return (":l DevelMain\nDevelMain.update\n")
 :def yesod-reload \_ -> return (":l app/DevelMain.hs\nDevelMain.update\n")
 :def clear const . return $ ":! clear"
-
-:set prompt "\n \ESC[34mλ\ESC[m\STX   "
-
-
--- :set prompt "\ESC[1;34m%s\n\ESC[0;34mλ> \ESC[m"
--- :set -XOverloadedStrings
