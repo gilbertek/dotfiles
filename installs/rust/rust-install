@@ -8,16 +8,16 @@ asdf install rust $RUST_VERSION
 asdf global rust $RUST_VERSION
 
 rustup self update
-rustup update stable
-rustup component add clippy
+rustup update
 
+rustup component add rls
 rustup component add rust-src
 rustup component add rust-analysis
-rustup component add rls-preview
 
 # Racer - code completion for Rust use nightly
 cargo uninstall racer 2> /dev/null
 rustup toolchain add nightly
+rustup component add rls --toolchain nightly
 cargo +nightly install racer
 
 # Generate a new Rust project by leveraging a pre-existing git repository as a template.

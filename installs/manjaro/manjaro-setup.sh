@@ -5,6 +5,7 @@ sudo pacman-mirrors --fasttrack
 
 # Update
 sudo pacman -Syu --noconfirm
+sudo pacman -S --noconfirm base-devel cmake zlib openssl
 
 install() {
   which $1 &> /dev/null
@@ -31,6 +32,7 @@ PACKAGES=(
   awscli
   chromium-browser
   curl
+  clang
   # exfat-utils
   file
   git
