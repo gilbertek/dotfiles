@@ -8,14 +8,17 @@
   interactive = auto
   ui          = always
 [alias]
-  aliases     = !git config -l | grep '^alias' | cut -c 7- | sort
+  aliases     = config --get-regexp alias
   st          = status
   cheddar     = commit --amend -CHEAD
   co          = checkout
   cp          = cherry-pick
   put         = push origin HEAD
   fixup       = commit --fixup
-  squash      = commit --squash
+
+  # Squash last N commits together
+  # Usage: git squash N
+  squash      = "!f(){ git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f"
   pruneremote = remote prune origin
   lg          = "log --format='%Cgreen%h %Cred%cr %Creset%s %Cblue%cn'"
   find      = !sh -c 'git ls-files | grep --color=always -i "$@" | less -FRSX' -
@@ -24,6 +27,40 @@
   snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
   last            = log -1 HEAD
   stash-all       = stash save --include-untracked
+
+  # Merge GitHub pull request on top of current branch or the specified branch.
+  #   $ git copr 1234          # gets and switches to pr/1234 from origin
+  #   $ git copr 789 otherguy  # gets and switches to pr/789 from otherguy remote
+  # from https://gist.github.com/gnarf/5406589
+  copr = "!f() { git fetch -fu ${2:-origin} refs/pull/$1/head:pr/$1 && \
+               git checkout pr/$1; }; f"
+
+  # Merge pull request e.g: git mpr 123 or git mpr 123 master
+  mpr = "!f() { \
+        declare currentBranch=\"$(git symbolic-ref --short HEAD)\"; \
+        declare branch=\"${2:-$currentBranch}\"; \
+        if [ $(printf \"%s\" \"$1\" | grep '^[0-9]\\+$' > /dev/null; printf $?) -eq 0 ]; then \
+            git fetch origin refs/pull/$1/head:pr/$1 && \
+            git checkout -B $branch && \
+            git rebase $branch pr/$1 && \
+            git checkout -B $branch && \
+            git merge --ff-only pr/$1 && \
+            git branch -D pr/$1; \
+        fi \
+    }; f"
+
+  # Delete merged local branches e.g: git bclean <master>
+  bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
+
+  # Delete a branch here and on the origin.
+  brdel = "!f() { : git checkout ; git branch -D $@; git push origin --delete $@; }; f"
+
+  # Temporarily ignore a file
+  ignore = update-index --assume-unchanged
+  unignore = update-index --no-assume-unchanged
+  ignored = !git ls-files -v | grep "^[[:lower:]]"
+
+  contributors = shortlog --summary --numbered
 [branch]
   autosetuprebase = always
   autosetupmerge  = true

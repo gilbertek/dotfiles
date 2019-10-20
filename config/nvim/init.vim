@@ -20,7 +20,7 @@
 
 " **[ 1) Basics #basics ]********************
 " Make tabs into spaces and indent with 4 spaces
-set expandtab tabstop=4 shiftwidth=0 softtabstop=0
+set tabstop=4 shiftwidth=4 shiftround expandtab
 
 let g:mapleader = ","
 
@@ -168,8 +168,6 @@ let g:haskell_enable_typeroles        = 1 " to enable highlighting of type roles
 let g:haskell_enable_static_pointers  = 1 " to enable highlighting of `static`
 let g:haskell_backpack                = 1 " to enable highlighting of backpack keywords
 
-Plug 'Shougo/vimproc.vim',            { 'do' : 'make' }
-" Plug 'parsonsmatt/intero-neovim'
 Plug 'eagletmt/neco-ghc',             { 'for': 'haskell' } " Haskell completion
 let g:haskellmode_completion_ghc      = 0
 let g:necoghc_enable_detailed_browse  = 1
@@ -293,7 +291,7 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 " Asynchronous file linter
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
 let g:ale_linters = {
       \ 'javascript': ['eslint', 'prettier'],
@@ -305,6 +303,8 @@ let g:ale_linters = {
       \ 'vue':        ['eslint', 'vls'],
       \ 'perl':       ['perl', 'perlcritic'],
       \ 'clojure':    ['clj-kondo', 'joker'],
+      \ 'ruby':       ['ruby', 'rubocop'],
+      \ 'rust':       ['rls'],
       \ }
 
 let g:ale_fixers = {
@@ -315,7 +315,7 @@ let g:ale_fixers = {
       \ 'scss':       ['prettier'],
       \ 'sass':       ['prettier'],
       \ 'css':        ['prettier'],
-      \ 'python':     ['yapf', 'isort', 'autopep8'],
+      \ 'python':     ['autopep8', 'black'],
       \ 'reason':     ['refmt'],
       \ 'ruby':       ['rubocop'],
       \ 'elixir':     ['mix_format'],
@@ -338,6 +338,9 @@ let g:ale_perl_perl_options           = '-c -Mwarnings -Ilib -It/lib'
 nmap [a <Plug>(ale_next_wrap)
 nmap ]a <Plug>(ale_previous_wrap)
 
+" Use Ctrl+y to go to the definition of something.
+nmap <C-y> <Plug>(ale_go_to_definition)
+
 " Plugins for Git & Gist
 Plug 'tpope/vim-fugitive'
 nnoremap <leader>gb :Gblame<CR>
@@ -353,6 +356,10 @@ nnoremap gdh :diffget //2<CR>
 nnoremap gdl :diffget //3<CR>
 
 Plug 'airblade/vim-gitgutter'
+" for jumpping between hunks
+nmap <silent> ]h :<C-U>execute v:count1 . "GitGutterNextHunk"<CR>
+nmap <silent> [h :<C-U>execute v:count1 . "GitGutterPrevHunk"<CR>
+
 Plug 'Xuyuanp/nerdtree-git-plugin'        " NerdTree-git
 Plug 'mattn/webapi-vim'                   " Vim interface to web apis
 Plug 'junegunn/gv.vim' , {'on': ['Gitv']} " A git commit browser
@@ -371,7 +378,7 @@ endif
 
 " Tagbar: a class outline viewer for Vim
 Plug 'majutsushi/tagbar'
-nnoremap <Space>tb :TagbarToggle<CR>
+nnoremap <leader>tb :TagbarToggle<CR>
 let g:tagbar_autoclose  = 1
 
 " fzf fuzzy finder
@@ -459,7 +466,6 @@ set termguicolors
 set background=dark
 " silent! colorscheme quantum
 colorscheme base16-default-dark
-" colorscheme cosmic_latte
 " colorscheme onedark
 
 " **[ 4) Navigation #navigation ]*****************
@@ -487,9 +493,8 @@ endif
 " Tab navigation keymaps
 nnoremap <silent>tn :tabnew<CR>
 nnoremap <leader>te :tabedit %<cr>
-nnoremap <leader>to :tabonly<cr>
-nnoremap <Leader>[ :tabprev<CR>
-nnoremap <Leader>] :tabnext<CR>
+" switch between two windows
+nnoremap <leader><TAB> :wincmd p<cr>
 nnoremap tq :tabclose<CR>
 
 " map tab navigation to Cmd-1 to 9.
@@ -565,7 +570,7 @@ set iskeyword+=-
 inoremap jj <Esc>
 inoremap kk <Esc>
 
-" When I'm working on a thinkpad
+" When working on a thinkpad
 inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 vnoremap <F1> <ESC>
@@ -583,6 +588,8 @@ nnoremap <silent><leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 
 " Unselect the search result
 map <Leader><Space> :noh<CR>
+vnoremap <silent> * :call VisualSearch('f')<CR>
+vnoremap <silent> # :call VisualSearch('b')<CR>
 
 " Search results centered please
 nnoremap <silent> n nzz
@@ -678,7 +685,7 @@ augroup JS-Family
   " Vuejs mix of different languages in one file
   autocmd FileType vue syntax sync fromstart
   autocmd FileType javascript,ocaml setl sw=2 sts=2 et
-  autocmd BufNewFile,BufRead .babelrc,.eslintrc setlocal filetype=json
+  autocmd BufNewFile,BufRead .{babel,.eslint,jshint}rc setlocal filetype=json
   " autocmd BufWritePre *.{js,jsx,ts,tsx,scss,less,rb,mjs,json,graphql,md} Neoformat
   autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ es5
 augroup END
@@ -767,18 +774,6 @@ augroup Haskell-Maps
   autocmd FileType haskell let &formatprg="hindent --tab-size 2 -XQuasiQuotes"
   autocmd FileType haskell map <silent> <leader><cr> :noh<cr>:GhcModTypeClear<cr>
 augroup END
-
-" augroup intero-Maps
-"   autocmd!
-"   autocmd BufWritePost *.hs InteroReload " autocmdtomatically reload on save.
-"   autocmd FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR><C-W>H
-"   autocmd FileType haskell nnoremap <silent> <leader>ih :InteroHide<cr>
-"   autocmd FileType haskell nnoremap <silent> <leader>if :InteroLoadCurrentFile<CR>
-"   autocmd FileType haskell nnoremap <silent> <leader>d :InteroGoToDef<CR>
-"   autocmd FileType haskell nnoremap <silent> <leader>it :InteroType<CR>
-"   autocmd FileType haskell map <silent> <leader>ii :InteroInfo<cr>
-"   autocmd FileType haskell map <leader>ic :!echo ":ctags" \| stack ghci<cr>
-" augroup END
 
 " Quick breakpoints
 augroup Auto-Breakpoint

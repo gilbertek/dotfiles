@@ -83,38 +83,71 @@ done
 # Spotify
 # yaourt -S spotify
 
-# git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.4
+echo "==> Install ASDF and plugins"
+if [ ! -d "$HOME/.asdf" ]; then
+    echo "===> Installing ASDF"
+    git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf" --branch v0.7.4
 
-# echo -e '\n. $HOME/.asdf/asdf.sh' >> ~/.bashrc
-# echo -e '\n. $HOME/.asdf/completions/asdf.bash' >> ~/.bashrc
+    echo -e '\n. $HOME/.asdf/asdf.sh' >> ~/.bashrc
+    echo -e '\n. $HOME/.asdf/completions/asdf.bash' >> ~/.bashrc
+fi
 
-# asdf update
+source "$HOME/.asdf/asdf.sh"
 
-# Install Languages
-## Installing Node
+if [ ! -d "$ASDF_DIR/plugins/erlang" ]; then
+    echo "===> Installing ASDF erlang plugin"
+    asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
+    export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
+# asdf list-all erlang
+# asdf install erlang <version>
+fi
 
-# Node requires an extra step:
-# bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
-# asdf plugin-add nodejs
-# asdf list-all nodejs
-# asdf install nodejs <version>
-# asdf global nodejs <version>
+if [ ! -d "$ASDF_DIR/plugins/elixir" ]; then
+    echo "===> Installing ASDF elixir plugin"
+    asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
+    # asdf list-all elixir
+    # asdf install elixir <version>
+    # asdf global elixir <version>
+fi
 
-# asdf plugin-add elixir
-# asdf list-all elixir
-# asdf install elixir <version>
-# asdf global elixir <version>
+if [ ! -d "$ASDF_DIR/plugins/nodejs" ]; then
+    echo "===> Installing ASDF nodejs plugin"
+    asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+
+    echo "===> Importing Node.js release team OpenPGP keys to main keyring"
+    # Node requires an extra step:
+    # This can be flaky
+    bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+    # asdf list-all nodejs
+    # asdf install nodejs <version>
+    # asdf global nodejs <version>
+fi
 
 
 # Visit https://github.com/halcyon/asdf-java for more info
-asdf plugin-add java https://github.com/halcyon/asdf-java.git
+# asdf plugin-add java https://github.com/halcyon/asdf-java.git
 # asdf list-all java
 # asdf install java adopt-openjdk-12.0.2-10.3
 # asdf install java adopt-openjdk-13+33
 # echo -e '\n. $HOME/.asdf/plugins/java/set-java-home.sh' >> ~/.bashrc
 
-# asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git
-# ASDF_RUBY_BUILD_VERSION=master asdf install ruby 2.6.4
+if [ ! -d "$ASDF_DIR/plugins/ruby" ]; then
+    echo "===> Installing ASDF ruby plugin"
+    asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby.git
+    ASDF_RUBY_BUILD_VERSION=master asdf install ruby 2.6.5
+
+    # asdf list-all ruby
+    # asdf install ruby <version>
+    # asdf global ruby <version>
+fi
+
+if [ ! -d "$ASDF_DIR/plugins/rust" ]; then
+    echo "===> Installing ASDF rust plugin"
+    asdf plugin-add rust https://github.com/code-lever/asdf-rust.git
+    # asdf list-all rust
+    # asdf install rust 1.38.0 <version> # 1.38.0
+    # asdf global rust <version>
+fi
 
 # Erlang
 # Provides most of the needed build tools.
@@ -126,8 +159,3 @@ asdf plugin-add java https://github.com/halcyon/asdf-java.git
 # For building ssl pacman -S libssh
 
 # ODBC support sudo pacman -S unixodbc
-
-# asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git
-# export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
-# asdf list-all erlang
-# asdf install erlang <version>
