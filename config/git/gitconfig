@@ -1,32 +1,38 @@
 [user]
 	name        = Gilbert F. Sewovoe-Ekoue
 	email       = gilberts55@hotmail.com
-[color]
-	status      = auto
-  branch      = auto
-  diff        = auto
-  interactive = auto
-  ui          = always
+[color "diff"]
+    meta        = yellow
+    frag        = cyan
+    plain       = white
+    old         = red bold
+    new         = green bold
+[color "branch"]
+  current       = blue
+  local         = normal
+  remote        = cyan
+[color "status"]
+  changed       = yellow
 [alias]
-  aliases     = config --get-regexp alias
-  st          = status
-  cheddar     = commit --amend -CHEAD
-  co          = checkout
-  cp          = cherry-pick
-  put         = push origin HEAD
-  fixup       = commit --fixup
+    aliases     = config --get-regexp alias
+    st          = status
+    cheddar     = commit --amend -CHEAD
+    co          = checkout
+    cp          = cherry-pick
+    put         = push origin HEAD
+    fixup       = commit --fixup
 
-  # Squash last N commits together
-  # Usage: git squash N
-  squash      = "!f(){ git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f"
-  pruneremote = remote prune origin
-  lg          = "log --format='%Cgreen%h %Cred%cr %Creset%s %Cblue%cn'"
-  find      = !sh -c 'git ls-files | grep --color=always -i "$@" | less -FRSX' -
-  tree = log --pretty=format:'%C(auto)%h%d%Creset %s  %C(auto,bold blue)%an%Creset %C(auto,green)(%ar)%Creset' --graph --all
-  add-untracked = !"git status --porcelain | awk '/\\?\\?/{ print $2 }' | xargs git add"
-  snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
-  last            = log -1 HEAD
-  stash-all       = stash save --include-untracked
+    # Squash last N commits together
+    # Usage: git squash N
+    squash      = "!f(){ git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f"
+    pruneremote = remote prune origin
+    lg          = "log --format='%Cgreen%h %Cred%cr %Creset%s %Cblue%cn'"
+    find      = !sh -c 'git ls-files | grep --color=always -i "$@" | less -FRSX' -
+    tree = log --pretty=format:'%C(auto)%h%d%Creset %s  %C(auto,bold blue)%an%Creset %C(auto,green)(%ar)%Creset' --graph --all
+    add-untracked = !"git status --porcelain | awk '/\\?\\?/{ print $2 }' | xargs git add"
+    snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
+    last         = log -1 HEAD
+    stash-all    = stash save --include-untracked
 
   # Merge GitHub pull request on top of current branch or the specified branch.
   #   $ git copr 1234          # gets and switches to pr/1234 from origin
@@ -62,29 +68,29 @@
 
   contributors = shortlog --summary --numbered
 [branch]
-  autosetuprebase = always
-  autosetupmerge  = true
+    autosetuprebase = always
+    autosetupmerge  = true
 [commit]
-  template        = ~/dotfiles/config/git/git-message
+    template      = ~/dotfiles/config/git/git-message
 [credential]
-	helper          = osxkeychain
+	helper        = osxkeychain
 [core]
-  whitespace      = warn
-  editor          = nvim
-  excludesfile    = ~/dotfiles/config/git/gitignore
+     whitespace   = warn
+    editor        = nvim
+    excludesfile  = ~/dotfiles/config/git/gitignore
 [merge]
-  summary         = true
-  tool            = vimdiff
+    summary       = true
+    tool          = vimdiff
 [mergetool "vimdiff"]
-  cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w|only|diffoff!'
+    cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w|only|diffoff!'
   # cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [push]
-  default         = tracking
+    default       = tracking
 [diff]
-  algorithm       = patience
+    algorithm     = patience
 [include]
-  path            = ~/.gitconfig.local
+    path          = ~/.gitconfig.local
 [fetch]
-  prune           = true
+    prune         = true
 [github]
-	user = gilbertek
+	user          = gilbertek
