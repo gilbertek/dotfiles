@@ -39,6 +39,9 @@ PACKAGES=(
   nmap
   openvpn
 
+  xclip
+  xsel
+
   # Samba printer browse & configuration
   manjaro-settings-samba
   libreoffice-fresh
@@ -65,8 +68,8 @@ for package in ${PACKAGES[@]}; do
 done
 
 # PHP
-# sudo pacman -S composer
-# sudo pacman -S php php-fpm php-apcu php-gd php-imap php-intl php-mcrypt php-memcached php-pgsql php-sqlite php-cgi xdebug
+sudo pacman -S composer
+sudo pacman -S php php-fpm php-apcu php-gd php-imap php-intl php-mcrypt php-memcached php-pgsql php-sqlite php-cgi xdebug
 
 # Nginx
 # sudo pacman -S nginx

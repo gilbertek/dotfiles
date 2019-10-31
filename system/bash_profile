@@ -1,33 +1,11 @@
 # ~/.bash_profile
 
-bind "set completion-ignore-case on"        # Case-Insensitive Auto Completion
-bind "set show-all-if-ambiguous on"         # Display matches for ambiguous patterns
-shopt -s histappend                         # Append to history from all terminals in realtime
-shopt -s cmdhist                            # store multiline commands as 1 line
-shopt -s cdspell                            # spelling error correction
-shopt -s checkwinsize                       # check window size after command and, if necessary, update lines and columns.
-shopt -s nocaseglob                         # Case-insensitive globbing (for pathname expansion)
-shopt -s extglob
-HISTCONTROL="ignoredups:erasedups"          # ignore duplicates(store command once)
-HISTSIZE=10000	                            # Larger bash history...
-HISTFILESIZE=10000	                        # Larger bash history...
-HISTIGNORE="&:ll:ls:c:cd:cd -:pwd:exit:logout:quit:reset" # Don't record some commands
 export PROMPT_COMMAND='history -a;history -c;history -r'
 export CLICOLOR=1
 
 # Disable DOTNET analytics
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
-# macOS-specific environment flags
-if [[ $OSTYPE == "darwin"* ]]; then
-  export COCOAPODS_DISABLE_STATS=1
-  export HOMEBREW_NO_ANALYTICS=1
-  export HOMEBREW_INSTALL_CLEANUP=1
-
-  # Homebrew
-  [[ ":$PATH:" =~ ":/usr/local/bin:" ]]  || PATH="/usr/local/bin:$PATH"
-  [[ ":$PATH:" =~ ":/usr/local/sbin:" ]] || PATH="/usr/local/sbin:$PATH"
-fi
 
 # Motivation reminder
 now=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
@@ -48,41 +26,16 @@ for file in ~/.{aliases,functions,extra,bashrc,bashrc.local,aliases.local}; do
 done;
 unset file;
 
-# GO Path setups
-export GO111MODULE=on
-export GOPATH=$HOME/Projects/GOAPPS
-export PATH=$PATH:$GOPATH/bin
-export GOAPPS=$GOPATH/src/github.com/gilbertek
-
-# Groovy Home path setup
-if [ -d /usr/local/opt/groovy/libexec ]; then
-  export GROOVY_HOME=/usr/local/opt/groovy/libexec
-fi
-
-if [ -f /usr/libexec/java_home ]; then
-  export JAVA_HOME=`/usr/libexec/java_home`
-  export NASHORN_HOME=$JAVA_HOME/bin
-fi
-
 # export M2_HOME=/usr/local/Cellar/maven/3.5.4/libexec
 # export M2=$M2_HOME/bin
 # export PATH=$PATH:$M2_HOME/bin
 # export MAVEN_OPTS="-Xmx2048m -Xms512m -XX:MaxPermSize=312M -XX:ReservedCodeCacheSize=128m -Dsun.lang.ClassLoader.allowArraySyntax=true -ea -Dfile.encoding=UTF-8"
 # export MAVEN_JMX="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=6969 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
 
-# Haskell/hdevtools Home path setup
-export PATH=~/.local/bin:$PATH
-
-# Put GHC on the path globally
-GHC_PATH=`stack path | grep compiler-bin | sed -e 's/compiler-bin: //'`
-export PATH="$PATH:$GHC_PATH"
-
 # PHP CLI
 # export PATH="$(brew --prefix homebrew/php/php70)/bin:$PATH"
 # export PATH="/usr/local/opt/php@5.6/bin:$PATH"
 
-# Persistent history in Elixir repl IEx
-export ERL_AFLAGS="-kernel shell_history enabled"
 
 # android
 if [ -d $HOME/Library/Android/sdk ]; then
@@ -110,20 +63,6 @@ fi
 
 export ANT_OPTS='-Xms512M -Xmx1024M -XX:MaxPermSize=1024M'
 export ANT_ARGS='-logger org.apache.tools.ant.listener.AnsiColorLogger'
-
-# Make neovim the default editor
-export EDITOR=nvim
-export GIT_EDITOR=$EDITOR # git uses the default editor
-export VISUAL=nvim
-
-export FZF_DEFAULT_OPTS='--height 60% --reverse'
-
-# Setting fd as the default source for fzf
-export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
-export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-export PROJECT_HOME=$HOME/Projects
 
 ### Foreground Colours #######################################################
 LIGHT_GREEN='\[\e[32m\]'
@@ -187,6 +126,18 @@ if command -v xclip >/dev/null; then
   alias pbcopy='xclip -sel clip -i'
   alias pbpaste='xclip -sel clip -o'
 fi
+# PS1="\[\e[36m\]☭\[\e[m\]\[\e[36m\] \@ \[\e[32m\]\u\[\e[m\]\[\e[35m\]@\[\e[m\]\[\e[35m\]\W\[\e[m\]\[\e[36m\]\`parse_git_branch\`\[\e[m\] \[\e[36m\]->\[\e[m\] "
+
+
+# prompt_env() {
+#    prompt_jobs=$(jobs | wc -l)
+#    prompt_branch=$(hg branch 2> /dev/null | awk -- '{print "on "$1}')
+
+#    PS1="\[\e[36m\]\A \[\e[1;34m\]\[\e[35m\]\H\[\e[1;34m\] \w\[\e[0m\] \[\e[32m\]$prompt_branch\[\e[0m\]\n$prompt_jobs > \[\e[0m\]"
+# }
+
+# PROMPT_COMMAND=prompt_env
+# PS1="\[\e[36m\]\A \[\e[1;34m\]\[\e[35m\]\H\[\e[1;34m\] \w\[\e[0m\] \[\e[32m\]$prompt_branch\[\e[0m\]\n$prompt_jobs > \[\e[0m\]"
 
 # phpenv
 if [ -d $HOME/.phpenv ] ; then
@@ -261,25 +212,6 @@ fi
 #   fi
 # fi
 
-
-
-# Todo
-# Remove dups from path
-# This is in reverse order.
-paths=(
-    /usr/local/sbin
-    $HOME/Library/Haskell/bin
-    $OCLINT_HOME/bin
-    /usr/local/go/bin
-    $GOPATH/bin
-    /usr/local/opt/openssl/bin
-    /Library/TeX/texbin
-    $haskell_local_bin
-    $HOME/bin
-)
-
-# export PATH="$(printf '%s:' "${paths[@]%/}")$PATH"
-
 # Autocompletions
 #-------------------------------------------------------------------------------
 [[ -f ~/.config/exercism/exercism_completion.bash ]] && \
@@ -305,11 +237,6 @@ if [[ $OSTYPE == "darwin"* ]]; then
       source $BREW_PREFIX/etc/bash_completion.d/*
     fi
   fi
-fi
-
-#Linux Completion
-if [[ -f /etc/bash_completion ]]; then
-	bash /etc/bash_completion
 fi
 
 #Azure CLI completion
@@ -367,4 +294,3 @@ echo ${MESSAGE[$RANDOM % ${#MESSAGE[@]}]}
 # yellow=$(tput setaf 3)
 # reset=$(tput sgr0)
 # export PS1="\[$red\]\$? \[$cyan\]\u\[$reset\]@\[$green\]\h:\[$yellow\]\w\[$reset\]$ "
-

@@ -465,8 +465,8 @@ call plug#end()
 set termguicolors
 set background=dark
 " silent! colorscheme quantum
-colorscheme base16-default-dark
-" colorscheme onedark
+" colorscheme base16-default-dark
+colorscheme onedark
 
 " **[ 4) Navigation #navigation ]*****************
 nnoremap <Left>  :echo "ಠ_ಠ!"<cr>
