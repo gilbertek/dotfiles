@@ -108,7 +108,7 @@ unset jscbin;
 
 # browser-sync config
 # Get the current local IP address
-export SERVER_IP=`hostname -I`
+export SERVER_IP=`hostname -i`
 
 # The command alias to start the browser-sync server
 alias serve="browser-sync start --server --files . --no-notify --host $SERVER_IP --port 9000"
