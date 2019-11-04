@@ -455,6 +455,10 @@ let g:deoplete#omni#input_patterns.elm     = '[^ \t]+'
 let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
 let g:deoplete#sources#clang#clang_header  = '/usr/local/opt/llvm/lib/clang'
 
+" let g:deoplete#sources#clang#libclang_path=system("find /usr/lib/ -name '*libclang.so*' -print -quit")[0:-2]
+" let g:deoplete#sources#clang#clang_header="/usr/lib/clang/"
+" let g:deoplete#sources#go#gocode_binary=$HOME . "/.gopath/bin/gocode"
+
 " Elm support
 " h/t https://github.com/ElmCast/elm-vim/issues/52#issuecomment-264161975
 """" 2.4) End Code completion & Navigation #code-navigation

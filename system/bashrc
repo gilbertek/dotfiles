@@ -30,6 +30,8 @@ for file in $HOME/.{aliases,functions}; do
     [ -f "${file}" ] && source "${file}"
 done;
 
+export XDG_CONFIG_HOME="$HOME/.config"
+
 # Add `~/bin` to the `$PATH`
 if [ -d "$HOME/bin" ] ; then
   PATH="$HOME/bin:$PATH"
@@ -152,6 +154,8 @@ export PATH="$PATH:$GHC_PATH"
 
 # Persistent history in Elixir repl IEx
 export ERL_AFLAGS="-kernel shell_history enabled"
+
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
 # Ensure ssh agent is running
 if [ -z "$SSH_AUTH_SOCK" ] ; then

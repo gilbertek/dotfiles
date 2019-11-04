@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+SCREN_COUNT=$(DISPLAY=:0 xrandr -q | grep ' connected' | wc -l)
+
+if [[ $SCREN_COUNT -eq 2 ]]; then
+  xrandr --output HDMI1 --auto  --output HDMI1 --auto --right-of eDP1
+fi

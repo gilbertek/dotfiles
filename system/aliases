@@ -106,6 +106,14 @@ jscbin="/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources
 [ -e "${jscbin}" ] && alias jsc="${jscbin}";
 unset jscbin;
 
+# browser-sync config
+# Get the current local IP address
+export SERVER_IP=`hostname -I`
+
+# The command alias to start the browser-sync server
+alias serve="browser-sync start --server --files . --no-notify --host $SERVER_IP --port 9000"
+
+alias neofetch='neofetch --colors 7 7 7 7 7 15 --underline_char - --block_range 0 15 --gap'
 # Archives
 alias mktar="tar -pvczf"
 alias untar="tar -zxvf"
@@ -113,6 +121,7 @@ alias untar="tar -zxvf"
 alias stream="youtube-dl -q -o- $1 | vlc -"
 
 # ** [ GIT ALIASES ] ******************
+alias diff="diff-so-fancy"
 alias gs='git status -sb'
 alias gb='git branch -a'
 alias ga='git add -p'

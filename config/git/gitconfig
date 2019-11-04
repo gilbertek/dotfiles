@@ -78,6 +78,7 @@
      whitespace   = warn
     editor        = nvim
     excludesfile  = ~/dotfiles/config/git/gitignore
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [merge]
     summary       = true
     tool          = vimdiff

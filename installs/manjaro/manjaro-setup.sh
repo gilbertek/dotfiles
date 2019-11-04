@@ -5,7 +5,7 @@ sudo pacman-mirrors --fasttrack
 
 # Update
 sudo pacman -Syu --noconfirm
-sudo pacman -S --noconfirm base-devel cmake zlib openssl
+sudo pacman -S --noconfirm base-devel cmake zlib openssl expac wget fakeroot jshon
 
 install() {
   which $1 &> /dev/null
@@ -33,14 +33,24 @@ PACKAGES=(
   chromium-browser
   curl
   clang
+  yay
   # exfat-utils
+  tldr
+  neofetch
   file
   git
   nmap
   openvpn
+  diff-so-fancy
 
   xclip
   xsel
+
+  # rofi
+  # polybar
+  conki
+
+  intellij-idea-community-edition
 
   # Samba printer browse & configuration
   manjaro-settings-samba
@@ -72,10 +82,10 @@ sudo pacman -S composer
 sudo pacman -S php php-fpm php-apcu php-gd php-imap php-intl php-mcrypt php-memcached php-pgsql php-sqlite php-cgi xdebug
 
 # Nginx
-# sudo pacman -S nginx
+sudo pacman -S nginx
 
 # MariaDB
-# sudo pacman -S mariadb
+sudo pacman -S mariadb
 # sudo mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 # sudo pacman -S phpmyadmin
 
@@ -162,3 +172,14 @@ fi
 # For building ssl pacman -S libssh
 
 # ODBC support sudo pacman -S unixodbc
+
+# Remove unwanted dependencies
+yay -Yc
+
+yay -Ss google-chrome \
+  youtube-dl
+
+# Set default browser
+# sudo xdg-settings set default-web-browser google-chrome.desktop
+
+

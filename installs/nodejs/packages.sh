@@ -14,6 +14,7 @@ formulas=(
   elm-format
   percollate
   sass
+  browser-sync
 
   @elm-tooling/elm-language-server
   javascript-typescript-langserver
