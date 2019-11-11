@@ -1,7 +1,24 @@
 #!/usr/bin/bash
 
+function device_list() {
+  xrandr -q | grep ' connected ' | cut -d ' ' -f 1
+}
+
+function get_devide() {
+  index=$1
+  device_list | head -n $index | tail -n 1
+}
+
 SCREN_COUNT=$(DISPLAY=:0 xrandr -q | grep ' connected' | wc -l)
 
 if [[ $SCREN_COUNT -eq 2 ]]; then
-  xrandr --output HDMI1 --auto  --output HDMI1 --auto --right-of eDP1
+  PRIMARY=$(get_devide 1)
+  SECONDARY=$(get_devide 2)
+  echo "Primary display device: $PRIMARY"
+  echo "Secondary display device: $SECONDARY"
+
+  xrandr --output $SECONDARY --auto  --output $SECONDARY --auto --right-of $PRIMARY
+else
+  xrandr --auto
 fi
+
