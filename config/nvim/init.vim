@@ -329,6 +329,7 @@ let g:ale_fixers = {
 let g:ale_virtualtext_cursor          = 1 "Enable neovim's virtualtext support
 let g:ale_fix_on_save                 = 1
 let g:ale_python_auto_pipenv          = 1
+let g:ale_lint_on_text_changed        = 0
 let g:ale_sign_error                  = '✗'
 let g:ale_sign_warning                = '⚠'
 let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
@@ -483,11 +484,21 @@ nnoremap <A-Left> <C-o>
 nnoremap <A-Right> <C-i>
 
 " Navigate terminal and splits windows with C-h,j,k,l
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
+tnoremap <silent><C-w>h <C-\><C-n><C-w>h
+tnoremap <silent><C-w>j <C-\><C-n><C-w>j
+tnoremap <silent><C-w>k <C-\><C-n><C-w>k
+tnoremap <silent><C-w>l <C-\><C-n><C-w>l
+tnoremap <silent><C-h> <C-\><C-n>:TmuxNavigateLeft<CR>
+tnoremap <silent><C-j> <C-\><C-n>:TmuxNavigateDown<CR>
+tnoremap <silent><C-k> <C-\><C-n>:TmuxNavigateUp<CR>
+tnoremap <silent><C-l> <C-\><C-n>:TmuxNavigateRight<CR>
+
 if has("nvim")
+  tnoremap <A-j> <C-\><C-n><C-w>j
+  tnoremap <A-k> <C-\><C-n><C-w>k
+  tnoremap <A-l> <C-\><C-n><C-w>l
+  tnoremap <A-h> <C-\><C-n><C-w>h
+
   " Quit terminal Exit/Navigation
   tnoremap jk <C-\><C-n>
   " Terminal Mode Configuration
@@ -497,6 +508,9 @@ endif
 " Tab navigation keymaps
 nnoremap <silent>tn :tabnew<CR>
 nnoremap <leader>te :tabedit %<cr>
+nnoremap <silent><tab>l :tabnext<CR>
+nnoremap <silent><tab>h :tabprev<CR>
+
 " switch between two windows
 nnoremap <leader><TAB> :wincmd p<cr>
 nnoremap tq :tabclose<CR>
@@ -549,6 +563,9 @@ nnoremap Y y$
 
 "Copy to system clipboard
 vnoremap <C-c> "+y
+
+" Copy filename
+nnoremap <leader>yf :let @" = expand("%")<CR>
 
 " ctrl-v: Paste
 cnoremap <c-v> <c-r>
@@ -630,6 +647,12 @@ noremap <c-g> :Ggrep <cword><CR>
 
 " Use tab for completion
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>"
+inoremap <silent><expr><C-n> pumvisible() ? "\<C-y>\<Down>" : "\<Down>"
+inoremap <silent><expr><C-p> pumvisible() ? "\<C-y>\<Up>" : "\<Up>"
+inoremap <silent><expr><C-b> pumvisible() ? "\<C-y>\<Left>" : "\<Left>"
+inoremap <silent><expr><C-f> pumvisible() ? "\<C-y>\<Right>" : "\<Right>"
+
+autocmd! InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " Hit Ctrl+A to select all in current buffer
 nnoremap <C-a> ggVG
@@ -669,6 +692,7 @@ augroup general
   autocmd Filetype markdown nnoremap <Leader>, :w<cr>:!pandoc % \| lynx -stdin<cr>:redraw!<cr>
   autocmd FileType make setlocal noexpandtab
   autocmd FileType java setlocal omnifunc=javacomplete#Complete
+  autocmd BufNewFile,BufRead .env.* setfiletype sh
 augroup END
 
 augroup Cursorline
