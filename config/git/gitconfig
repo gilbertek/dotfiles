@@ -3,10 +3,6 @@
 	email       = gilberts55@hotmail.com
 [color "diff"]
   meta        = yellow
-  frag        = cyan
-  plain       = white
-  old         = red bold
-  new         = green bold
 [color "branch"]
   current       = blue
   local         = normal

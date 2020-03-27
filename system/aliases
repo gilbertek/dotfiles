@@ -48,13 +48,8 @@ alias rmr="rm -rf"
 alias ports="lsof -i -P"
 alias tree='tree -C'
 alias p='pwd'
-# ls with some arguments
-if [ $(uname) = 'Darwin' ]; then
-  alias ls="ls -@FG"
-else
-  alias ls="ls -FG --color=auto"              # defaults
-fi
-alias ll='ls -al'
+alias ls="ls -lh"
+alias ll='ls -Alh'
 alias l='ls -CF'
 alias lsnew="ls -rtl"           # list by new
 alias lsold="ls -tl"            # list by old
@@ -90,7 +85,7 @@ if [[ -x "$(command -v bat)" ]]; then
 fi
 
 if [[ -x "$(command -v ncdu)" ]]; then
-  alias du='ncdu'
+  alias du='ncdu --color dark -rr -x --exclude .git'
 fi
 
 if [[ -x "$(command -v terraform)" ]]; then
@@ -100,20 +95,13 @@ fi
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias watch="watch --color"
 alias reload="exec $SHELL -l" # Reload the shell (i.e. invoke as a login shell)
+alias pserver="python -m SimpleHTTPServer"
 
 # JavaScriptCore REPL
 jscbin="/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc";
 [ -e "${jscbin}" ] && alias jsc="${jscbin}";
 unset jscbin;
 
-# browser-sync config
-# Get the current local IP address
-export SERVER_IP=`hostname -i`
-
-# The command alias to start the browser-sync server
-alias serve="browser-sync start --server --files . --no-notify --host $SERVER_IP --port 9000"
-
-alias neofetch='neofetch --colors 7 7 7 7 7 15 --underline_char - --block_range 0 15 --gap'
 # Archives
 alias mktar="tar -pvczf"
 alias untar="tar -zxvf"
@@ -121,7 +109,6 @@ alias untar="tar -zxvf"
 alias stream="youtube-dl -q -o- $1 | vlc -"
 
 # ** [ GIT ALIASES ] ******************
-alias diff="diff-so-fancy"
 alias gs='git status -sb'
 alias gb='git branch -a'
 alias ga='git add -p'
@@ -136,7 +123,7 @@ alias gpro="git pull --rebase origin"
 alias gprom="git pull --rebase origin master"
 alias gca='git commit --amend --date="$(date)"'
 alias wip='gaa && gca -m "WIP"'
-alias stash='git stash'
+alias stash='git stash -u'
 alias stash:l='git stash list'
 alias gsh='git show HEAD'
 alias grev='git diff master'
@@ -144,6 +131,7 @@ alias gh='git history'
 alias gha='git history --all'
 alias gmt='git mergetool'
 alias gpull='git pull origin'
+alias push='git push -u origin $(git rev-parse --abbrev-ref HEAD)'
 alias gfetch='git fetch --all --prune'
 alias greset='git reset --hard HEAD~1'
 alias grstu="git reset --hard @{u}" # Reset and match upstream tracking branch
@@ -158,6 +146,7 @@ alias gsu='git submodule foreach git pull origin master'
 alias changelog='git log --format="%h %ai %an %s"'
 alias ggpull='git pull --rebase'
 alias gmu='git fetch origin -v; git fetch upstream -v; git merge upstream/master'
+alias gitsearch="git rev-list --all | xargs git grep -F"
 
 # git checkout remote
 gcr() { git checkout -t origin/"$1"; }
@@ -178,12 +167,15 @@ scoreboard() { git log | grep Author | sort | uniq -ci | sort -r; }
 
 # ** [ DOCKER ALIASES ] ******************
 alias dk='docker'
-alias dki='docker image'
-alias dkc='docker container'
-alias dkm='docker-machine'
-alias dkm:reload='eval $(docker-machine env default)'
+alias dk:i='docker image'
+alias dk:c='docker container'
 alias dk:rd='docker run -d '
 alias dk:clean='docker system prune --all --volumes'
+alias dkm='docker-machine'
+alias dkm:reload='eval $(docker-machine env default)'
+alias dkm:ip='docker-machine ip ${1:-default}'
+alias dkm:ssh='docker-machine ssh ${1:-default}'
+alias dkm:init='eval $(docker-machine env ${1:-default})'
 
 # ** [ GOLANG ALIASES ] ******************
 
@@ -203,6 +195,9 @@ alias devlog='tail -f log/development.log'
 alias cucumber='bundle exec cucumber'
 alias rspec='bundle exec rspec'
 alias rake='bundle exec rake'
+alias br='bundle exec rake'
+alias rs='b rails server'
+alias rcs='rc --sandbox'
 alias cap='bundle exec cap'
 alias binstubs="bundle --binstubs --standalone"
 
@@ -370,15 +365,15 @@ alias openPorts='sudo lsof -i | grep LISTEN'        # openPorts:    All listenin
 alias showBlocked='sudo ipfw list'                  # showBlocked:  All ipfw rules inc/ blocked IPs
 
 # ** [ WIRESHARK SHORTCUTS ] ******************
-alias ws=
-# export WS_OPTIONS=(-o tcp.no_subdissector_on_error:false -d tcp.port==1-65535,ssl -o ssl.keylog_file:/home/dsf/PCAPS/all-pcaps.keylogfile)
-export WS_OPTIONS=(-o ssl.keylog_file:/home/dsf/PCAPS/all-pcaps.keylogfile)
-alias lvs='tmux split -d lnav ssldebug'
-alias tsv='truncate -s0 ssldebug'
-alias ww='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:/dev/null -r cap.pcapng &'
-alias wwss='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:/dev/stdout -r cap.pcapng'
-alias wws='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:ssldebug -r cap.pcapng & truncate -s0 ssldebug'
-alias wwso='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:ssldebug-orig -r cap.pcapng & truncate -s0 ssldebug-orig'
+# alias ws=
+# # export WS_OPTIONS=(-o tcp.no_subdissector_on_error:false -d tcp.port==1-65535,ssl -o ssl.keylog_file:/home/dsf/PCAPS/all-pcaps.keylogfile)
+# export WS_OPTIONS=(-o ssl.keylog_file:/home/dsf/PCAPS/all-pcaps.keylogfile)
+# alias lvs='tmux split -d lnav ssldebug'
+# alias tsv='truncate -s0 ssldebug'
+# alias ww='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:/dev/null -r cap.pcapng &'
+# alias wwss='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:/dev/stdout -r cap.pcapng'
+# alias wws='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:ssldebug -r cap.pcapng & truncate -s0 ssldebug'
+# alias wwso='${WIRESHARK:-wireshark} $=WS_OPTIONS $=WS_DISABLE_PROTO -o ssl.debug_file:ssldebug-orig -r cap.pcapng & truncate -s0 ssldebug-orig'
 
 # ** [ MACOS SHORTCUTS ] ******************
 # Empty the Trash on all mounted volumes and the main HDD

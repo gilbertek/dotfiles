@@ -20,7 +20,7 @@
 
 " **[ 1) Basics #basics ]********************
 " Make tabs into spaces and indent with 4 spaces
-set tabstop=4 shiftwidth=4 shiftround expandtab
+set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
 let g:mapleader = ","
 
@@ -43,6 +43,11 @@ set inccommand=nosplit          " Search and substitutions
 set clipboard+=unnamedplus      " +p paste OS clipboard
 set undofile                    " Set persistent undo
 set ignorecase smartcase        " Searching behaves like a web browser
+set hidden
+set cmdheight=2                 " Give more space for displaying messages.
+set shortmess+=c                " Don't pass messages to |ins-completion-menu|.
+set signcolumn=yes              " Always show the signcolumn
+set updatetime=300
 set undodir=~/.config/nvim/undo
 set foldmethod=syntax           " fold based on indent/syntax
 set foldlevelstart=99
@@ -50,11 +55,7 @@ set foldlevelstart=99
 " **[ 2) Plugins #plugins ]***************
 call plug#begin()
 
-Plug 'elmcast/elm-vim',      { 'for': [ 'elm' ] }
-let g:elm_format_autosave    = 1
-let g:elm_detailed_complete  = 1
-let g:elm_make_show_warnings = 1
-let g:elm_setup_keybindings  = 1
+Plug  'andys8/vim-elm-syntax',      { 'for': [ 'elm' ] }
 
 " Plugins for Go support
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -123,28 +124,10 @@ Plug 'thoughtbot/vim-rspec'
 let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
 " Configuration for Language Server Protocol client
-Plug 'derekwyatt/vim-scala'
+Plug 'neoclide/coc.nvim',    {'branch': 'release'}
+Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
+Plug 'scalameta/coc-metals', {'do': 'yarn install --frozen-lockfile'}
 Plug 'reasonml-editor/vim-reason-plus'
-" LanguageClient enhancements: show function signature and inline doc.
-Plug 'Shougo/echodoc.vim'
-" The language client makes use of a binary, hence the `install.sh`.
-" We also need the `next` branch in order to specify a language server's TCP port.
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-let g:LanguageClient_serverCommands = {
-      \ 'javascript': ['javascript-typescript-stdio'],
-      \ 'typescript': ['javascript-typescript-stdio'],
-      \ 'reason':     ['ocaml-language-server', '--stdio'],
-      \ 'ocaml':      ['ocaml-language-server', '--stdio'],
-      \ 'purescript': ['purescript-language-server --stdio'],
-      \ 'ruby':       ['solargraph', 'stdio'],
-      \ 'rust':       ['rustup', 'run', 'stable', 'rls'],
-      \ 'go':         ['gopls'],
-      \ }
-" Automatically start language servers
-let g:LanguageClient_autoStart      = 1
 
 " HTML / CSS / SCSS
 Plug 'ap/vim-css-color'
@@ -152,10 +135,9 @@ Plug 'mattn/emmet-vim', {
   \ 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html', 'eruby',
   \ 'eelixir']
   \ }
-let g:user_emmet_mode       = 'a'     " Only enable Insert mode functions.
-let g:user_emmet_leader_key = '<tab>' " Using Tab to expand
+let g:user_emmet_mode       = 'a'    " Enable all function in all mode.
+let g:user_emmet_leader_key = ','    " Using ,, to expand
 
-Plug 'ternjs/tern_for_vim',     { 'do': 'npm install' }
 Plug 'jparise/vim-graphql'
 
 Plug 'ndmitchell/ghcid',              { 'rtp': 'plugins/nvim' }
@@ -184,9 +166,6 @@ Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 
 Plug 'sbdchd/neoformat'
 let g:neoformat_try_formatprg = 1
-let g:neoformat_enabled_javascript = ['prettier']
-let g:neoformat_enabled_typescript = ['prettier']
-let g:neoformat_enabled_json       = ['prettier']
 
 " Automatically match any brackets, parentheses or quotes
 Plug 'jiangmiao/auto-pairs'
@@ -195,17 +174,19 @@ Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']}
 Plug 'machakann/vim-highlightedyank'
 
 " Cycle through deopletes auto-completion with the tab key
-Plug 'ervandew/supertab'
-let g:SuperTabDefaultCompletionType    = "<c-x><c-o>"
-let g:SuperTabClosePreviewOnPopupClose = 1
+" Plug 'ervandew/supertab'
+" let g:SuperTabDefaultCompletionType    = "<c-x><c-p>"
+" let g:SuperTabClosePreviewOnPopupClose = 1
 Plug 'christoomey/vim-tmux-navigator'
 
-" Plug 'kovisoft/slimv', { 'for': ['clojure', 'scheme', 'racket'] }
-" let g:slime_target = "tmux"
-" let g:slime_default_config = {"socket_name": "default", "target_pane": "2"}
+" For example, try `mux start scala-repl`
+Plug 'jpalardy/vim-slime'
+let g:slime_target = "tmux"
+let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_pane": ":.2"}
 
 Plug 'ntpeters/vim-better-whitespace'
-let g:strip_whitespace_on_save         = 1
+let g:strip_whitespace_on_save = 1
+let g:strip_whitespace_confirm = 0
 
 Plug 'unblevable/quick-scope'
 let g:qs_highlight_on_keys = ['f', 'F']
@@ -267,6 +248,10 @@ nnoremap <leader>n  :NERDTreeToggle<CR>
 Plug 'matze/vim-move'
 let g:move_key_modifier = 'C'
 
+Plug 'mhinz/vim-grepper'
+nmap gs <plug>(GrepperOperator)
+xmap gs <plug>(GrepperOperator)
+
 " Dependencies For tcomment
 Plug 'tomtom/tcomment_vim'
 map <silent> <Leader>cc :TComment<CR>
@@ -296,6 +281,7 @@ let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
 let g:ale_linters = {
       \ 'javascript': ['eslint', 'prettier'],
       \ 'typescript': ['tslint', 'eslint', 'prettier'],
+      \ 'elm':        ['elm_ls'],
       \ 'go':         ['gopls'],
       \ 'haskell':    ['ghc', 'hlint', 'stack_build'],
       \ 'reason':     ['merlin'],
@@ -318,6 +304,7 @@ let g:ale_fixers = {
       \ 'python':     ['autopep8', 'black'],
       \ 'reason':     ['refmt'],
       \ 'ruby':       ['rubocop'],
+      \ 'scala':      ['scalafmt'],
       \ 'elixir':     ['mix_format'],
       \ 'haskell':    ['hfmt'],
       \ 'rust':       ['rustfmt'],
@@ -327,6 +314,7 @@ let g:ale_fixers = {
       \ 'perl':       ['perltidy'],
       \ }
 let g:ale_virtualtext_cursor          = 1 "Enable neovim's virtualtext support
+let g:ale_virtualtext_prefix          = '→ '
 let g:ale_fix_on_save                 = 1
 let g:ale_python_auto_pipenv          = 1
 let g:ale_lint_on_text_changed        = 0
@@ -334,7 +322,8 @@ let g:ale_sign_error                  = '✗'
 let g:ale_sign_warning                = '⚠'
 let g:ale_javascript_prettier_options = '--single-quote --no-trailing-comma es5 --semi'
 let g:ale_rust_cargo_use_clippy       = executable('cargo-clippy')
-let g:ale_cpp_clangcheck_options      = '-std=c++14'
+let g:ale_cpp_clang_options           = '-std=c++17 -Wall'
+let g:ale_cpp_clangtidy_checks        = ['*', '-fushsia-*', '-hicpp-*']
 let g:ale_perl_perl_options           = '-c -Mwarnings -Ilib -It/lib'
 nmap [a <Plug>(ale_next_wrap)
 nmap ]a <Plug>(ale_previous_wrap)
@@ -379,13 +368,10 @@ endif
 
 " Tagbar: a class outline viewer for Vim
 Plug 'majutsushi/tagbar'
-nnoremap <leader>tb :TagbarToggle<CR>
-let g:tagbar_autoclose  = 1
+nnoremap <leader>] :TagbarToggle<CR>
 
 " fzf fuzzy finder
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
-let g:fzf_layout        = { 'down': '35%' }
-let g:fzf_files_options = "--preview 'bat --color \"always\" {}'"
 nnoremap <silent> <leader>a :Rg<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>h :History<cr>
@@ -406,16 +392,15 @@ let g:hybrid_reduced_contrast = 1
 Plug 'joshdick/onedark.vim'
 Plug 'ajh17/Spacegray.vim'
 Plug 'tomasiser/vim-code-dark'
-Plug 'tyrannicaltoucan/vim-quantum'
-let g:quantum_black = 1
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
 let base16colorspace=256
 
 Plug 'Yggdroot/indentLine'
-let g:indentLine_char = '⋮'   " Other options ┆│┊︙¦⋮⋮
+let g:indentLine_color_term = 24
+let g:indentLine_char = '·'  " Other options ┆│┊︙¦⋮⋮
 
-Plug 'itchyny/lightline.vim' " wombat onedark quantum
+Plug 'itchyny/lightline.vim' " wombat onedark
 let g:lightline = {
       \ 'colorscheme': 'onedark',
       \ 'active': {
@@ -433,33 +418,29 @@ Plug 'epilande/vim-react-snippets'
 Plug 'SirVer/ultisnips'   " Track the snippets engine.
 Plug 'honza/vim-snippets' " Snippets are separated from the engine.
 if has('ultisnips')
-  let g:UltiSnipsExpandTrigger       = '<tab>'
-  let g:UltiSnipsJumpForwardTrigger  = '<tab>'
-  let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+  " let g:UltiSnipsExpandTrigger       = '<tab>'
+  " let g:UltiSnipsJumpForwardTrigger  = '<tab>'
+  " let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 endif
 
 " Autocompletion Engine (neovim) Autocompletion Engine (neovim)
-Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
-Plug 'tweekmonster/deoplete-clang2'        " C/C++ and Objective-C/C++
-Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
-Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
-Plug 'zchee/deoplete-jedi'                   " source for Python
-let g:deoplete#enable_at_startup           = 1
-let g:deoplete#omni#input_patterns         = {}
-let g:deoplete#keyword_patterns            = {}
-let g:tern#command                         = ['tern']
-let g:tern#arguments                       = ['--persistent']
-let g:deoplete#sources#jedi#show_docstring = 1
-let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
-let g:deoplete#omni#input_patterns.elm     = '[^ \t]+'
-" Deoplete-Clang settings
-let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
-let g:deoplete#sources#clang#clang_header  = '/usr/local/opt/llvm/lib/clang'
-
-" let g:deoplete#sources#clang#libclang_path=system("find /usr/lib/ -name '*libclang.so*' -print -quit")[0:-2]
-" let g:deoplete#sources#clang#clang_header="/usr/lib/clang/"
-" let g:deoplete#sources#go#gocode_binary=$HOME . "/.gopath/bin/gocode"
-
+" Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
+" Plug 'tweekmonster/deoplete-clang2'        " C/C++ and Objective-C/C++
+" Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
+" Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
+" Plug 'zchee/deoplete-jedi'                   " source for Python
+" let g:deoplete#enable_at_startup           = 1
+" let g:deoplete#omni#input_patterns         = {}
+" let g:deoplete#keyword_patterns            = {}
+" " let g:deoplete#sources                     = {}
+" " let g:deoplete#sources._                   = ['buffer', 'file']
+" let g:deoplete#sources#jedi#show_docstring = 1
+" let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+" let g:deoplete#omni#input_patterns.elm     = '[^ \t]+'
+" " Deoplete-Clang settings
+" let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
+" let g:deoplete#sources#clang#clang_header  = '/usr/local/opt/llvm/lib/clang'
+"
 " Elm support
 " h/t https://github.com/ElmCast/elm-vim/issues/52#issuecomment-264161975
 """" 2.4) End Code completion & Navigation #code-navigation
@@ -469,8 +450,8 @@ call plug#end()
 " **[ 3) UI Tweaks #ui-tweaks ] *********************
 set termguicolors
 set background=dark
-" silent! colorscheme quantum
 " colorscheme base16-default-dark
+" colorscheme agila
 colorscheme onedark
 
 " **[ 4) Navigation #navigation ]*****************
@@ -510,6 +491,10 @@ nnoremap <silent>tn :tabnew<CR>
 nnoremap <leader>te :tabedit %<cr>
 nnoremap <silent><tab>l :tabnext<CR>
 nnoremap <silent><tab>h :tabprev<CR>
+nnoremap <C-t> :tabnew<CR>
+inoremap <C-t> <Esc>:tabnew<CR>i
+nnoremap J :tabprev<CR>
+nnoremap K :tabnext<CR>
 
 " switch between two windows
 nnoremap <leader><TAB> :wincmd p<cr>
@@ -564,7 +549,7 @@ nnoremap Y y$
 "Copy to system clipboard
 vnoremap <C-c> "+y
 
-" Copy filename
+" Copy the path of the current file
 nnoremap <leader>yf :let @" = expand("%")<CR>
 
 " ctrl-v: Paste
@@ -573,9 +558,9 @@ cnoremap <c-v> <c-r>
 " reselect pasted content:
 noremap gV `[v`]
 
-" U: Redos since 'u' undos
-nnoremap U :redo<cr>
-nnoremap <C-z> :redo<cr>
+" map undo/redo
+nnoremap <C-z> :undo<CR>
+nnoremap <C-u> :redo<CR>
 
 " Keep the cursor in place while joining lines
 nnoremap J mzJ`z
@@ -629,7 +614,7 @@ nnoremap <leader>o <C-w>o
 " Open current directory in Finder
 nnoremap <leader>O :!open .<cr>
 
-"" Set working directory of the open buffer <leader>cd
+" Set working directory of the open buffer <leader>cd
 nnoremap <leader>cd :lcd %:p:h<cr>:pwd<cr>
 
 " Toggle background with <leader>bg
@@ -645,14 +630,18 @@ nnoremap <space> za
 "Grep for current word in git
 noremap <c-g> :Ggrep <cword><CR>
 
-" Use tab for completion
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>"
-inoremap <silent><expr><C-n> pumvisible() ? "\<C-y>\<Down>" : "\<Down>"
-inoremap <silent><expr><C-p> pumvisible() ? "\<C-y>\<Up>" : "\<Up>"
-inoremap <silent><expr><C-b> pumvisible() ? "\<C-y>\<Left>" : "\<Left>"
-inoremap <silent><expr><C-f> pumvisible() ? "\<C-y>\<Right>" : "\<Right>"
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
 
-autocmd! InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <silent><expr> <c-space> coc#refresh()
+inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : coc#refresh()
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " Hit Ctrl+A to select all in current buffer
 nnoremap <C-a> ggVG
@@ -668,9 +657,6 @@ nmap <Leader>// :silent !open -a Devdocs.app '%:p'<CR>
 if exists("*mkdir")
   au BufWritePre,FileWritePre * silent! call mkdir(expand('<afile>:p:h'), 'p')
 endif
-
-" copy the path of the current file
-nno <leader>cp :let @" = expand('%:h')<cr>
 
 function! TmuxSendKeys(cmd)
   execute 'silent !tmux send-keys -t 2 "' . a:cmd . '" C-m'
@@ -701,13 +687,6 @@ augroup Cursorline
   autocmd InsertLeave,WinEnter * setlocal relativenumber nocursorline
 augroup END
 
-augroup Language-Server
-  autocmd!
-  nnoremap <silent><leader>h :call LanguageClient_textDocument_hover()<CR>
-  nnoremap <silent><leader>d :call LanguageClient_textDocument_definition()<CR>
-  nnoremap <silent><leader>r :call LanguageClient#textDocument_rename()<CR>
-augroup END
-
 augroup JS-Family
   autocmd!
   " Vuejs mix of different languages in one file
@@ -718,11 +697,23 @@ augroup JS-Family
   autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ es5
 augroup END
 
-augroup ELM-Files
-  autocmd!
-  autocmd FileType elm nn <buffer><leader>h :ElmShowDocs<CR>
-  autocmd FileType elm nn <buffer><leader>m :ElmMakeMain<CR>
-  autocmd FileType elm nn <buffer><leader>r :ElmRepl<CR>
+augroup Coc-Mapping
+  nmap <leader>r <Plug>(coc-rename)
+  nmap <leader>R <Plug>(coc-refactor)
+  nmap <silent> <leader>s <Plug>(coc-codeaction)
+  nmap <silent> <leader>S <Plug>(coc-fix-current)
+  nmap <silent> <leader>a <Plug>(coc-diagnostic-next)
+  nmap <silent> <leader>A <Plug>(coc-diagnostic-next-error)
+  nmap <silent> <leader>d <Plug>(coc-definition)
+  nmap <silent> K         :call CocAction('doHover')<CR>
+  nmap <silent> <leader>g :call CocAction('doHover')<CR>
+  nmap <silent> <leader>G <Plug>(coc-diagnostic-info)
+  nmap <silent> <leader>t <Plug>(coc-type-definition)
+  nmap <silent> <leader>u <Plug>(coc-references)
+  nmap <silent> <leader>i <Plug>(coc-implementation)
+  nmap <silent> <leader>p :call CocActionAsync('format')<CR>
+  xmap <silent> <leader>p <Plug>(coc-format-selected)
+  nnoremap <silent> <leader>o :call CocAction('runCommand', 'editor.action.organizeImport')<CR>
 augroup END
 
 augroup Lisp-Family
@@ -740,6 +731,8 @@ augroup Lisp-Family
   autocmd FileType clojure inoremap <C-e> <Esc>:%Eval<CR>
   autocmd FileType clojure nnoremap <leader>pp :let parinfer_mode = "paren"<CR>:echo 'Switched to paren mode'<CR>
   autocmd FileType clojure nnoremap <leader>pi :let parinfer_mode = "indent"<CR>:echo 'Switched to indent mode'<CR>
+  autocmd BufRead,BufNewFile *.sbt set filetype=scala
+  autocmd FileType json syntax match Comment +\/\/.\+$+
 augroup END
 
 " Vim-Alchemist Mappings
@@ -763,7 +756,7 @@ augroup END
 
 augroup Golang-mappings
   autocmd!
-  autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
+  " autocmd FileType go set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
 "   autocmd FileType go setlocal noexpandtab
 "   autocmd FileType go nmap <leader>r <Plug>(go-run)
 "   autocmd FileType go nmap <leader>b <Plug>(go-build)
@@ -809,10 +802,10 @@ augroup Auto-Breakpoint
   autocmd FileType python nnoremap <leader>db oimport ipdb; ipdb.set_trace()<esc>:w<CR>
   autocmd FileType javascript map <silent> <leader>db odebugger;<esc>
   autocmd FileType javascript map<leader>lg yiwoconsole.log('<c-r>":', <c-r>");<Esc>^
-  autocmd FileType javascript map<leader>log yiwoconsole.log(`%s=${%s}`);<Esc>^
+  autocmd FileType javascript map<leader>ll yiwoconsole.log(`%s=${%s}`);<Esc>^
 
   autocmd FileType rust map<Leader>db yiwodebug!("<c-r>"={:?}", &<c-r>");<Esc>^
-  autocmd FileType ruby nnoremap <leader>bp obinding.pry<esc>:w<CR>
+  autocmd FileType ruby nnoremap <leader>lg obinding.pry<esc>:w<CR>
   autocmd FileType clojure map <silent> <leader>db o(require '[hugin.dbg :as dbg])<cr>(comment)<esc>
   autocmd FileType clojure map <silent><leader><leader>b 'saa((i./spy <esc>'
   " let b:printf_pattern = 'System.out.println(String.format("%s", %s));'
@@ -829,30 +822,6 @@ augroup ruby
   " Migrate and rollback
   autocmd FileType ruby nnoremap <leader>dbm :!bin/rake db:migrate<CR>
   autocmd FileType ruby nnoremap <leader>dbr :!bin/rake db:rollback<CR>
-
-  " ===== Seeing Is Believing =====
-  " " Assumes you have a Ruby with SiB available in the PATH
-  " " If it doesn't work, you may need to `gem install seeing_is_believing -v
-  " 3.0.0.beta.6` The current release is a beta, which won't auto-install
-
-  " Annotate every line
-  autocmd FileType ruby nmap <leader>bb :%!seeing_is_believing --timeout 12
-        \ --line-length 500 --number-of-captures 300
-        \ --alignment-strategy chunk<CR>;
-
-  " Annotate marked lines
-  autocmd FileType ruby nmap <leader>bn :%.!seeing_is_believing --timeout 12
-        \ --line-length 500 --number-of-captures 300
-        \ --alignment-strategy chunk --xmpfilter-style<CR>;
-
-  " Remove annotations
-  autocmd FileType ruby nmap <leader>bc :%.!seeing_is_believing --clean<CR>;
-
-  " Mark the current line for annotation
-  autocmd FileType ruby nmap <leader>bm A
-
-  " Mark the highlighted lines for annotation
-  autocmd FileType ruby vmap <leader>bm :norm A
 augroup END
 
 " add any local configs that need to be added, if they exist
