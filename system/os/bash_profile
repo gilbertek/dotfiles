@@ -26,6 +26,24 @@ for file in ~/.{aliases,functions,extra,bashrc,bashrc.local,aliases.local}; do
 done;
 unset file;
 
+# GO Path setups
+export GO111MODULE=on
+export GOPATH=$HOME/Projects/GOAPPS
+export PATH=$PATH:$GOPATH/bin
+export GOAPPS=$GOPATH/src/github.com/gilbertek
+
+# Groovy Home path setup
+if [ -d /usr/local/opt/groovy/libexec ]; then
+  export GROOVY_HOME=/usr/local/opt/groovy/libexec
+fi
+
+if [ -f /usr/libexec/java_home ]; then
+  export JAVA_HOME=`/usr/libexec/java_home`
+  export NASHORN_HOME=$JAVA_HOME/bin
+fi
+
+# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+
 # export M2_HOME=/usr/local/Cellar/maven/3.5.4/libexec
 # export M2=$M2_HOME/bin
 # export PATH=$PATH:$M2_HOME/bin
@@ -64,6 +82,20 @@ fi
 export ANT_OPTS='-Xms512M -Xmx1024M -XX:MaxPermSize=1024M'
 export ANT_ARGS='-logger org.apache.tools.ant.listener.AnsiColorLogger'
 
+# Make neovim the default editor
+export EDITOR=nvim
+export GIT_EDITOR=$EDITOR # git uses the default editor
+export VISUAL=nvim
+
+
+# Setting fd as the default source for fzf
+export FZF_DEFAULT_OPTS='--height 40% --reverse --inline-info --color=bw --cycle'
+export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --follow --ignore-vcs -g "!{node_modules,*.swp,dist,*.coffee}/*"'
+export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export PROJECT_HOME=$HOME/Projects
+
 ### Foreground Colours #######################################################
 LIGHT_GREEN='\[\e[32m\]'
 LIGHT_RED='\[\e[0;91m\]'
@@ -84,6 +116,8 @@ ORANGE_SHADE='\[\e[33;40m\]'
 YELLOW_SHADE='\[\e[93;40m\]'
 RED_SHADE='\[\e[31;40m\]'
 BLUE_SHADE='\[\e[34;40m\]'
+separator='%K{237}%{$FG[200]%}  %{$reset_color%}'
+GIT_PROMPT_DIRTY="%{$fg[yellow]%}%{$reset_color%}"
 
 # ♥ ☆ ⚡ λ ❯ » ▸ → 💥 ✚ - Keeping some cool ASCII Characters for reference
 CHAR='λ'
@@ -115,6 +149,38 @@ PS1="${PINK_SHADE}\u ${GREY_SHADE}at ${ORANGE_SHADE}\h ${GREY_SHADE}in ${BLUE_SH
 # PS1="$PS1\[\e[m\]\w\[\e[38;5;59m\]\$(parse_git_branch)\[\e[1;31m\]> \[\e[0m\]"
 
 # PS1="[\[\033[32m\]\w]\[\033[0m\]\n\[\033[1;36m\]\u\[\033[1;33m\]-> \[\033[0m\]"
+
+# UPDATE ON SATURDAY JANUARY 25, 2020
+function git_dirty_status {
+  [[ $(git status 2> /dev/null | tail -n1) == "nothing to commit, working tree clean" ]] && echo "✓"
+  [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working tree clean" ]] && echo "✗"
+}
+
+function git_branch_name {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1/"
+}
+
+function print_branch_name_and_status {
+  if [[ -d ./.git ]]; then
+    echo "($(git_branch_name) $(git_dirty_status))"
+  else
+    echo ""
+  fi
+}
+
+function prompt {
+  local RED="\[\033[0;31m\]"
+  local CHAR="⏣ ⌬ "
+
+  export PS1="\[\e]2;\u@\h\a[\t\[\e[0m\]] \[\e[32m\]\W\[\e[0m\]$RED \$(print_branch_name_and_status)\n\[\e[0;31m\]$CHAR \[\e[0m\]"
+         PS2='> '
+         PS4='+ '
+}
+
+# prompt
+# [ -f ~/.bash_prompt ] && . ~/.bash_prompt
+# . ~/dotfiles/system/bash_prompt
+
 
 # Ensure ssh agent is running
 if [ -z "$SSH_AUTH_SOCK" ] ; then

@@ -1,34 +1,20 @@
 # frozen_string_literal: true
 
-# === CUSTOM PROMPT ===
-# This prompt shows the ruby version (useful for RVM)
-Pry.prompt = [proc { |obj, nest_level, _| "#{RUBY_VERSION} (#{obj}):#{nest_level} > " }, proc { |obj, nest_level, _| "#{RUBY_VERSION} (#{obj}):#{nest_level} * " }]
+# Pry.config.output_prefix = "\e[1;37m❯  \e[0m"
+Pry.config.prompt = proc { |obj, nest_lvl, _| "[#{nest_lvl}] #{obj} \e[1;37m❯ \e[0m" }
 
-# === Listing config ===
-# Better colors - by default the headings for methods are too
-# similar to method name colors leading to a "soup"
-# These colors are optimized for use with Solarized scheme
-# for your terminal
-Pry.config.color = true
-Pry.config.ls.separator = "\n" # new lines between methods
-Pry.config.ls.heading_color = :magenta
-Pry.config.ls.public_method_color = :green
-Pry.config.ls.protected_method_color = :yellow
-Pry.config.ls.private_method_color = :bright_black
-# Disable paging - paging is broken in when using Alpine `less`
-Pry.config.pager = false
+# Pry.prompt = [proc { |obj, nest_level, _| "#{RUBY_VERSION} (#{obj}):#{nest_level} > " }, proc { |obj, nest_level, _| "#{RUBY_VERSION} (#{obj}):#{nest_level} * " }]
 
-# == PLUGINS ===
-# awesome_print gem: great syntax colorized printing
+# *** PLUGINS ***
 begin
   require 'awesome_print'
   AwesomePrint.pry!
   AwesomePrint.defaults = { indent: -2, limit: 50 }
-rescue LoadError => err
-  puts "gem install awesome_print  # <-- highly recommended"
+rescue LoadError => e
+  puts 'gem install awesome_print  # <-- highly recommended'
 end
 
-$LOAD_PATH << File.dirname(File.realpath(__FILE__))
+$LOAD_PATH << __dir__
 
 def r!
   reload!
@@ -43,21 +29,7 @@ if defined?(PryByebug)
   Pry.commands.alias_command 'd', 'down'
 
   # Hit Enter to repeat last command
-  Pry::Commands.command /^$/, "repeat last command" do
+  Pry::Commands.command /^$/, 'repeat last command' do
     _pry_.run_command Pry.history.to_a.last
   end
-
-  $stderr.puts <<-EOS
-## pry memo (pry-byebug extra commands are defined in ~/.pryrc)
-c              ... continue
-s              ... step
-n              ... next
-f              ... finish
-u              ... backward stack frame(back to caller)
-d              ... foward stack frame(inverse of 'u')
-[Enter]        ... repeat last command
-$ Clazz#method ... show method source
-obj.method(:method).source_location
-               ... show place of method definition
-  EOS
 end

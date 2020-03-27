@@ -54,3 +54,417 @@ docker-init() {
 function docker_cleanup_containers {
   docker ps -a | grep Exited | cut -d ' ' -f 1 | xargs docker rm
 }
+
+
+
+
+#############################################################
+## !! WARNING!!!
+#
+#  These functions are shared between bash and zsh, don't
+#  forget to test them in both shells.
+#
+#  If you need to do something specific for one or the other
+#  move it in to either .profile (bash) or .zshrc (zsh).
+#
+#############################################################
+
+#
+# DEPS
+###
+function which {
+    if ! /usr/bin/which $@
+    then
+        type $1 | head -1
+    fi
+}
+
+function puts {
+    if [[ $- =~ "i" ]]; then
+        if [[ -z "$TMUX" ]]; then
+            echo "$@"
+        fi
+    fi
+}
+
+function x {
+  echo "+ $@"
+  $@
+}
+
+#
+# GLOBALS
+###
+
+VIM=$(/usr/bin/which vim 2> /dev/null)
+GVIM=$(/usr/bin/which gvim 2> /dev/null)
+test "$GVIM" || \
+  GVIM=$(/usr/bin/which mvim 2> /dev/null)
+
+###
+
+function tm() {
+    if [[ "$1" = "mine" || "$1" = "takeover" ]]; then
+        tmux detach -a
+        return $?
+    fi
+
+    if [[ "$1" = "killall" || "$1" = "kill" ]]; then
+        tmux ls | grep : | cut -d. -f1 | awk '{print substr($1, 0, length($1)-1)}' | xargs kill
+        return $?
+    fi
+
+    tmux attach-session || (cd ~/; tmux )
+}
+
+#############################################################
+# Encryption Fuctions
+#############################################################
+function decrypt {
+        # decrypt if selected
+        FILE=$1
+        echo "-> decrypt: $(basename $FILE) "
+        openssl enc -d -aes-256-cbc -salt -in "$FILE" -out "${FILE/.enc/}"
+        FILE=""
+}
+
+function encrypt {
+        # encrypt if selected
+        FILE=$1
+        echo "-> encrypt: $(basename $FILE) "
+        openssl enc -e -aes-256-cbc -salt -in "$FILE" -out "$FILE.enc"
+        FILE=""
+}
+
+#############################################################
+# Function - quickly add strings to root .gitignore
+#############################################################
+function gitignore {
+    echo "$1" >> $HOME/.gitignore
+}
+
+function git_clean_force {
+  local _branch="$1"
+  [[ -z $_branch ]] && _branch=master
+
+  x git fetch -p
+  x git remote prune origin
+
+  echo "git branch --merged | grep -v "\*" | grep -v "$_branch" | grep -v dev | xargs -n 1 git branch -d"
+  git branch --merged | grep -v "\*" | grep -v "$_branch" | grep -v dev | xargs -n 1 git branch -d
+}
+
+
+#############################################################
+# Function - Finding files and directories
+#############################################################
+function ff() {
+        find . -type f -name "*$1*"
+}
+
+function fd() {
+        find . -type d -name "*$1*"
+}
+
+#############################################################
+# SSH Agent Setup
+#############################################################
+SSH_ENV="$HOME/.ssh/environment"
+
+function start_agent {
+  echo "Initialising new SSH agent..."
+  /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+  echo succeeded
+  chmod 600 "${SSH_ENV}"
+  . "${SSH_ENV}" > /dev/null
+
+  for k in $(find ~/.ssh -type f -name "*_rsa"); do
+    echo "Adding $k"
+    /usr/bin/ssh-add $k
+  done
+}
+
+# Source SSH settings, if applicable
+if [ -f "${SSH_ENV}" ]; then
+     . "${SSH_ENV}" > /dev/null
+     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+         start_agent;
+     }
+else
+     start_agent;
+fi
+
+function sgvim() {
+  $GVIM -f "sudo:$@"
+}
+
+function svim() {
+  $VIM -f "sudo:$@"
+}
+
+function npm_exec() {
+  PATH=$(npm bin):$PATH $@
+}
+
+###############################################################
+# Docker Helpers
+###############################################################
+function docker_clean {
+  echo "+ clean containers"
+  docker ps -a | grep -v 'NAMES' | grep -v 'Up ' | awk '{ print $NF }' | xargs docker rm
+
+  echo "+ clean images"
+  docker images | grep '^<none>' | awk '{ print $3 }' | xargs docker rmi
+}
+
+function docker_killall {
+  echo "+ killing all containers"
+  docker ps | awk '{print $NF}' | grep -v 'NAMES' | xargs docker kill
+}
+
+function docker_stopall {
+  echo "+ stopping all containers"
+  docker ps | awk '{print $NF}' | grep -v 'NAMES' | xargs docker stop
+}
+
+docker_exec="$(which docker)"
+
+function docker {
+  case "$@" in
+  clean)
+    docker_clean
+    return 0;;
+  stopall)
+    docker_stopall
+    return $?;;
+  killall)
+    docker_killall
+    return $?;;
+  esac
+  $docker_exec $@
+}
+
+# tmate
+function tmate {
+  local _sock=/tmp/tmate.sock
+  local _tmate=/usr/bin/tmate
+
+  if [ -z "$@" ]; then
+    $_tmate -S $_sock
+  else
+    case $@ in
+    p|print|ssh|url)
+      $_tmate -S $_sock display -p '#{tmate_ssh}';;
+    ro|printro|sshro|rourl|urlro|rossh)
+      $_tmate -S $_sock display -p '#{tmate_ssh_ro}';;
+    *)
+      $_tmate -S $_sock
+    esac
+  fi
+}
+
+# Create a new directory and enter it
+function mkd() {
+    mkdir -p "$@" && cd "$@"
+}
+
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+function tre() {
+    tree -aC -I '.git' --dirsfirst "$@" | less -FRNX
+}
+
+# Get colors in manual pages
+function man() {
+    env \
+        LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+        LESS_TERMCAP_md=$(printf "\e[1;31m") \
+        LESS_TERMCAP_me=$(printf "\e[0m") \
+        LESS_TERMCAP_se=$(printf "\e[0m") \
+        LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+        LESS_TERMCAP_ue=$(printf "\e[0m") \
+        LESS_TERMCAP_us=$(printf "\e[1;32m") \
+        man "$@"
+}
+
+function godev() {
+  local devpath="${HOME}/Development"
+
+  if [[ -z $1 ]]; then
+    cd "$devpath"
+    return
+  fi
+
+  # explicit search
+  local _found="$(/usr/bin/find "${devpath}" -maxdepth 1 -type d -iname "$1" | xargs | awk '{print $1}')"
+
+  if [[ -z $_found ]]; then
+    # wildcard search
+    _found="$(/usr/bin/find "${devpath}" -maxdepth 1 -type d -iname "*$1*" | xargs | awk '{print $1}')"
+  fi
+
+  if [[ -z $_found ]]; then
+    cd "$devpath"
+    echo "Could not find a directory name containing \"$1\" in:"
+    echo "$(ls -lF | grep '^d' | awk '{print $NF}' |sed 's/\///' | xargs)"
+    return 1
+  fi
+
+  cd "$_found"
+}
+alias Dev="godev"
+alias dev="godev"
+alias God="godev"
+alias god="godev"
+
+# go to a folder easily in your gopath
+function gogo(){
+    local d=$1
+    local gopath=$(go env GOPATH)/src
+
+    if [[ -z $d ]]; then
+        echo "Warning: no project specified attempting to find go:gh/user"
+        x cd "$gopath/github.com/`whoami`"
+        return $?
+    fi
+
+    # check for my packages first...
+    local _mine="$(/usr/bin/find "${gopath}" -iname "*$d*" -type d | grep -v "Godeps" | grep -v "vendor" | grep "${USER}\/*$d*" | sort | xargs | awk '{print $1}')"
+    if [[ ! -z $_mine ]]; then
+      cd "$_mine"
+      return
+    fi
+
+    # check for others second...
+    local _path="$(/usr/bin/find "${gopath}" -iname "*$d*" -type d | grep -v "Godeps" | xargs | awk '{print $1}')"
+    if [[ -z $_path ]]; then
+        echo "Could not find a directory containing \"*$d*\" in ${gopath}/..."
+        echo "Maybe you need to 'go get' it ;)"
+        return 1
+    fi
+
+    cd "$_path"
+}
+
+function gogit {
+  local substr="$(echo $1 | awk -F'/' '{print $NF}' | awk -F'.' '{print $1}')"
+  if ! godev $substr; then
+    x git clone $1
+    godev $substr
+  fi
+}
+
+## Noop Server - Clean http listener
+function listen {
+  local port="$1"
+  local addr="$2"
+
+  [[ -z $port ]] && port=3000
+  [[ -z $addr ]] && addr=0.0.0.0
+
+  x docker run --rm -it -p "$port:$port" -e PORT=$port -e ADDR=$addr jmervine/noop-server
+}
+
+## Run Server to serve files from a local directory
+function serve {
+  local port="$1"
+  [[ -z $port ]] && port=3000
+
+  x docker run -it --rm -p ${port}:80 -v $(pwd):/usr/share/nginx/html nginx:alpine
+}
+
+## fix up docker generated files
+function own {
+  local _path="$1"
+  [[ -z $_path ]] && _path="."
+
+  find $_path -user root | xargs sudo chown jmervine:
+}
+
+# because some systems need this in /etc/bashrc
+function shopt {
+  bash -lc "shopt $@"
+}
+
+function dcex {
+  local cmd="bash"
+  test $1 && cmd=$1
+  echo "+ docker exec -it $(docker ps | grep $(basename $(pwd))_web | awk '{ print $(NF) }') $cmd"
+  docker exec -it $(docker ps | grep $(basename $(pwd))_web | awk '{ print $(NF) }') $cmd
+}
+
+function rr {
+  local v=$1
+  [[ -z $v ]] && v=latest
+
+  docker run -it --rm -v $(pwd):/src jmervine/herokudev-ruby:$v
+}
+
+function blockip {
+  echo "+ sudo iptables -I INPUT -s $1.0.0.0/255.0.0.0 -j DROP"
+  sudo iptables -I INPUT -s $1.0.0.0/255.0.0.0 -j DROP
+}
+
+## AWS Creds from ~/.aws/credentials via profile
+# usage: aws_creds <profile> [silence]
+function aws_creds {
+  unset AWS_SESSION_TOKEN
+
+  local profile=$1
+  local verbose=$2 # Set to anything to slience output.
+  local region=$(aws --profile "${profile}" configure get region)
+  local key=$(aws --profile "${profile}" configure get aws_access_key_id)
+  local secret=$(aws --profile "${profile}" configure get aws_secret_access_key)
+
+  test ! -z $verbose || echo "Setting AWS Creds from '${profile}' profile."
+  if ! test -z $region; then
+    export AWS_DEFAULT_REGION="$region"
+    test ! -z $verbose || echo "- set AWS_DEFAULT_REGION=$region"
+  fi
+
+  if ! test -z $key; then
+    export AWS_ACCESS_KEY_ID="$key"
+    test ! -z $verbose || echo "- set AWS_ACCESS_KEY_ID=<${profile} aws_acces_key_id>"
+  fi
+
+  if ! test -z $secret; then
+    export AWS_SECRET_ACCESS_KEY="$secret"
+    test ! -z $verbose || echo "- set AWS_SECRET_ACCESS_KEY=<${profile} aws_secret_access_key>"
+  fi
+}
+
+## HashiCorp Vault Helpers
+# Assumptions
+# Vault root setup is in '~/.vault_keys/${env}.sh' with base vars exported, e.g.
+# export VAULT_ADDR="https://vault.server.domain"
+# export VAULT_TOKEN=<vault root token>
+function vault_creds {
+  local env=$1
+
+  . $HOME/.vault_keys/${env}.sh
+  echo "Using Vault: $1 => ${VAULT_ADDR}"
+}
+
+# Assumptions
+# - Vault keys are in '~/.vault_keys/${env}.keys', one per line.
+function vault_unseal {
+  local env=$1
+
+  test -z $env || vault_creds $env
+  echo "Unsealing: $env => $VAULT_ADDR"
+  test -z $VAULT_ADDR && return 1
+  # Randomize and grab three.
+  for k in $(cat $HOME/.vault_keys/${env}.keys | sort -R | head -n5 | xargs); do
+    echo "+ vault operator unseal **** &>/dev/null"
+    vault operator unseal $k &>/dev/null
+  done
+  echo "+ vault status"
+  vault status
+
+  echo -n "\nDon't forget to 'vault operator seal' when finished!\n"
+}
+alias vunseal=vault_unseal
+alias unseal=vault_unseal
+# vim: ft=sh:

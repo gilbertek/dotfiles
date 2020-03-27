@@ -14,3 +14,13 @@ max_line_length = 120
 
 [*.md]
 trim_trailing_whitespace = false
+
+[*.{py}]
+indent_style = 4
+
+[*.go]
+indent_style = 4
+
+[Makefile]
+indent_style = tab
+indent_size = 4

@@ -1,34 +1,49 @@
 [user]
 	name        = Gilbert F. Sewovoe-Ekoue
 	email       = gilberts55@hotmail.com
-[color "diff"]
-  meta        = yellow
 [color "branch"]
-  current       = blue
-  local         = normal
-  remote        = cyan
+  current = green bold
+  local = green
+  remote = yellow
+[color "diff"]
+  meta = yellow
 [color "status"]
-  changed       = yellow
+  added = green reverse
+  changed = yellow reverse
+  untracked = red reverse
 [alias]
   aliases     = config --get-regexp alias
   st          = status
   cheddar     = commit --amend -CHEAD
+  ci          = commit
   co          = checkout
   cp          = cherry-pick
   put         = push origin HEAD
   fixup       = commit --fixup
-
+  cm          = commit
+  ls          = ls-files
+  b           = branch -vvv
+  r           = remote -v
+  p           = push
+  d           = diff -- . ':!*package-lock.json' ':!*yarn.lock'
+  dc          = diff --cached -- . ':!*package-lock.json' ':!*yarn.lock'
+  undo        = reset --soft HEAD^
+  unstage     = reset HEAD --
+  track       = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
   # Squash last N commits together
   # Usage: git squash N
-  squash      = "!f(){ git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f"
-  pruneremote = remote prune origin
-  lg          = "log --format='%Cgreen%h %Cred%cr %Creset%s %Cblue%cn'"
-  find      = !sh -c 'git ls-files | grep --color=always -i "$@" | less -FRSX' -
-  tree = log --pretty=format:'%C(auto)%h%d%Creset %s  %C(auto,bold blue)%an%Creset %C(auto,green)(%ar)%Creset' --graph --all
+  squash        = "!f(){ git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f"
+  pruneremote   = remote prune origin
+  lg            = "log --format='%Cgreen%h %Cred%cr %Creset%s %Cblue%cn'"
+  today         = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
+  find          = !sh -c 'git ls-files | grep --color=always -i "$@" | less -FRSX' -
+  tree          = log --pretty=format:'%C(auto)%h%d%Creset %s  %C(auto,bold blue)%an%Creset %C(auto,green)(%ar)%Creset' --graph --all
   add-untracked = !"git status --porcelain | awk '/\\?\\?/{ print $2 }' | xargs git add"
-  snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
-  last         = log -1 HEAD
-  stash-all    = stash save --include-untracked
+  snapshot      = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
+  last          = log -1 HEAD
+  stash-all     = stash save --include-untracked
+  files-changed = "!f() { git --no-pager diff --name-only `git merge-base origin/master @`..@; }; f"
+  file-diff     = "!f() { git diff `git merge-base origin/master @` -- $1; }; f"
 
   # Merge GitHub pull request on top of current branch or the specified branch.
   #   $ git copr 1234          # gets and switches to pr/1234 from origin
@@ -58,15 +73,16 @@
   brdel = "!f() { : git checkout ; git branch -D $@; git push origin --delete $@; }; f"
 
   # Temporarily ignore a file
-  ignore = update-index --assume-unchanged
-  unignore = update-index --no-assume-unchanged
-  ignored = !git ls-files -v | grep "^[[:lower:]]"
+  ignore    = update-index --assume-unchanged
+  unignore  = update-index --no-assume-unchanged
+  ignored   = !git ls-files -v | grep "^[[:lower:]]"
   contributors = shortlog --summary --numbered
 [branch]
   autosetuprebase = always
   autosetupmerge  = true
 [commit]
-  template      = ~/dotfiles/config/git/git-message
+  verbose         = true
+  template        = ~/dotfiles/config/git/git-message
 [credential]
 	helper        = osxkeychain
 [core]
@@ -76,17 +92,30 @@
 	pager = diff-so-fancy | less --tabs=4 -RFX
 [merge]
   summary       = true
-  tool          = vimdiff
-[mergetool "vimdiff"]
-  cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w|only|diffoff!'
+  tool          = fugitive
+  # tool          = vimdiff
+[mergetool "fugitive"]
+  cmd = vim -f -c \"Gvdiffsplit!\" \"$MERGED\"
+# [mergetool "vimdiff"]
+#   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w|only|diffoff!'
   # cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[grep]
+	lineNumber      = true
+  patternType     = extended
 [push]
   default       = tracking
 [diff]
-  algorithm     = patience
+  algorithm       = patience
+[filter "lfs"]
+	required        = true
+	clean           = git-lfs clean -- %f
+	smudge          = git-lfs smudge -- %f
+	process         = git-lfs filter-process
 [include]
   path          = ~/.gitconfig.local
 [fetch]
   prune         = true
 [github]
 	user            = gilbertek
+[hub]
+    protocol = https

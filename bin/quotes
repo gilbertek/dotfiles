@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# Usage: quote
+
+set -euo pipefail
+IFS=$'\n\t'
+
+MESSAGE=(
+	"Amazing THINGS will HAPPEN!"
+	"Be the best version of you"
+	"Life is like riding a bicycle. To keep your balance, you must keep moving"
+	"You never know how strong you are until being strong is the only choice you have"
+	"Start today!"
+	"Why complicate life? We just have one Life. Keep it simple"
+	"think positive. talk positive. feel positive"
+	"if opportunity does not knock, build a door"
+  "I would rather die of passion than of boredom.  — Vincent Van Gogh"
+  "Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.  — Antoine de Saint-Exupéry"
+  "There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies.  — C.A.R. Hoare"
+  "Provide Options, Don’t Make Lame Excuses\n\nInstead of excuses, provide options. Don’t say it can’t be done; explain what can be done."
+  "Be a Catalyst for Change\n\nYou can’t force change on people. Instead, show them how the future might be and help them participate in creating it."
+  "Make Quality a Requirements Issue\n\nInvolve your users in determining the project’s real quality requirements."
+  "Eliminate Effects Between Unrelated Things\n\nDesign components that are self-contained, independent, and have a single, well-defined purpose."
+  "Don’t Assume It—Prove It\n\nProve your assumptions in the actual environment—with real data and boundary conditions."
+  "Design with Contracts\n\nUse contracts to document and verify that code does no more and no less than it claims to do."
+  "Don’t Gather Requirements—Dig for Them\n\nRequirements rarely lie on the surface. They’re buried deep beneath layers of assumptions, misconceptions, and politics."
+  "Don’t Think Outside the Box—Find the Box\n\nWhen faced with an impossible problem, identify the real constraints. Ask yourself: \"Does it have to be done this way? Does it have to be done at all?\""
+  "Some Things Are Better Done than Described\n\nDon’t fall into the specification spiral—at some point you need to start coding."
+  "Don’t Use Manual Procedures\n\nA shell script or batch file will execute the same instructions, in the same order, time after time."
+  "Think! About Your Work\n\nTurn off the autopilot and take control. Constantly critique and appraise your work."
+  "Don’t Live with Broken Windows\n\nFix bad designs, wrong decisions, and poor code when you see them."
+  "Remember the Big Picture\n\nDon’t get so engrossed in the details that you forget to check what’s happening around you."
+  "Invest Regularly in Your Knowledge Portfolio\n\nMake learning a habit."
+  "It’s Both What You Say and the Way You Say It\n\nThere’s no point in having great ideas if you don’t communicate them effectively."
+  "Sign Your Work\n\nCraftsmen of an earlier age were proud to sign their work. You should be, too."
+)
+RANDOM=$$$(date +%s)
+echo -e "${MESSAGE[$RANDOM % ${#MESSAGE[@]}]}"
+
+

@@ -35,10 +35,11 @@ _FILES=(
   tmux-osx.conf
   tmux-linux.conf
   editorconfig
-  tern-project
   prettierrc
   eslintrc
-  # .pryrc
+  ctags
+  pryrc
+  # tern-project
   # .tigrc
   # .rubocop.yml
 )
@@ -51,7 +52,7 @@ create_symlinks() {
     target="$HOME/$filename"
 
     if [ -e $target ]; then
-      echo "$filename already exists... Skipping."
+      warning "$filename already exists... \t\tSkipping."
       # warning "${filename} alreadly exists in your home directory. Are you sure to overwrite it? ([y]/n)"
       # read -r -n 1;
       # msg ""
@@ -64,6 +65,15 @@ create_symlinks() {
   done
 }
 
+create_bin_symlinks() {
+  for file in $DOTFILES/bin/*; do
+    name="$(basename ${file%%.*})"
+    target="$HOME/bin/$name"
+
+    cp -n $file $target
+    chmod +x $target
+  done
+}
 
 # neovim and vim config
 echo -e "\nCreating config symlinks"
@@ -71,25 +81,21 @@ if [ ! -d $HOME/.config ]; then
   mkdir -p $HOME/.config/{nvim,git}
 fi
 
-# for config in $DOTFILES/config/*; do
-#   filename="$(basename $config)"
-#   target="$HOME/.config/$filename"
-
-#   if [ -e $target ]; then
-#     echo "$target already exists... Skipping."
-#   else
-#     echo "Creating symlink for $config"
-#     # ln -s $config $target
-#   fi
-# done
-
 ln -sfn "$DOTFILES/config/nvim/init.vim" ~/.config/nvim/init.vim
+ln -sfn "${DOTFILES}/config/nvim/coc-settings.json" ~/.config/nvim/coc-settings.json
 
 # Git and Hub config
-mkdir -p ~/.config/git
+if [ ! -d $HOME/.config/git ]; then
+  mkdir -p ~/.config/git
+fi
 ln -sfn "$DOTFILES/config/git/gitconfig" ~/.gitconfig
 
+if [ ! -d $HOME/bin ]; then
+  mkdir -p $HOME/bin
+fi
+
 create_symlinks
+create_bin_symlinks
 
 ret="$?"
 success "Dotfiles have been configured! Done! 🤘"

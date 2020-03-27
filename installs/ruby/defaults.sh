@@ -12,13 +12,8 @@ formulas=(
   solargraph
   rubocop
   reek
-  foodcritic
   rubycritic
-  neovim
-  byebug
   awesome_print
-  pry-byebug
-  hirb
 )
 
 for formula in "${formulas[@]}"; do
