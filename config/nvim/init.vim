@@ -418,31 +418,10 @@ Plug 'epilande/vim-react-snippets'
 Plug 'SirVer/ultisnips'   " Track the snippets engine.
 Plug 'honza/vim-snippets' " Snippets are separated from the engine.
 if has('ultisnips')
-  " let g:UltiSnipsExpandTrigger       = '<tab>'
-  " let g:UltiSnipsJumpForwardTrigger  = '<tab>'
-  " let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+  let g:UltiSnipsExpandTrigger       = '<tab>'
+  let g:UltiSnipsJumpForwardTrigger  = '<tab>'
+  let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 endif
-
-" Autocompletion Engine (neovim) Autocompletion Engine (neovim)
-" Plug 'Shougo/deoplete.nvim',               { 'do': ':UpdateRemotePlugins' }
-" Plug 'tweekmonster/deoplete-clang2'        " C/C++ and Objective-C/C++
-" Plug 'carlitux/deoplete-ternjs',           { 'for': ['javascript', 'javascript.jsx'] }
-" Plug 'pbogut/deoplete-elm',                { 'for': 'elm' }
-" Plug 'zchee/deoplete-jedi'                   " source for Python
-" let g:deoplete#enable_at_startup           = 1
-" let g:deoplete#omni#input_patterns         = {}
-" let g:deoplete#keyword_patterns            = {}
-" " let g:deoplete#sources                     = {}
-" " let g:deoplete#sources._                   = ['buffer', 'file']
-" let g:deoplete#sources#jedi#show_docstring = 1
-" let g:deoplete#keyword_patterns.clojure    = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
-" let g:deoplete#omni#input_patterns.elm     = '[^ \t]+'
-" " Deoplete-Clang settings
-" let g:deoplete#sources#clang#libclang_path = '/usr/local/opt/llvm/lib/libclang.dylib'
-" let g:deoplete#sources#clang#clang_header  = '/usr/local/opt/llvm/lib/clang'
-"
-" Elm support
-" h/t https://github.com/ElmCast/elm-vim/issues/52#issuecomment-264161975
 """" 2.4) End Code completion & Navigation #code-navigation
 call plug#end()
 "" Plugin configuration that has to run after plug#end
@@ -452,7 +431,7 @@ set termguicolors
 set background=dark
 " colorscheme base16-default-dark
 " colorscheme agila
-colorscheme onedark
+colorscheme codedark
 
 " **[ 4) Navigation #navigation ]*****************
 nnoremap <Left>  :echo "ಠ_ಠ!"<cr>
@@ -640,7 +619,6 @@ endfunction
 
 inoremap <silent><expr> <c-space> coc#refresh()
 inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : coc#refresh()
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " Hit Ctrl+A to select all in current buffer
