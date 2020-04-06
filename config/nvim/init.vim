@@ -1,27 +1,4 @@
-" **[ Table of Contents ]*******************
-" 1) Basics #basics
-"   1.1) Tabs & Indent #tabs
-"   1.2) Leader #leader
-"   1.3) Omni #omni
-"   1.4) UI Basics #ui-basics
-"   1.5) Folding #Folding
-" 2) Plugins #plugins
-"   2.1) Filetypes #filetypes
-"   2.2) Utilities #utilities
-"   2.3) UI Plugins #ui-plugins
-"   2.4) Code Navigation #code-navigation
-" 3) UI Tweaks #ui-tweaks
-"   3.1) Theme #theme
-" 4) Navigation #navigation
-"   4.1) Keyboard
-"   4.2) Mappings
-"   4.3) Filetypes Config
-" 5) Utilities
-
-" **[ 1) Basics #basics ]********************
-" Make tabs into spaces and indent with 4 spaces
-set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
-
+" config/nvim/init.vim
 let g:mapleader = ","
 
 set omnifunc=syntaxcomplete#Complete
@@ -44,17 +21,16 @@ set clipboard+=unnamedplus      " +p paste OS clipboard
 set undofile                    " Set persistent undo
 set ignorecase smartcase        " Searching behaves like a web browser
 set hidden
-set cmdheight=2                 " Give more space for displaying messages.
 set shortmess+=c                " Don't pass messages to |ins-completion-menu|.
 set signcolumn=yes              " Always show the signcolumn
 set updatetime=300
 set undodir=~/.config/nvim/undo
 set foldmethod=syntax           " fold based on indent/syntax
 set foldlevelstart=99
+set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
 " **[ 2) Plugins #plugins ]***************
 call plug#begin()
-
 Plug  'andys8/vim-elm-syntax',      { 'for': [ 'elm' ] }
 
 " Plugins for Go support
@@ -86,8 +62,6 @@ let g:rainbow_active = 1
 
 Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled       = ['elm', 'go']
-let g:vim_json_syntax_conceal = 0
-let g:jsx_ext_required        = 0
 
 " Elixir
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
@@ -125,11 +99,14 @@ let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
 " Configuration for Language Server Protocol client
 Plug 'neoclide/coc.nvim',    {'branch': 'release'}
+let g:coc_global_extensions = ['coc-solargraph', 'coc-snippets', 'coc-tsserver', 'coc-prettier', 'coc-json', 'coc-python']
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'scalameta/coc-metals', {'do': 'yarn install --frozen-lockfile'}
 Plug 'reasonml-editor/vim-reason-plus'
+Plug 'Shougo/echodoc.vim'
 
 " HTML / CSS / SCSS
+Plug 'jparise/vim-graphql'
 Plug 'ap/vim-css-color'
 Plug 'mattn/emmet-vim', {
   \ 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html', 'eruby',
@@ -137,8 +114,6 @@ Plug 'mattn/emmet-vim', {
   \ }
 let g:user_emmet_mode       = 'a'    " Enable all function in all mode.
 let g:user_emmet_leader_key = ','    " Using ,, to expand
-
-Plug 'jparise/vim-graphql'
 
 Plug 'ndmitchell/ghcid',              { 'rtp': 'plugins/nvim' }
 " Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Haskell
@@ -169,14 +144,8 @@ let g:neoformat_try_formatprg = 1
 
 " Automatically match any brackets, parentheses or quotes
 Plug 'jiangmiao/auto-pairs'
-Plug 'andymass/vim-matchup'
 Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']}
 Plug 'machakann/vim-highlightedyank'
-
-" Cycle through deopletes auto-completion with the tab key
-" Plug 'ervandew/supertab'
-" let g:SuperTabDefaultCompletionType    = "<c-x><c-p>"
-" let g:SuperTabClosePreviewOnPopupClose = 1
 Plug 'christoomey/vim-tmux-navigator'
 
 " For example, try `mux start scala-repl`
@@ -191,7 +160,6 @@ let g:strip_whitespace_confirm = 0
 Plug 'unblevable/quick-scope'
 let g:qs_highlight_on_keys = ['f', 'F']
 
-Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'janko-m/vim-test' " Run tests with varying granularity
 nmap <silent> <leader>t :TestNearest<CR>
@@ -228,29 +196,15 @@ let g:vimwiki_list = [{
 " VimWiki Config
 autocmd BufWritePost ~/Dropbox/Personal/notes/* call AutoCommit()
 
-Plug 'scrooloose/nerdtree',      { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
-let g:NERDTreeIgnore = [
-      \ '\~$',
-      \ '\.o$',
-      \ '\.pyc$',
-      \ '^node_modules$',
-      \ '^__pycache__$',
-      \ '^_build$'
-      \ ]
-let g:NERDTreeQuitOnOpen    = 1
-let g:NERDTreeMinimalUI     = 1
-let g:NERDTreeBookmarksFile = expand('~/.config/nvim/NERDTreeBookmarks')
-nnoremap <leader>nb :NERDTreeFromBookmark<CR>
-nnoremap <leader>nf :NERDTreeFind<CR>
-nnoremap <leader>n  :NERDTreeToggle<CR>
+Plug 'preservim/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
+let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
+let g:NERDTreeMinimalUI = 1
+nnoremap <leader>nf     :NERDTreeFind<CR>
+nnoremap <leader>n      :NERDTreeToggle<CR>
 
 " Move blocks of code with Control+j/k
 Plug 'matze/vim-move'
 let g:move_key_modifier = 'C'
-
-Plug 'mhinz/vim-grepper'
-nmap gs <plug>(GrepperOperator)
-xmap gs <plug>(GrepperOperator)
 
 " Dependencies For tcomment
 Plug 'tomtom/tcomment_vim'
@@ -280,7 +234,7 @@ Plug 'dense-analysis/ale'
 let g:ale_linter_aliases = {'vue': ['vue', 'javascript']}
 let g:ale_linters = {
       \ 'javascript': ['eslint', 'prettier'],
-      \ 'typescript': ['tslint', 'eslint', 'prettier'],
+      \ 'typescript': ['eslint', 'prettier'],
       \ 'elm':        ['elm_ls'],
       \ 'go':         ['gopls'],
       \ 'haskell':    ['ghc', 'hlint', 'stack_build'],
@@ -328,8 +282,11 @@ let g:ale_perl_perl_options           = '-c -Mwarnings -Ilib -It/lib'
 nmap [a <Plug>(ale_next_wrap)
 nmap ]a <Plug>(ale_previous_wrap)
 
-" Use Ctrl+y to go to the definition of something.
-nmap <C-y> <Plug>(ale_go_to_definition)
+" open current line in github
+Plug 'ruanyl/vim-gh-line'
+
+" show git commit for line under cursor (`<leader>gm`)
+Plug 'rhysd/git-messenger.vim'
 
 " Plugins for Git & Gist
 Plug 'tpope/vim-fugitive'
@@ -350,15 +307,13 @@ Plug 'airblade/vim-gitgutter'
 nmap <silent> ]h :<C-U>execute v:count1 . "GitGutterNextHunk"<CR>
 nmap <silent> [h :<C-U>execute v:count1 . "GitGutterPrevHunk"<CR>
 
-Plug 'Xuyuanp/nerdtree-git-plugin'        " NerdTree-git
-Plug 'mattn/webapi-vim'                   " Vim interface to web apis
-Plug 'junegunn/gv.vim' , {'on': ['Gitv']} " A git commit browser
-Plug 'wsdjeg/vim-fetch' "Vim to process line and column jump in paths
-Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' } " Vim undo visualizer
+Plug 'Xuyuanp/nerdtree-git-plugin'                        " NerdTree-git
+Plug 'junegunn/gv.vim',           {'on': ['Gitv']}        " A git commit browser
+Plug 'simnalamburt/vim-mundo',    { 'on': 'MundoToggle' } " Vim undo visualizer
 nnoremap <Leader>g :MundoToggle<CR>
 
 " create gists trivially from buffer, selection, etc.
-Plug 'mattn/gist-vim'
+Plug 'mattn/gist-vim' |  Plug 'mattn/webapi-vim'
 let g:gist_open_browser_after_post = 1
 let g:gist_detect_filetype         = 1
 let g:gist_post_private            = 1
@@ -384,12 +339,12 @@ let g:grammarous#use_vim_spelllang = 1
 Plug 'easymotion/vim-easymotion'
 Plug 'metakirby5/codi.vim'            " The interactive scratchpad for hackers.
 Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'fmoralesc/vim-tutor-mode'       " Interactive Vim tutorials
 " **[ 2.3) UI Plugins #ui-plugins ]********************
 Plug 'nightsense/cosmic_latte'
 Plug 'w0ng/vim-hybrid'
 let g:hybrid_reduced_contrast = 1
-Plug 'joshdick/onedark.vim'
 Plug 'ajh17/Spacegray.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'rakr/vim-one'
@@ -400,12 +355,15 @@ Plug 'Yggdroot/indentLine'
 let g:indentLine_color_term = 24
 let g:indentLine_char = '·'  " Other options ┆│┊︙¦⋮⋮
 
-Plug 'itchyny/lightline.vim' " wombat onedark
+Plug 'itchyny/lightline.vim' " wombat codedark
 let g:lightline = {
-      \ 'colorscheme': 'onedark',
+      \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
-      \            [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+      \            [ 'cocstatus', 'fugitive', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'cocstatus': 'coc#status'
       \ },
       \ 'component': {
       \   'fugitive': ' %{exists("*fugitive#head") ? fugitive#head() : ""}',
@@ -429,9 +387,8 @@ call plug#end()
 " **[ 3) UI Tweaks #ui-tweaks ] *********************
 set termguicolors
 set background=dark
-" colorscheme base16-default-dark
-" colorscheme agila
-colorscheme codedark
+colorscheme base16-default-dark
+" colorscheme codedark
 
 " **[ 4) Navigation #navigation ]*****************
 nnoremap <Left>  :echo "ಠ_ಠ!"<cr>
@@ -444,21 +401,22 @@ nnoremap <A-Left> <C-o>
 nnoremap <A-Right> <C-i>
 
 " Navigate terminal and splits windows with C-h,j,k,l
-tnoremap <silent><C-w>h <C-\><C-n><C-w>h
-tnoremap <silent><C-w>j <C-\><C-n><C-w>j
-tnoremap <silent><C-w>k <C-\><C-n><C-w>k
-tnoremap <silent><C-w>l <C-\><C-n><C-w>l
+tnoremap <C-w>h <C-\><C-n><C-w>h
+tnoremap <C-w>j <C-\><C-n><C-w>j
+tnoremap <C-w>k <C-\><C-n><C-w>k
+tnoremap <C-w>l <C-\><C-n><C-w>l
 tnoremap <silent><C-h> <C-\><C-n>:TmuxNavigateLeft<CR>
 tnoremap <silent><C-j> <C-\><C-n>:TmuxNavigateDown<CR>
 tnoremap <silent><C-k> <C-\><C-n>:TmuxNavigateUp<CR>
 tnoremap <silent><C-l> <C-\><C-n>:TmuxNavigateRight<CR>
 
-if has("nvim")
-  tnoremap <A-j> <C-\><C-n><C-w>j
-  tnoremap <A-k> <C-\><C-n><C-w>k
-  tnoremap <A-l> <C-\><C-n><C-w>l
-  tnoremap <A-h> <C-\><C-n><C-w>h
+nnoremap <leader>h :wincmd h<CR>
+nnoremap <leader>j :wincmd j<CR>
+nnoremap <leader>k :wincmd l<CR>
+nnoremap <leader>l :wincmd l<CR>
+nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 
+if has("nvim")
   " Quit terminal Exit/Navigation
   tnoremap jk <C-\><C-n>
   " Terminal Mode Configuration
@@ -468,20 +426,16 @@ endif
 " Tab navigation keymaps
 nnoremap <silent>tn :tabnew<CR>
 nnoremap <leader>te :tabedit %<cr>
-nnoremap <silent><tab>l :tabnext<CR>
-nnoremap <silent><tab>h :tabprev<CR>
-nnoremap <C-t> :tabnew<CR>
-inoremap <C-t> <Esc>:tabnew<CR>i
-nnoremap J :tabprev<CR>
-nnoremap K :tabnext<CR>
 
-" switch between two windows
-nnoremap <leader><TAB> :wincmd p<cr>
-nnoremap tq :tabclose<CR>
+" Switch tab
+nnoremap <Tab> :tabnext<CR>
+nnoremap <S-Tab> :tabprev<CR>
 
-" map tab navigation to Cmd-1 to 9.
-map <silent> <D-1> :tabn 1<cr>
-
+" Resize window Alt + Arrow
+nnoremap <silent> <A-Left> :vertical resize +5<CR>
+nnoremap <silent> <A-Right> :vertical resize -5<CR>
+nnoremap <silent> <A-Down> :resize +5<CR>
+nnoremap <silent> <A-Up> :resize -5<CR>
 " quickfix
 nnoremap [q :cprevious<CR>
 nnoremap ]q :cnext<CR>
@@ -494,21 +448,15 @@ nnoremap ]l :lnext<CR>
 nnoremap <silent>[b :bprevious<CR>
 nnoremap <silent>]b :bnext<CR>
 
-" Toggle between last 2 buffers
-nnoremap <leader><tab> <c-^>
+" Jum to the last edited file
+nnoremap <leader><leader> <C-^>
 
 " Search and replace
 nnoremap <leader>sr :%s/
 
-" In the quickfix window, <CR> is used to jump to the error under the
-" cursor, so undefine the mapping there.
-autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
-
-" _ : Quick horizontal splits
-nnoremap <silent> _ :sp<cr>
-
-" | : Quick vertical splits
-nnoremap <silent> <bar> :vsp<cr>
+" Quick horizontal splits
+nnoremap ss :split<CR><C-w>w
+nnoremap sv :vsplit<CR><C-w>w
 
 " Automatic pane split layouts
 nnoremap <leader>3 :vsplit<CR>:bn<CR>:vsplit<CR>:bn<CR>
@@ -565,20 +513,20 @@ nnoremap <leader>q :bp\|bd#<cr>
 nnoremap <leader>Q :bp!\|bd!#<cr>
 
 " Quick-save
-nnoremap <leader>w :w<CR>
-nnoremap <silent><C-S>          :update<CR>
+nnoremap <leader>w     :w<CR>
+nnoremap <silent><C-S> :update<CR>
 
 " find merge conflict markers
 nnoremap <silent><leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 
 " Unselect the search result
 map <Leader><Space> :noh<CR>
-vnoremap <silent> * :call VisualSearch('f')<CR>
-vnoremap <silent> # :call VisualSearch('b')<CR>
 
 " Search results centered please
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
+" space open/closes folds
+nnoremap <space> za
 
 " Easy indent in Visual mode
 vnoremap < <gv
@@ -593,18 +541,12 @@ nnoremap <leader>o <C-w>o
 " Open current directory in Finder
 nnoremap <leader>O :!open .<cr>
 
-" Set working directory of the open buffer <leader>cd
-nnoremap <leader>cd :lcd %:p:h<cr>:pwd<cr>
-
 " Toggle background with <leader>bg
 nnoremap <leader>lt :let &background = (&background == "dark"? "light" : "dark")<cr>
 
 " +/-: Increment number
 nnoremap + <c-a>
 nnoremap - <c-x>
-
-" space open/closes folds
-nnoremap <space> za
 
 "Grep for current word in git
 noremap <c-g> :Ggrep <cword><CR>
@@ -621,6 +563,9 @@ inoremap <silent><expr> <c-space> coc#refresh()
 inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
 " Hit Ctrl+A to select all in current buffer
 nnoremap <C-a> ggVG
 
@@ -628,7 +573,6 @@ nnoremap <C-a> ggVG
 nnoremap <leader>tx :!open -a TeXShop %<cr><cr>
 " build sphinx docs
 nnoremap <leader>bs :!make html<cr>
-
 nmap <Leader>// :silent !open -a Devdocs.app '%:p'<CR>
 
 " Auto-create directories for new files.
@@ -676,21 +620,28 @@ augroup JS-Family
 augroup END
 
 augroup Coc-Mapping
-  nmap <leader>r <Plug>(coc-rename)
-  nmap <leader>R <Plug>(coc-refactor)
-  nmap <silent> <leader>s <Plug>(coc-codeaction)
-  nmap <silent> <leader>S <Plug>(coc-fix-current)
-  nmap <silent> <leader>a <Plug>(coc-diagnostic-next)
-  nmap <silent> <leader>A <Plug>(coc-diagnostic-next-error)
-  nmap <silent> <leader>d <Plug>(coc-definition)
-  nmap <silent> K         :call CocAction('doHover')<CR>
-  nmap <silent> <leader>g :call CocAction('doHover')<CR>
-  nmap <silent> <leader>G <Plug>(coc-diagnostic-info)
-  nmap <silent> <leader>t <Plug>(coc-type-definition)
-  nmap <silent> <leader>u <Plug>(coc-references)
-  nmap <silent> <leader>i <Plug>(coc-implementation)
-  nmap <silent> <leader>p :call CocActionAsync('format')<CR>
-  xmap <silent> <leader>p <Plug>(coc-format-selected)
+  nmap <silent> <leader>rn  <Plug>(coc-rename)
+  nmap <silent> <leader>R   <Plug>(coc-refactor)
+  nmap <silent> gd          <Plug>(coc-definition)
+  nmap <silent> gy          <Plug>(coc-type-definition)
+  nmap <silent> gi          <Plug>(coc-implementation)
+  nmap <silent> gr          <Plug>(coc-references)
+  nmap <silent> <leader>s   <Plug>(coc-codeaction)
+  nmap <silent> <leader>S   <Plug>(coc-fix-current)
+  nmap <silent> [g          <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]g          <Plug>(coc-diagnostic-next)
+  nmap <silent> K           :call CocAction('doHover')<CR>
+  nmap <silent> <leader>gh  :call CocAction('doHover')<CR>
+  nmap <silent> <leader>G   <Plug>(coc-diagnostic-info)
+  " nmap <silent> <leader>p :call CocActionAsync('format')<CR>
+  " xmap <silent> <leader>p <Plug>(coc-format-selected)
+
+  xmap <silent><leader>f    <Plug>(coc-format-selected)
+  nmap <silent><leader>f    <Plug>(coc-format-selected)
+
+  " Highlight symbol under cursor on CursorHold
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+
   nnoremap <silent> <leader>o :call CocAction('runCommand', 'editor.action.organizeImport')<CR>
 augroup END
 
@@ -788,24 +739,14 @@ augroup Auto-Breakpoint
   autocmd FileType clojure map <silent><leader><leader>b 'saa((i./spy <esc>'
   " let b:printf_pattern = 'System.out.println(String.format("%s", %s));'
   autocmd FileType java map <silent><leader>lg oLog.info("XXX: ");<esc>
-
   autocmd FileType lua map  <silent><leader>lg owrite_file('dbg.txt', require('inspect')(foo)..'\n', true, true)<esc>
 augroup END
 
-augroup ruby
+augroup Ruby-Maps
   autocmd!
   autocmd FileType ruby nmap <Leader>r :RuboCop<CR>
   autocmd FileType ruby,yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2
-
-  " Migrate and rollback
-  autocmd FileType ruby nnoremap <leader>dbm :!bin/rake db:migrate<CR>
-  autocmd FileType ruby nnoremap <leader>dbr :!bin/rake db:rollback<CR>
 augroup END
-
-" add any local configs that need to be added, if they exist
-if filereadable(glob("~/.vimrc.local"))
-  source ~/.vimrc.local
-endif
 
 " TIPS & TRICKS
 "

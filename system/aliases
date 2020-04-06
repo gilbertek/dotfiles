@@ -26,6 +26,7 @@ alias flushdns="dscacheutil -flushcache && killall -HUP mDNSResponder"
 
 alias weather="curl -4 http://wttr.in/New_York"
 alias whatsmyip='curl -s https://am.i.mullvad.net/json | jq'
+alias lip="ipconfig getifaddr en0"
 alias shrug="echo '¯\_(ツ)_/¯'"
 
 # Enhanced WHOIS lookups
@@ -95,7 +96,7 @@ fi
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias watch="watch --color"
 alias reload="exec $SHELL -l" # Reload the shell (i.e. invoke as a login shell)
-alias pserver="python -m SimpleHTTPServer"
+alias www="python -m SimpleHTTPServer 8000"
 
 # JavaScriptCore REPL
 jscbin="/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc";
@@ -107,6 +108,11 @@ alias mktar="tar -pvczf"
 alias untar="tar -zxvf"
 
 alias stream="youtube-dl -q -o- $1 | vlc -"
+
+# Requires asciinema and svg-term
+# brew install asciinema
+# npm install -g svg-term-cli
+alias record="asciinema rec /tmp/temp.cast --overwrite && cat /tmp/temp.cast | svg-term > recording.svg"
 
 # ** [ GIT ALIASES ] ******************
 alias gs='git status -sb'
@@ -203,7 +209,9 @@ alias binstubs="bundle --binstubs --standalone"
 
 # ** [ PYTHON ALIASES ] ******************
 alias pjson='python -mjson.tool'
-alias pip:up='pip3 install --upgrade pip setuptools wheel'
+alias python=python3
+alias pip=pip3
+alias upgrade_pip_packages="pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U"
 
 # ** [ ANDROID ALIASES ] ******************
 alias adb-screenshot='adb shell screencap -p | sed 's/\r$//' > screen.png'

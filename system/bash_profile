@@ -1,0 +1,406 @@
+# ~/.bash_profile
+
+bind "set completion-ignore-case on"        # Case-Insensitive Auto Completion
+bind "set show-all-if-ambiguous on"         # Display matches for ambiguous patterns
+shopt -s histappend                         # Append to history from all terminals in realtime
+shopt -s cmdhist                            # store multiline commands as 1 line
+shopt -s cdspell                            # spelling error correction
+shopt -s checkwinsize                       # check window size after command and, if necessary, update lines and columns.
+shopt -s nocaseglob                         # Case-insensitive globbing (for pathname expansion)
+shopt -s extglob
+HISTCONTROL="ignoredups:erasedups"          # ignore duplicates(store command once)
+HISTSIZE=10000	                            # Larger bash history...
+HISTFILESIZE=10000	                        # Larger bash history...
+HISTIGNORE="&:ll:ls:c:cd:cd -:pwd:exit:logout:quit:reset" # Don't record some commands
+export PROMPT_COMMAND='history -a;history -c;history -r'
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
+
+# Disable DOTNET analytics
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+# macOS-specific environment flags
+if [[ $OSTYPE == "darwin"* ]]; then
+  export COCOAPODS_DISABLE_STATS=1
+  export HOMEBREW_NO_ANALYTICS=1
+  export HOMEBREW_INSTALL_CLEANUP=1
+
+  # Homebrew
+  [[ ":$PATH:" =~ ":/usr/local/bin:" ]]  || PATH="/usr/local/bin:$PATH"
+  [[ ":$PATH:" =~ ":/usr/local/sbin:" ]] || PATH="/usr/local/sbin:$PATH"
+fi
+
+# Motivation reminder
+now=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+alias DATE="date '+%Y-%m-%d'"
+alias TIME="date '+%H·%M·%S'"
+alias DATETIME="date '+%Y-%m-%d.%H·%M·%S'"
+# echo "2019 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); print "There are " int(dt/86400/7) " weeks left until the year ends. What will you do?";}'
+
+# Add `~/bin` to the `$PATH`
+if [ -d "$HOME/bin" ] ; then
+  PATH="$HOME/bin:$PATH"
+fi
+
+# Load the shell dotfiles, and then some:
+# * ~/.path can be used to extend `$PATH`.
+for file in ~/.{aliases,functions,extra,bashrc,bashrc.local,aliases.local}; do
+	[ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+unset file;
+
+# GO Path setups
+export GO111MODULE=on
+export GOPATH=$HOME/Projects/GOAPPS
+export PATH=$PATH:$GOPATH/bin
+export GOAPPS=$GOPATH/src/github.com/gilbertek
+
+# Groovy Home path setup
+if [ -d /usr/local/opt/groovy/libexec ]; then
+  export GROOVY_HOME=/usr/local/opt/groovy/libexec
+fi
+
+if [ -f /usr/libexec/java_home ]; then
+  export JAVA_HOME=`/usr/libexec/java_home`
+  export NASHORN_HOME=$JAVA_HOME/bin
+fi
+
+# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+
+# export M2_HOME=/usr/local/Cellar/maven/3.5.4/libexec
+# export M2=$M2_HOME/bin
+# export PATH=$PATH:$M2_HOME/bin
+# export MAVEN_OPTS="-Xmx2048m -Xms512m -XX:MaxPermSize=312M -XX:ReservedCodeCacheSize=128m -Dsun.lang.ClassLoader.allowArraySyntax=true -ea -Dfile.encoding=UTF-8"
+# export MAVEN_JMX="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=6969 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+
+# Haskell/hdevtools Home path setup
+export PATH=~/.local/bin:$PATH
+
+# Put GHC on the path globally
+GHC_PATH=`stack path | grep compiler-bin | sed -e 's/compiler-bin: //'`
+export PATH="$PATH:$GHC_PATH"
+
+# PHP CLI
+# export PATH="$(brew --prefix homebrew/php/php70)/bin:$PATH"
+# export PATH="/usr/local/opt/php@5.6/bin:$PATH"
+
+# Persistent history in Elixir repl IEx
+export ERL_AFLAGS="-kernel shell_history enabled"
+
+# android
+if [ -d $HOME/Library/Android/sdk ]; then
+  export ANDROID_HOME=$HOME/Library/Android/sdk
+  export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+fi
+
+# Dart and Flutter path setup
+if [ -d $HOME/.pub-cache/bin ]; then
+  export PATH="$PATH":"$HOME/.pub-cache/bin"
+fi
+
+# LLVM Bindings
+if [ -d /usr/local/opt/llvm/bin ]; then
+  export PATH="/usr/local/opt/llvm/bin:$PATH"
+fi
+
+# export PATH=$PATH:$HOME/.luarocks/bin
+
+# Google Cloud SDK.
+if [[ -x "$(command -v gcloud)" ]]; then
+  source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+  source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+fi
+
+export ANT_OPTS='-Xms512M -Xmx1024M -XX:MaxPermSize=1024M'
+export ANT_ARGS='-logger org.apache.tools.ant.listener.AnsiColorLogger'
+
+# Make neovim the default editor
+export EDITOR=nvim
+export GIT_EDITOR=$EDITOR # git uses the default editor
+export VISUAL=nvim
+
+
+# Setting fd as the default source for fzf
+export FZF_DEFAULT_OPTS='--height 40% --reverse --inline-info --color=bw --cycle'
+export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --follow --ignore-vcs -g "!{node_modules,*.swp,dist,*.coffee}/*"'
+export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export PROJECT_HOME=$HOME/Projects
+
+### Foreground Colours #######################################################
+LIGHT_GREEN='\[\e[32m\]'
+LIGHT_RED='\[\e[0;91m\]'
+COLOR_RED='\[\e[31m\]'
+COLOR_RESET='\[\e[m\]'
+COLOR_PURPLE='\[\e[35m\]'
+COLOR_ORANGE='\[\e[33m\]'
+COLOR_BLUE='\[\e[34m\]'
+COLOR_CYAN='\[\e[36m\]'
+COLOR_GREY='\[\e[0;37m\]'
+COLOR_WHITE='\[\033[0m\]'
+COLOR_GREEN='\[\e[32m\]'
+LIGHT_BLUE='\[\e[0;94m\]'
+GREY_SHADE='\[\e[37;40m\]'
+PINK_SHADE='\[\e[35;40m\]'
+GREEN_SHADE='\[\e[32;40m\]'
+ORANGE_SHADE='\[\e[33;40m\]'
+YELLOW_SHADE='\[\e[93;40m\]'
+RED_SHADE='\[\e[31;40m\]'
+BLUE_SHADE='\[\e[34;40m\]'
+separator='%K{237}%{$FG[200]%}  %{$reset_color%}'
+GIT_PROMPT_DIRTY="%{$fg[yellow]%}%{$reset_color%}"
+
+# ♥ ☆ ⚡ λ ❯ » ▸ → 💥 ✚ - Keeping some cool ASCII Characters for reference
+CHAR='λ'
+
+# PS1="${COLOR_RED}\u${COLOR_RESET} in ${COLOR_GREEN}\W${COLOR_RESET}"
+# PS1+="${COLOR_PURPLE}$GITBRANCH${COLOR_RESET}${CHAR}${COLOR_RESET}"
+
+# PS1="[\[\e[30;1m\]\t\[\e[0m\]]$COLOR_RED\$(parse_git_branch) \[\e[0;34m\]\W\[\e[0m\] "
+# PS1+="\[\e[0;31m\]$CHAR \[\e[0m\]"
+
+# PS1="\[\e[1;49;93m\]\`ts\` \[\e[1;32;40m\]< \[\e[m\]\[\e[30;42m\]\w\[\e[1;32;40m\] >\[\e[m\] $ "
+
+# export GIT_PS1_SHOWSTASHSTATE=1
+# export PS1="\[\033[7;32m\]\u@\h\[\033[7;34m\] \W\[\033[7;35m\]\$(parse_git_branch)\[\033[00m\] \$ "
+
+PS1="${PINK_SHADE}\u ${GREY_SHADE}at ${ORANGE_SHADE}\h ${GREY_SHADE}in ${BLUE_SHADE}\W${YELLOW_SHADE} $(parse_git_branch) ${GREY_SHADE}${CHAR}${COLOR_RESET} "
+
+# PS1='\
+# \[\e[1;34m\]\W\[\e[m\]\
+# \[\e[0;33m\]\
+# $(\
+#   b=`git symbolic-ref --short HEAD 2> /dev/null || git rev-parse --short HEAD 2> /dev/null`;\
+#   [ -n "$b" ] && printf " $b"\
+# )\[\e[m\] \
+# \[\e[1;32m\]\$\[\e[m\] '
+
+
+# PS1="\[\e[34m\]\u\[\e[1;32m\]@\[\e[0;33m\]\h\[\e[35m\]:"
+# PS1="$PS1\[\e[m\]\w\[\e[38;5;59m\]\$(parse_git_branch)\[\e[1;31m\]> \[\e[0m\]"
+
+# PS1="[\[\033[32m\]\w]\[\033[0m\]\n\[\033[1;36m\]\u\[\033[1;33m\]-> \[\033[0m\]"
+
+# UPDATE ON SATURDAY JANUARY 25, 2020
+function git_dirty_status {
+  [[ $(git status 2> /dev/null | tail -n1) == "nothing to commit, working tree clean" ]] && echo "✓"
+  [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working tree clean" ]] && echo "✗"
+}
+
+function git_branch_name {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1/"
+}
+
+function print_branch_name_and_status {
+  if [[ -d ./.git ]]; then
+    echo "($(git_branch_name) $(git_dirty_status))"
+  else
+    echo ""
+  fi
+}
+
+function prompt {
+  local RED="\[\033[0;31m\]"
+  local CHAR="⏣ ⌬ "
+
+  export PS1="\[\e]2;\u@\h\a[\t\[\e[0m\]] \[\e[32m\]\W\[\e[0m\]$RED \$(print_branch_name_and_status)\n\[\e[0;31m\]$CHAR \[\e[0m\]"
+         PS2='> '
+         PS4='+ '
+}
+
+# prompt
+# [ -f ~/.bash_prompt ] && . ~/.bash_prompt
+# . ~/dotfiles/system/bash_prompt
+
+
+# Ensure ssh agent is running
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  eval `ssh-agent -s`
+  ssh-add ~/.ssh/id_rsa
+fi
+
+if command -v xclip >/dev/null; then
+  alias pbcopy='xclip -sel clip -i'
+  alias pbpaste='xclip -sel clip -o'
+fi
+
+# phpenv
+if [ -d $HOME/.phpenv ] ; then
+  PHPENV_HOME="$HOME/.phpenv"
+  export PATH="$PHPENV_HOME/bin:$HOME/.composer/vendor/bin:$PATH"
+  eval "$(phpenv init -)"
+fi
+
+# if command -v perl6 > /dev/null; then
+#   alias rp='rlwrap perl6'
+#   alias prove6='prove -r -e perl6'
+#   alias p6='perl6'
+# fi
+
+if command -v racket > /dev/null; then
+  alias rkt='rlwrap racket'
+fi
+
+# Interpreters that don't have built-in readline support
+alias poly="rlwrap poly" # PolyML
+alias csi="rlwrap csi" # Chicken Scheme
+
+
+# export MOAR_BINDIR=`perl6 -V | grep moar::bindir | cut -d= -f2`
+# export MOAR_SHAREDIR=`perl6 -V | grep perl6::libdir | cut -d= -f2`
+# export PERL6LIB="$HOME/.perl6/lib"
+# export PATH="$MOAR_BINDIR:$MOAR_SHAREDIR/perl6/site/bin:$PATH"
+
+# if [ -d $HOME/.rakudobrew ] ; then
+#   RAKUDOBREW_HOME="$HOME/.rakudobrew"
+#   export PATH="$RAKUDOBREW_HOME/bin:$RAKUDOBREW_HOME/moar-nom/install/share/perl6/site/bin:$PATH"
+#   eval "$(rakudobrew init -)"
+# fi
+
+# For a ipython notebook and pyspark integration
+if command -v pyspark > /dev/null; then
+  export SPARK_HOME="$(brew --prefix apache-spark)/libexec"
+  export PYSPARK_SUBMIT_ARGS="--master local[2]"
+  export PYSPARK_DRIVER=python3
+  export PYSPARK_DRIVER_PYTHON=jupyter
+  export PYSPARK_DRIVER_PYTHON_OPTS=notebook
+fi
+
+# asdf package manager
+[[ -f ~/.asdf/asdf.sh ]] && . $HOME/.asdf/asdf.sh
+[[ -f ~/.asdf/completions/asdf.bash ]] &&. $HOME/.asdf/completions/asdf.bash
+[[ -f ~/.asdf/plugins/java/set-java-home.sh ]] && . ~/.asdf/plugins/java/set-java-home.sh
+
+# Rust
+if command -v rustc &>/dev/null; then
+  export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+fi
+
+# OPAM configuration
+. $HOME/.asdf/installs/ocaml/4.07.0/opam-init/init.sh > /dev/null 2> /dev/null || true
+
+# hub as git
+if command -v hub > /dev/null; then
+  eval "$(hub alias -s)"
+fi
+
+# kubectl
+if command -v kubectl &>/dev/null; then
+  source <(kubectl completion bash)
+  export KUBECTL_CONTEXT=$(kubectl config current-context)
+fi
+
+# Docker (for mac only)
+# if command -v docker-machine > /dev/null; then
+#   if [ $(docker-machine status default 2>/dev/null) == "Running" ]; then
+#     eval "$(docker-machine env default)"
+#   fi
+# fi
+
+
+
+# Todo
+# Remove dups from path
+# This is in reverse order.
+paths=(
+    /usr/local/sbin
+    $HOME/Library/Haskell/bin
+    $OCLINT_HOME/bin
+    /usr/local/go/bin
+    $GOPATH/bin
+    /usr/local/opt/openssl/bin
+    /Library/TeX/texbin
+    $haskell_local_bin
+    $HOME/bin
+)
+
+# export PATH="$(printf '%s:' "${paths[@]%/}")$PATH"
+
+# Autocompletions
+#-------------------------------------------------------------------------------
+[[ -f ~/.config/exercism/exercism_completion.bash ]] && \
+  . ~/.config/exercism/exercism_completion.bash
+
+# if [[ -n "$OPAMROOT" ]]; then
+#     opaminit="$OPAMROOT/opam-init/init.sh"
+# else
+#     opaminit="$HOME/.opam/opam-init/init.sh"
+# fi
+# [[ -f "$opaminit" ]] && source "$opaminit"
+# unset opaminit
+
+if [[ $OSTYPE == "darwin"* ]]; then
+  if [[ -n "$(which brew)" ]]; then
+    export BREW_CELLAR=$(brew --cellar)
+    export BREW_PREFIX=$(brew --prefix)
+  fi
+
+  #Mac Completion
+  if [[ ! ${#BREW_PREFIX} -eq 0 ]]; then
+    if [[ -d $BREW_PREFIX/etc/bash_completion.d ]]; then
+      source $BREW_PREFIX/etc/bash_completion.d/*
+    fi
+  fi
+fi
+
+#Linux Completion
+if [[ -f /etc/bash_completion ]]; then
+	bash /etc/bash_completion
+fi
+
+#Azure CLI completion
+if command -v azure > /dev/null; then
+  azure --completion > ~/azure.completion.sh
+  source ~/azure.completion.sh
+fi
+
+# Run SSH-agent (if it's not already running)
+# if ! pgrep ssh-agent > /dev/null; then
+#     ssh-agent > /dev/null
+# fi
+# Add SSH identities to the agent
+# if ! ssh-add -l > /dev/null; then
+#     echo "Add SSH identity to ssh-agent:"
+#     # store passphrase to Keychain
+#     ssh-add ~/.ssh/id_rsa
+# fi
+
+MESSAGE=(
+	"Amazing THINGS will HAPPEN!"
+	"Be the best version of you"
+	"Life is like riding a bicycle. To keep your balance, you must keep moving"
+	"You never know how strong you are until being strong is the only choice you have"
+	"Start today!"
+	"Why complicate life? We just have one Life. Keep it simple"
+	"think positive. talk positive. feel positive"
+	"if opportunity does not knock, build a door"
+)
+RANDOM=$$$(date +%s)
+echo ${MESSAGE[$RANDOM % ${#MESSAGE[@]}]}
+
+
+# ps1_date="\[$(tput bold)\]\[$(tput setaf 242)\]\$(date +'%a %b %d %H:%M:%S:%N')"
+# ps1_user="\[$(tput setaf 227)\]\u\[$(tput setaf 242)\]@\[$(tput setaf 227)\]\h"
+# ps1_path="\[$(tput setaf 242)\]\w"
+# ps1_lambda="\[$(tput setaf 242)\]λ\[$(tput sgr0)\]"
+# for x in {0..256}; do
+#   ps1_tester="${ps1_tester}\[$(tput setaf $x)\]$x"
+# done
+
+# git_prompt() {
+#   local ref="$(git symbolic-ref -q HEAD 2>/dev/null)"
+#   if [ -n "$ref" ]; then
+#     echo "$(tput setaf 241)(${ref#refs/heads/}) "
+#   fi
+# }
+
+# PS1="${ps1_date} ${ps1_user} ${ps1_path} \$(git_prompt)\n${ps1_lambda} "
+
+
+# red=$(tput setaf 1)
+# cyan=$(tput setaf 6)
+# green=$(tput setaf 2)
+# yellow=$(tput setaf 3)
+# reset=$(tput sgr0)
+# export PS1="\[$red\]\$? \[$cyan\]\u\[$reset\]@\[$green\]\h:\[$yellow\]\w\[$reset\]$ "

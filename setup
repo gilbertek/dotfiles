@@ -53,12 +53,12 @@ create_symlinks() {
 
     if [ -e $target ]; then
       warning "$filename already exists... \t\tSkipping."
-      # warning "${filename} alreadly exists in your home directory. Are you sure to overwrite it? ([y]/n)"
-      # read -r -n 1;
-      # msg ""
-      # if [[ ! $REPLY ]] || [[ $REPLY =~ ^[Yy]$ ]]; then
-      #   ln -snf $DOTFILES/system/$file $target
-      # fi
+      warning "${filename} alreadly exists in your home directory. Are you sure to overwrite it? ([y]/n)"
+      read -r -n 1;
+      msg ""
+      if [[ ! $REPLY ]] || [[ $REPLY =~ ^[Yy]$ ]]; then
+        ln -sf $DOTFILES/system/$file $target
+      fi
     else
       ln -snf $DOTFILES/system/$file $target
     fi
@@ -98,4 +98,4 @@ create_symlinks
 create_bin_symlinks
 
 ret="$?"
-success "Dotfiles have been configured! Done! 🤘"
+success "Dotfiles have been configured! 🤘"
