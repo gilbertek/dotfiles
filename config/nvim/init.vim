@@ -1,8 +1,6 @@
 " config/nvim/init.vim
 let g:mapleader = ","
-
 set omnifunc=syntaxcomplete#Complete
-
 set relativenumber              " Relative number
 set number                      " Precede each line with its line number.
 set colorcolumn=80              " Show right column in a highlighted colour.
@@ -99,7 +97,10 @@ let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
 " Configuration for Language Server Protocol client
 Plug 'neoclide/coc.nvim',    {'branch': 'release'}
-let g:coc_global_extensions = ['coc-solargraph', 'coc-snippets', 'coc-tsserver', 'coc-prettier', 'coc-json', 'coc-python']
+let g:coc_global_extensions = ['coc-solargraph',
+  \ 'coc-snippets',
+  \ 'coc-tsserver', 'coc-prettier', 'coc-json', 'coc-python']
+let g:coc_snippet_next = '<tab>'
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'scalameta/coc-metals', {'do': 'yarn install --frozen-lockfile'}
 Plug 'reasonml-editor/vim-reason-plus'
@@ -294,7 +295,6 @@ nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit -v<CR>
-" nnoremap <leader>gp :Git push<cr>
 nnoremap <leader>gp :Dispatch Git push<CR>
 nnoremap <leader>gl :Glog<cr>
 nnoremap <leader>ga :silent !git add % &<cr><cr>

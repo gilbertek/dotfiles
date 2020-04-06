@@ -1,0 +1,129 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": [
+    "elm",
+    "typescript",
+    "typescriptreact",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "haskell",
+    "css",
+    "scss",
+    "sass",
+    "html",
+    "html.handlebars",
+    "vue",
+    "rust",
+    "dhall",
+    "elixir",
+    "go",
+    "python",
+    "scala"
+  ],
+  "coc.preferences.formatOnInsertLeave": true,
+  "coc.preferences.formatOnType": true,
+  "prettier.requireConfig": true,
+  "snippets.ultisnips.enable": true,
+  "snippets.extends": {
+    "vue": ["javascript"]
+  },
+  "suggest.snippetIndicator": " ►",
+  "python.formatting.provider": "black",
+  "python.jediEnabled": false,
+  "python.linting.mypyEnabled": true,
+  "tsserver.formatOnType": false,
+  "diagnostic.refreshOnInsertMode": false,
+  "diagnostic.refreshAfterSave": false,
+  "diagnostic.maxWindowHeight": 20,
+  "diagnostic.errorSign": "",
+  "diagnostic.warningSign": "",
+  "languageserver": {
+    "bash": {
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
+    },
+    "dhall": {
+      "command": "dhall-lsp-server",
+      "filetypes": ["dhall"],
+      "initializationOptions": {
+        "vscode-dhall-lsp-server": {
+          "asciiOnly": true
+        }
+      }
+    },
+    "golang": {
+      "command": "gopls",
+      "args": ["serve", "-debug", "0.0.0.0:8484", "-rpc.trace"],
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "usePlaceholders": true,
+        "completeUnimported": true
+      }
+    },
+    "elmLS": {
+      "command": "elm-language-server",
+      "filetypes": ["elm"],
+      "rootPatterns": ["elm.json"],
+      "trace.server": "verbose",
+      "initializationOptions": {
+        "elmPath": "elm",
+        "elmFormatPath": "elm-format",
+        "elmTestPath": "elm-test",
+        "elmAnalyseTrigger": "change"
+      }
+    },
+    "haskell": {
+      "command": "ghcide",
+      "args": ["--lsp"],
+      "rootPatterns": [".stack.yaml", ".hie-bios", "BUILD.bazel", "cabal.config", "package.yaml"],
+      "filetypes": ["hs", "lhs", "haskell"],
+      "trace.server": "verbose",
+      "initializationOptions": {
+        "languageServerHaskell": {
+          "hlintOn": true,
+          "maxNumberOfProblems": 10,
+          "completionSnippetsOn": false,
+          "formattingProvider": "brittany"
+        }
+      }
+    },
+    "lua": {
+      "command": "lua-lsp",
+      "filetypes": ["lua"]
+    },
+    "metals": {
+      "command": "metals-vim",
+      "rootPatterns": ["build.sbt"],
+      "filetypes": ["scala", "sbt"]
+    },
+    "purescript": {
+      "command": "purescript-language-server",
+      "args": ["--stdio"],
+      "filetypes": ["purescript"],
+      "rootPatterns": ["bower.json", "psc-package.json", "spago.dhall"],
+      "settings": {
+        "purescript": {
+          "addSpagoSources": true,
+          "addNpmPath": true,
+          "buildCommand": "spago build --purs-args --json-errors",
+          "editorMode": true
+        }
+      }
+    },
+    "rust": {
+      "command": "rls",
+      "args": [],
+      "filetypes": ["rust"],
+      "rootPatterns": ["Cargo.toml"]
+    },
+    "typescript": {
+      "command": "typescript-language-server",
+      "args": ["--stdio"],
+      "filetypes": ["typescript"],
+      "rootPatterns": ["tsconfig.json", "package.json"]
+    }
+  }
+}
