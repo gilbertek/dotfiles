@@ -115,10 +115,10 @@ alias stream="youtube-dl -q -o- $1 | vlc -"
 alias record="asciinema rec /tmp/temp.cast --overwrite && cat /tmp/temp.cast | svg-term > recording.svg"
 
 # ** [ GIT ALIASES ] ******************
-alias gs='git status -sb'
+alias gs='git status'
 alias gb='git branch -a'
 alias ga='git add -p'
-alias gci='git commit'
+alias gci='git commit -m'
 alias gd='git diff'
 alias gwd="git diff --word-diff"
 alias gco='git checkout $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'

@@ -29,25 +29,15 @@ set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
 " **[ 2) Plugins #plugins ]***************
 call plug#begin()
-Plug  'andys8/vim-elm-syntax',      { 'for': [ 'elm' ] }
-
-" Plugins for Go support
-" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-" Plug 'jodosha/vim-godebug'
-" Plug 'buoto/gotests-vim'
-" let g:go_list_type           = 'quickfix' " Fix for location list
-" let g:go_fmt_command         = 'goimports'
-" let g:go_highlight_methods   = 1
-" let g:go_highlight_structs   = 1
-" let g:go_highlight_functions = 1
-" let g:go_auto_sameids        = 1 " Highlight variable uses
-" let g:go_auto_type_info      = 1 " Show type information
+Plug 'sheerun/vim-polyglot'
+let g:polyglot_disabled       = ['elm', 'go']
+Plug 'andys8/vim-elm-syntax', { 'for': [ 'elm' ] }
+Plug 'bfrg/vim-cpp-modern'
 
 " Clojure & Lisp development plugins
 Plug 'guns/vim-clojure-static'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-fireplace'
-Plug 'tpope/vim-sexp-mappings-for-regular-people' , { 'for': ['clojure', 'clojurescript'] }
 let g:clojure_align_multiline_strings = 1
 Plug 'clojure-vim/async-clj-omni'  " Provides completion through deoplete or ncm
 Plug 'eraserhd/parinfer-rust',     { 'for': ['clojure'], 'do': 'cargo build --release' }
@@ -57,9 +47,6 @@ Plug 'venantius/vim-cljfmt',       { 'for': ['clojure', 'clojurescript'] }
 let g:clj_fmt_autosave = 1
 Plug 'luochen1990/rainbow'
 let g:rainbow_active = 1
-
-Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled       = ['elm', 'go']
 
 " Elixir
 Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
@@ -97,22 +84,25 @@ let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
 " Configuration for Language Server Protocol client
 Plug 'neoclide/coc.nvim',    {'branch': 'release'}
-let g:coc_global_extensions = ['coc-solargraph',
+let g:coc_global_extensions = [
+  \ 'coc-solargraph',
   \ 'coc-snippets',
-  \ 'coc-tsserver', 'coc-prettier', 'coc-json', 'coc-python']
+  \ 'coc-tsserver',
+  \ 'coc-prettier',
+  \ 'coc-json',
+  \ 'coc-python']
 let g:coc_snippet_next = '<tab>'
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'scalameta/coc-metals', {'do': 'yarn install --frozen-lockfile'}
 Plug 'reasonml-editor/vim-reason-plus'
 Plug 'Shougo/echodoc.vim'
 
-" HTML / CSS / SCSS
+" HTML / CSS / SCSS / JS
 Plug 'jparise/vim-graphql'
+Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']}
 Plug 'ap/vim-css-color'
 Plug 'mattn/emmet-vim', {
-  \ 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html', 'eruby',
-  \ 'eelixir']
-  \ }
+  \ 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html', 'eruby', 'eelixir'] }
 let g:user_emmet_mode       = 'a'    " Enable all function in all mode.
 let g:user_emmet_leader_key = ','    " Using ,, to expand
 
@@ -145,7 +135,6 @@ let g:neoformat_try_formatprg = 1
 
 " Automatically match any brackets, parentheses or quotes
 Plug 'jiangmiao/auto-pairs'
-Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']}
 Plug 'machakann/vim-highlightedyank'
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -157,9 +146,6 @@ let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_
 Plug 'ntpeters/vim-better-whitespace'
 let g:strip_whitespace_on_save = 1
 let g:strip_whitespace_confirm = 0
-
-Plug 'unblevable/quick-scope'
-let g:qs_highlight_on_keys = ['f', 'F']
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'janko-m/vim-test' " Run tests with varying granularity
@@ -200,12 +186,9 @@ autocmd BufWritePost ~/Dropbox/Personal/notes/* call AutoCommit()
 Plug 'preservim/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
 let g:NERDTreeMinimalUI = 1
+let g:NERDTreeDirArrows = 1
 nnoremap <leader>nf     :NERDTreeFind<CR>
 nnoremap <leader>n      :NERDTreeToggle<CR>
-
-" Move blocks of code with Control+j/k
-Plug 'matze/vim-move'
-let g:move_key_modifier = 'C'
 
 " Dependencies For tcomment
 Plug 'tomtom/tcomment_vim'
@@ -219,9 +202,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 nmap s  <Plug>Ysurround
 nmap S  <Plug>YSurround
-nmap ss <Plug>Yssurround
-nmap Ss <Plug>YSsurround
-nmap SS <Plug>YSsurround
 xmap s  <Plug>VSurround
 xmap S  <Plug>VgSurround
 
@@ -283,13 +263,8 @@ let g:ale_perl_perl_options           = '-c -Mwarnings -Ilib -It/lib'
 nmap [a <Plug>(ale_next_wrap)
 nmap ]a <Plug>(ale_previous_wrap)
 
-" open current line in github
-Plug 'ruanyl/vim-gh-line'
-
-" show git commit for line under cursor (`<leader>gm`)
-Plug 'rhysd/git-messenger.vim'
-
-" Plugins for Git & Gist
+Plug 'ruanyl/vim-gh-line'       " Open current line in github
+Plug 'rhysd/git-messenger.vim'  "show git commit for line under cursor (`<leader>gm`)
 Plug 'tpope/vim-fugitive'
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gvdiff<CR>
@@ -303,7 +278,6 @@ nnoremap gdh :diffget //2<CR>
 nnoremap gdl :diffget //3<CR>
 
 Plug 'airblade/vim-gitgutter'
-" for jumpping between hunks
 nmap <silent> ]h :<C-U>execute v:count1 . "GitGutterNextHunk"<CR>
 nmap <silent> [h :<C-U>execute v:count1 . "GitGutterPrevHunk"<CR>
 
@@ -326,7 +300,7 @@ Plug 'majutsushi/tagbar'
 nnoremap <leader>] :TagbarToggle<CR>
 
 " fzf fuzzy finder
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim', { 'do': { -> fzf#install() } }
 nnoremap <silent> <leader>a :Rg<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>h :History<cr>
@@ -346,6 +320,7 @@ Plug 'nightsense/cosmic_latte'
 Plug 'w0ng/vim-hybrid'
 let g:hybrid_reduced_contrast = 1
 Plug 'ajh17/Spacegray.vim'
+Plug 'jacoborus/tender.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
@@ -389,6 +364,7 @@ set termguicolors
 set background=dark
 colorscheme base16-default-dark
 " colorscheme codedark
+" colorscheme tender
 
 " **[ 4) Navigation #navigation ]*****************
 nnoremap <Left>  :echo "ಠ_ಠ!"<cr>
@@ -396,25 +372,19 @@ nnoremap <Right> :echo "ಠ_ಠ!"<cr>
 nnoremap <Up>    :echo "ಠ_ಠ!"<cr>
 nnoremap <Down>  :echo "ಠ_ಠ!"<cr>
 
+" Quick window navigation
+nnoremap <silent> <C-h> <C-w>h
+nnoremap <silent> <C-j> <C-w>j
+nnoremap <silent> <C-k> <C-w>k
+nnoremap <silent> <C-l> <C-w>l
+tnoremap <silent> <C-h> <C-\><C-n><C-w>h
+tnoremap <silent> <C-j> <C-\><C-n><C-w>j
+tnoremap <silent> <C-k> <C-\><C-n><C-w>k
+tnoremap <silent> <C-l> <C-\><C-n><C-w>l
+
 " Jump to previous / next cursor position
 nnoremap <A-Left> <C-o>
 nnoremap <A-Right> <C-i>
-
-" Navigate terminal and splits windows with C-h,j,k,l
-tnoremap <C-w>h <C-\><C-n><C-w>h
-tnoremap <C-w>j <C-\><C-n><C-w>j
-tnoremap <C-w>k <C-\><C-n><C-w>k
-tnoremap <C-w>l <C-\><C-n><C-w>l
-tnoremap <silent><C-h> <C-\><C-n>:TmuxNavigateLeft<CR>
-tnoremap <silent><C-j> <C-\><C-n>:TmuxNavigateDown<CR>
-tnoremap <silent><C-k> <C-\><C-n>:TmuxNavigateUp<CR>
-tnoremap <silent><C-l> <C-\><C-n>:TmuxNavigateRight<CR>
-
-nnoremap <leader>h :wincmd h<CR>
-nnoremap <leader>j :wincmd j<CR>
-nnoremap <leader>k :wincmd l<CR>
-nnoremap <leader>l :wincmd l<CR>
-nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 
 if has("nvim")
   " Quit terminal Exit/Navigation
@@ -465,6 +435,8 @@ nnoremap <leader>4 :vnew<CR>:bn<CR>:vnew<CR>:bn<CR><C-W><C-L><C-W><C-L>:split<CR
 " Use shift-H and shift-L for move to beginning/end. alt map 0 ^
 nnoremap H ^
 nnoremap L $
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
 
 " Remap j and k to move cursor as usual through wrapped lines
 nnoremap j gj
@@ -541,18 +513,12 @@ nnoremap <leader>o <C-w>o
 " Open current directory in Finder
 nnoremap <leader>O :!open .<cr>
 
-" Toggle background with <leader>bg
-nnoremap <leader>lt :let &background = (&background == "dark"? "light" : "dark")<cr>
-
 " +/-: Increment number
 nnoremap + <c-a>
 nnoremap - <c-x>
 
 "Grep for current word in git
 noremap <c-g> :Ggrep <cword><CR>
-
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -601,22 +567,19 @@ augroup general
   autocmd FileType make setlocal noexpandtab
   autocmd FileType java setlocal omnifunc=javacomplete#Complete
   autocmd BufNewFile,BufRead .env.* setfiletype sh
+  autocmd FileType ruby nmap <Leader>r :RuboCop<CR>
+  autocmd FileType ruby,yaml,ocaml,javascript setl tabstop=2 shiftwidth=2 softtabstop=2
+  autocmd FileType go set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
+  autocmd FileType vue syntax sync fromstart
+  autocmd BufNewFile,BufRead .{babel,.eslint,jshint}rc setlocal filetype=json
+  " autocmd BufWritePre *.{js,jsx,ts,tsx,scss,less,rb,mjs,json,graphql,md} Neoformat
+  autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ es5
 augroup END
 
 augroup Cursorline
   autocmd!
   autocmd InsertEnter,WinEnter * setlocal number cursorline norelativenumber
   autocmd InsertLeave,WinEnter * setlocal relativenumber nocursorline
-augroup END
-
-augroup JS-Family
-  autocmd!
-  " Vuejs mix of different languages in one file
-  autocmd FileType vue syntax sync fromstart
-  autocmd FileType javascript,ocaml setl sw=2 sts=2 et
-  autocmd BufNewFile,BufRead .{babel,.eslint,jshint}rc setlocal filetype=json
-  " autocmd BufWritePre *.{js,jsx,ts,tsx,scss,less,rb,mjs,json,graphql,md} Neoformat
-  autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ es5
 augroup END
 
 augroup Coc-Mapping
@@ -633,11 +596,8 @@ augroup Coc-Mapping
   nmap <silent> K           :call CocAction('doHover')<CR>
   nmap <silent> <leader>gh  :call CocAction('doHover')<CR>
   nmap <silent> <leader>G   <Plug>(coc-diagnostic-info)
-  " nmap <silent> <leader>p :call CocActionAsync('format')<CR>
-  " xmap <silent> <leader>p <Plug>(coc-format-selected)
-
-  xmap <silent><leader>f    <Plug>(coc-format-selected)
-  nmap <silent><leader>f    <Plug>(coc-format-selected)
+  nmap <silent> <leader>p   :call CocActionAsync('format')<CR>
+  xmap <silent> <leader>p   <Plug>(coc-format-selected)
 
   " Highlight symbol under cursor on CursorHold
   autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -672,7 +632,7 @@ augroup OTP-Family
   autocmd FileType elixir setlocal matchpairs=(:),{:},[:]
 
   " Enable html syntax highlighting in all .eex files
-  " autocmd BufReadPost *.html.eex set syntax=html
+  autocmd BufReadPost *.html.eex set syntax=html
   autocmd FileType elixir nnoremap <leader>db orequire IEx; IEx.pry<ESC>:w<CR>
   autocmd FileType elixir nnoremap <leader>i i\|>IO.inspect<ESC>:w<CR>
 
@@ -681,27 +641,6 @@ augroup OTP-Family
   autocmd FileType elixir nnoremap <leader>e :!elixir %<CR>
   autocmd FileType elixir nnoremap <leader>ee :!iex -r % -S mix<CR>
   autocmd BufNewFile,BufRead *.{erl,hrl,xrl,yrl}, relx.config setl filetype=erlang
-augroup END
-
-augroup Golang-mappings
-  autocmd!
-  " autocmd FileType go set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
-"   autocmd FileType go setlocal noexpandtab
-"   autocmd FileType go nmap <leader>r <Plug>(go-run)
-"   autocmd FileType go nmap <leader>b <Plug>(go-build)
-"   autocmd FileType go nmap <leader>e <Plug>(go-install)
-"   autocmd FileType go nmap <leader>t <Plug>(go-test)
-"   autocmd FileType go nmap <leader>c <Plug>(go-coverage)
-"   autocmd FileType go nmap <leader>rt <Plug>(go-run-tab)
-"   autocmd FileType go nmap <Leader>rs <Plug>(go-run-split)
-"   autocmd FileType go nmap <Leader>d <Plug>(go-doc)
-"   autocmd FileType go nmap <Leader>rv <Plug>(go-run-vertical)
-"   autocmd FileType go nmap <Leader>/ :GoInfo<CR>
-"   autocmd FileType go nmap <Leader>bp :GoToggleBreakpoint<CR>
-"   autocmd FileType go nmap <Leader>db :GoDebug<CR>
-"   autocmd Filetype go nmap <leader>ga <Plug>(go-alternate-edit)
-"   autocmd Filetype go nmap <leader>gav <Plug>(go-alternate-vertical)
-"   autocmd FileType go nmap <leader>gt :GoDeclsDir<cr>
 augroup END
 
 augroup Terminal
@@ -740,12 +679,6 @@ augroup Auto-Breakpoint
   " let b:printf_pattern = 'System.out.println(String.format("%s", %s));'
   autocmd FileType java map <silent><leader>lg oLog.info("XXX: ");<esc>
   autocmd FileType lua map  <silent><leader>lg owrite_file('dbg.txt', require('inspect')(foo)..'\n', true, true)<esc>
-augroup END
-
-augroup Ruby-Maps
-  autocmd!
-  autocmd FileType ruby nmap <Leader>r :RuboCop<CR>
-  autocmd FileType ruby,yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
 
 " TIPS & TRICKS

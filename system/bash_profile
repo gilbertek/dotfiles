@@ -121,8 +121,8 @@ export VISUAL=nvim
 
 
 # Setting fd as the default source for fzf
-export FZF_DEFAULT_OPTS='--height 40% --reverse --inline-info --color=bw --cycle'
-export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --follow --ignore-vcs -g "!{node_modules,*.swp,dist,*.coffee}/*"'
+export FZF_DEFAULT_OPTS='--height 40% --reverse --inline-info --border --color=bw --cycle'
+export FZF_DEFAULT_COMMAND='rg --column --files --hidden --smart-case --follow --ignore-vcs -g "!{node_modules,*.swp,dist,*.coffee}/*"'
 export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
@@ -165,8 +165,7 @@ CHAR='λ'
 # export GIT_PS1_SHOWSTASHSTATE=1
 # export PS1="\[\033[7;32m\]\u@\h\[\033[7;34m\] \W\[\033[7;35m\]\$(parse_git_branch)\[\033[00m\] \$ "
 
-PS1="${PINK_SHADE}\u ${GREY_SHADE}at ${ORANGE_SHADE}\h ${GREY_SHADE}in ${BLUE_SHADE}\W${YELLOW_SHADE} $(parse_git_branch) ${GREY_SHADE}${CHAR}${COLOR_RESET} "
-
+PS1="${PINK_SHADE}\u ${GREY_SHADE}at ${ORANGE_SHADE}\h ${GREY_SHADE}in ${COLOR_CYAN}\W${YELLOW_SHADE} $(parse_git_branch) ${GREY_SHADE}${CHAR}${COLOR_RESET} "
 # PS1='\
 # \[\e[1;34m\]\W\[\e[m\]\
 # \[\e[0;33m\]\
