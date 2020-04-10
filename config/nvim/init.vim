@@ -88,9 +88,12 @@ let g:coc_global_extensions = [
   \ 'coc-solargraph',
   \ 'coc-snippets',
   \ 'coc-tsserver',
+  \ 'coc-eslint',
   \ 'coc-prettier',
   \ 'coc-json',
-  \ 'coc-python']
+  \ 'coc-python',
+  \ 'coc-omnisharp'
+  \ ]
 let g:coc_snippet_next = '<tab>'
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'scalameta/coc-metals', {'do': 'yarn install --frozen-lockfile'}
@@ -107,15 +110,6 @@ let g:user_emmet_mode       = 'a'    " Enable all function in all mode.
 let g:user_emmet_leader_key = ','    " Using ,, to expand
 
 Plug 'ndmitchell/ghcid',              { 'rtp': 'plugins/nvim' }
-" Plug 'neovimhaskell/haskell-vim',       { 'for': [ 'haskell', 'cabal' ] }  " Haskell
-let g:haskell_enable_quantification   = 1 " to enable highlighting of `forall`
-let g:haskell_enable_recursivedo      = 1 " to enable highlighting of `mdo` and `rec`
-let g:haskell_enable_arrowsyntax      = 1 " to enable highlighting of `proc`
-let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
-let g:haskell_enable_typeroles        = 1 " to enable highlighting of type roles
-let g:haskell_enable_static_pointers  = 1 " to enable highlighting of `static`
-let g:haskell_backpack                = 1 " to enable highlighting of backpack keywords
-
 Plug 'eagletmt/neco-ghc',             { 'for': 'haskell' } " Haskell completion
 let g:haskellmode_completion_ghc      = 0
 let g:necoghc_enable_detailed_browse  = 1
@@ -552,6 +546,10 @@ function! TmuxSendKeys(cmd)
 endfunction
 
 command! -nargs=* TmuxSendKeys call TmuxSendKeys(<q-args>)
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('fold', <f-args>)
 
 augroup general
   autocmd!
@@ -574,6 +572,7 @@ augroup general
   autocmd BufNewFile,BufRead .{babel,.eslint,jshint}rc setlocal filetype=json
   " autocmd BufWritePre *.{js,jsx,ts,tsx,scss,less,rb,mjs,json,graphql,md} Neoformat
   autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ es5
+  augroup FileType vim setl foldmethod=marker
 augroup END
 
 augroup Cursorline

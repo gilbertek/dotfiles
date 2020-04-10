@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+if test ! $(which brew); then
+  echo "Installing homebrew..."
+  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
+brew install -U git coreutils \
+  rmtrash automake wget mercurial \
+  python python3 autojump hub unrar \
+  highlight miller fzf dos2unix the_silver_searcher \
+  findutils go
+
+echo "Installing jq: json formatting"
+brew install jq
+
+echo "Installing httpie: CLI http client"
+# brew install httpie
+
+echo "Installing node.js"
+brew install node yarn
+
+echo "Installing tmux"
+brew install tmux
+
+echo "Installing mysql"
+brew install mysql
+
+echo "Installing telnet"
+# brew install telnet
+
+echo "Installing glow: Render markdown on the CLI"
+brew install glow
+
+# grammar in terminal/vim
+brew install languagetool
+
+echo "Installing docker completion"
+brew install docker-completion docker-compose-completion docker-machine-completion
+
+echo "Installing ncdu: ncurses disk usage"
+brew install ncdu
+
+echo "Installing tldr: simplified and community-driven man pages"
+# brew install tldr
+
+echo "Installing fzf shell bindings"
+/usr/local/opt/fzf/install
+
+brew cask "dash2"
+cask "dropbox"
+cask "firefox"
+cask "font-fira-code"
+cask "font-hack"
+cask "glimmerblocker"
+cask "google-backup-and-sync"
+cask "google-chrome"
+cask "google-chrome-canary"
+cask "hammerspoon"
+cask "kaleidoscope"
+cask "macdown"
+cask "postman"
+cask "slack"
+cask "sourcetree"
+cask "spotify"
+cask "virtualbox"
+cask "visual-studio-code"
+cask "vlc"

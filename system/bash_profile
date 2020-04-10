@@ -241,6 +241,11 @@ if command -v racket > /dev/null; then
   alias rkt='rlwrap racket'
 fi
 
+if [[ -x "$(command -v bat)" ]]; then
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+fi
+
+
 # Interpreters that don't have built-in readline support
 alias poly="rlwrap poly" # PolyML
 alias csi="rlwrap csi" # Chicken Scheme
