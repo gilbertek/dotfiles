@@ -32,11 +32,8 @@ validate_yaml() {
  ruby -ryaml -e "puts YAML.load_file('${filename}')"
 }
 
-parse_git_dirty () {
-  [[ $(git status 2> /dev/null | tail -n1 | cut -c 1-17) != "nothing to commit" ]] && echo "*"
-}
 parse_git_branch () {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
 pman() { man -t "$@" | open -f -a Preview; }
@@ -213,6 +210,15 @@ wifipass() {
 # Turn on Wi-Fi Adapter
 offwifi() {
   networksetup -setairportpower en0 on
+}
+
+# asciinema rec
+function rec() {
+  command asciinema rec -t $1
+}
+
+function play() {
+  command asciinema play $1
 }
 
 # GIT SCRIPTS
@@ -556,4 +562,26 @@ export AWS_SESSION_TOKEN=\"${AWS_SESSION_TOKEN}\"
   unset CREDS
 
   return 0
+}
+
+
+# git ignore
+function gi() { curl -sLw "\n" https://www.gitignore.io/api/$@ ;}
+
+# create html from markdown in GitHub CSS
+function mdhtml {
+  FILE="$1"
+  pandoc "$1" --to=html5 --css=${HOME}/dotfiles/support/github.css \
+    --highlight-style=haddock  --self-contained --output "${FILE%%.*}".html
+}
+
+# find todo notes in current project
+function todos {
+  LOCAL_DIR=$(git rev-parse --show-toplevel 2> /dev/null)
+  LOCAL_DIR=${LOCAL_DIR:-.}
+  if [ $# -eq 0 ]; then
+    ag '(\bTODO\b|\bFIX(ME)?\b|\bREFACTOR\b)' ${LOCAL_DIR}
+  else
+    ag ${*:1} '(\bTODO\b|\bFIX(ME)?\b|\bREFACTOR\b)' ${LOCAL_DIR}
+  fi
 }

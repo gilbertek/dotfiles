@@ -19,11 +19,14 @@
     "elixir",
     "go",
     "python",
-    "scala"
+    "scala",
+    "dart"
   ],
   "coc.preferences.formatOnInsertLeave": true,
   "coc.preferences.formatOnType": true,
   "prettier.requireConfig": true,
+  "prettier.eslintIntegration": true,
+  "prettier.singleQuote": true,
   "snippets.ultisnips.enable": true,
   "snippets.extends": {
     "vue": ["javascript"]
@@ -33,11 +36,14 @@
   "python.jediEnabled": false,
   "python.linting.mypyEnabled": true,
   "tsserver.formatOnType": false,
+  "signature.target": "echo",
   "diagnostic.refreshOnInsertMode": false,
   "diagnostic.refreshAfterSave": false,
   "diagnostic.maxWindowHeight": 20,
-  "diagnostic.errorSign": "",
+  "diagnostic.errorSign": "●",
   "diagnostic.warningSign": "",
+  "diagnostic.virtualText": true,
+  "diagnostic.checkCurrentLine": true,
   "languageserver": {
     "bash": {
       "command": "bash-language-server",
@@ -52,16 +58,6 @@
         "vscode-dhall-lsp-server": {
           "asciiOnly": true
         }
-      }
-    },
-    "golang": {
-      "command": "gopls",
-      "args": ["serve", "-debug", "0.0.0.0:8484", "-rpc.trace"],
-      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-      "filetypes": ["go"],
-      "initializationOptions": {
-        "usePlaceholders": true,
-        "completeUnimported": true
       }
     },
     "elmLS": {
@@ -99,6 +95,11 @@
       "command": "metals-vim",
       "rootPatterns": ["build.sbt"],
       "filetypes": ["scala", "sbt"]
+    },
+    "ocaml": {
+      "command": "opam",
+      "args": ["config", "exec", "--", "ocaml-language-server", "--stdio"],
+      "filetypes": ["ocaml", "reason"]
     },
     "purescript": {
       "command": "purescript-language-server",

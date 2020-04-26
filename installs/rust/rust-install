@@ -2,7 +2,7 @@
 # Set default channel
 # rustup default <stable> | <nightly>
 
-RUST_VERSION=1.42.0
+RUST_VERSION=1.43.0
 
 asdf install rust $RUST_VERSION
 asdf global rust $RUST_VERSION
@@ -33,7 +33,7 @@ cargo install cargo-generate
 # Enable tab completion for Bash MACOS
 if [[ $OSTYPE == "darwin"* ]]; then
   if [[ -f $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion ]]; then
-    rustup completions bash > $(brew --prefix)/etc/bash_completion.d/rustup.bash-completion
+    rustup completions bash > "$(brew --prefix)/etc/bash_completion.d/rustup.bash-completion"
   fi
 
 # Enable tab completion for Bash LINUX

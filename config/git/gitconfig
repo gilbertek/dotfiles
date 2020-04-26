@@ -30,6 +30,8 @@
   undo        = reset --soft HEAD^
   unstage     = reset HEAD --
   track       = !git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`
+  publish     = "!git push -u origin $(git branch-name)"
+
   # Squash last N commits together
   # Usage: git squash N
   squash        = "!f(){ git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f"
@@ -44,6 +46,10 @@
   stash-all     = stash save --include-untracked
   files-changed = "!f() { git --no-pager diff --name-only `git merge-base origin/master @`..@; }; f"
   file-diff     = "!f() { git diff `git merge-base origin/master @` -- $1; }; f"
+  branch-name   = "!git rev-parse --abbrev-ref HEAD"
+  cleanup       = "!git branch --merged | egrep  -v '\\*|master|prod|staging' | xargs -r -n 1 git branch -d"
+  # Display what changed between the current branch and the master branch
+  branch-diff   = "!git diff master $(git branch-name)"
 
   # Merge GitHub pull request on top of current branch or the specified branch.
   #   $ git copr 1234          # gets and switches to pr/1234 from origin

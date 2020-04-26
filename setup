@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 
 # Install dotfiles symlinks.
@@ -23,6 +22,21 @@ mkdir_path() {
   mkdir -p "$1"
 }
 
+os=$(uname -s | tr "[:upper:]" "[:lower:]")
+
+case $os in
+  linux)
+  os="linux"
+  ;;
+  darwin)
+  os="osx"
+  ;;
+  *)
+  printf "%s doesn't supported by bash installer" "$os"
+  exit 1
+  ;;
+esac
+
 DOTFILES="$HOME/dotfiles"
 
 _FILES=(
@@ -39,7 +53,6 @@ _FILES=(
   eslintrc
   ctags
   pryrc
-  # tern-project
   # .tigrc
   # .rubocop.yml
 )
@@ -47,20 +60,19 @@ _FILES=(
 echo -e "\nCreating dotfile symlinks"
 
 create_symlinks() {
-  for file in ${_FILES[@]}; do
+  for file in "${_FILES[@]}"; do
     filename=".$(basename $file '.symlink')"
     target="$HOME/$filename"
 
-    if [ -e $target ]; then
-      warning "$filename already exists... \t\tSkipping."
+    if [ -e "$target" ] && [ ! -d "$target" ]; then
       warning "${filename} alreadly exists in your home directory. Are you sure to overwrite it? ([y]/n)"
       read -r -n 1;
       msg ""
       if [[ ! $REPLY ]] || [[ $REPLY =~ ^[Yy]$ ]]; then
-        ln -sf $DOTFILES/system/$file $target
+        ln -snf "${DOTFILES}/system/${file}" "${target}"
       fi
     else
-      ln -snf $DOTFILES/system/$file $target
+      ln -snf "${DOTFILES}/system/${file}" "${target}"
     fi
   done
 }
@@ -70,28 +82,38 @@ create_bin_symlinks() {
     name="$(basename ${file%%.*})"
     target="$HOME/bin/$name"
 
-    cp -n $file $target
-    chmod +x $target
+    cp -n "$file" "$target"
+    chmod +x "$target"
   done
 }
 
 # neovim and vim config
 echo -e "\nCreating config symlinks"
-if [ ! -d $HOME/.config ]; then
-  mkdir -p $HOME/.config/{nvim,git}
+if [ ! -d "$HOME/.config" ]; then
+  mkdir -p "$HOME/.config/{nvim,git}"
 fi
 
-ln -sfn "$DOTFILES/config/nvim/init.vim" ~/.config/nvim/init.vim
-ln -sfn "${DOTFILES}/config/nvim/coc-settings.json" ~/.config/nvim/coc-settings.json
-
+if [ ! -f "$HOME/.config/nvim/init.vim" ]; then
+  ln -sfn "$DOTFILES/config/nvim/init.vim" ~/.config/nvim/init.vim
+  ln -sfn "${DOTFILES}/config/nvim/coc-settings.json" ~/.config/nvim/coc-settings.json
+fi
 # Git and Hub config
-if [ ! -d $HOME/.config/git ]; then
+if [ ! -d "$HOME/.config/git" ]; then
   mkdir -p ~/.config/git
 fi
+
 ln -sfn "$DOTFILES/config/git/gitconfig" ~/.gitconfig
 
-if [ ! -d $HOME/bin ]; then
-  mkdir -p $HOME/bin
+if [ ! -d "$HOME/bin" ]; then
+  mkdir -p "$HOME/bin"
+fi
+
+# mkdir -p ~/.sbt/1.3.10/plugins
+# ln -s "$DOTFILES/system/sbtplugins.sbt" ~/.sbt/1.3.10/plugins/dotfileplugins.sbt
+
+#make sure gpg exists for programs that use it
+if command -v gpg2 >/dev/null 2>&1; then
+  ln -s "$(command -v gpg2)" ~/bin/gpg
 fi
 
 create_symlinks

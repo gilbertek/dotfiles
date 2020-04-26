@@ -50,10 +50,9 @@ done;
 unset file;
 
 # GO Path setups
-export GO111MODULE=on
-export GOPATH=$HOME/Projects/GOAPPS
-export PATH=$PATH:$GOPATH/bin
-export GOAPPS=$GOPATH/src/github.com/gilbertek
+# export GO111MODULE=on
+# export GOPATH=$HOME/Projects/GOAPPS
+export PATH=$PATH:/usr/local/go/bin
 
 # Groovy Home path setup
 if [ -d /usr/local/opt/groovy/libexec ]; then
@@ -292,8 +291,16 @@ fi
 # kubectl
 if command -v kubectl &>/dev/null; then
   source <(kubectl completion bash)
+  complete -F __start_kubectl k
   export KUBECTL_CONTEXT=$(kubectl config current-context)
 fi
+
+# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
+
+# Add tab completion for `defaults read|write NSGlobalDomain`
+# You could just use `-g` instead, but I like being explicit
+complete -W "NSGlobalDomain" defaults;
 
 # Docker (for mac only)
 # if command -v docker-machine > /dev/null; then

@@ -271,8 +271,8 @@ alias epi="elm package install"
 alias emacs='emacs -nw'
 
 # ** [ KUBECTL SHORTCUTS ] ******************
-alias k8='kubectl'
-alias k8:i="kubectl --insecure-skip-tls-verify=true"
+alias k='kubectl'
+alias k:i="kubectl --insecure-skip-tls-verify=true"
 alias kdescribe="kubectl describe"
 alias kget="kubectl get"
 alias kcreate="kubectl create"
