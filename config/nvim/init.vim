@@ -319,9 +319,15 @@ Plug 'thanthese/Tortoise-Typing'
 Plug 'rhysd/vim-grammarous'        " Grammarous
 let g:grammarous#use_vim_spelllang = 1
 
-Plug 'easymotion/vim-easymotion'
+Plug 'easymotion/vim-easymotion'      " Make movement a lot faster and easier
+" " easymotion search behavior
+" map  / <Plug>(easymotion-sn)
+" omap / <Plug>(easymotion-tn)
+" map  n <Plug>(easymotion-next)
+" map  N <Plug>(easymotion-prev)
+
 Plug 'metakirby5/codi.vim'            " The interactive scratchpad for hackers.
-Plug 'ryanoasis/vim-devicons'
+Plug 'ryanoasis/vim-devicons'         " Pretty icons everywhere
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'fmoralesc/vim-tutor-mode'       " Interactive Vim tutorials
 " **[ 2.3) UI Plugins #ui-plugins ]********************
@@ -545,17 +551,59 @@ nnoremap - <c-x>
 "Grep for current word in git
 noremap <c-g> :Ggrep <cword><CR>
 
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+" Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
-inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+
+" Symbol renaming and Refactor.
+nmap <silent> <leader>rn  <Plug>(coc-rename)
+nmap <silent> <leader>R   <Plug>(coc-refactor)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current line.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Hit Ctrl+A to select all in current buffer
 nnoremap <C-a> ggVG
@@ -577,7 +625,7 @@ function! TmuxSendKeys(cmd)
 endfunction
 
 function! s:show_documentation()
-  if &filetype == 'vim'
+  if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
     call CocAction('doHover')
@@ -585,10 +633,15 @@ function! s:show_documentation()
 endfunction
 
 command! -nargs=* TmuxSendKeys call TmuxSendKeys(<q-args>)
-" Use `:Fold` to fold current buffer
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
-" Use `:Format` to format current buffer
-command! -nargs=0 Format :call CocAction('fold', <f-args>)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 augroup general
   autocmd!
@@ -620,37 +673,14 @@ augroup Cursorline
 augroup END
 
 augroup Coc-Mapping
-  " Remap keys for gotos
-  nmap <silent> <leader>rn  <Plug>(coc-rename)
-  nmap <silent> <leader>R   <Plug>(coc-refactor)
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 
-  " Remap keys for gotos
-  nmap <silent> gd          <Plug>(coc-definition)
-  nmap <silent> gy          <Plug>(coc-type-definition)
-  nmap <silent> gi          <Plug>(coc-implementation)
-  nmap <silent> gr          <Plug>(coc-references)
-
-  nmap <silent> <leader>s   <Plug>(coc-codeaction)
-
-  " Fix autofix problem of current line
-  nmap <silent> <leader>qf  <Plug>(coc-fix-current)
-
-  " Use `[g` and `]g` to navigate diagnostics
-  nmap <silent> [g          <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]g          <Plug>(coc-diagnostic-next)
-
-  nmap <silent> <leader>gh  :call CocAction('doHover')<CR>
-  nmap <silent> <leader>G   <Plug>(coc-diagnostic-info)
-  nmap <silent> <leader>p   :call CocActionAsync('format')<CR>
-  xmap <silent> <leader>p   <Plug>(coc-format-selected)
-
-  " Use K to show documentation in preview window
-  nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-  " Highlight symbol under cursor on CursorHold
+  " Highlight the symbol and its references when holding the cursor.
   autocmd CursorHold * silent call CocActionAsync('highlight')
-
-  nnoremap <silent> <leader>o :call CocAction('runCommand', 'editor.action.organizeImport')<CR>
 augroup END
 
 augroup Lisp-Family
