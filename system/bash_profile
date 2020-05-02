@@ -15,6 +15,7 @@ HISTIGNORE="&:ll:ls:c:cd:cd -:pwd:exit:logout:quit:reset" # Don't record some co
 export PROMPT_COMMAND='history -a;history -c;history -r'
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
+export SHELL=bash
 
 # Disable DOTNET analytics
 export DOTNET_CLI_TELEMETRY_OPTOUT=1

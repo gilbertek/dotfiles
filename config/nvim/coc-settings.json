@@ -35,6 +35,8 @@
   "python.formatting.provider": "black",
   "python.jediEnabled": false,
   "python.linting.mypyEnabled": true,
+  "rust-analyzer.checkOnSave.command": "clippy",
+  "rust-analyzer.serverPath": "~/.local/bin/rust-analyzer",
   "tsserver.formatOnType": false,
   "signature.target": "echo",
   "diagnostic.refreshOnInsertMode": false,
@@ -51,6 +53,19 @@
       "filetypes": ["sh"],
       "ignoredRootPaths": ["~"]
     },
+    "dart": {
+      "enable": true,
+      "command": "dart_language_server",
+      "filetypes": ["dart"],
+      "trace.server": "off",
+      "settings": {
+        "dart": {
+          "validation": {},
+          "completion": {}
+        }
+      }
+    },
+
     "dhall": {
       "command": "dhall-lsp-server",
       "filetypes": ["dhall"],
@@ -114,12 +129,6 @@
           "editorMode": true
         }
       }
-    },
-    "rust": {
-      "command": "rls",
-      "args": [],
-      "filetypes": ["rust"],
-      "rootPatterns": ["Cargo.toml"]
     },
     "typescript": {
       "command": "typescript-language-server",

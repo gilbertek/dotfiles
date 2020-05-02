@@ -116,6 +116,13 @@ if command -v gpg2 >/dev/null 2>&1; then
   ln -s "$(command -v gpg2)" ~/bin/gpg
 fi
 
+if [[ ! -f ~/.cargo/config ]]
+then
+	mkdir -p ~/.cargo && ln -s "$DOTFILES/cargo/config" ~/.cargo/config
+else
+	echo "detected .cargo directory, skpping cargo setup"
+fi
+
 create_symlinks
 create_bin_symlinks
 

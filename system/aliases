@@ -24,6 +24,7 @@ alias curlpj='curl -X POST -H "Content-Type: application/json" - '
 # Flush Directory Service cache
 alias flushdns="dscacheutil -flushcache && killall -HUP mDNSResponder"
 
+alias wttr='curl -s http://wttr.in/'
 alias weather="curl -4 http://wttr.in/New_York"
 alias whatsmyip='curl -s https://am.i.mullvad.net/json | jq'
 alias lip="ipconfig getifaddr en0"

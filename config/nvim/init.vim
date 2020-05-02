@@ -1,7 +1,7 @@
 " config/nvim/init.vim
 
+" General options {{
 let g:mapleader = ","
-set omnifunc=syntaxcomplete#Complete
 set relativenumber                  " Set relative number
 set number                          " Precede each line with its line number.
 set tw=80                           " auto wrap lines that are longer than that
@@ -26,8 +26,9 @@ set signcolumn=yes                  " Always show the signcolumn
 set updatetime=300                  " Update more often (helps coc)
 set undodir=~/.config/nvim/undo     " Undo temp file directory
 set foldmethod=syntax               " Fold based on indent/syntax
-set foldlevel=99
+set foldlevel=99                    " ... but don't close them automatically
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+" }}
 
 "{{{ Plugins and configurations
 call plug#begin()
@@ -87,18 +88,20 @@ let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
 Plug 'neoclide/coc.nvim',    { 'branch': 'release' } " Language Server Protocol support
 let g:coc_global_extensions = [
-  \ 'coc-solargraph',
-  \ 'coc-snippets',
-  \ 'coc-tsserver',
   \ 'coc-eslint',
-  \ 'coc-prettier',
-  \ 'coc-json',
-  \ 'coc-python',
-  \ 'coc-omnisharp',
-  \ 'coc-metals',
-  \ 'coc-rls',
   \ 'coc-flutter',
-  \ 'coc-go'
+  \ 'coc-go',
+  \ 'coc-json',
+  \ 'coc-metals',
+  \ 'coc-omnisharp',
+  \ 'coc-prettier',
+  \ 'coc-python',
+  \ 'coc-reason',
+  \ 'coc-rls',
+  \ 'coc-rust-analyzer',
+  \ 'coc-snippets',
+  \ 'coc-solargraph',
+  \ 'coc-tsserver',
   \ ]
 let g:coc_snippet_next = '<tab>'
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
@@ -157,7 +160,6 @@ let test#strategy = 'neovim'
 
 " vim-gutentags {{ "
 Plug 'ludovicchabant/vim-gutentags'         " Easily manage tags files
-" set tags=./.tags;,.tags
 let g:gutentags_project_root     = ['.root', '.git', '.svn', '.hg', '.project']
 " let g:gutentags_ctags_tagfile    = '.tags'
 let g:gutentags_ctags_extra_args = ['--output-format=e-ctags']
@@ -172,7 +174,8 @@ let g:gutentags_ctags_exclude    = [
 " }} vim-gutentags "
 
 " vim-rooter {{ "
-" let g:rooter_patterns = ['.root', 'package.json', '.git/']
+Plug 'airblade/vim-rooter'
+let g:rooter_patterns = ['.root', 'package.json', '.git/']
 " }} vim-rooter "
 
 Plug 'itchyny/calendar.vim' " Calendar integration
@@ -416,6 +419,7 @@ if has("nvim")
   " Terminal Mode Configuration
   nnoremap <silent><bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
   nnoremap <C-q>s :<C-u>split +term<CR>
+  nnoremap <leader>tt :vnew term://bash<CR>
 endif
 
 " Tab navigation keymaps
@@ -427,10 +431,10 @@ nnoremap <Tab> :tabnext<CR>
 nnoremap <S-Tab> :tabprev<CR>
 
 " Resize window Alt + Arrow
-nnoremap <silent> <A-Left> :vertical resize +5<CR>
+nnoremap <silent> <A-Left>  :vertical resize +5<CR>
 nnoremap <silent> <A-Right> :vertical resize -5<CR>
-nnoremap <silent> <A-Down> :resize +5<CR>
-nnoremap <silent> <A-Up> :resize -5<CR>
+nnoremap <silent> <A-Down>  :resize +5<CR>
+nnoremap <silent> <A-Up>    :resize -5<CR>
 
 " Move and format selection with J K
 vnoremap J :m '>+1<CR>gv=gv
@@ -511,6 +515,12 @@ inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 vnoremap <F1> <ESC>
 
+" Disable middle mouse button
+noremap <MiddleMouse>   <Nop>
+noremap <2-MiddleMouse> <Nop>
+noremap <3-MiddleMouse> <Nop>
+noremap <4-MiddleMouse> <Nop>
+
 " Close a buffer without closing the split
 nnoremap <leader>q :bp\|bd#<cr>
 nnoremap <leader>Q :bp!\|bd!#<cr>
@@ -551,27 +561,32 @@ nnoremap - <c-x>
 "Grep for current word in git
 noremap <c-g> :Ggrep <cword><CR>
 
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
+" Use <tab> to trigger completion
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <c-space> to trigger completion.
+inoremap <silent><expr> <Tab>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<Tab>" :
+    \ coc#refresh()
+
+" Use <c-space> to trigger completion
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
-if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-else
-  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-endif
+" Navigate with tab and s-tab
+inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm()
+      \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <C-e>   pumvisible() ? "\<C-e>" : "\<End>"
+inoremap <expr> <C-j>   pumvisible() ? '<C-n>'  : ''
+inoremap <expr> <C-k>   pumvisible() ? '<C-p>'  : ''
+
+" Use enter to confirm complete
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -586,7 +601,6 @@ nmap <silent> gr <Plug>(coc-references)
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-
 " Symbol renaming and Refactor.
 nmap <silent> <leader>rn  <Plug>(coc-rename)
 nmap <silent> <leader>R   <Plug>(coc-refactor)
@@ -597,8 +611,8 @@ nmap <leader>f  <Plug>(coc-format-selected)
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+" xmap <leader>a  <Plug>(coc-codeaction-selected)
+" nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current line.
 nmap <leader>ac  <Plug>(coc-codeaction)
@@ -640,9 +654,6 @@ command! -nargs=0 Format :call CocAction('format')
 " Add `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
 augroup general
   autocmd!
   autocmd BufLeave,FocusLost * :silent! wall
@@ -661,9 +672,15 @@ augroup general
   autocmd FileType ruby,yaml,ocaml,javascript setl tabstop=2 shiftwidth=2 softtabstop=2
   autocmd FileType go set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
   autocmd FileType vue syntax sync fromstart
-  autocmd BufNewFile,BufRead .{babel,.eslint,jshint}rc setlocal filetype=json
-  " autocmd BufWritePre *.{js,jsx,ts,tsx,scss,less,rb,mjs,json,graphql,md} Neoformat
+  autocmd BufNewFile,BufRead .{babel,eslint,jshint,prettier}rc setlocal filetype=json
   autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ es5
+  " set up default omnifunc
+  autocmd FileType *
+        \ if &omnifunc == "" |
+        \    setlocal omnifunc=syntaxcomplete#Complete |
+        \ endif
+  " Close preview window when completion is done
+  autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
 augroup END
 
 augroup Cursorline
@@ -681,6 +698,8 @@ augroup Coc-Mapping
 
   " Highlight the symbol and its references when holding the cursor.
   autocmd CursorHold * silent call CocActionAsync('highlight')
+
+  autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 augroup END
 
 augroup Lisp-Family
@@ -899,4 +918,4 @@ augroup END
 "     Insert mode:
 "       <CTRL-s>         - add a surround
 "       <CTRL-s><CTRL-s> - add a new line + surround + indent
-" vim: set sw=2 ts=2 sts=2 et tw=78 fdm=marker
+" vim: set sw=2 ts=2 sts=2 et tw=78 foldmarker={{,}} foldmethod=marker foldlevel=0:

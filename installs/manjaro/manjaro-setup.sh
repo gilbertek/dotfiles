@@ -8,13 +8,13 @@ sudo pacman -Syu --noconfirm
 sudo pacman -S --noconfirm base-devel cmake zlib openssl expac wget fakeroot jshon
 
 install() {
-  which $1 &> /dev/null
+  which "$1" &> /dev/null
 
   if [ $? -ne 0 ]; then
     echo "Installing: ${1} ..."
-    sudo pacman -S --noconfirm $1
+    sudo pacman -S --noconfirm "$1"
   else
-    echo "Already installed: ${1}"
+    echo "Already installed: $1"
   fi
 }
 
@@ -73,8 +73,8 @@ PACKAGES=(
   # telegram-desktop-bin
 )
 
-for package in ${PACKAGES[@]}; do
-  install $package
+for package in "${PACKAGES[@]}"; do
+  install "$package"
 done
 
 # PHP
