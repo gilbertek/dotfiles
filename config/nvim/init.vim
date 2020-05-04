@@ -77,7 +77,6 @@ nnoremap <silent> <leader>z :Goyo<cr>
 " Plugins for rails & Phoenix Projects
 Plug 'tpope/vim-projectionist'    " Adds some navigation niceties
 Plug 'tpope/vim-rails'
-Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'ngmy/vim-rubocop'
 let g:vimrubocop_keymap = 0
@@ -192,7 +191,7 @@ let g:vimwiki_list = [{
   \ },{
   \ 'path':      '~/Dropbox/Personal/Notes/',
   \ 'syntax':    'markdown',
-  \ 'ext':       '.md',
+  \ 'ext':       'md',
   \ 'auto_tags': 1
   \ }]
 
@@ -371,11 +370,6 @@ let g:lightline = {
 Plug 'epilande/vim-react-snippets'
 Plug 'SirVer/ultisnips'               " Track the snippets engine.
 Plug 'honza/vim-snippets'             " Snippets are separated from the engine.
-if has('ultisnips')
-  let g:UltiSnipsExpandTrigger       = '<tab>'
-  let g:UltiSnipsJumpForwardTrigger  = '<tab>'
-  let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-endif
 " }}}
 """" 2.4) End Code completion & Navigation #code-navigation
 call plug#end()
@@ -466,12 +460,22 @@ nnoremap sv :vsplit<CR><C-w>w
 nnoremap <leader>3 :vsplit<CR>:bn<CR>:vsplit<CR>:bn<CR>
 nnoremap <leader>4 :vnew<CR>:bn<CR>:vnew<CR>:bn<CR><C-W><C-L><C-W><C-L>:split<CR>:bn<CR>
 
-" Use shift-H and shift-L for move to beginning/end. alt map 0 ^
+" Use shift-H and shift-L for move to beginning/end of line. alt map 0 ^
 nnoremap H ^
 nnoremap L $
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
-nnoremap <C-m> :!mv<Space>%<Space>
+cnoremap <C-t> <C-R>=expand("%:p:h") . "/" <CR>
+
+" Emacs like movement in Insert mode
+inoremap <C-c> <ESC>
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+inoremap <C-f> <Right>
+inoremap <C-b> <Left>
+inoremap <C-d> <Del>
+inoremap <C-n> <Down>
+inoremap <C-p> <Up>
 
 " Remap j and k to move cursor as usual through wrapped lines
 nnoremap j gj
@@ -492,9 +496,9 @@ cnoremap <c-v> <c-r>
 " reselect pasted content:
 noremap gV `[v`]
 
-" map undo/redo
-nnoremap <C-z> :undo<CR>
-nnoremap <C-u> :redo<CR>
+" U: Redos since 'u' undos
+nnoremap U :redo<cr>
+nnoremap <C-z> :redo<cr>
 
 " Keep the cursor in place while joining lines
 nnoremap J mzJ`z
@@ -672,6 +676,7 @@ augroup general
   autocmd FileType ruby,yaml,ocaml,javascript setl tabstop=2 shiftwidth=2 softtabstop=2
   autocmd FileType go set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
   autocmd FileType vue syntax sync fromstart
+  au BufRead,BufNewFile .{eslintrc,prettierrc} set filetype=json
   autocmd BufNewFile,BufRead .{babel,eslint,jshint,prettier}rc setlocal filetype=json
   autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ es5
   " set up default omnifunc
