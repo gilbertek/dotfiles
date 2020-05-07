@@ -312,10 +312,11 @@ nnoremap <leader>] :TagbarToggle<CR>
 
 "fuzzy search integration
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim', { 'do': { -> fzf#install() } }
-nnoremap <silent> <leader>a :Rg<cr>
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>h :History<cr>
-nnoremap <leader>f :Files<cr>
+nnoremap <silent><C-p> :Files<CR>
+nnoremap <silent><C-g> :GFiles<CR>
+nnoremap <silent><C-f> :Rg<cr>
 
 Plug 'thanthese/Tortoise-Typing'
 Plug 'rhysd/vim-grammarous'        " Grammarous
@@ -510,9 +511,8 @@ nnoremap S i<cr><esc>^mwgk:silent! s/\v +$//<cr>:noh<cr>`w
 " Makes foo-bar considered one word
 set iskeyword+=-
 
-" jj/kk to exit insert mode
-inoremap jj <Esc>
-inoremap kk <Esc>
+" jk to exit insert mode
+inoremap jk <Esc>
 
 " When working on a thinkpad
 inoremap <F1> <ESC>
