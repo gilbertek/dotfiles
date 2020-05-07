@@ -77,6 +77,14 @@ for package in "${PACKAGES[@]}"; do
   install "$package"
 done
 
+# sudo pacman -S bash-language-server awesome openssh \
+#   lxappearance-gtk3 neovim zsh xclip nodejs python jq wget \
+#   pulseaudio pavucontrol picom firefox git curl xorg-xinit xorg-server \
+#   xorg-xprop networkmanager bc arc-gtk-theme papirus-icon-theme mpv unclutter \
+#   imagemagick qutebrowser bat fzf dunst feh networkmanager-applet noto-fonts-emoji \
+#   ttf-font-awesome npm yarn pamixer redshift reflector ripgrep tldr \
+#   shellcheck typescript xdotool zathura zathura-pdf-mupdf
+
 # PHP
 sudo pacman -S composer
 sudo pacman -S php php-fpm php-apcu php-gd php-imap php-intl php-mcrypt php-memcached php-pgsql php-sqlite php-cgi xdebug

@@ -562,9 +562,7 @@ nnoremap <leader>O :!open .<cr>
 nnoremap + <c-a>
 nnoremap - <c-x>
 
-"Grep for current word in git
-noremap <c-g> :Ggrep <cword><CR>
-
+" CoC settings {{{
 " Use <tab> to trigger completion
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -615,13 +613,30 @@ nmap <leader>f  <Plug>(coc-format-selected)
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-" xmap <leader>a  <Plug>(coc-codeaction-selected)
-" nmap <leader>a  <Plug>(coc-codeaction-selected)
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current line.
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+command! -nargs=* TmuxSendKeys call TmuxSendKeys(<q-args>)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+"}}}
 
 " Hit Ctrl+A to select all in current buffer
 nnoremap <C-a> ggVG
@@ -641,22 +656,6 @@ function! TmuxSendKeys(cmd)
   execute 'silent !tmux send-keys -t 2 "' . a:cmd . '" C-m'
   execute 'redraw!'
 endfunction
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-command! -nargs=* TmuxSendKeys call TmuxSendKeys(<q-args>)
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 augroup general
   autocmd!
@@ -679,6 +678,8 @@ augroup general
   au BufRead,BufNewFile .{eslintrc,prettierrc} set filetype=json
   autocmd BufNewFile,BufRead .{babel,eslint,jshint,prettier}rc setlocal filetype=json
   autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ es5
+  " nnoremap <expr> <C-n> 'Odebugger;<esc>:w<CR>:vsp<CR> :term<CR>Anode --inspect -r ts-node/register ' . expand('%') .'<CR>'
+
   " set up default omnifunc
   autocmd FileType *
         \ if &omnifunc == "" |
@@ -705,6 +706,7 @@ augroup Coc-Mapping
   autocmd CursorHold * silent call CocActionAsync('highlight')
 
   autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+  autocmd BufWritePre *.java :call CocAction('runCommand', 'java.action.organizeImports')
 augroup END
 
 augroup Lisp-Family

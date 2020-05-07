@@ -102,6 +102,10 @@
         }
       }
     },
+    "kotlin": {
+      "command": "kotlin-language-server",
+      "filetypes": ["kotlin"]
+    },
     "lua": {
       "command": "lua-lsp",
       "filetypes": ["lua"]
@@ -110,6 +114,10 @@
       "command": "metals-vim",
       "rootPatterns": ["build.sbt"],
       "filetypes": ["scala", "sbt"]
+    },
+    "nim": {
+      "command": "nimlsp",
+      "filetypes": ["nim"]
     },
     "ocaml": {
       "command": "opam",
