@@ -201,6 +201,7 @@ autocmd BufWritePost ~/Dropbox/Personal/notes/* call AutoCommit()
 Plug 'preservim/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
 let g:NERDTreeMinimalUI   = 1
+let g:NERDTreeDirArrows   = 1
 let g:NERDTreeQuitOnOpen  = 1         " Closes NerdTree when opening a file
 nnoremap <leader>nf     :NERDTreeFind<CR>
 nnoremap <leader>n      :NERDTreeToggle<CR>
@@ -646,6 +647,7 @@ nnoremap <leader>tx :!open -a TeXShop %<cr><cr>
 " build sphinx docs
 nnoremap <leader>bs :!make html<cr>
 nmap <Leader>// :silent !open -a Devdocs.app '%:p'<CR>
+nnoremap <silent><leader>1 :source $MYVIMRC | :PlugInstall <CR>
 
 " Auto-create directories for new files.
 if exists("*mkdir")
@@ -755,8 +757,8 @@ augroup Terminal
   autocmd TermOpen * setlocal nonumber norelativenumber
 
   " Reload & easy edit Neovim configuration
-  command! Editrc tabnew ~/.config/nvim/init.vim
-  command! Loadrc source ~/.config/nvim/init.vim | redraw | echo 'Init reloaded'
+  command! Editrc tabnew $MYVIMRC
+  command! Loadrc source $MYVIMRC | redraw | echo 'Init reloaded'
   command! PU PlugClean! | PlugUpdate! | PlugUpgrade
 augroup END
 
@@ -786,6 +788,10 @@ augroup Auto-Breakpoint
   autocmd FileType lua map  <silent><leader>lg owrite_file('dbg.txt', require('inspect')(foo)..'\n', true, true)<esc>
 augroup END
 
+" add any local configs that need to be added, if they exist
+if filereadable(glob("~/.config/nvim/init.vim.local"))
+  source ~/.config/nvim/init.vim.local
+endif
 " TIPS & TRICKS
 "
 " Useful insert mode commands:
