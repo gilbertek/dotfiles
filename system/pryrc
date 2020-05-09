@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-# Pry.config.output_prefix = "\e[1;37m❯  \e[0m"
 Pry.config.prompt = proc { |obj, nest_lvl, _| "[#{nest_lvl}] #{obj} \e[1;37m❯ \e[0m" }
-
-# Pry.prompt = [proc { |obj, nest_level, _| "#{RUBY_VERSION} (#{obj}):#{nest_level} > " }, proc { |obj, nest_level, _| "#{RUBY_VERSION} (#{obj}):#{nest_level} * " }]
 
 # *** PLUGINS ***
 begin
@@ -27,6 +24,7 @@ if defined?(PryByebug)
   Pry.commands.alias_command 'f', 'finish'
   Pry.commands.alias_command 'u', 'up'
   Pry.commands.alias_command 'd', 'down'
+  Pry.commands.alias_command 'w', 'whereami'
 
   # Hit Enter to repeat last command
   Pry::Commands.command /^$/, 'repeat last command' do

@@ -244,6 +244,10 @@ function redis:stop {
   ps -ax | grep redis-server | awk 'NR==1{print $1}' | xargs kill
 }
 
+# ** [ MEMCACHED ALIASES ] ******************
+alias memcached:start="memcached -d"
+alias memcached:stop="memcached stop"
+
 # ** [ TMUX ALIASES ] ******************
 alias tmx:l='tmux list-sessions'
 alias tmx:a="tmux attach-session -t ${1}"
@@ -251,6 +255,8 @@ alias tmx:k="tmux kill-session -t $1"
 alias mux='TERM=screen-256color tmuxinator'
 
 # ** [ ELASTIC SEARCH ALIASES ] ******************
+alias es:start="elasticsearch -d"
+alias es:stop="elasticsearch stop"
 alias es:di="curl -XDELETE 'http://localhost:9200/_all'" # delete indexes
 
 # ** [ YOUTUBE-DL SHORTCUTS ] ******************
@@ -282,6 +288,8 @@ alias kdelete="kubectl delete"
 alias kscale="kubectl scale"
 alias krollout="kubectl rollout"
 alias klogs="kubect logs"
+alias kswitch="kubect config use-context"
+alias kcontxt="kubect config current-context"
 # Query common resources
 # Resource reference list:
 # pods (po), services (svc), deployments, replicasets (rs)

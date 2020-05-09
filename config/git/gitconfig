@@ -96,15 +96,11 @@
   editor        = nvim
   excludesfile  = ~/dotfiles/config/git/gitignore
 	pager = diff-so-fancy | less --tabs=4 -RFX
+[mergetool "nvim"]
+  cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
 [merge]
-  summary       = true
-  tool          = fugitive
-  # tool          = vimdiff
-[mergetool "fugitive"]
-  cmd = vim -f -c \"Gvdiffsplit!\" \"$MERGED\"
-# [mergetool "vimdiff"]
-#   cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w|only|diffoff!'
-  # cmd = nvim -d $BASE $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+  tool = nvim
+  summary = true
 [grep]
 	lineNumber      = true
   patternType     = extended
