@@ -1,10 +1,10 @@
 " config/nvim/init.vim
 
-" General options {{
+" General UI options {{
 let g:mapleader = ","
 set relativenumber                  " Set relative number
 set number                          " Precede each line with its line number.
-set tw=80                           " auto wrap lines that are longer than that
+set colorcolumn=80
 set diffopt+=vertical               " Vertical display with vimdiff
 set splitbelow                      " Put a split beneath the current one
 set splitright                      " Put a split to the right the current one
@@ -41,14 +41,15 @@ Plug 'bfrg/vim-cpp-modern'
 Plug 'wlangstroth/vim-racket', {'for': ['scheme', 'racket']}
 Plug 'guns/vim-clojure-static'
 Plug 'guns/vim-sexp' | Plug 'tpope/vim-sexp-mappings-for-regular-people'
-Plug 'tpope/vim-fireplace'
 let g:clojure_align_multiline_strings = 1
+Plug 'tpope/vim-fireplace'
 Plug 'clojure-vim/async-clj-omni'  " Provides completion through deoplete or ncm
 Plug 'eraserhd/parinfer-rust',     { 'for': ['clojure'], 'do': 'cargo build --release' }
 Plug 'humorless/vim-kibit',        { 'for': ['clojure', 'clojurescript'] }
 Plug 'guns/vim-slamhound',         { 'for': ['clojure', 'clojurescript'] }
 Plug 'venantius/vim-cljfmt',       { 'for': ['clojure', 'clojurescript'] }
 let g:clj_fmt_autosave = 1
+" Plug 'Olical/conjure',           {'tag': 'v3.0.0'}
 Plug 'luochen1990/rainbow'          " Rainbow parenthesis
 let g:rainbow_active = 1
 
@@ -90,6 +91,7 @@ let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ 'coc-flutter',
   \ 'coc-go',
+  \ 'coc-java',
   \ 'coc-json',
   \ 'coc-metals',
   \ 'coc-omnisharp',
@@ -186,12 +188,12 @@ let g:vimwiki_global_ext = 0
 let g:vimwiki_list = [{
   \ 'path': '~/Projects/devnotes',
   \ 'syntax': 'markdown',
-  \ 'ext': 'md',
+  \ 'ext': '.md',
   \ 'auto_tags': 1
   \ },{
   \ 'path':      '~/Dropbox/Personal/Notes/',
   \ 'syntax':    'markdown',
-  \ 'ext':       'md',
+  \ 'ext':       '.md',
   \ 'auto_tags': 1
   \ }]
 
@@ -292,8 +294,8 @@ nnoremap <leader>go :silent !tig<CR>:silent redraw!<CR>
 " nnoremap <leader>gb :silent !tig blame % +<C-r>=expand(line('.'))<CR><CR>:silent redraw!<CR>
 
 Plug 'airblade/vim-gitgutter'
-nmap <silent> ]h :<C-U>execute v:count1 . "GitGutterNextHunk"<CR>
-nmap <silent> [h :<C-U>execute v:count1 . "GitGutterPrevHunk"<CR>
+nmap <silent> [h :GitGutterPrevHunk<CR>
+nmap <silent> ]h :GitGutterNextHunk<CR>
 
 Plug 'Xuyuanp/nerdtree-git-plugin'                        " NerdTree-git
 Plug 'junegunn/gv.vim',           {'on': ['Gitv']}        " A git commit browser
@@ -405,18 +407,14 @@ tnoremap <silent> <C-j> <C-\><C-n><C-w>j
 tnoremap <silent> <C-k> <C-\><C-n><C-w>k
 tnoremap <silent> <C-l> <C-\><C-n><C-w>l
 
-" Jump to previous / next cursor position
-nnoremap <A-Left> <C-o>
-nnoremap <A-Right> <C-i>
-
+" Neovim terminal {{
 if has("nvim")
   " Quit terminal Exit/Navigation
   tnoremap jk <C-\><C-n>
-  " Terminal Mode Configuration
   nnoremap <silent><bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
-  nnoremap <C-q>s :<C-u>split +term<CR>
   nnoremap <leader>tt :vnew term://bash<CR>
 endif
+" }}
 
 " Tab navigation keymaps
 nnoremap <silent>tn :tabnew<CR>
@@ -489,8 +487,10 @@ nnoremap Y y$
 "Copy to system clipboard
 vnoremap <C-c> "+y
 
-" Copy the path of the current file
-nnoremap <leader>yf :let @" = expand("%")<CR>
+" Copy relative file path of current buffer to clipboard
+noremap <silent> cp :let @+=expand("%")<CR>
+" Copy absolute file path of current buffer to clipboard
+noremap <silent> cP :let @+=expand("%:p")<CR>
 
 " ctrl-v: Paste
 cnoremap <c-v> <c-r>
@@ -647,7 +647,6 @@ nnoremap <leader>tx :!open -a TeXShop %<cr><cr>
 " build sphinx docs
 nnoremap <leader>bs :!make html<cr>
 nmap <Leader>// :silent !open -a Devdocs.app '%:p'<CR>
-nnoremap <silent><leader>1 :source $MYVIMRC | :PlugInstall <CR>
 
 " Auto-create directories for new files.
 if exists("*mkdir")

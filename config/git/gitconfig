@@ -47,7 +47,7 @@
   files-changed = "!f() { git --no-pager diff --name-only `git merge-base origin/master @`..@; }; f"
   file-diff     = "!f() { git diff `git merge-base origin/master @` -- $1; }; f"
   branch-name   = "!git rev-parse --abbrev-ref HEAD"
-  cleanup       = "!git branch --merged | egrep  -v '\\*|master|prod|staging' | xargs -r -n 1 git branch -d"
+  cleanup       = "!git branch --merged | egrep  -v '\\*|master|prod|staging' | xargs -n 1 git branch -d"
   # Display what changed between the current branch and the master branch
   branch-diff   = "!git diff master $(git branch-name)"
 

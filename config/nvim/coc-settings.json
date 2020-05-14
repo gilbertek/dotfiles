@@ -27,7 +27,6 @@
   "prettier.requireConfig": true,
   "prettier.eslintIntegration": true,
   "prettier.singleQuote": true,
-  "snippets.ultisnips.enable": true,
   "snippets.extends": {
     "vue": ["javascript"]
   },

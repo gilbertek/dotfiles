@@ -184,6 +184,14 @@ alias dkm:ip='docker-machine ip ${1:-default}'
 alias dkm:ssh='docker-machine ssh ${1:-default}'
 alias dkm:init='eval $(docker-machine env ${1:-default})'
 
+alias dk:elasticsearch-6.6="docker run -d --name elasticsearch-6.6 -p 9200:9200 -p 9300:9300 -e 'discovery.type=single-node' elasticsearch:6.6.1"
+alias dk:mysql-5.7="docker run -t -d -p 3306:3306 --name mysql-5.7 -e MYSQL_ALLOW_EMPTY_PASSWORD=1 mysql:5.7 --bind-address=0.0.0.0"
+alias dk:neo4j="docker run -t -d -e NEO4J_AUTH=none -p 7474:7474 -p 7473:7473 -p 7687:7687  --name neo4j neo4j"
+alias dk:orientdb="docker run -e ORIENTDB_ROOT_PASSWORD=orientdb -t -d -p 2424:2424 -p 2480:2480 --name orientdb orientdb"
+alias dk:postgres-9.4="docker run -t -d -p 5432:5432 --name postgres-9-4 postgres:9.4.15"
+alias dk:postgres="docker run -t -d -p 5432:5432 --name postgres postgres"
+alias dk:redis="docker run -t -d -p 6379:6379 --name redis redis --bind 0.0.0.0"
+
 # ** [ GOLANG ALIASES ] ******************
 
 # ** [ RUST ALIASES ] ******************
