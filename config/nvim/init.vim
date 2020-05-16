@@ -33,7 +33,10 @@ set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 " Plugins and configurations {{
 call plug#begin()
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled       = ['elm', 'go']
+let g:polyglot_disabled               = ['elm', 'go']
+let g:haskell_enable_quantification   = 1
+let g:haskell_enable_pattern_synonyms = 1
+let g:haskell_enable_typeroles        = 1
 Plug 'andys8/vim-elm-syntax', { 'for': [ 'elm' ] }
 Plug 'bfrg/vim-cpp-modern'
 

@@ -3,6 +3,8 @@
 # Install dotfiles symlinks.
 set -e
 
+DOTFILES="$HOME/dotfiles"
+
 msg() {
   printf '%b\n' "$1" >&2
 }
@@ -37,11 +39,17 @@ case $os in
   ;;
 esac
 
-DOTFILES="$HOME/dotfiles"
+# This detection only works for mac and linux.
+if [ "$(uname)" == "Darwin" ]; then
+  msg "Setting up $HOME/.bash_profile"
+  ln -snf "${DOTFILES}/system/osx/bash_profile" "$HOME/.bash_profile"
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+  msg "seeting up ${HOME}/.bashrc"
+  ln -snf "${DOTFILES}/system/linux/bashrc" "$HOME/.bashrc"
+fi
+
 
 _FILES=(
-  bash_profile
-  bashrc
   aliases
   functions
   railsrc
@@ -118,7 +126,7 @@ fi
 
 if [[ ! -f ~/.cargo/config ]]
 then
-	mkdir -p ~/.cargo && ln -s "$DOTFILES/cargo/config" ~/.cargo/config
+	mkdir -p ~/.cargo && ln -s "$DOTFILES/config/cargo/config" ~/.cargo/config
 else
 	echo "detected .cargo directory, skpping cargo setup"
 fi
