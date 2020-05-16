@@ -49,6 +49,9 @@ alias paths='echo -e ${PATH//:/\\n}' # Pretty-print of some PATH variables
 alias rmr="rm -rf"
 alias ports="lsof -i -P"
 alias tree='tree -C'
+# Display tree of directories or previews of files
+# alias trees="ls -ah | fzf --preview 'if [[ -d {} ]]; then tree {}; else bat --color always {}; fi'"
+alias trees="ls -ah | fzf --preview 'if [[ -d {} ]]; then tree {}; else bat --color always {}; fi'"
 alias p='pwd'
 alias ls="ls -lh"
 alias ll='ls -Alh'
@@ -65,6 +68,7 @@ alias h='history'
 alias curl="curl -sL" # Avoid progress bar and follow redirects
 alias topdir="du -sh */ | sort -rh | head -5"
 alias nom="rm -rf node_modules; npm cache clean; npm i"
+alias node-prune='find . -name "node_modules" -type d -prune -exec rm -rf '{}' +'
 alias yom="rm -rf node_modules; yarn"
 # Add simulator to start the iOS simulator
 alias simulator="open -a Simulator"
@@ -183,14 +187,20 @@ alias dkm:reload='eval $(docker-machine env default)'
 alias dkm:ip='docker-machine ip ${1:-default}'
 alias dkm:ssh='docker-machine ssh ${1:-default}'
 alias dkm:init='eval $(docker-machine env ${1:-default})'
+alias dk:ps='docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Ports}}"'
+alias dk:sps='clear && docker service ps --format "table {{.Name}}\t{{.Image}}\t{{.CurrentState}}"'
 
-alias dk:elasticsearch-6.6="docker run -d --name elasticsearch-6.6 -p 9200:9200 -p 9300:9300 -e 'discovery.type=single-node' elasticsearch:6.6.1"
+alias dk:esearch-6.6="docker run -d --name elasticsearch-6.6 -p 9200:9200 -p 9300:9300 -e 'discovery.type=single-node' elasticsearch:6.6.1"
 alias dk:mysql-5.7="docker run -t -d -p 3306:3306 --name mysql-5.7 -e MYSQL_ALLOW_EMPTY_PASSWORD=1 mysql:5.7 --bind-address=0.0.0.0"
 alias dk:neo4j="docker run -t -d -e NEO4J_AUTH=none -p 7474:7474 -p 7473:7473 -p 7687:7687  --name neo4j neo4j"
 alias dk:orientdb="docker run -e ORIENTDB_ROOT_PASSWORD=orientdb -t -d -p 2424:2424 -p 2480:2480 --name orientdb orientdb"
 alias dk:postgres-9.4="docker run -t -d -p 5432:5432 --name postgres-9-4 postgres:9.4.15"
 alias dk:postgres="docker run -t -d -p 5432:5432 --name postgres postgres"
 alias dk:redis="docker run -t -d -p 6379:6379 --name redis redis --bind 0.0.0.0"
+
+# ** [ SCALA ALIASES ] ******************
+alias new-sbt='g8 scala/scala-seed.g8'
+alias mlog='tail -f .metals/metals.log'
 
 # ** [ GOLANG ALIASES ] ******************
 

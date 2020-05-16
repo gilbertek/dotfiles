@@ -30,7 +30,7 @@ set foldlevel=99                    " ... but don't close them automatically
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 " }}
 
-"{{{ Plugins and configurations
+" Plugins and configurations {{
 call plug#begin()
 Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled       = ['elm', 'go']
@@ -164,7 +164,7 @@ Plug 'ludovicchabant/vim-gutentags'         " Easily manage tags files
 let g:gutentags_project_root     = ['.root', '.git', '.svn', '.hg', '.project']
 " let g:gutentags_ctags_tagfile    = '.tags'
 let g:gutentags_ctags_extra_args = ['--output-format=e-ctags']
-let g:gutentags_cache_dir        = '~/.config/nvim/tags'
+let g:gutentags_cache_dir        = expand('~/.config/nvim/tags')
 let g:gutentags_ctags_exclude    = [
       \ 'node_modules',
       \ 'dist',
@@ -176,7 +176,7 @@ let g:gutentags_ctags_exclude    = [
 
 " vim-rooter {{ "
 Plug 'airblade/vim-rooter'
-let g:rooter_patterns = ['.root', 'package.json', '.git/']
+let g:rooter_patterns = ['.root', '.git/']
 " }} vim-rooter "
 
 Plug 'itchyny/calendar.vim' " Calendar integration
@@ -288,7 +288,9 @@ nnoremap <leader>gp :Dispatch Git push<CR>
 nnoremap <leader>gl :Glog<cr>
 nnoremap <leader>ga :silent !git add % &<cr><cr>
 nnoremap <Leader>gac :silent !git add -A<CR>:Gcommit<CR>
+" Diffget from the left pane (merge branch)
 nnoremap gdh :diffget //2<CR>
+" Diffget from right pane (target branch)
 nnoremap gdl :diffget //3<CR>
 nnoremap <leader>go :silent !tig<CR>:silent redraw!<CR>
 " nnoremap <leader>gb :silent !tig blame % +<C-r>=expand(line('.'))<CR><CR>:silent redraw!<CR>
@@ -374,7 +376,7 @@ let g:lightline = {
 Plug 'epilande/vim-react-snippets'
 Plug 'SirVer/ultisnips'               " Track the snippets engine.
 Plug 'honza/vim-snippets'             " Snippets are separated from the engine.
-" }}}
+" }}
 """" 2.4) End Code completion & Navigation #code-navigation
 call plug#end()
 "" Plugin configuration that has to run after plug#end
@@ -412,7 +414,7 @@ if has("nvim")
   " Quit terminal Exit/Navigation
   tnoremap jk <C-\><C-n>
   nnoremap <silent><bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
-  nnoremap <leader>tt :vnew term://bash<CR>
+  nnoremap <leader>st :split term://$SHELL<CR>
 endif
 " }}
 
@@ -663,7 +665,7 @@ augroup general
   autocmd BufLeave,FocusLost * :silent! wall
   autocmd BufEnter,FocusGained * checktime
 
-  autocmd Filetype gitcommit,markdown setlocal spell textwidth=72 conceallevel=0
+  autocmd BufReadPost,BufNewFile *.md,*.txt,COMMIT_EDITMSG setlocal spell textwidth=72 conceallevel=0
   autocmd BufEnter PULLREQ_EDITMSG setlocal filetype=gitcommit
   autocmd InsertLeave * set nopaste " Leave paste mode when leaving insert mode
   autocmd InsertLeave * pc          " Close preview on insert leave
@@ -679,6 +681,7 @@ augroup general
   au BufRead,BufNewFile .{eslintrc,prettierrc} set filetype=json
   autocmd BufNewFile,BufRead .{babel,eslint,jshint,prettier}rc setlocal filetype=json
   autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ es5
+  nnoremap <Leader>co :let &cole=(&cole == 2) ? 0 : 2 <bar> echo 'conceallevel ' . &cole <CR>
   " nnoremap <expr> <C-n> 'Odebugger;<esc>:w<CR>:vsp<CR> :term<CR>Anode --inspect -r ts-node/register ' . expand('%') .'<CR>'
 
   " set up default omnifunc
