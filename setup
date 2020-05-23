@@ -120,20 +120,12 @@ fi
 # mkdir -p ~/.sbt/1.3.10/plugins
 # ln -s "$DOTFILES/system/sbtplugins.sbt" ~/.sbt/1.3.10/plugins/dotfileplugins.sbt
 
-#make sure gpg exists for programs that use it
-if command -v gpg2 >/dev/null 2>&1; then
-  ln -s "$(command -v gpg2)" ~/bin/gpg
-fi
-
-if [[ ! -f ~/.cargo/config ]]
-then
-	mkdir -p ~/.cargo && ln -s "$DOTFILES/config/cargo/config" ~/.cargo/config
-else
-	echo "detected .cargo directory, skpping cargo setup"
+if [[ ! -f ~/.cargo/config ]]; then
+	mkdir -p ~/.cargo && ln -s "$DOTFILES/config/cargo/config" "$HOME/.cargo/config"
 fi
 
 create_symlinks
-create_bin_symlinks
+create_bin_symlinksinstalls/asdf/
 
 ret="$?"
 success "Dotfiles have been configured! 🤘"

@@ -6,7 +6,6 @@ formulas=(
   # leetcode-cli
   neovim
   prettier
-  babel-eslint
   typescript
   eslint
   elm
