@@ -1,0 +1,298 @@
+# ~/.bash_profile
+
+bind "set completion-ignore-case on"        # Case-Insensitive Auto Completion
+bind "set show-all-if-ambiguous on"         # Display matches for ambiguous patterns
+shopt -s histappend                         # Append to history from all terminals in realtime
+shopt -s cmdhist                            # store multiline commands as 1 line
+shopt -s cdspell                            # spelling error correction
+shopt -s checkwinsize                       # check window size after command and, if necessary, update lines and columns.
+shopt -s nocaseglob                         # Case-insensitive globbing (for pathname expansion)
+shopt -s extglob
+HISTCONTROL="ignoredups:erasedups"          # ignore duplicates(store command once)
+HISTSIZE=10000	                            # Larger bash history...
+HISTFILESIZE=10000	                        # Larger bash history...
+HISTIGNORE="&:ll:ls:c:cd:cd -:pwd:exit:logout:quit:reset" # Don't record some commands
+export PROMPT_COMMAND='history -a;history -c;history -r'
+export CLICOLOR=1
+export LSCOLORS=ExFxBxDxCxegedabagacad
+export SHELL=bash
+
+# Disable DOTNET analytics
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+# macOS-specific environment flags
+if [[ $OSTYPE == "darwin"* ]]; then
+  export COCOAPODS_DISABLE_STATS=1
+  export HOMEBREW_NO_ANALYTICS=1
+  export HOMEBREW_INSTALL_CLEANUP=1
+
+  # Homebrew
+  [[ ":$PATH:" =~ ":/usr/local/bin:" ]]  || PATH="/usr/local/bin:$PATH"
+  [[ ":$PATH:" =~ ":/usr/local/sbin:" ]] || PATH="/usr/local/sbin:$PATH"
+fi
+
+# Motivation reminder
+now=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+alias DATE="date '+%Y-%m-%d'"
+alias TIME="date '+%H·%M·%S'"
+alias DATETIME="date '+%Y-%m-%d.%H·%M·%S'"
+# echo "2019 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); print "There are " int(dt/86400/7) " weeks left until the year ends. What will you do?";}'
+
+# Add `~/bin` to the `$PATH`
+if [ -d "$HOME/bin" ] ; then
+  PATH="$HOME/bin:$PATH"
+fi
+
+# Load the shell dotfiles, and then some:
+# * ~/.path can be used to extend `$PATH`.
+for file in ~/.{aliases,functions,extra,bashrc,bashrc.local,aliases.local}; do
+	[ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+unset file;
+
+# GO Path setups
+# export GO111MODULE=on
+# export GOPATH=$HOME/Projects/GOAPPS
+export PATH=$PATH:/usr/local/go/bin
+
+# Groovy Home path setup
+if [ -d /usr/local/opt/groovy/libexec ]; then
+  export GROOVY_HOME=/usr/local/opt/groovy/libexec
+fi
+
+if [ -f /usr/libexec/java_home ]; then
+  export JAVA_HOME=`/usr/libexec/java_home`
+  export NASHORN_HOME=$JAVA_HOME/bin
+fi
+
+# export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+
+# export M2_HOME=/usr/local/Cellar/maven/3.5.4/libexec
+# export M2=$M2_HOME/bin
+# export PATH=$PATH:$M2_HOME/bin
+# export MAVEN_OPTS="-Xmx2048m -Xms512m -XX:MaxPermSize=312M -XX:ReservedCodeCacheSize=128m -Dsun.lang.ClassLoader.allowArraySyntax=true -ea -Dfile.encoding=UTF-8"
+# export MAVEN_JMX="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=6969 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+
+# Haskell/hdevtools Home path setup
+export PATH=~/.local/bin:$PATH
+
+# Haskell Platform settings
+if [[ -f .ghcup/env ]]; then
+  export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+fi
+
+# Put GHC on the path globally
+GHC_PATH=`stack path | grep compiler-bin | sed -e 's/compiler-bin: //'`
+export PATH="$PATH:$GHC_PATH"
+
+# Persistent history in Elixir repl IEx
+export ERL_AFLAGS="-kernel shell_history enabled"
+
+# android
+if [ -d $HOME/Library/Android/sdk ]; then
+  export ANDROID_HOME=$HOME/Library/Android/sdk
+  export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+fi
+
+# Dart and Flutter path setup
+if [ -d $HOME/.pub-cache/bin ]; then
+  export PATH="$PATH":"$HOME/.pub-cache/bin"
+fi
+
+# LLVM Bindings
+if [ -d /usr/local/opt/llvm/bin ]; then
+  export PATH="/usr/local/opt/llvm/bin:$PATH"
+fi
+
+# export PATH=$PATH:$HOME/.luarocks/bin
+
+# Google Cloud SDK.
+if [[ -x "$(command -v gcloud)" ]]; then
+  source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+  source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+fi
+
+export ANT_OPTS='-Xms512M -Xmx1024M -XX:MaxPermSize=1024M'
+export ANT_ARGS='-logger org.apache.tools.ant.listener.AnsiColorLogger'
+
+# Make neovim the default editor
+export EDITOR=nvim
+export GIT_EDITOR=$EDITOR # git uses the default editor
+export VISUAL=nvim
+
+
+# Setting fd as the default source for fzf
+export FZF_DEFAULT_OPTS='--height 50% --inline-info --border --cycle'
+export FZF_DEFAULT_COMMAND='rg --files --column --hidden --smart-case --follow --ignore-vcs -g "!{node_modules,*.swp,dist,coverage,*.cache}/*"'
+export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export PROJECT_HOME=$HOME/Projects
+
+# ♥ ☆ ⚡ λ ❯ » ▸ → 💥 ✚ - Keeping some cool ASCII Characters for reference
+CHAR='λ'
+
+PS1="\[\e[33m\]\u\[\e[m\]\[\e[37m\]/\[\e[m\]\[\e[31m\]\W\[\e[m\] \[\e[34m\]\`parse_git_branch\`\[\e[m\] $CHAR "
+
+# Ensure ssh agent is running
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  eval `ssh-agent -s`
+  ssh-add ~/.ssh/id_rsa
+fi
+
+if command -v xclip >/dev/null; then
+  alias pbcopy='xclip -sel clip -i'
+  alias pbpaste='xclip -sel clip -o'
+fi
+
+# phpenv
+if [ -d $HOME/.phpenv ] ; then
+  PHPENV_HOME="$HOME/.phpenv"
+  export PATH="$PHPENV_HOME/bin:$HOME/.composer/vendor/bin:$PATH"
+  eval "$(phpenv init -)"
+fi
+
+# if command -v perl6 > /dev/null; then
+#   alias rp='rlwrap perl6'
+#   alias prove6='prove -r -e perl6'
+#   alias p6='perl6'
+# fi
+
+if command -v racket > /dev/null; then
+  alias rkt='rlwrap racket'
+fi
+
+if [[ -x "$(command -v bat)" ]]; then
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+fi
+
+# Interpreters that don't have built-in readline support
+alias poly="rlwrap poly" # PolyML
+alias csi="rlwrap csi" # Chicken Scheme
+
+# For a ipython notebook and pyspark integration
+if command -v pyspark > /dev/null; then
+  export SPARK_HOME="$(brew --prefix apache-spark)/libexec"
+  export PYSPARK_SUBMIT_ARGS="--master local[2]"
+  export PYSPARK_DRIVER=python3
+  export PYSPARK_DRIVER_PYTHON=jupyter
+  export PYSPARK_DRIVER_PYTHON_OPTS=notebook
+fi
+
+# asdf package manager
+[[ -f ~/.asdf/asdf.sh ]] && . $HOME/.asdf/asdf.sh
+[[ -f ~/.asdf/completions/asdf.bash ]] &&. $HOME/.asdf/completions/asdf.bash
+[[ -f ~/.asdf/plugins/java/set-java-home.sh ]] && . ~/.asdf/plugins/java/set-java-home.sh
+
+# Rust
+if command -v rustc &>/dev/null; then
+  export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+fi
+
+# OPAM configuration
+. $HOME/.asdf/installs/ocaml/4.07.0/opam-init/init.sh > /dev/null 2> /dev/null || true
+
+# hub as git
+if command -v hub > /dev/null; then
+  eval "$(hub alias -s)"
+fi
+
+# kubectl
+if command -v kubectl &>/dev/null; then
+  source <(kubectl completion bash)
+  complete -F __start_kubectl k
+  export KUBECTL_CONTEXT=$(kubectl config current-context)
+fi
+
+# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2- | tr ' ' '\n')" scp sftp ssh;
+
+# Add tab completion for `defaults read|write NSGlobalDomain`
+# You could just use `-g` instead, but I like being explicit
+complete -W "NSGlobalDomain" defaults;
+
+# Docker (for mac only)
+# if command -v docker-machine > /dev/null; then
+#   if [ $(docker-machine status default 2>/dev/null) == "Running" ]; then
+#     eval "$(docker-machine env default)"
+#   fi
+# fi
+
+# Todo
+# Remove dups from path
+# This is in reverse order.
+paths=(
+    /usr/local/sbin
+    $HOME/Library/Haskell/bin
+    $OCLINT_HOME/bin
+    /usr/local/go/bin
+    $GOPATH/bin
+    /usr/local/opt/openssl/bin
+    /Library/TeX/texbin
+    $haskell_local_bin
+    $HOME/bin
+)
+
+# export PATH="$(printf '%s:' "${paths[@]%/}")$PATH"
+
+# Autocompletions
+#-------------------------------------------------------------------------------
+[[ -f ~/.config/exercism/exercism_completion.bash ]] && \
+  . ~/.config/exercism/exercism_completion.bash
+
+# if [[ -n "$OPAMROOT" ]]; then
+#     opaminit="$OPAMROOT/opam-init/init.sh"
+# else
+#     opaminit="$HOME/.opam/opam-init/init.sh"
+# fi
+# [[ -f "$opaminit" ]] && source "$opaminit"
+# unset opaminit
+
+if [[ $OSTYPE == "darwin"* ]]; then
+  if [[ -n "$(which brew)" ]]; then
+    export BREW_CELLAR=$(brew --cellar)
+    export BREW_PREFIX=$(brew --prefix)
+  fi
+
+  # https://docs.brew.sh/Shell-Completion#configuring-completions-in-bash
+  if [[ ! ${#BREW_PREFIX} -eq 0 ]]; then
+    for COMPLETION in "${BREW_PREFIX}/etc/bash_completion.d/"*; do
+      [[ -r "$COMPLETION" ]] && source "$COMPLETION"
+    done
+  fi
+fi
+
+#Linux Completion
+if [[ -f /etc/bash_completion ]]; then
+	bash /etc/bash_completion
+fi
+
+#Azure CLI completion
+if command -v azure > /dev/null; then
+  azure --completion > ~/azure.completion.sh
+  source ~/azure.completion.sh
+fi
+
+# Run SSH-agent (if it's not already running)
+# if ! pgrep ssh-agent > /dev/null; then
+#     ssh-agent > /dev/null
+# fi
+# Add SSH identities to the agent
+# if ! ssh-add -l > /dev/null; then
+#     echo "Add SSH identity to ssh-agent:"
+#     # store passphrase to Keychain
+#     ssh-add ~/.ssh/id_rsa
+# fi
+
+MESSAGE=(
+	"Amazing THINGS will HAPPEN!"
+	"Be the best version of you"
+	"Life is like riding a bicycle. To keep your balance, you must keep moving"
+	"You never know how strong you are until being strong is the only choice you have"
+	"Start today!"
+	"Why complicate life? We just have one Life. Keep it simple"
+	"think positive. talk positive. feel positive"
+	"if opportunity does not knock, build a door"
+)
+RANDOM=$$$(date +%s)
+echo ${MESSAGE[$RANDOM % ${#MESSAGE[@]}]}

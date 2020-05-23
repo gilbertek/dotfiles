@@ -13,16 +13,22 @@
 #    type, an optional scope, and a subject
 #       + <type> describes the kind of change that this commit is
 #                providing. Allowed types are:
-#             * build:    Changes that affect the build system or external dependencies
-#             * ci:       Changes to our CI configuration files and scripts
-#             * chore:    (maintain)
-#             * docs:     Documentation only changes
-#             * feat:     A new feature
-#             * fix:      A bug fix
-#             * perf:     A code change that improves performance
-#             * refactor: A code change that neither fixes a bug nor adds a feature
-#             * test:     Adding missing tests or correcting existing tests
-#             * style:    Changes that do not affect the meaning of the code
+#             *   🎉 : initial commit
+#             *  ✨ : feat:     A new feature
+#             *  🐛 : bug:      A bug fix
+#             *  🗑️  : remove
+#             *  ♻  : refactor: A code change that neither fixes a bug nor adds a feature
+#             *  💚 : test:     Adding missing tests or correcting existing tests
+#             *  💬 : comment
+#             *  🎨 : style:    Style ui/ux change that do not affect the meaning of the code
+#             *  📖 : doc:      Documentation only changes
+#             *  🔖 : tag
+#             *  🔧 : tool
+#             * 👮  : lint
+#             *  🐎 : perf:     A code change that improves performance
+#             * build:          Changes that affect the build system or external dependencies
+#             * ci:             Changes to our CI configuration files and scripts
+#             * chore:          (maintain)
 #       + <scope> can be anything specifying the place of the commit
 #                 change
 #       + <subject> is a very short description of the change, in

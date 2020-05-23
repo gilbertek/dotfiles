@@ -49,12 +49,16 @@ alias paths='echo -e ${PATH//:/\\n}' # Pretty-print of some PATH variables
 alias rmr="rm -rf"
 alias ports="lsof -i -P"
 alias tree='tree -C'
-# Display tree of directories or previews of files
-# alias trees="ls -ah | fzf --preview 'if [[ -d {} ]]; then tree {}; else bat --color always {}; fi'"
-alias trees="ls -ah | fzf --preview 'if [[ -d {} ]]; then tree {}; else bat --color always {}; fi'"
 alias p='pwd'
-alias ls="ls -lh"
-alias ll='ls -Alh'
+if [ "$(uname)" = 'Darwin' ]; then
+    alias ls='ls -G'
+else
+    alias ls='ls --color=auto'
+    alias pbcopy='xsel --clipboard --input'
+    alias pbpaste='xsel --clipboard --output'
+fi
+alias ls='ls -lhv'
+alias ll='ls -lhAv'
 alias l='ls -CF'
 alias lsnew="ls -rtl"           # list by new
 alias lsold="ls -tl"            # list by old
@@ -182,6 +186,7 @@ alias dk:i='docker image'
 alias dk:c='docker container'
 alias dk:rd='docker run -d '
 alias dk:clean='docker system prune --all --volumes'
+alias dk:rmi="docker stop $(docker ps -a -a) && docker rm $(docker ps -a -q)"
 alias dkm='docker-machine'
 alias dkm:reload='eval $(docker-machine env default)'
 alias dkm:ip='docker-machine ip ${1:-default}'

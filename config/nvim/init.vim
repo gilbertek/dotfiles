@@ -27,6 +27,7 @@ set updatetime=300                  " Update more often (helps coc)
 set undodir=~/.config/nvim/undo     " Undo temp file directory
 set foldmethod=syntax               " Fold based on indent/syntax
 set foldlevel=99                    " ... but don't close them automatically
+set grepprg=rg\ --vimgrep\ --ignore-case
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 " }}
 
@@ -95,6 +96,7 @@ let g:coc_global_extensions = [
   \ 'coc-flutter',
   \ 'coc-go',
   \ 'coc-java',
+  \ 'coc-java-debug',
   \ 'coc-json',
   \ 'coc-metals',
   \ 'coc-omnisharp',
@@ -131,8 +133,27 @@ Plug 'vim-perl/vim-perl6', { 'for': 'perl6' }   " Vim support for Perl 6
 Plug 'c9s/perlomni.vim'                         " Perl completion
 Plug 'zerodogg/vim-mason'
 
+Plug 'puremourning/vimspector' "  A multi language graphical debugger for Vim
+
 " Plugins for Database support
-Plug 'tpope/vim-db'
+Plug 'tpope/vim-dotenv'
+Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-ui'
+" vim-dadbod-ui config {{{
+let g:db_ui_dotenv_variable_prefix = 'DBUI_'
+let g:db_ui_save_location = '~/.config/nvim/dbui'
+let g:db_ui_table_helpers = {
+    \   'postgresql': {
+    \     'Explain': 'EXPLAIN ANALYZE {last_query}'
+    \   },
+    \   'mysql': {
+    \     'Explain': 'EXPLAIN ANALYZE {last_query}'
+    \   }
+    \ }
+" }}}
+
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}              " Asynchronous execution library for Vim
+
 Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 " Plug 'vyzyv/vimpyter' " Plugins for Jupyter notebooks
 
@@ -162,11 +183,17 @@ nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 let test#strategy = 'neovim'
 
-" vim-gutentags {{ "
+" vim-gutentags {{{ "
 Plug 'ludovicchabant/vim-gutentags'         " Easily manage tags files
-let g:gutentags_project_root     = ['.root', '.git', '.svn', '.hg', '.project']
-" let g:gutentags_ctags_tagfile    = '.tags'
-let g:gutentags_ctags_extra_args = ['--output-format=e-ctags']
+let g:gutentags_add_default_project_roots = 0
+let g:gutentags_project_root              = ['.root', '.git', '.svn', '.hg', '.project']
+let g:gutentags_generate_on_new           = 1
+let g:gutentags_generate_on_missing       = 1
+let g:gutentags_generate_on_write         = 1
+let g:gutentags_ctags_extra_args          = [
+      \ '--tag-relative=yes',
+      \ '--fields=+ailmnS',
+      \ ]
 let g:gutentags_cache_dir        = expand('~/.config/nvim/tags')
 let g:gutentags_ctags_exclude    = [
       \ 'node_modules',
@@ -175,7 +202,7 @@ let g:gutentags_ctags_exclude    = [
       \ 'coverage',
       \ '.git'
       \ ]
-" }} vim-gutentags "
+" }}} vim-gutentags "
 
 " vim-rooter {{ "
 Plug 'airblade/vim-rooter'
@@ -220,10 +247,6 @@ nmap <silent><leader>cp <c-_>p
 " Jump between quicklist, location items with ease, among other things
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
-nmap s  <Plug>Ysurround
-nmap S  <Plug>YSurround
-xmap s  <Plug>VSurround
-xmap S  <Plug>VgSurround
 
 Plug 'junegunn/vim-easy-align'  " Interactive EasyAlign in visual mode (e.g. vipga/gaip)
 xmap ga <Plug>(EasyAlign)
@@ -644,6 +667,8 @@ command! -nargs=0 Format :call CocAction('format')
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 "}}}
 
+command! -nargs=+ F execute 'silent grep!' <q-args> | cw | redraw!
+
 " Hit Ctrl+A to select all in current buffer
 nnoremap <C-a> ggVG
 
@@ -669,13 +694,15 @@ augroup general
   autocmd BufEnter,FocusGained * checktime
 
   autocmd BufReadPost,BufNewFile *.md,*.txt,COMMIT_EDITMSG setlocal spell textwidth=72 conceallevel=0
+  " automatically add filename as header to markdown files
+  autocmd BufNewFile *.md execute "normal i## \<C-r>=expand(\"%:t:r\")\<CR>"
   autocmd BufEnter PULLREQ_EDITMSG setlocal filetype=gitcommit
   autocmd InsertLeave * set nopaste " Leave paste mode when leaving insert mode
   autocmd InsertLeave * pc          " Close preview on insert leave
   autocmd BufWinEnter * silent! :%foldopen! " Expand all folds when entering a file
   autocmd Filetype markdown nnoremap <Leader>, :w<cr>:!pandoc % \| lynx -stdin<cr>:redraw!<cr>
   autocmd FileType make setlocal noexpandtab
-  autocmd FileType java setlocal omnifunc=javacomplete#Complete
+  " autocmd FileType java setlocal omnifunc=javacomplete#Complete
   autocmd BufNewFile,BufRead .env.* setfiletype sh
   autocmd FileType ruby nmap <Leader>r :RuboCop<CR>
   autocmd FileType ruby,yaml,ocaml,javascript setl tabstop=2 shiftwidth=2 softtabstop=2
@@ -686,6 +713,8 @@ augroup general
   autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --single-quote\ es5
   nnoremap <Leader>co :let &cole=(&cole == 2) ? 0 : 2 <bar> echo 'conceallevel ' . &cole <CR>
   " nnoremap <expr> <C-n> 'Odebugger;<esc>:w<CR>:vsp<CR> :term<CR>Anode --inspect -r ts-node/register ' . expand('%') .'<CR>'
+  " Return to last edit position when opening files (You want this!)
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
   " set up default omnifunc
   autocmd FileType *
@@ -714,6 +743,7 @@ augroup Coc-Mapping
 
   autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
   autocmd BufWritePre *.java :call CocAction('runCommand', 'java.action.organizeImports')
+  autocmd BufWritePre *.py :call CocAction('runCommand', 'python.sortImports')
 augroup END
 
 augroup Lisp-Family

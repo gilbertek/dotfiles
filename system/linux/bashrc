@@ -1,0 +1,230 @@
+# ~/.bashrc
+#
+
+[[ $- != *i* ]] && return
+
+# Bash won't get SIGWINCH if another process is in the foreground.
+# Enable checkwinsize so that bash will check the terminal size when
+# it regains control.  #65623
+# http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
+shopt -s checkwinsize
+
+bind "set completion-ignore-case on"            # Case-Insensitive Auto Completion
+bind "set show-all-if-ambiguous on"             # Display matches for ambiguous patterns
+shopt -s histappend                             # Append to history from all terminals in realtime
+shopt -s cdspell                                # spelling error correction
+shopt -s nocaseglob                             # Case-insensitive globbing (for pathname expansion)
+shopt -s expand_aliases
+shopt -s cmdhist
+shopt -s dotglob
+shopt -s extglob
+HISTCONTROL="ignoredups:ignorespace:erasedups"  # ignore duplicates(store command once)
+# export QT_SELECT=4
+
+HISTSIZE=-1
+HISTFILESIZE=-1
+HISTIGNORE="&:[ ]*:ll:ls:c:h:cd:pwd:exit:quit:reset" # Don't record some commands
+
+for file in $HOME/.{aliases,functions}; do
+    [ -f "${file}" ] && source "${file}"
+done;
+
+# Add `~/bin` to the `$PATH`
+if [ -d "$HOME/bin" ] ; then
+  PATH="$HOME/bin:$PATH"
+fi
+
+# macOS-specific environment flags
+if [[ $OSTYPE == "darwin"* ]]; then
+  export COCOAPODS_DISABLE_STATS=1
+  export HOMEBREW_NO_ANALYTICS=1
+  export HOMEBREW_INSTALL_CLEANUP=1
+
+  # Homebrew
+  [[ ":$PATH:" =~ ":/usr/local/bin:" ]]  || PATH="/usr/local/bin:$PATH"
+  [[ ":$PATH:" =~ ":/usr/local/sbin:" ]] || PATH="/usr/local/sbin:$PATH"
+
+  # Groovy Home path setup
+  if [ -d /usr/local/opt/groovy/libexec  ]; then
+    export GROOVY_HOME=/usr/local/opt/groovy/libexec
+  fi
+
+  # Java
+  if [ -f /usr/libexec/java_home  ]; then
+    export JAVA_HOME=`/usr/libexec/java_home`
+    export NASHORN_HOME=$JAVA_HOME/bin
+  fi
+
+  # For a ipython notebook and pyspark integration
+  if command -v pyspark > /dev/null; then
+    export SPARK_HOME="$(brew --prefix apache-spark)/libexec"
+    export PYSPARK_SUBMIT_ARGS="--master local[2]"
+    export PYSPARK_DRIVER=python3
+    export PYSPARK_DRIVER_PYTHON=jupyter
+    export PYSPARK_DRIVER_PYTHON_OPTS=notebook
+  fi
+
+  if [[ -n "$(which brew)" ]]; then
+    export BREW_CELLAR=$(brew --cellar)
+    export BREW_PREFIX=$(brew --prefix)
+  fi
+
+  #Mac Completion
+  if [[ ! ${#BREW_PREFIX} -eq 0 ]]; then
+    if [[ -d $BREW_PREFIX/etc/bash_completion.d ]]; then
+      source $BREW_PREFIX/etc/bash_completion.d/*
+    fi
+  fi
+else
+  # Linux configs
+  xhost +local:root > /dev/null 2>&1
+  complete -cf sudo
+fi
+
+use_color=true
+
+# Set colorful PS1 only on colorful terminals.
+# dircolors --print-database uses its own built-in database
+# instead of using /etc/DIR_COLORS.  Try to use the external file
+# first to take advantage of user additions.  Use internal bash
+# globbing instead of external grep binary.
+safe_term=${TERM//[^[:alnum:]]/?}   # sanitize TERM
+match_lhs=""
+[[ -f ~/.dir_colors   ]] && match_lhs="${match_lhs}$(<~/.dir_colors)"
+[[ -f /etc/DIR_COLORS ]] && match_lhs="${match_lhs}$(</etc/DIR_COLORS)"
+[[ -z ${match_lhs}    ]] \
+	&& type -P dircolors >/dev/null \
+	&& match_lhs=$(dircolors --print-database)
+[[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] && use_color=true
+
+if ${use_color} ; then
+	# Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
+	if type -P dircolors >/dev/null ; then
+		if [[ -f ~/.dir_colors ]] ; then
+			eval $(dircolors -b ~/.dir_colors)
+		elif [[ -f /etc/DIR_COLORS ]] ; then
+			eval $(dircolors -b /etc/DIR_COLORS)
+		fi
+	fi
+
+	if [[ ${EUID} == 0 ]] ; then
+		PS1='\[\033[01;31m\][\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '
+	else
+		PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\] \W\[\033[01;32m\]]\$\[\033[00m\] '
+	fi
+
+	alias ls='ls --color=auto'
+	alias grep='grep --colour=auto'
+	alias egrep='egrep --colour=auto'
+	alias fgrep='fgrep --colour=auto'
+else
+	if [[ ${EUID} == 0 ]] ; then
+		# show root@ when we don't have colors
+		PS1='\u@\h \W \$ '
+	else
+		PS1='\u@\h \w \$ '
+	fi
+fi
+
+unset use_color safe_term match_lhs sh
+alias cp="cp -i"                          # confirm before overwriting something
+alias df='df -h'                          # human-readable sizes
+alias free='free -m'                      # show sizes in MB
+alias np='nano -w PKGBUILD'
+alias more=less
+
+# Disable DOTNET analytics
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+# GO Path setups
+export GO111MODULE=on
+export GOPATH=$HOME/Projects/GOAPPS
+export PATH=$PATH:$GOPATH/bin
+export GOAPPS=$GOPATH/src/github.com/gilbertek
+
+# Haskell/hdevtools Home path setup
+export PATH=~/.local/bin:$PATH
+
+# Put GHC on the path globally
+GHC_PATH=`stack path | grep compiler-bin | sed -e 's/compiler-bin: //'`
+export PATH="$PATH:$GHC_PATH"
+
+# Persistent history in Elixir repl IEx
+export ERL_AFLAGS="-kernel shell_history enabled"
+
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+# Ensure ssh agent is running
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  eval `ssh-agent -s`
+  ssh-add ~/.ssh/id_rsa
+fi
+
+if command -v xclip >/dev/null; then
+  alias pbcopy='xclip -sel clip -i'
+  alias pbpaste='xclip -sel clip -o'
+fi
+# Make neovim the default editor
+export EDITOR=nvim
+export GIT_EDITOR=$EDITOR # git uses the default editor
+export VISUAL=nvim
+
+export FZF_DEFAULT_OPTS='--height 60% --reverse'
+
+# Setting fd as the default source for fzf
+export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case --glob "!.git/*"'
+export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export PROJECT_HOME=$HOME/Projects
+
+# hub extends git
+if command -v hub > /dev/null; then
+  eval "$(hub alias -s)"
+fi
+
+# Completions
+# asdf package manager
+[[ -f /usr/local/opt/asdf/asdf.sh ]] && . /usr/local/opt/asdf/asdf.sh
+[[ -f $HOME/.asdf/asdf.sh ]] && . $HOME/.asdf/asdf.sh
+[[ -f $HOME/.asdf/completions/asdf.bash ]] && . $HOME/.asdf/completions/asdf.bash
+[[ -f $HOME/.asdf/plugins/java/set-java-home.sh ]] && . $HOME/.asdf/plugins/java/set-java-home.sh
+
+# Rust
+PATH="$HOME/.cargo/bin:$PATH"
+if command -v rustc &>/dev/null; then
+  export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+fi
+
+# OPAM configuration
+. $HOME/.asdf/installs/ocaml/4.07.0/opam-init/init.sh > /dev/null 2> /dev/null || true
+
+[ -r /usr/share/bash-completion/bash_completion  ] && . /usr/share/bash-completion/bash_completion
+
+# # ex - archive extractor
+# # usage: ex <file>
+ex ()
+{
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1     ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+# Load extra helper files
+[[ -f $HOME/.bashrc.local ]]  && . $HOME/.bashrc.local
+[[ -f $HOME/.aliases.local ]] && . $HOME/.aliases.local
