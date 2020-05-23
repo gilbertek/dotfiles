@@ -61,6 +61,7 @@ _FILES=(
   eslintrc
   ctags
   pryrc
+  tool-versions
   # .tigrc
   # .rubocop.yml
 )
@@ -86,7 +87,7 @@ create_symlinks() {
 }
 
 create_bin_symlinks() {
-  for file in $DOTFILES/bin/*; do
+  for file in "$DOTFILES"/bin/*; do
     name="$(basename ${file%%.*})"
     target="$HOME/bin/$name"
 
@@ -97,13 +98,13 @@ create_bin_symlinks() {
 
 # neovim and vim config
 echo -e "\nCreating config symlinks"
-if [ ! -d "$HOME/.config" ]; then
-  mkdir -p "$HOME/.config/{nvim,git}"
+if [ ! -d "$HOME/.config/nvim" ]; then
+  mkdir -p "$HOME/.config/nvim"
 fi
 
 if [ ! -f "$HOME/.config/nvim/init.vim" ]; then
-  ln -sfn "$DOTFILES/config/nvim/init.vim" ~/.config/nvim/init.vim
-  ln -sfn "${DOTFILES}/config/nvim/coc-settings.json" ~/.config/nvim/coc-settings.json
+  ln -sfn "$DOTFILES/config/nvim/init.vim" "$HOME/.config/nvim/init.vim"
+  ln -sfn "${DOTFILES}/config/nvim/coc-settings.json"  "$HOME/.config/nvim/coc-settings.json"
 fi
 # Git and Hub config
 if [ ! -d "$HOME/.config/git" ]; then

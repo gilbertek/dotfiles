@@ -4,7 +4,6 @@
 let g:mapleader = ","
 set relativenumber                  " Set relative number
 set number                          " Precede each line with its line number.
-set colorcolumn=80
 set diffopt+=vertical               " Vertical display with vimdiff
 set splitbelow                      " Put a split beneath the current one
 set splitright                      " Put a split to the right the current one

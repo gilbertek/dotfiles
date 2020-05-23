@@ -2,6 +2,8 @@
 
 # Rank mirrors to set the Fastest Download Servers
 sudo pacman-mirrors --fasttrack
+sudo pacman-mirrors --country United_States
+sudo pacman-mirrors -f 0
 
 # Update
 sudo pacman -Syu --noconfirm
@@ -34,6 +36,8 @@ PACKAGES=(
   curl
   clang
   yay
+  tig
+  exa
   # exfat-utils
   tldr
   neofetch
@@ -42,6 +46,7 @@ PACKAGES=(
   nmap
   openvpn
   diff-so-fancy
+  ripgrep
 
   xclip
   xsel
@@ -69,6 +74,11 @@ PACKAGES=(
   stack
   ghc
 
+  bash-language-server
+  openssl
+  jq
+  shellcheck
+
   # Telegram Desktop
   # telegram-desktop-bin
 )
@@ -77,23 +87,24 @@ for package in "${PACKAGES[@]}"; do
   install "$package"
 done
 
-# sudo pacman -S bash-language-server awesome openssh \
-#   lxappearance-gtk3 neovim zsh xclip nodejs python jq wget \
-#   pulseaudio pavucontrol picom firefox git curl xorg-xinit xorg-server \
+# sudo pacman -S awesome openssh \
+#   lxappearance-gtk3 nodejs python jq wget \
+#   pulseaudio pavucontrol picom firefox curl xorg-xinit xorg-server \
 #   xorg-xprop networkmanager bc arc-gtk-theme papirus-icon-theme mpv unclutter \
-#   imagemagick qutebrowser bat fzf dunst feh networkmanager-applet noto-fonts-emoji \
-#   ttf-font-awesome npm yarn pamixer redshift reflector ripgrep tldr \
-#   shellcheck typescript xdotool zathura zathura-pdf-mupdf
+#   imagemagick qutebrowser dunst feh networkmanager-applet noto-fonts-emoji \
+#   ttf-font-awesome npm yarn pamixer redshift reflector \
+#   typescript xdotool zathura zathura-pdf-mupdf
 
 # PHP
-sudo pacman -S composer
-sudo pacman -S php php-fpm php-apcu php-gd php-imap php-intl php-mcrypt php-memcached php-pgsql php-sqlite php-cgi xdebug
+# sudo pacman -S composer
+# sudo pacman -S php php-fpm php-apcu php-gd php-imap php-intl \
+#   php-mcrypt php-memcached php-pgsql php-sqlite php-cgi xdebug
 
 # Nginx
-sudo pacman -S nginx
+# sudo pacman -S nginx
 
 # MariaDB
-sudo pacman -S mariadb
+# sudo pacman -S mariadb
 # sudo mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 # sudo pacman -S phpmyadmin
 
@@ -107,7 +118,7 @@ sudo pacman -S mariadb
 echo "==> Install ASDF and plugins"
 if [ ! -d "$HOME/.asdf" ]; then
     echo "===> Installing ASDF"
-    git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf" --branch v0.7.4
+    git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf" --branch v0.7.8
 
     echo -e '\n. $HOME/.asdf/asdf.sh' >> ~/.bashrc
     echo -e '\n. $HOME/.asdf/completions/asdf.bash' >> ~/.bashrc
@@ -121,14 +132,6 @@ if [ ! -d "$ASDF_DIR/plugins/erlang" ]; then
     export KERL_CONFIGURE_OPTIONS="--disable-debug --without-javac"
 # asdf list-all erlang
 # asdf install erlang <version>
-fi
-
-if [ ! -d "$ASDF_DIR/plugins/elixir" ]; then
-    echo "===> Installing ASDF elixir plugin"
-    asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git
-    # asdf list-all elixir
-    # asdf install elixir <version>
-    # asdf global elixir <version>
 fi
 
 if [ ! -d "$ASDF_DIR/plugins/nodejs" ]; then
@@ -162,17 +165,8 @@ if [ ! -d "$ASDF_DIR/plugins/ruby" ]; then
     # asdf global ruby <version>
 fi
 
-if [ ! -d "$ASDF_DIR/plugins/rust" ]; then
-    echo "===> Installing ASDF rust plugin"
-    asdf plugin-add rust https://github.com/code-lever/asdf-rust.git
-    # asdf list-all rust
-    # asdf install rust 1.38.0 <version> # 1.38.0
-    # asdf global rust <version>
-fi
-
 # Erlang
 # Provides most of the needed build tools.
-# pacman -S --needed base-devel
 # Needed for terminal handling pacman -S ncurses
 
 # For building with wxWidgets (start observer or debugger!) pacman -S glu mesa wxgtk2 libpng
@@ -182,10 +176,10 @@ fi
 # ODBC support sudo pacman -S unixodbc
 
 # Remove unwanted dependencies
-yay -Yc
+# yay -Yc
 
-yay -Ss google-chrome \
-  youtube-dl
+# yay -Ss google-chrome \
+#   youtube-dl
 
 # Set default browser
 # sudo xdg-settings set default-web-browser google-chrome.desktop
