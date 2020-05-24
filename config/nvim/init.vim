@@ -364,8 +364,6 @@ Plug 'ryanoasis/vim-devicons'         " Pretty icons everywhere
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'fmoralesc/vim-tutor-mode'       " Interactive Vim tutorials
 " **[ 2.3) UI Plugins #ui-plugins ]********************
-Plug 'arcticicestudio/nord-vim'
-let g:nord_cursor_line_number_background = 1
 Plug 'nightsense/cosmic_latte'
 Plug 'w0ng/vim-hybrid'
 let g:hybrid_reduced_contrast = 1

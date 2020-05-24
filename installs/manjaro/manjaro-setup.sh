@@ -53,6 +53,8 @@ PACKAGES=(
 
   # rofi
   # polybar
+  alacritty
+  herbstluftwm
   conki
 
   intellij-idea-community-edition

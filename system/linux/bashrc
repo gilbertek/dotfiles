@@ -138,9 +138,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 # GO Path setups
 export GO111MODULE=on
-export GOPATH=$HOME/Projects/GOAPPS
-export PATH=$PATH:$GOPATH/bin
-export GOAPPS=$GOPATH/src/github.com/gilbertek
+# export PATH=$PATH:/usr/local/go/bin
 
 # Haskell/hdevtools Home path setup
 export PATH=~/.local/bin:$PATH
