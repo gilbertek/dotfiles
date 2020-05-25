@@ -413,7 +413,6 @@ set background=dark
 " colorscheme base16-snazzy
 " colorscheme codedark
 colorscheme tender
-" colorscheme nord
 " colorscheme edge
 
 " **[ 4) Navigation #navigation ]*****************
