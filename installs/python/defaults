@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# set up python with default packages
+# see https://medium.com/@henriquebastos/the-definitive-guide-to-setup-my-python-workspace-628d68552e14
+
+echo -e "\nInstalling pip packages..."
+
+formulas=(
+  neovim
+  pipenv
+  jupyter
+)
+
+for formula in "${formulas[@]}"; do
+  if pip show "$formula" >/dev/null 2>&1; then
+    echo "$formula already installed... skipping."
+  else
+    pip install -U $formula --user
+  fi
+done

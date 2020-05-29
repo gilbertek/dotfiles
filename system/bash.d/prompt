@@ -1,0 +1,9 @@
+parse_git_branch () {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+# ♥ ☆ ⚡ λ ❯ » ▸ → 💥 ✚ - Keeping some cool ASCII Characters for reference
+CHAR='λ'
+
+PS1="\[\e[33m\]\u\[\e[m\]\[\e[37m\]/\[\e[m\]\[\e[31m\]\W\[\e[m\] \[\e[34m\]\`parse_git_branch\`\[\e[m\] $CHAR "
+# vim:filetype=sh
