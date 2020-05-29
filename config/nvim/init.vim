@@ -406,13 +406,14 @@ call plug#end()
 
 " **[ 3) UI Tweaks #ui-tweaks ] *********************
 set background=dark
-"  colorscheme base16-default-dark
+" colorscheme base16-classic-dark
+colorscheme base16-default-dark
 " colorscheme base16-onedark
 " colorscheme base16-phd
 " colorscheme base16-porple
 " colorscheme base16-snazzy
 " colorscheme codedark
-colorscheme tender
+" colorscheme tender
 " colorscheme edge
 
 " **[ 4) Navigation #navigation ]*****************
