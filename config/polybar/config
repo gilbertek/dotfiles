@@ -2,71 +2,71 @@
 ; COLORS                                                                       ;
 ;-------------------------------------------------------------------------------
 [colors]
-background = #5a000000
-foreground = #eee
-background-alt = #444
-foreground-alt = #555
-primary = #ffb52a
-secondary = #e60053
-alert = #bd2c40
+background          = #5a000000
+foreground          = #eee
+background-alt      = #444
+foreground-alt      = #555
+primary             = #ffb52a
+secondary           = #e60053
+alert               = #bd2c40
 
 ;-------------------------------------------------------------------------------
 ; TOP BAR                                                                   ;
 ;-------------------------------------------------------------------------------
 [bar/top-bar]
-monitor = ${env:MONITOR:}
-enable-ipc = true
-monitor-fallback = DP1
+monitor             = ${env:MONITOR:}
+enable-ipc          = true
+monitor-fallback    = DP1
 
-top = true
-width = 100%
-height = 38
+top                 = true
+width               = 100%
+height              = 38
 
-background = ${colors.background}
-foreground = ${colors.foreground}
+background          = ${colors.background}
+foreground          = ${colors.foreground}
 
-underline-color = ${colors.alert}
-underline-size = 3
-overline-color = ${colors.alert}
-overline-size = 3
+underline-color     = ${colors.alert}
+underline-size      = 3
+overline-color      = ${colors.alert}
+overline-size       = 3
 
-border-size = 0
+border-size         = 0
 
-border-color = ${colors.primary}
+border-color        = ${colors.primary}
 
-padding-left = 2
-padding-right = 2
+padding-left        = 2
+padding-right       = 2
 
-module-margin-left = 0
+module-margin-left  = 0
 module-margin-right = 2
 
-modules-left = workspaces xwindow
-modules-center =
-modules-right = network backlight volume battery date poweroff
+modules-left        = workspaces xwindow
+modules-center      =
+modules-right       = network backlight volume eth battery date poweroff powermenu
 
-font-0 = "Hack Nerd Font:size=10;0"
-font-1 = "Iosevka Nerd Font:size=10;0"
+font-0              = "Hack Nerd Font:size=10;0"
+font-1              = "Iosevka Nerd Font:size=10;0"
 
-tray-position = none
-tray-padding = 4
-tray-maxsize = 0
+tray-position       = none
+tray-padding        = 4
+tray-maxsize        = 0
 
-scroll-up = herbstclient use_index -1
-scroll-down = herbstclient use_index +1
+scroll-up           = herbstclient use_index -1
+scroll-down         = herbstclient use_index +1
 
 ;-------------------------------------------------------------------------------
 ; CALENDAR DATE                                                                ;
 ;-------------------------------------------------------------------------------
 [module/date]
-type = internal/date
-interval = 1.0
-date = %a
-time = %R
+type                = internal/date
+interval            = 5.0
+date                = %a
+time                = %R
 
-date-alt = %A, %d %B %Y
-time-alt = %r
+date-alt            = %A, %d %B %Y
+time-alt            = %r
 
-label =  %date% %time%
+label               =  %date% %time%
 
 ;-------------------------------------------------------------------------------
 ; WORKSPACES                                                                   ;
@@ -74,6 +74,8 @@ label =  %date% %time%
 
 [module/workspaces]
 type = internal/xworkspaces
+
+# tag_names=( "   "  "  "  "  "  "  "  "  "  "  "  "   "  )
 
 pin-workspaces = false
 
@@ -103,8 +105,8 @@ label = "%title:0:50:...%"
 ;-------------------------------------------------------------------------------
 [module/network]
 type = internal/network
-interface = wlp3s0
-interval = 4.0
+interface = wlan1
+interval = 3.0
 
 format-connected =  <label-connected>
 label-connected = "%essid%"
@@ -112,6 +114,16 @@ label-connected = "%essid%"
 format-disconnected = 
 format-disconnected-foreground = ${colors.alert}
 
+[module/eth]
+type = internal/network
+interface = wlp4s0
+interval = 3.0
+
+format-connected    = 
+label-connected = "%essid%"
+
+format-disconnected = 
+format-disconnected-foreground = ${colors.alert}
 ;-------------------------------------------------------------------------------
 ; BATTERY STATUS                                                               ;
 ;-------------------------------------------------------------------------------
@@ -237,6 +249,36 @@ content            = 
 
 ; Mouse click
 ; click-left = i3-msg exit
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+
+format-spacing = 1
+
+label-open = 
+label-open-foreground = ${colors.secondary}
+label-close =  cancel
+label-close-foreground = ${colors.secondary}
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+
+menu-0-0 = reboot
+menu-0-0-exec = menu-open-1
+menu-0-1 = power off
+menu-0-1-exec = menu-open-2
+
+menu-1-0 = cancel
+menu-1-0-exec = menu-open-0
+menu-1-1 = reboot
+menu-1-1-exec = sudo reboot
+
+menu-2-0 = power off
+menu-2-0-exec = sudo poweroff
+menu-2-1 = cancel
+menu-2-1-exec = menu-open-0
+
 ;-------------------------------------------------------------------------------
 ; MUSIC STATUS                                                                 ;
 ;-------------------------------------------------------------------------------
