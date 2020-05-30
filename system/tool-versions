@@ -5,3 +5,4 @@ erlang 23.0.1
 java adopt-openjdk-13.0.1+9
 nodejs 14.3.0
 golang 1.14.3
+lua 5.3.5
