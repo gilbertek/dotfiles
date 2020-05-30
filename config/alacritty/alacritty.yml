@@ -434,7 +434,9 @@ mouse_bindings:
 # If the same trigger is assigned to multiple actions, all of them are executed
 # at once.
 key_bindings:
-  - { key: N,                           mods: Control|Shift, action: SpawnNewInstance          }
+  - { key: N,        mods: Control|Shift,     action: SpawnNewInstance }
+  - { key: V,        mods: Control,           action: Paste            }
+  - { key: C,        mods: Control,           action: Copy             }
   #- { key: Paste,                                action: Paste          }
   #- { key: Copy,                                 action: Copy           }
   #- { key: L,         mods: Control,             action: ClearLogNotice }

@@ -28,11 +28,13 @@ hc keybind $Mod-Return spawn alacritty
 
 # Apps
 hc keybind $Mod-w spawn firefox
-hc keybind $Mod-Mod1-e spawn neomutt
-hc keybind $Mod-Mod1-n spawn alacritty -e newsboat
-hc keybind $Mod-Mod1-w spawn alacritty -e weechat
-hc keybind $Mod-Mod1-t spawn alacritty -e tmux
-
+hc keybind $Mod-Mod1-e  spawn neomutt
+hc keybind $Mod-Mod1-n  spawn alacritty -e newsboat
+hc keybind $Mod-Mod1-w  spawn alacritty -e weechat
+hc keybind $Mod-Mod1-t  spawn alacritty -e tmux
+hc keybind Control-space spawn dmenu_run -l \
+  12 -fn "Hack Nerd Font 1M:size=18" -nb '#292d3e' \
+  -nf '#bbc5ff' -sb '#82AAFF' -sf '#292d3e' -p '>'
 # basic movement in tiling and floating mode
 # focusing clients
 hc keybind $Mod-Left  focus left
@@ -95,8 +97,8 @@ hc keybind $Mod-period        use_index +1 --skip-visible
 hc keybind $Mod-comma         use_index -1 --skip-visible
 hc keybind $Mod-bracketright  use_index +1 --skip-visible
 hc keybind $Mod-bracketleft   use_index -1 --skip-visible
-hc keybind Mod1-Control-Right use_index +1 --skip-visible
-hc keybind Mod1-Control-Left  use_index -1 --skip-visible
+hc keybind Mod1-Right         use_index +1 --skip-visible
+hc keybind Mod1-Left          use_index -1 --skip-visible
 
 # layouting
 hc keybind $Mod-r       remove
@@ -125,31 +127,59 @@ hc keybind $Mod-Shift-Tab   cycle_all -1
 hc keybind $Mod-c cycle
 hc keybind $Mod-i jumpto urgent
 
-# theme
+# theme 1
+# hc attr theme.tiling.reset 1
+# hc attr theme.floating.reset 1
+# hc set frame_border_active_color '#e59600'
+# hc set frame_border_normal_color '#101010'
+# hc set frame_bg_normal_color '#565656'
+# hc set frame_bg_active_color '#1043A2'
+# hc set frame_border_width 0
+# hc set always_show_frame on
+# hc set frame_bg_transparent on
+# hc set frame_transparent_width 1
+# hc set frame_gap 0
+#
+# hc attr theme.active.color '#59ade1'
+# hc attr theme.normal.color '#454545'
+# hc attr theme.urgent.color orange
+# hc attr theme.inner_width 1
+# hc attr theme.inner_color black
+# hc attr theme.border_width 3
+# hc attr theme.floating.border_width 4
+# hc attr theme.floating.outer_width 1
+# hc attr theme.floating.outer_color black
+# hc attr theme.active.inner_color '#00134A'
+# hc attr theme.active.outer_color '#00134A'
+# hc attr theme.background_color '#141414'
+
+# theme 2
 hc attr theme.tiling.reset 1
 hc attr theme.floating.reset 1
-hc set frame_border_active_color '#e59600'
-hc set frame_border_normal_color '#101010'
-hc set frame_bg_normal_color '#565656'
-hc set frame_bg_active_color '#1043A2'
+hc set frame_border_active_color '#ffffff'
+hc set frame_border_normal_color '#4c566a'
+hc set frame_bg_normal_color '#4c566a'
+hc set frame_bg_active_color '#ffffff'
 hc set frame_border_width 0
 hc set always_show_frame on
 hc set frame_bg_transparent on
 hc set frame_transparent_width 1
 hc set frame_gap 0
 
-hc attr theme.active.color '#59ade1'
-hc attr theme.normal.color '#454545'
+hc attr theme.active.color '#FFFFFF'
+hc attr theme.normal.color '#4c566a'
 hc attr theme.urgent.color orange
 hc attr theme.inner_width 1
 hc attr theme.inner_color black
-hc attr theme.border_width 3
+hc attr theme.border_width 4
 hc attr theme.floating.border_width 4
 hc attr theme.floating.outer_width 1
 hc attr theme.floating.outer_color black
-hc attr theme.active.inner_color '#00134A'
-hc attr theme.active.outer_color '#00134A'
-hc attr theme.background_color '#141414'
+hc attr theme.active.inner_color '#4c566a'
+hc attr theme.active.outer_color '#ffffff'
+hc attr theme.background_color '#4c566a'
+
+
 
 hc set window_gap 10
 hc set frame_padding 0
@@ -194,4 +224,5 @@ for monitor in $(hc list_monitors | cut -d: -f1) ; do
 done
 
 # Launch polybar
+pkill polybar || true
 ~/.config/polybar/launch.sh
