@@ -37,18 +37,19 @@ alias DATE="date '+%Y-%m-%d'"
 alias TIME="date '+%H·%M·%S'"
 alias DATETIME="date '+%Y-%m-%d.%H·%M·%S'"
 # echo "2019 12 31" | awk '{dt=mktime($0 " 00 00 00")-systime(); print "There are " int(dt/86400/7) " weeks left until the year ends. What will you do?";}'
+#
+
+# Load the shell dotfiles, and then some:
+if [ -d ~/.bash.d ]; then
+    for i in ~/.bash.d/*; do
+        [ -f "${i}" ] && source "${i}"
+    done
+fi
 
 # Add `~/bin` to the `$PATH`
 if [ -d "$HOME/bin" ] ; then
   PATH="$HOME/bin:$PATH"
 fi
-
-# Load the shell dotfiles, and then some:
-# * ~/.path can be used to extend `$PATH`.
-for file in ~/.{aliases,functions,extra,bashrc,bashrc.local,aliases.local}; do
-	[ -r "$file" ] && [ -f "$file" ] && source "$file";
-done;
-unset file;
 
 # GO Path setups
 # export GO111MODULE=on
@@ -128,11 +129,6 @@ export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 export PROJECT_HOME=$HOME/Projects
-
-# ♥ ☆ ⚡ λ ❯ » ▸ → 💥 ✚ - Keeping some cool ASCII Characters for reference
-CHAR='λ'
-
-PS1="\[\e[33m\]\u\[\e[m\]\[\e[37m\]/\[\e[m\]\[\e[31m\]\W\[\e[m\] \[\e[34m\]\`parse_git_branch\`\[\e[m\] $CHAR "
 
 # Ensure ssh agent is running
 if [ -z "$SSH_AUTH_SOCK" ] ; then

@@ -89,8 +89,6 @@
 [commit]
   verbose         = true
   template        = ~/dotfiles/config/git/git-message
-[credential]
-	helper        = osxkeychain
 [core]
   whitespace   = warn
   editor        = nvim
