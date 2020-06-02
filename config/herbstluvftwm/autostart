@@ -33,8 +33,9 @@ hc keybind $Mod-Mod1-n  spawn alacritty -e newsboat
 hc keybind $Mod-Mod1-w  spawn alacritty -e weechat
 hc keybind $Mod-Mod1-t  spawn alacritty -e tmux
 hc keybind Control-space spawn dmenu_run -l \
-  12 -fn "Hack Nerd Font 1M:size=18" -nb '#292d3e' \
-  -nf '#bbc5ff' -sb '#82AAFF' -sf '#292d3e' -p '>'
+  6 -fn "Hack Nerd Font 1M:size=18" -nb '#222222' \
+  -nf darkgrey -sb black -sf '#ffffff' -p '>'
+
 # basic movement in tiling and floating mode
 # focusing clients
 hc keybind $Mod-Left  focus left
@@ -76,10 +77,9 @@ hc keybind $Mod-Control-Right   resize right  +$resizestep
 
 # tags
 #tag_names=("  " "  " "  " "  " "  " "   " "   " "  " "  " "  " )
-#tag_names=("WEB" "TERM" "FILE" "MEDIA" "GIMP" "MISC" "CODE" "RRENT" "REDDIT" "CHAT")
-# tag_names=( {CODE,TERM,WEB,FILE,CHAT,MEDIA,PANEL,MISC} )
-# tag_names=( "   "  "  "  "  "  "  "  "  "  "  "  "   "  )
-tag_names=( {1..7} )
+# tag_names=( {WEB,CODE,TERM,EMAIL,CHAT,FILE,MEDIA,PANEL,MISC} )
+
+tag_names=( " " " " " " "" " " " " " " )
 tag_keys=( {1..7} 0 )
 
 hc rename default "${tag_names[0]}" || true
@@ -199,9 +199,8 @@ hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
 hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' manage=off
 
 # window-tag rules
-hc rule class~'(nvim|vim)'        tag='1' switchtag=on focus=on
+hc rule class~'(firefox|Chromium|Google-chrome)' tag='1' switchtag=on focus=on
 hc rule class~'alacritty'         tag='2' focus=on
-hc rule class~'(firefox|Chromium|Google-chrome)' tag='3' switchtag=on focus=on
 hc rule class~'(Evolution|Geary)' tag='5' focus=on
 hc rule class~'vlc'               tag='6' focus=on
 
