@@ -22,9 +22,9 @@ alert               = #bd2c40
 ; TOP BAR                                                                   ;
 ;-------------------------------------------------------------------------------
 [bar/top-bar]
-monitor             = ${env:MONITOR:}
+monitor             = ${env:MONITOR}
 enable-ipc          = true
-monitor-fallback    = DP1
+; monitor-fallback    = DP1
 
 top                 = true
 width               = 100%
@@ -95,7 +95,7 @@ label-active              = %name%
 label-active-foreground   = ${colors.foreground-alt}
 label-active-background   = #002F343F
 label-active-underline    = ${colors.foreground-alt}
-label-active-padding      = 4
+label-active-padding      = 2
 
 label-occupied            = %name%
 label-occupied-background = ${colors.background}
@@ -201,7 +201,6 @@ animation-discharging-2         = 
 animation-discharging-1         = 
 animation-discharging-0         = 
 animation-discharging-framerate = 990
-
 
 ;-------------------------------------------------------------------------------
 ; VOLUME STATUS                                                                ;
