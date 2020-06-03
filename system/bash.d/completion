@@ -1,0 +1,36 @@
+# vim:filetype=sh
+
+if [[ $OSTYPE == "darwin"* ]]; then
+  if [[ -n "$(which brew)" ]]; then
+    export BREW_CELLAR=$(brew --cellar)
+    export BREW_PREFIX=$(brew --prefix)
+  fi
+
+  # https://docs.brew.sh/Shell-Completion#configuring-completions-in-bash
+  if [[ ! ${BREW_PREFIX} -eq 0 ]]; then
+    for COMPLETION in "${BREW_PREFIX}/etc/bash_completion.d/"*; do
+      [[ -r "$COMPLETION" ]] && source "$COMPLETION"
+    done
+  fi
+fi
+
+#Linux Completion
+if [[ -f /etc/bash_completion ]]; then
+	bash /etc/bash_completion
+fi
+
+#Azure CLI completion
+if command -v azure > /dev/null; then
+  azure --completion > ~/azure.completion.sh
+  source ~/azure.completion.sh
+fi
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash ] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash
+
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash ] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash

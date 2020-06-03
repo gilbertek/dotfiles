@@ -363,6 +363,7 @@ Plug 'metakirby5/codi.vim'            " The interactive scratchpad for hackers.
 Plug 'ryanoasis/vim-devicons'         " Pretty icons everywhere
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'fmoralesc/vim-tutor-mode'       " Interactive Vim tutorials
+Plug 'wakatime/vim-wakatime'
 " **[ 2.3) UI Plugins #ui-plugins ]********************
 Plug 'nightsense/cosmic_latte'
 Plug 'w0ng/vim-hybrid'
@@ -394,6 +395,8 @@ let g:lightline = {
       \ },
       \ 'component_visible_condition': {
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())' },
+      \ 'separator': { 'left': "\ue0b8", 'right': "\ue0be " },
+      \ 'subseparator': { 'left': "\ue0b9", 'right': "\ue0b9" }
       \ }
 
 Plug 'epilande/vim-react-snippets'
@@ -407,7 +410,8 @@ call plug#end()
 " **[ 3) UI Tweaks #ui-tweaks ] *********************
 set background=dark
 " colorscheme base16-classic-dark
-colorscheme base16-default-dark
+" colorscheme base16-default-dark
+colorscheme base16-tomorrow-night
 " colorscheme base16-onedark
 " colorscheme base16-phd
 " colorscheme base16-porple
@@ -702,7 +706,7 @@ augroup general
   " autocmd FileType java setlocal omnifunc=javacomplete#Complete
   autocmd BufNewFile,BufRead .env.* setfiletype sh
   autocmd FileType ruby nmap <Leader>r :RuboCop<CR>
-  autocmd FileType ruby,yaml,ocaml,javascript setl tabstop=2 shiftwidth=2 softtabstop=2
+  autocmd FileType lua,swift,ruby,yaml,ocaml,javascript setl tabstop=2 shiftwidth=2 softtabstop=2
   autocmd FileType go set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
   autocmd FileType vue syntax sync fromstart
   au BufRead,BufNewFile .{eslintrc,prettierrc} set filetype=json

@@ -19,39 +19,7 @@ warning(){
   msg "\033[33mWarning:\033[0m ${1}${2}"
 }
 
-mkdir_path() {
-  echo "==> creating path : $1"
-  mkdir -p "$1"
-}
-
-os=$(uname -s | tr "[:upper:]" "[:lower:]")
-
-case $os in
-  linux)
-  os="linux"
-  ;;
-  darwin)
-  os="osx"
-  ;;
-  *)
-  printf "%s doesn't supported by bash installer" "$os"
-  exit 1
-  ;;
-esac
-
-# This detection only works for mac and linux.
-if [ "$(uname)" == "Darwin" ]; then
-  msg "Setting up $HOME/.bash_profile"
-  ln -snf "${DOTFILES}/system/osx/bash_profile" "$HOME/.bash_profile"
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-  msg "seeting up ${HOME}/.bashrc"
-  ln -snf "${DOTFILES}/system/linux/bashrc" "$HOME/.bashrc"
-fi
-
-
 _FILES=(
-  aliases
-  functions
   railsrc
   tmux.conf
   tmux-osx.conf
@@ -62,13 +30,28 @@ _FILES=(
   ctags
   pryrc
   tool-versions
-  # .tigrc
-  # .rubocop.yml
+  bashrc
+  bash_profile
 )
 
 echo -e "\nCreating dotfile symlinks"
 
-create_symlinks() {
+# Setup bash.d directory
+if [ ! -d "$HOME/.bash.d" ]; then
+  mkdir -p "$HOME/.bash.d"
+fi
+
+if [ ! -d "$HOME/bin" ]; then
+  mkdir -p "$HOME/bin"
+fi
+
+create_bash_links() {
+  for f in "${DOTFILES}"/system/bash.d/*; do
+    ln -sfn  "$f"  ~/.bash.d
+  done
+}
+
+create_tool_links() {
   for file in "${_FILES[@]}"; do
     filename=".$(basename $file '.symlink')"
     target="$HOME/$filename"
@@ -86,7 +69,7 @@ create_symlinks() {
   done
 }
 
-create_bin_symlinks() {
+create_bin_links() {
   for file in "$DOTFILES"/bin/*; do
     name="$(basename ${file%%.*})"
     target="$HOME/bin/$name"
@@ -113,19 +96,16 @@ fi
 
 ln -sfn "$DOTFILES/config/git/gitconfig" ~/.gitconfig
 
-if [ ! -d "$HOME/bin" ]; then
-  mkdir -p "$HOME/bin"
-fi
-
 # mkdir -p ~/.sbt/1.3.10/plugins
 # ln -s "$DOTFILES/system/sbtplugins.sbt" ~/.sbt/1.3.10/plugins/dotfileplugins.sbt
 
-if [[ ! -f ~/.cargo/config ]]; then
-	mkdir -p ~/.cargo && ln -s "$DOTFILES/config/cargo/config" "$HOME/.cargo/config"
+if [ ! -f "$HOME/.cargo/config" ]; then
+	mkdir -p ~/.cargo && ln -sfn "$DOTFILES/config/cargo/config" "$HOME/.cargo/config"
 fi
 
-create_symlinks
-create_bin_symlinksinstalls/asdf/
+create_bash_links
+create_tool_links
+create_bin_links
 
 ret="$?"
 success "Dotfiles have been configured! 🤘"
