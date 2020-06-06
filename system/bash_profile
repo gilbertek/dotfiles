@@ -14,7 +14,6 @@ HISTFILESIZE=10000	                        # Larger bash history...
 HISTIGNORE="&:ll:ls:c:cd:cd -:pwd:exit:logout:quit:reset" # Don't record some commands
 export PROMPT_COMMAND='history -a;history -c;history -r'
 export CLICOLOR=1
-export LSCOLORS=ExFxBxDxCxegedabagacad
 export SHELL=bash
 
 # Disable DOTNET analytics
@@ -22,6 +21,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 # macOS-specific environment flags
 if [[ $OSTYPE == "darwin"* ]]; then
+  export LSCOLORS=ExFxBxDxCxegedabagacad
   export COCOAPODS_DISABLE_STATS=1
   export HOMEBREW_NO_ANALYTICS=1
   export HOMEBREW_INSTALL_CLEANUP=1

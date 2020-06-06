@@ -375,7 +375,6 @@ Plug 'rakr/vim-one'
 Plug 'chriskempson/base16-vim'
 let base16colorspace=256
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
-Plug 'sainnhe/edge'
 
 Plug 'Yggdroot/indentLine'          " Show indentation lines
 let g:indentLine_char = '·'  " Other options ┆│┊︙¦⋮
@@ -395,8 +394,6 @@ let g:lightline = {
       \ },
       \ 'component_visible_condition': {
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())' },
-      \ 'separator': { 'left': "\ue0b8", 'right': "\ue0be " },
-      \ 'subseparator': { 'left': "\ue0b9", 'right': "\ue0b9" }
       \ }
 
 Plug 'epilande/vim-react-snippets'
@@ -409,7 +406,6 @@ call plug#end()
 
 " **[ 3) UI Tweaks #ui-tweaks ] *********************
 set background=dark
-" colorscheme base16-classic-dark
 " colorscheme base16-default-dark
 colorscheme base16-tomorrow-night
 " colorscheme base16-onedark
@@ -418,7 +414,6 @@ colorscheme base16-tomorrow-night
 " colorscheme base16-snazzy
 " colorscheme codedark
 " colorscheme tender
-" colorscheme edge
 
 " **[ 4) Navigation #navigation ]*****************
 nnoremap <Left>  :echo "ಠ_ಠ!"<cr>

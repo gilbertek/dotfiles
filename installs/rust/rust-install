@@ -2,7 +2,7 @@
 # Set default channel
 # rustup default <stable> | <nightly>
 
-RUST_VERSION=1.43.1
+RUST_VERSION=1.44.0
 
 asdf install rust $RUST_VERSION
 asdf global rust $RUST_VERSION

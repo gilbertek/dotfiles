@@ -50,7 +50,7 @@ module-margin-right = 2
 
 modules-left        = workspaces xwindow
 modules-center      =
-modules-right       = network backlight volume eth battery date poweroff powermenu
+modules-right       = network backlight volume eth battery date poweroff
 
 font-0              = "Hack Nerd Font:size=10;0"
 font-1              = "Iosevka Nerd Font:size=10;0"
@@ -165,10 +165,17 @@ label-connected                 = "%essid%"
 format-disconnected             = 
 ; format-disconnected             = ﲁ
 format-disconnected-foreground  = ${colors.alert}
+
+; bluetooth{{{
+[module/bluetooth]
+type                            = custom/text
+content                         = 
+click-left                      = blueman-manager
+
 ;-------------------------------------------------------------------------------
 ; BATTERY STATUS                                                               ;
 ;-------------------------------------------------------------------------------
-[module/battery]
+[module/battery1]
 type                            = internal/battery
 
 battery                         = BAT0
@@ -178,8 +185,7 @@ poll-interval                   = 60
 
 format-charging                 = <animation-charging> <label-charging>
 format-discharging              = <animation-discharging> <label-discharging>
-;
-; format-full                     = " <label-full>"
+
 format-full-prefix = " "
 format-full = <label-full>
 
@@ -187,20 +193,45 @@ label-charging                  = %percentage%%
 label-discharging               = %percentage%%
 label-full                      = %percentage%%
 
-animation-charging-0            = 
-animation-charging-1            = 
-animation-charging-2            = 
-animation-charging-3            = 
-animation-charging-4            = 
-animation-charging-5            = 
+animation-discharging-9 = 
+animation-discharging-8 = 
+animation-discharging-7 = 
+animation-discharging-6 = 
+animation-discharging-5 = 
+animation-discharging-4 = 
+animation-discharging-3 = 
+animation-discharging-2 = 
+animation-discharging-1 = 
+animation-discharging-0 = 
+
+animation-discharging-framerate = 990
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-5 = 
+animation-charging-6 = 
 animation-charging-framerate    = 250
 
-animation-discharging-4         = 
-animation-discharging-3         = 
-animation-discharging-2         = 
-animation-discharging-1         = 
-animation-discharging-0         = 
-animation-discharging-framerate = 990
+[module/battery]
+type = internal/battery
+
+; Full battery level
+full-at = 96
+
+; Battery and adapter
+battery = BAT0
+adapter = AC0
+
+format-full-prefix              = " "
+format-full                     = <label-full>
+
+; Charging label
+label-discharging               =  %percentage%%
+label-charging                  = %percentage%%
+label-full                      = %percentage%%
 
 ;-------------------------------------------------------------------------------
 ; VOLUME STATUS                                                                ;
@@ -242,6 +273,7 @@ bar-width     = 10
 bar-indicator = |
 bar-fill      = ─
 bar-empty     = ─
+click-left    = gbacklight
 
 ;-------------------------------------------------------------------------------
 ; POWER MENU                                                                   ;
@@ -267,68 +299,70 @@ content            = 
 ; Mouse click
 ; click-left = i3-msg exit
 
-; [module/powermenu]
-; type                        = custom/menu
-;
-; expand-right                = true
-; format-spacing              = 1
-;
-; label-open                  = 
-; label-open-foreground       = ${colors.secondary}
-; label-close                 =  cancel
-; label-close-foreground      = ${colors.secondary}
-; label-separator             = |
-; label-separator-foreground  = ${colors.foreground-alt}
-;
-; ; "  Lock|  Logout|  Reboot|  Shutdown")"
-;
-; menu-0-0                    = reboot
-; menu-0-0-exec               = menu-open-1
-; menu-0-1                    = power off
-; menu-0-1-exec               = menu-open-2
-;
-; menu-1-0                    = cancel
-; menu-1-0-exec               = menu-open-0
-; menu-1-1                    = reboot
-; menu-1-1-exec               = sudo reboot
-;
-; menu-2-0                    = power off
-; menu-2-0-exec               = sudo poweroff
-; menu-2-1                    = cancel
-; menu-2-1-exec               = menu-open-0
+[module/powermenu1]
+type                        = custom/menu
 
+expand-right                = true
+format-spacing              = 1
 
+label-open                  = 
+label-open-foreground       = ${colors.secondary}
+label-close                 =  cancel
+label-close-foreground      = ${colors.secondary}
+label-separator             = |
+label-separator-foreground  = ${colors.foreground-alt}
 
+; "  Lock|  Logout|  Reboot|  Shutdown")"
 
+menu-0-0                    = reboot
+menu-0-0-exec               = menu-open-1
+menu-0-1                    = power off
+menu-0-1-exec               = menu-open-2
 
-[module/powermenu]
-type = custom/menu
+menu-1-0                    = cancel
+menu-1-0-exec               = menu-open-0
+menu-1-1                    = reboot
+menu-1-1-exec               = sudo reboot
 
-expand-right = true
+menu-2-0                    = power off
+menu-2-0-exec               = sudo poweroff
+menu-2-1                    = cancel
+menu-2-1-exec               = menu-open-0
 
-menu-0-0 = reboot
-menu-0-0-exec = menu-open-1
-menu-0-1 = shutdown
-menu-0-1-exec = menu-open-2
+;{{{powermenu
+[module/powermenu2]
+type                  = custom/menu
 
-menu-1-0 = back
-menu-1-0-exec = menu-open-0
-menu-1-1 = reboot
-menu-1-1-exec = systemctl reboot
+expand-right          = true
 
-menu-2-0 = shutdown
-menu-2-0-exec = systemctl poweroff
-menu-2-1 = back
-menu-2-1-exec = menu-open-0
+format-spacing        = 1
 
-format-spacing = 1
-; format-background = ${color.shade1}
-; format-foreground = ${color.modulefg}
-format-padding = 1
+label-open            = 
+label-open-padding    = 1
+label-close           = ﰸ
 
-label-open = 
-label-close = 
-label-separator = |
+menu-0-0              = 
+menu-0-0-exec         = menu-open-1
+menu-0-1              = ⏼
+menu-0-1-exec         = menu-open-2
+menu-0-0-margin-right = 1
+menu-0-1-margin-right = 1
+
+menu-1-0              = 
+menu-1-0-exec         = reboot
+menu-1-1              = 
+menu-1-1-exec         = menu-open-0
+menu-1-0-margin-right = 1
+menu-1-1-margin-right = 1
+
+menu-2-0              = 
+menu-2-0-exec         = menu-open-0
+menu-2-1              = ⏼
+menu-2-1-exec         = poweroff
+menu-2-0-margin-right = 1
+menu-2-1-margin-right = 1
+;}}}
+
 ;-------------------------------------------------------------------------------
 ; MUSIC STATUS                                                                 ;
 ;-------------------------------------------------------------------------------
@@ -340,5 +374,28 @@ label-separator = |
 ; interval = 1
 ;
 ; click-left = playerctl play-pause
+
+[module/powermenu3]
+type            = custom/menu
+expand-right    = true
+format-spacing  = 1
+label           = 
+label-open      = 
+label-close     =  cancel
+label-separator = |
+menu-0-0        = reboot
+menu-0-0-exec   = menu-open-1
+menu-0-1        = power off
+menu-0-1-exec   = menu-open-2
+menu-1-0        = cancel
+menu-1-0-exec   = menu-open-0
+menu-1-1        = reboot
+menu-1-1-exec   = reboot
+menu-2-0        = power off
+menu-2-0-exec   = poweroff
+menu-2-1        = cancel
+menu-2-1-exec   = menu-open-0
+
+;}}}
 
 ; vim:ft=dosini
