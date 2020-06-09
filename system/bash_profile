@@ -121,10 +121,9 @@ export EDITOR=nvim
 export GIT_EDITOR=$EDITOR # git uses the default editor
 export VISUAL=nvim
 
-
 # Setting fd as the default source for fzf
 export FZF_DEFAULT_OPTS='--height 50% --inline-info --border --cycle'
-export FZF_DEFAULT_COMMAND='rg --files --column --hidden --smart-case --follow --ignore-vcs -g "!{node_modules,*.swp,dist,coverage,*.cache}/*"'
+export FZF_DEFAULT_COMMAND='rg --files --column --hidden --smart-case --follow --ignore-vcs -g "!{node_modules,dist,coverage,*.cache}/*"'
 export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
@@ -133,7 +132,7 @@ export PROJECT_HOME=$HOME/Projects
 # Ensure ssh agent is running
 if [ -z "$SSH_AUTH_SOCK" ] ; then
   eval `ssh-agent -s`
-  ssh-add ~/.ssh/id_rsa
+  ssh-add
 fi
 
 if command -v xclip >/dev/null; then
@@ -243,42 +242,6 @@ paths=(
 # fi
 # [[ -f "$opaminit" ]] && source "$opaminit"
 # unset opaminit
-
-if [[ $OSTYPE == "darwin"* ]]; then
-  if [[ -n "$(which brew)" ]]; then
-    export BREW_CELLAR=$(brew --cellar)
-    export BREW_PREFIX=$(brew --prefix)
-  fi
-
-  # https://docs.brew.sh/Shell-Completion#configuring-completions-in-bash
-  if [[ ! ${#BREW_PREFIX} -eq 0 ]]; then
-    for COMPLETION in "${BREW_PREFIX}/etc/bash_completion.d/"*; do
-      [[ -r "$COMPLETION" ]] && source "$COMPLETION"
-    done
-  fi
-fi
-
-#Linux Completion
-if [[ -f /etc/bash_completion ]]; then
-	bash /etc/bash_completion
-fi
-
-#Azure CLI completion
-if command -v azure > /dev/null; then
-  azure --completion > ~/azure.completion.sh
-  source ~/azure.completion.sh
-fi
-
-# Run SSH-agent (if it's not already running)
-# if ! pgrep ssh-agent > /dev/null; then
-#     ssh-agent > /dev/null
-# fi
-# Add SSH identities to the agent
-# if ! ssh-add -l > /dev/null; then
-#     echo "Add SSH identity to ssh-agent:"
-#     # store passphrase to Keychain
-#     ssh-add ~/.ssh/id_rsa
-# fi
 
 MESSAGE=(
 	"Amazing THINGS will HAPPEN!"

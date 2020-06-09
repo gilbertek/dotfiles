@@ -1,0 +1,8 @@
+--database=postgresql
+--skip-bundle
+--skip-javascript
+--skip-test
+--skip-test-unit
+--skip-turbolinks
+--webpack=react
+--template=~/dotfiles/config/ruby/rails_tpl.rb

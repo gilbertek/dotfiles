@@ -20,7 +20,6 @@ warning(){
 }
 
 _FILES=(
-  railsrc
   tmux.conf
   tmux-osx.conf
   tmux-linux.conf
@@ -28,7 +27,6 @@ _FILES=(
   prettierrc
   eslintrc
   ctags
-  pryrc
   tool-versions
   bashrc
   bash_profile
@@ -79,6 +77,13 @@ create_bin_links() {
   done
 }
 
+create_ruby_links() {
+  for f in "${DOTFILES}"/system/ruby/*; do
+    filename=".$(basename ${f})"
+    ln -sfn  "$f"  "$HOME/$filename"
+  done
+}
+
 # neovim and vim config
 echo -e "\nCreating config symlinks"
 if [ ! -d "$HOME/.config/nvim" ]; then
@@ -106,6 +111,7 @@ fi
 create_bash_links
 create_tool_links
 create_bin_links
+create_ruby_links
 
 ret="$?"
 success "Dotfiles have been configured! 🤘"

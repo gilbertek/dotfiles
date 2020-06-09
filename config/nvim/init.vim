@@ -19,6 +19,7 @@ set clipboard+=unnamedplus          " +p paste OS clipboard
 set undofile                        " Set persistent undo
 set ignorecase smartcase            " Searching behaves like a web browser
 set termguicolors                   " Opaque Background
+set t_Co=256                        " Use 256-bits colors where available
 set hidden                          " Backgrounding abandoned buffers
 set shortmess+=c                    " Don't pass messages to |ins-completion-menu|.
 set signcolumn=yes                  " Always show the signcolumn

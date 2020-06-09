@@ -469,7 +469,10 @@ mouse_bindings:
 #
 #    A `~` operator can be used before a mode to apply the binding whenever
 #    the mode is *not* active, e.g. `~Alt`.
-#
+
+# Send ESC (\x1b) before characters when alt is pressed.
+alt_send_esc: true
+
 # Bindings are always filled by default, but will be replaced when a new
 # binding with the same triggers is defined. To unset a default binding, it can
 # be mapped to the `ReceiveChar` action. Alternatively, you can use `None` for

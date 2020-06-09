@@ -216,7 +216,7 @@ alias cck="cargo watch -s 'cargo check --color always 2>&1 | head -n 50'"
 alias web='ruby -run -e httpd . -p 5000'
 
 alias b='bundle'
-alias bi="bundle install --path vendor/bundle --binstubs vendor/bundle/bin"
+alias bi="bundle config set path 'vendor/bundle' && bundle binstubs --all --path 'vendor/bundle/bin' && bundle install"
 alias be="bundle exec"
 alias binit="bi && bundle package && echo 'vendor/bundle' >> .gitignore && echo 'vendor/cache' >> .gitignore"
 alias rails_best='rails_best_practices -e "db/migrate,vendor" -f html .'

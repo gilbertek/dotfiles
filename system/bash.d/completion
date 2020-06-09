@@ -1,14 +1,12 @@
-# vim:filetype=sh
+#!/usr/bin/env bash
 
-if [[ $OSTYPE == "darwin"* ]]; then
-  if [[ -n "$(which brew)" ]]; then
-    export BREW_CELLAR=$(brew --cellar)
-    export BREW_PREFIX=$(brew --prefix)
-  fi
-
-  # https://docs.brew.sh/Shell-Completion#configuring-completions-in-bash
-  if [[ ! ${BREW_PREFIX} -eq 0 ]]; then
-    for COMPLETION in "${BREW_PREFIX}/etc/bash_completion.d/"*; do
+# https://docs.brew.sh/Shell-Completion#configuring-completions-in-bash
+if type brew &>/dev/null; then
+  HOMEBREW_PREFIX="$(brew --prefix)"
+  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  else
+    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
       [[ -r "$COMPLETION" ]] && source "$COMPLETION"
     done
   fi
@@ -34,3 +32,5 @@ fi
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash ] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash
+
+# vim:filetype=sh

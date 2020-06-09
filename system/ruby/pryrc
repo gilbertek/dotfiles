@@ -1,0 +1,86 @@
+# frozen_string_literal: true
+
+prompt = proc { |obj, level, _| "[#{level}] #{obj} \e[3;37m❯ \e[0m" }
+
+
+if Pry::VERSION < "0.13.0"
+  Pry.config.prompt = prompt
+else
+  Pry.config.prompt = Pry::Prompt.new( 'custom', 'my prompt', [prompt])
+end
+
+# *** PLUGINS ***
+global_dir = "~/.asdf/installs/ruby/2.7.0/lib/ruby/gems/2.7.0"
+
+if Dir.exist?(global_dir)
+  paths ||= %w[pry-byebug hirb awesome_print].map do |gem|
+    Dir.glob("#{File.expand_path(global_dir)}/gems/*/lib/#{gem}")
+  end.flatten
+
+  $LOAD_PATH.unshift(*paths)
+end
+
+$LOAD_PATH << __dir__
+
+begin
+  require 'awesome_print'
+  require 'hirb'
+  AwesomePrint.pry!
+  AwesomePrint.defaults = { indent: -2, limit: 50 }
+rescue LoadError => _e
+  puts 'gem install awesome_print  # <-- highly recommended'
+end
+
+if defined? Hirb
+  Hirb::View.enable
+  old_print = Pry.config.print
+
+  Pry.config.print = proc do |*args|
+    Hirb::View.view_or_page_output(args[1]) || old_print.call(*args)
+  end
+end
+
+if defined?(PryByebug)
+  Pry.commands.alias_command 'c', 'continue'
+  Pry.commands.alias_command 's', 'step'
+  Pry.commands.alias_command 'n', 'next'
+  Pry.commands.alias_command 'f', 'finish'
+  Pry.commands.alias_command 'u', 'up'
+  Pry.commands.alias_command 'd', 'down'
+  Pry.commands.alias_command 'w', 'whereami'
+end
+
+# Hit Enter to repeat last command
+Pry::Commands.command(/^$/, 'repeat last command') do
+  pry_instance.run_command Pry.history.to_a.last
+end
+
+Pry::Commands.block_command('\\q', 'Quit, psql style') { exit }
+
+def r!; reload!; end
+
+def timeit
+  starting = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+  yield if block_given?
+  ending = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+  (ending - starting).round(4)
+end
+
+def change_log(stream)
+  ActiveRecord::Base.logger = Logger.new(stream)
+  ActiveRecord::Base.clear_active_connections!
+end
+
+def show_log
+  change_log(STDOUT)
+end
+
+def hide_log
+  change_log(nil)
+end
+
+def show_session(session)
+  Marshal.load(Base64.decode64(session))
+end
+
+# vim:ft=ruby
