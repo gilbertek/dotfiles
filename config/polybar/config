@@ -396,6 +396,82 @@ menu-2-0-exec   = poweroff
 menu-2-1        = cancel
 menu-2-1-exec   = menu-open-0
 
+
+[module/batteryd1]
+
+type = internal/battery
+full-at = 98
+battery = BAT1
+adapter = ACAD
+poll-interval = 60
+format-charging = <ramp-capacity>  <label-charging>
+label-charging =  %percentage%%
+label-full = Full
+format-discharging = <ramp-capacity>  <label-discharging>
+label-discharging = %percentage%%
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+ramp-capacity-foreground = ${colors.accent}
+
+module/date1]
+
+type = internal/date
+interval = 30
+label = " %date% %time%"
+date =
+date-alt = %a %d
+time = %H:%M
+time-alt =
+format-prefix = 
 ;}}}
 
+[module/powermenud2]
+type = custom/menu
+
+label-open =
+label-open-foreground = ${colors.accent_3}
+label-open-background = ${colors.modb2}
+label-open-padding = 2
+label-close =
+label-close-padding = 1
+label-close-foreground = $[colors.accent_3]
+label-separator = |
+label-separator-foreground = #666666
+
+menu-0-0 =
+menu-0-0-exec = menu-open-1
+menu-0-1 =
+menu-0-1-exec = menu-open-2
+menu-0-2 =
+menu-0-2-exec = menu-open-3
+
+menu-1-0 =
+menu-1-0-exec = menu-open-0
+menu-1-1 =
+menu-1-1-exec = systemctl reboot
+
+menu-2-0 =
+menu-2-0-exec = systemctl poweroff
+menu-2-1 =
+menu-2-1-exec = menu-open-0
+
+menu-3-0 =
+menu-3-0-exec = herbstclient quit
+menu-3-1 =
+menu-3-1-exec = menu-open-0
+
+
+[module/weather]
+type = custom/script
+interval = 1800
+format = <label>
+format-padding = 2
+format-prefix = " "
+;format-suffix = "°C"
+; format-prefix-foreground = ${colors.accent_4}
+; format-background = ${colors.modb}
+exec = weather
 ; vim:ft=dosini

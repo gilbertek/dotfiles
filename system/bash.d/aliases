@@ -235,7 +235,7 @@ alias binstubs="bundle --binstubs --standalone"
 alias pjson='python -mjson.tool'
 alias python=python3
 alias pip=pip3
-alias upgrade_pip_packages="pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U"
+alias pip:u="pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U"
 
 # ** [ ANDROID ALIASES ] ******************
 alias adb-screenshot='adb shell screencap -p | sed 's/\r$//' > screen.png'

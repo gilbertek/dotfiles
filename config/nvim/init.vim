@@ -349,6 +349,20 @@ nnoremap <silent><C-p> :Files<CR>
 nnoremap <silent><C-g> :GFiles<CR>
 nnoremap <silent><C-f> :Rg<cr>
 
+" fzf command palette
+let s:fzf_command_options = {
+  \ 'Copy relative path': 'let @+ = expand("%")',
+  \ 'Copy absolute path': 'let @+ = expand("%:p")',
+  \ 'CoC Palette': 'CocCommand',
+  \ 'Format JSON': '%!python -m json.tool',
+  \ }
+
+function! s:fzf_select_palette(line)
+  execute s:fzf_command_options[a:line]
+endfunction
+
+command! FZFPalette call fzf#run({ 'source': keys(s:fzf_command_options), 'sink': function('s:fzf_select_palette'), 'up': '~40%' })
+
 Plug 'thanthese/Tortoise-Typing'
 Plug 'rhysd/vim-grammarous'        " Grammarous
 let g:grammarous#use_vim_spelllang = 1
@@ -539,6 +553,7 @@ set iskeyword+=-
 
 " jk to exit insert mode
 inoremap jk <Esc>
+inoremap kj <esc>
 
 " When working on a thinkpad
 inoremap <F1> <ESC>
@@ -703,7 +718,7 @@ augroup general
   autocmd BufNewFile,BufRead .env.* setfiletype sh
   autocmd FileType ruby nmap <Leader>r :RuboCop<CR>
   autocmd FileType lua,swift,ruby,yaml,ocaml,javascript setl tabstop=2 shiftwidth=2 softtabstop=2
-  autocmd FileType go set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
+  autocmd FileType go setl tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
   autocmd FileType vue syntax sync fromstart
   au BufRead,BufNewFile .{eslintrc,prettierrc} set filetype=json
   autocmd BufNewFile,BufRead .{babel,eslint,jshint,prettier}rc setlocal filetype=json
