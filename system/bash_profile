@@ -120,7 +120,7 @@ export EDITOR=nvim
 export GIT_EDITOR=$EDITOR # git uses the default editor
 export VISUAL=nvim
 
-# Setting fd as the default source for fzf
+# Setting ripgrep as the default source for fzf
 export FZF_DEFAULT_OPTS='--height 50% --inline-info --border --cycle'
 export FZF_DEFAULT_COMMAND='rg --files --column --ignore-vcs'
 export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
