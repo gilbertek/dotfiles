@@ -27,8 +27,7 @@ set updatetime=300                  " Update more often (helps coc)
 set undodir=~/.config/nvim/undo     " Undo temp file directory
 set foldmethod=syntax               " Fold based on indent/syntax
 set foldlevel=99                    " ... but don't close them automatically
-set grepprg=rg\ --vimgrep\ --ignore-case
-set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+set tabstop=4 shiftwidth=4 softtabstop=4 expandtab " Indentation rules
 " }}
 
 " Plugins and configurations {{
@@ -177,10 +176,10 @@ let g:strip_whitespace_confirm = 0
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'janko-m/vim-test'                     " Run tests with varying granularity
-nmap <silent> <leader>t :TestNearest<CR>
-nmap <silent> <leader>T :TestFile<CR>
-nmap <silent> <leader>l :TestLast<CR>
-nmap <silent> <leader>g :TestVisit<CR>
+nmap <silent> <leader>t :wa\|:TestNearest<CR>
+nmap <silent> <leader>T :wa\|:TestFile<CR>
+nmap <silent> <leader>l :wa\|:TestLast<CR>
+nmap <silent> <leader>g :wa\|:TestVisit<CR>
 let test#strategy = 'neovim'
 
 " vim-gutentags {{{ "
@@ -214,7 +213,8 @@ let g:calendar_google_calendar = 1
 let g:calendar_google_task     = 1
 
 Plug 'vimwiki/vimwiki'
-let g:vimwiki_global_ext = 0
+let g:vimwiki_global_ext    = 0
+let g:vimwiki_use_calendar  = 1
 let g:vimwiki_list = [{
   \ 'path': '~/Projects/devnotes',
   \ 'syntax': 'markdown',
@@ -348,6 +348,11 @@ nnoremap <leader>h :History<cr>
 nnoremap <silent><C-p> :Files<CR>
 nnoremap <silent><C-g> :GFiles<CR>
 nnoremap <silent><C-f> :Rg<cr>
+
+" Use ripgrep for :grep command
+if executable('rg')
+  set grepprg="rg --vimgrep"   " use ripgrep
+endif
 
 " fzf command palette
 let s:fzf_command_options = {

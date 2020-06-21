@@ -1,7 +1,7 @@
 elixir 1.10.3
 rust 1.44.0
-ruby 2.7.0
-erlang 23.0.1
+ruby 2.7.1
+erlang 23.0.2
 java adopt-openjdk-13.0.1+9
 nodejs 14.3.0
 golang 1.14.3
