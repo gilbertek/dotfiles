@@ -27,6 +27,7 @@ set updatetime=300                  " Update more often (helps coc)
 set undodir=~/.config/nvim/undo     " Undo temp file directory
 set foldmethod=syntax               " Fold based on indent/syntax
 set foldlevel=99                    " ... but don't close them automatically
+set noshowmode
 set grepprg=rg\ --vimgrep\ --ignore-case
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 " }}
@@ -113,6 +114,8 @@ let g:coc_snippet_next = '<tab>'
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'reasonml-editor/vim-reason-plus'
 Plug 'Shougo/echodoc.vim'
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type              = "virtual"
 
 " HTML / CSS / SCSS / JS
 Plug 'jparise/vim-graphql'
@@ -791,6 +794,7 @@ augroup Terminal
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew $MYVIMRC
   command! Loadrc source $MYVIMRC | redraw | echo 'Init reloaded'
+  autocmd BufWritePost $MYVIMRC source $MYVIMRC
   command! PU PlugClean! | PlugUpdate! | PlugUpgrade
 augroup END
 
