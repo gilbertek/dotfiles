@@ -2,12 +2,26 @@
 
 # Rank mirrors to set the Fastest Download Servers
 sudo pacman-mirrors --fasttrack
-sudo pacman-mirrors --country United_States
-sudo pacman-mirrors -f 0
 
 # Update
 sudo pacman -Syu --noconfirm
 sudo pacman -S --noconfirm base-devel cmake zlib openssl expac wget fakeroot jshon
+
+# Install/Activate Graphical Firewall
+# sudo pacman -S gufw
+
+
+# Set up firewall
+sudo pacman -S ufw
+
+# Enable it.
+sudo ufw enable
+
+# Check its status:
+sudo ufw status verbose
+
+# Enable the start-up with the system:
+sudo systemctl enable ufw.service
 
 install() {
   which "$1" &> /dev/null

@@ -14,7 +14,7 @@ HISTFILESIZE=10000	                        # Larger bash history...
 HISTIGNORE="&:ll:ls:c:cd:cd -:pwd:exit:logout:quit:reset" # Don't record some commands
 export PROMPT_COMMAND='history -a;history -c;history -r'
 export CLICOLOR=1
-export SHELL=bash
+export RIPGREP_CONFIG_PATH=$HOME/.config/ripgrep/ripgreprc
 
 # Disable DOTNET analytics
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
@@ -52,9 +52,8 @@ if [ -d "$HOME/bin" ] ; then
 fi
 
 # GO Path setups
-# export GO111MODULE=on
-# export GOPATH=$HOME/Projects/GOAPPS
-export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/Projects/GOAPPS
+export PATH=$PATH:$GOPATH/bin
 
 # Groovy Home path setup
 if [ -d /usr/local/opt/groovy/libexec ]; then
@@ -123,7 +122,7 @@ export VISUAL=nvim
 
 # Setting fd as the default source for fzf
 export FZF_DEFAULT_OPTS='--height 50% --inline-info --border --cycle'
-export FZF_DEFAULT_COMMAND='rg --files --column --hidden --smart-case --follow --ignore-vcs -g "!{node_modules,dist,coverage,*.cache}/*"'
+export FZF_DEFAULT_COMMAND='rg --files --column --ignore-vcs'
 export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 

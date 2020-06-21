@@ -1,4 +1,4 @@
-# vim:filetype=sh
+# vim:filetype=bash
 # ~/.functions
 
 # Create a new directory and enter it
@@ -84,12 +84,9 @@ random-word() {
 }
 
 # Use Git’s colored diff when available
-hash git &>/dev/null;
-if [ $? -eq 0 ]; then
-  function diff() {
-    git diff --no-index --color-words "$@";
-  }
-fi;
+function diff() {
+  git diff --no-index --color-words "$@" | view -;
+}
 
 function createCerts() {
   openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mycert.pem -out mycert.pem
@@ -121,13 +118,19 @@ gtp() {
   command git push
 }
 
-# find shorthand
-function f() {
-  find . -name "$1"
+# Git keep branch update with master
+function gup() {
+  BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  git checkout master && git fetch -p origin && git merge origin/master && git checkout $BRANCH && git merge master
 }
 
 # clones git repository and cd's into it
 function gc() { git clone "$1" && cd `echo "'$1'" | cut -d/ -f2 | cut -d. -f1`; }
+
+# find shorthand
+function f() {
+  find . -name "$1"
+}
 
 # Start an HTTP server from a directory, optionally specifying the port
 function server() {
@@ -220,6 +223,26 @@ function rec() {
 
 function play() {
   command asciinema play $1
+}
+
+function cs() {
+  open -a "Google Chrome" "https://devhints.io/$1"
+}
+
+function adb-wifi() {
+  local port="5555"
+  local ip=$(adb shell netcfg | awk 'NR==1{print $3}' | sed -E 's/\/[0-9]+$//g')
+
+  adb tcpip $port
+  adb connect $ip:$port
+}
+
+function ctx() {
+  if [ -z "$1" ]; then
+    kubectl config get-contexts
+  else
+    kubectl config use-context $1
+  fi
 }
 
 # GIT SCRIPTS
