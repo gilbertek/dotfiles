@@ -150,11 +150,11 @@ type                            = internal/network
 interface                       = wlp4s0
 interval                        = 4.0
 
-format-connected                = 
+format-connected                = 直
 ; format-connected                = 說
 label-connected                 = "%essid%"
 
-format-disconnected             = 
+format-disconnected             = 睊
 ; format-disconnected             = ﲁ
 format-disconnected-foreground  = ${colors.alert}
 
@@ -226,7 +226,7 @@ label-full                      = %percentage%%
 ; VOLUME STATUS                                                                ;
 ;-------------------------------------------------------------------------------
 [module/volume]
-type = internal/pulseaudio
+type                    = internal/pulseaudio
 interval                = 5
 
 format-volume           = <ramp-volume> <label-volume>
@@ -234,16 +234,17 @@ format-muted            = <ramp-volume> <label-muted>
 format-muted-foreground = ${colors.alert}
 
 label-volume            = "%percentage%%"
-label-muted             = "%percentage%%"
+label-muted             = 婢
 
 bar-volume-width        = 10
 bar-volume-indicator    = |
 bar-volume-fill         = ─
 bar-volume-empty        = ─
 
-ramp-volume-0           = ""
-ramp-volume-1           = ""
-ramp-volume-2           = ""
+ramp-volume-0           = 奄
+ramp-volume-1           = 奔
+ramp-volume-2           = 墳
+ramp-headphones-0       = 
 
 click-left              = pulsemixer --toggle-mute
 scroll-up               = pulsemixer --change-volume +1
