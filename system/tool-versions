@@ -3,6 +3,6 @@ rust 1.44.0
 ruby 2.7.1
 erlang 23.0.2
 java adopt-openjdk-13.0.1+9
-nodejs 14.3.0
+nodejs 14.4.0
 golang 1.14.3
 lua 5.3.5
