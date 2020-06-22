@@ -196,7 +196,7 @@ let g:gutentags_ctags_extra_args          = [
       \ '--tag-relative=yes',
       \ '--fields=+ailmnS',
       \ ]
-let g:gutentags_cache_dir        = expand('~/.config/nvim/tags')
+let g:gutentags_cache_dir        = expand('~/.cache/tags')
 let g:gutentags_ctags_exclude    = [
       \ 'node_modules',
       \ 'dist',

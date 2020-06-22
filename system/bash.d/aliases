@@ -142,7 +142,6 @@ alias stash='git stash -u'
 alias stash:l='git stash list'
 alias gsh='git show HEAD'
 alias grev='git diff master'
-alias gh='git history'
 alias gha='git history --all'
 alias gmt='git mergetool'
 alias gpull='git pull origin'
@@ -203,6 +202,9 @@ alias dk:postgres-9.4="docker run -t -d -p 5432:5432 --name postgres-9-4 postgre
 alias dk:postgres="docker run -t -d -p 5432:5432 --name postgres postgres"
 alias dk:redis="docker run -t -d -p 6379:6379 --name redis redis --bind 0.0.0.0"
 
+alias dkc='docker-compose'
+alias dkc:up='docker-compose up'
+alias dkc:r='docker-compose run --rm'
 # ** [ SCALA ALIASES ] ******************
 alias new-sbt='g8 scala/scala-seed.g8'
 alias mlog='tail -f .metals/metals.log'
@@ -279,7 +281,7 @@ alias mux='TERM=screen-256color tmuxinator'
 
 # ** [ ELASTIC SEARCH ALIASES ] ******************
 alias es:start="elasticsearch -d"
-alias es:stop="elasticsearch stop"
+alias es:stop="pkill -f elasticsearch"
 alias es:di="curl -XDELETE 'http://localhost:9200/_all'" # delete indexes
 
 # ** [ YOUTUBE-DL SHORTCUTS ] ******************
