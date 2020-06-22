@@ -230,7 +230,7 @@ type                    = internal/pulseaudio
 interval                = 5
 
 format-volume           = <ramp-volume> <label-volume>
-format-muted            = <ramp-volume> <label-muted>
+format-muted            = <label-muted>
 format-muted-foreground = ${colors.alert}
 
 label-volume            = "%percentage%%"
@@ -270,33 +270,34 @@ click-left    = gbacklight
 ;-------------------------------------------------------------------------------
 {{{powermenu
 [module/powermenu]
-type                       = custom/menu
+type                   = custom/menu
 
-expand-right               = true
+expand-right           = true
+format-spacing         = 1
 
-format-spacing             = 1
+label-open             = 
+label-open-foreground  = ${colors.foreground}
+label-close            = cancel
+label-close-foreground = ${colors.secondary}
+label-separator        = |
 
-label-open                 = 
-label-open-foreground      = ${colors.foreground}
-label-close                =  cancel
-label-close-foreground     = ${colors.secondary}
-label-separator            = |
-label-separator-foreground = ${colors.foreground-alt}
+menu-0-0               = reboot
+menu-0-0-exec          = menu-open-1
 
-menu-0-0                   = reboot
-menu-0-0-exec              = menu-open-1
-menu-0-1                   = power off
-menu-0-1-exec              = menu-open-2
+menu-0-1               = shutdown
+menu-0-1-exec          = menu-open-2
 
-menu-1-0                   = cancel
-menu-1-0-exec              = menu-open-0
-menu-1-1                   = reboot
-menu-1-1-exec              = sudo reboot
+menu-0-2               = logout
+menu-0-2-exec          = menu-open-3
 
-menu-2-0                   = power off
-menu-2-0-exec              = sudo poweroff
-menu-2-1                   = cancel
-menu-2-1-exec              = menu-open-0
+menu-1-0               = reboot?
+menu-1-0-exec          = reboot
+
+menu-2-0               = shutdown?
+menu-2-0-exec          = poweroff
+
+menu-3-0               = logout?
+menu-3-0-exec          = herbstclient quit
 ;}}}
 
 ;-------------------------------------------------------------------------------
