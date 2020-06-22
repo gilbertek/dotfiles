@@ -27,7 +27,7 @@ set updatetime=300                  " Update more often (helps coc)
 set undodir=~/.config/nvim/undo     " Undo temp file directory
 set foldmethod=syntax               " Fold based on indent/syntax
 set foldlevel=99                    " ... but don't close them automatically
-set noshowmode
+set noshowmode                      " Do not show current mode at the bottom
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 " }}
 
@@ -114,7 +114,7 @@ Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'reasonml-editor/vim-reason-plus'
 Plug 'Shougo/echodoc.vim'
 let g:echodoc#enable_at_startup = 1
-let g:echodoc#type              = "virtual"
+let g:echodoc#type              = 'virtual'
 
 " HTML / CSS / SCSS / JS
 Plug 'jparise/vim-graphql'
@@ -355,6 +355,7 @@ nnoremap <silent><C-f> :Rg<cr>
 " Use ripgrep for :grep command
 if executable('rg')
   set grepprg="rg --vimgrep"   " use ripgrep
+  set grepformat=%f:%l:%c:%m,%f:%l%m,%f\ \ %l%m
 endif
 
 " fzf command palette
@@ -611,6 +612,20 @@ nnoremap <leader>O :!open .<cr>
 nnoremap + <c-a>
 nnoremap - <c-x>
 
+function ToggleZoomPane()
+  if winnr('$') > 1
+    tab split
+  else
+    let tabcount = tabpagenr('$')
+    let currenttab = tabpagenr()
+    if tabcount > 1 && currenttab == tabcount
+      quit
+    end
+  end
+endfunction
+
+nmap <silent> ;z :call ToggleZoomPane()<CR>
+
 " CoC settings {{{
 " Use <tab> to trigger completion
 function! s:check_back_space() abort
@@ -677,6 +692,9 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+
+" Google search
+command! -nargs=1 Google :silent call system('open https://google.com/search?q='.<q-args>.'&')
 
 command! -nargs=* TmuxSendKeys call TmuxSendKeys(<q-args>)
 
@@ -814,7 +832,6 @@ augroup Terminal
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew $MYVIMRC
   command! Loadrc source $MYVIMRC | redraw | echo 'Init reloaded'
-  autocmd BufWritePost $MYVIMRC source $MYVIMRC
   command! PU PlugClean! | PlugUpdate! | PlugUpgrade
 augroup END
 

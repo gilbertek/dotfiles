@@ -2,7 +2,6 @@
 
 prompt = proc { |obj, level, _| "[#{level}] #{obj} \e[3;37m❯ \e[0m" }
 
-
 if Pry::VERSION < "0.13.0"
   Pry.config.prompt = prompt
 else
@@ -10,7 +9,7 @@ else
 end
 
 # *** PLUGINS ***
-global_dir = "~/.asdf/installs/ruby/2.7.0/lib/ruby/gems/2.7.0"
+global_dir = "~/.asdf/installs/ruby/2.7.1/lib/ruby/gems/2.7.0"
 
 if Dir.exist?(global_dir)
   paths ||= %w[pry-byebug hirb awesome_print].map do |gem|
@@ -19,8 +18,6 @@ if Dir.exist?(global_dir)
 
   $LOAD_PATH.unshift(*paths)
 end
-
-$LOAD_PATH << __dir__
 
 begin
   require 'awesome_print'
