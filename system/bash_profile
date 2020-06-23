@@ -242,6 +242,10 @@ paths=(
 # [[ -f "$opaminit" ]] && source "$opaminit"
 # unset opaminit
 
+[[ -f "$HOME/.bashrc.local" ]] && source "$HOME/.bashrc.local"
+[[ -f "$HOME/.alias.local" ]] && source "$HOME/.alias.local"
+[[ -f "$HOME/.functions.local" ]] && source "$HOME/.functions.local"
+
 MESSAGE=(
 	"Amazing THINGS will HAPPEN!"
 	"Be the best version of you"

@@ -9,11 +9,11 @@ else
 end
 
 # *** PLUGINS ***
-global_dir = "~/.asdf/installs/ruby/2.7.1/lib/ruby/gems/2.7.0"
+gems_dir = "~/.asdf/installs/ruby/2.7.1/lib/ruby/gems/2.7.0"
 
-if Dir.exist?(global_dir)
+if Dir.exist?(File.expand_path(gems_dir))
   paths ||= %w[pry-byebug hirb awesome_print].map do |gem|
-    Dir.glob("#{File.expand_path(global_dir)}/gems/*/lib/#{gem}")
+    Dir.glob("#{File.expand_path(gems_dir)}/gems/*/lib/#{gem}")
   end.flatten
 
   $LOAD_PATH.unshift(*paths)
@@ -53,6 +53,7 @@ Pry::Commands.command(/^$/, 'repeat last command') do
 end
 
 Pry::Commands.block_command('\\q', 'Quit, psql style') { exit }
+Pry::Commands.block_command('copy', 'Copy to clipboard') { |obj| pbcopy(obj) }
 
 def r!; reload!; end
 
@@ -78,6 +79,11 @@ end
 
 def show_session(session)
   Marshal.load(Base64.decode64(session))
+end
+
+def pbcopy(obj)
+  command = system('which pbcopy > /dev/null 2>&1') ? 'pbcopy' : 'xsel -ib' # xclip
+  system %(echo "#{obj}" | #{command})
 end
 
 # vim:ft=ruby
