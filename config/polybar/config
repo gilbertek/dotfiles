@@ -42,7 +42,7 @@ module-margin-right = 2
 
 modules-left        = workspaces xwindow
 modules-center      =
-modules-right       = network backlight volume eth battery date powermenu
+modules-right       = network backlight bluetooth volume eth battery date powermenu
 
 font-0              = "Hack Nerd Font:size=10;0"
 font-1              = "Iosevka Nerd Font:size=10;0"
