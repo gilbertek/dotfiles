@@ -304,6 +304,7 @@ let g:ale_rust_cargo_use_clippy       = executable('cargo-clippy')
 let g:ale_cpp_clang_options           = '-std=c++17 -Wall'
 let g:ale_cpp_clangtidy_checks        = ['*', '-fushsia-*', '-hicpp-*']
 let g:ale_perl_perl_options           = '-c -Mwarnings -Ilib -It/lib'
+" let g:ale_elixir_elixir_ls_release    = $HOME . './elixir_ls'
 nmap [a <Plug>(ale_next_wrap)
 nmap ]a <Plug>(ale_previous_wrap)
 

@@ -227,7 +227,6 @@ label-full                      = %percentage%%
 ;-------------------------------------------------------------------------------
 [module/volume]
 type                    = internal/pulseaudio
-interval                = 5
 
 format-volume           = <ramp-volume> <label-volume>
 format-muted            = <label-muted>
@@ -249,6 +248,33 @@ ramp-headphones-0       = 
 click-left              = pulsemixer --toggle-mute
 scroll-up               = pulsemixer --change-volume +1
 scroll-down             = pulsemixer --change-volume -1
+
+[module/volume-internal]
+type = internal/volume
+
+format-volume = <label-volume> <bar-volume>
+label-volume = VOL
+label-volume-foreground = ${root.foreground}
+
+format-muted-prefix = " "
+; format-muted-foreground = ${colors.foreground-alt}
+label-muted = sound muted
+
+bar-volume-width = 4
+bar-volume-foreground-0 = #55aa55
+bar-volume-foreground-1 = #55aa55
+bar-volume-foreground-2 = #55aa55
+bar-volume-foreground-3 = #55aa55
+bar-volume-foreground-4 = #55aa55
+bar-volume-foreground-5 = #f5a70a
+bar-volume-foreground-6 = #ff5555
+bar-volume-gradient = false
+bar-volume-indicator = |
+bar-volume-indicator-font = 2
+bar-volume-fill = ─
+bar-volume-fill-font = 2
+bar-volume-empty = ─
+bar-volume-empty-font = 2
 
 ;-------------------------------------------------------------------------------
 ; BACKLIGHT BRIGHTNESS                                                         ;
@@ -303,6 +329,19 @@ menu-3-0-exec          = herbstclient quit
 ;-------------------------------------------------------------------------------
 ; MUSIC STATUS                                                                 ;
 ;-------------------------------------------------------------------------------
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
+
+label-song-maxlen = 25
+label-song-ellipsis = true
 
 ; [module/music]
 ; type = custom/script
