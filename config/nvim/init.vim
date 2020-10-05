@@ -34,12 +34,28 @@ set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 " Plugins and configurations {{
 call plug#begin()
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled               = ['elm', 'go']
+let g:polyglot_disabled               = ['elm']
 let g:haskell_enable_quantification   = 1
 let g:haskell_enable_pattern_synonyms = 1
 let g:haskell_enable_typeroles        = 1
 Plug 'andys8/vim-elm-syntax', { 'for': [ 'elm' ] }
 Plug 'bfrg/vim-cpp-modern'
+
+" --- vim go (polyglot) settings.
+let g:go_highlight_build_constraints     = 1
+let g:go_highlight_extra_types           = 1
+let g:go_highlight_fields                = 1
+let g:go_highlight_functions             = 1
+let g:go_highlight_methods               = 1
+let g:go_highlight_operators             = 1
+let g:go_highlight_structs               = 1
+let g:go_highlight_types                 = 1
+let g:go_highlight_function_parameters   = 1
+let g:go_highlight_function_calls        = 1
+let g:go_highlight_generate_tags         = 1
+let g:go_highlight_format_strings        = 1
+let g:go_highlight_variable_declarations = 1
+let g:go_auto_sameids                    = 1
 
 " Clojure & Lisp development plugins
 Plug 'wlangstroth/vim-racket', {'for': ['scheme', 'racket']}
@@ -57,13 +73,7 @@ let g:clj_fmt_autosave = 1
 Plug 'luochen1990/rainbow'          " Rainbow parenthesis
 let g:rainbow_active = 1
 
-" Elixir
-Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'elixir-lang/vim-elixir',  { 'for': 'elixir' }
-let g:alchemist#elixir_erlang_src  = expand('$HOME/.asdf/shims/elixir')
-let g:elixir_use_markdown_for_docs = 1
-let g:alchemist_tag_disable        = 1 "Use Universal ctags instead
-
 Plug 'vim-erlang/vim-erlang-tags',          { 'for': 'erlang' }
 Plug 'vim-erlang/vim-erlang-omnicomplete',  { 'for': 'erlang' }
 Plug 'vim-erlang/vim-erlang-compiler'
@@ -92,6 +102,7 @@ let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
 Plug 'neoclide/coc.nvim',    { 'branch': 'release' } " Language Server Protocol support
 let g:coc_global_extensions = [
+  \ 'coc-elixir',
   \ 'coc-eslint',
   \ 'coc-flutter',
   \ 'coc-go',
@@ -103,7 +114,6 @@ let g:coc_global_extensions = [
   \ 'coc-prettier',
   \ 'coc-python',
   \ 'coc-reason',
-  \ 'coc-rls',
   \ 'coc-rust-analyzer',
   \ 'coc-snippets',
   \ 'coc-solargraph',
@@ -111,7 +121,6 @@ let g:coc_global_extensions = [
   \ ]
 let g:coc_snippet_next = '<tab>'
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
-Plug 'reasonml-editor/vim-reason-plus'
 Plug 'Shougo/echodoc.vim'
 let g:echodoc#enable_at_startup = 1
 let g:echodoc#type              = 'virtual'
@@ -208,7 +217,7 @@ let g:gutentags_ctags_exclude    = [
 
 " vim-rooter {{ "
 Plug 'airblade/vim-rooter'
-let g:rooter_patterns = ['.root', '.git/']
+let g:rooter_patterns = ['.root', '.git/', '*.sln']
 " }} vim-rooter "
 
 Plug 'itchyny/calendar.vim' " Calendar integration
@@ -304,7 +313,6 @@ let g:ale_rust_cargo_use_clippy       = executable('cargo-clippy')
 let g:ale_cpp_clang_options           = '-std=c++17 -Wall'
 let g:ale_cpp_clangtidy_checks        = ['*', '-fushsia-*', '-hicpp-*']
 let g:ale_perl_perl_options           = '-c -Mwarnings -Ilib -It/lib'
-" let g:ale_elixir_elixir_ls_release    = $HOME . './elixir_ls'
 nmap [a <Plug>(ale_next_wrap)
 nmap ]a <Plug>(ale_previous_wrap)
 
@@ -355,8 +363,8 @@ nnoremap <silent><C-f> :Rg<cr>
 
 " Use ripgrep for :grep command
 if executable('rg')
-  set grepprg="rg --vimgrep"   " use ripgrep
-  set grepformat=%f:%l:%c:%m,%f:%l%m,%f\ \ %l%m
+  set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+  set grepformat=%f:%l:%c:%m
 endif
 
 " fzf command palette
@@ -451,17 +459,13 @@ nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j
 nnoremap <silent> <C-k> <C-w>k
 nnoremap <silent> <C-l> <C-w>l
-tnoremap <silent> <C-h> <C-\><C-n><C-w>h
-tnoremap <silent> <C-j> <C-\><C-n><C-w>j
-tnoremap <silent> <C-k> <C-\><C-n><C-w>k
-tnoremap <silent> <C-l> <C-\><C-n><C-w>l
 
 " Neovim terminal {{
 if has("nvim")
   " Quit terminal Exit/Navigation
   tnoremap jk <C-\><C-n>
   nnoremap <silent><bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
-  nnoremap <leader>st :split term://$SHELL<CR>
+  nnoremap <leader>' :split term://$SHELL<CR>
 endif
 " }}
 
@@ -482,6 +486,14 @@ nnoremap <silent> <A-Up>    :resize -5<CR>
 " Move and format selection with J K
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
+
+" Place the two screens up and down
+map sv <C-w>t<C-w>H
+map sh <C-w>t<C-w>K
+
+" Rotate screens
+noremap srh <C-w>b<C-w>K
+noremap srv <C-w>b<C-w>H
 
 " quickfix
 nnoremap [q :cprevious<CR>
@@ -583,6 +595,7 @@ nnoremap <leader>Q :bp!\|bd!#<cr>
 " Quick-save
 nnoremap <leader>w     :w<CR>
 nnoremap <silent><C-S> :update<CR>
+command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 
 " find merge conflict markers
 nnoremap <silent><leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
@@ -648,9 +661,6 @@ inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm()
 
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <C-e>   pumvisible() ? "\<C-e>" : "\<End>"
-inoremap <expr> <C-j>   pumvisible() ? '<C-n>'  : ''
-inoremap <expr> <C-k>   pumvisible() ? '<C-p>'  : ''
 
 " Use enter to confirm complete
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -675,6 +685,9 @@ nmap <silent> <leader>R   <Plug>(coc-refactor)
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
+
+nnoremap <leader>ghw :h <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>prw :CocSearch <C-R>=expand("<cword>")<CR><CR>
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
@@ -808,8 +821,6 @@ augroup END
 " Vim-Alchemist Mappings
 augroup OTP-Family
   autocmd!
-  autocmd FileType elixir nnoremap <buffer><leader>h :call alchemist#exdoc()<CR>
-  autocmd FileType elixir nnoremap <buffer><leader>d :call alchemist#exdef()<CR>
   autocmd FileType elixir setlocal matchpairs=(:),{:},[:]
 
   " Enable html syntax highlighting in all .eex files

@@ -80,6 +80,7 @@ scrolling:
   multiplier: 3
 
 # Font configuration
+#  JetBrainsMono Nerd Font/ Hack Nerd Font / Fira Code Nerd Font
 font:
   normal:
     family: JetBrainsMono Nerd Font
@@ -91,7 +92,7 @@ font:
     family: JetBrainsMono Nerd Font
     style: Italic
   bold_italic:
-    family: monospace
+    family: JetBrainsMono Nerd Font
     style: Bold Italic
   size: 11.0
 
