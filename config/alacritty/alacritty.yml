@@ -61,6 +61,9 @@ window:
   # Window title
   #title: Alacritty
 
+  # Allow terminal applications to change Alacritty's window title.
+  dynamic_title: true
+
   # Window class (Linux/BSD only):
   #class:
     # Application instance name
@@ -77,6 +80,7 @@ scrolling:
   multiplier: 3
 
 # Font configuration
+#  JetBrainsMono Nerd Font/ Hack Nerd Font / Fira Code Nerd Font
 font:
   normal:
     family: JetBrainsMono Nerd Font
@@ -88,7 +92,7 @@ font:
     family: JetBrainsMono Nerd Font
     style: Italic
   bold_italic:
-    family: monospace
+    family: JetBrainsMono Nerd Font
     style: Bold Italic
   size: 11.0
 
@@ -219,7 +223,7 @@ colors: *tomorrow_night
   #
   #indexed_colors: []
 
-visual_bell:
+bell:
  animation: EaseOutExpo
  duration: 50
 
@@ -234,9 +238,6 @@ selection:
 
   # When set to `true`, selected text will be copied to the primary clipboard.
   #save_to_clipboard: false
-
-# Allow terminal applications to change Alacritty's window title.
-dynamic_title: true
 
 cursor:
   # Cursor style
