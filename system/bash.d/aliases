@@ -130,7 +130,8 @@ alias ga='git add -p'
 alias gci='git commit -m'
 alias gd='git diff'
 alias gwd="git diff --word-diff"
-alias gco='git checkout $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
+# alias gco='git checkout $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
+alias gcp='git checkout -- $(git ls-files --modified | fzf --height=40% -m) >/dev/null'
 alias stash:p='git stash pop $(git stash list | fzf | cut -d=: -f1)'
 alias grb='git rebase -i $(git log --all --graph --oneline --decorate | fzf --reverse | sed -Ee "s/.* ([a-f0-9]{6,}) .*/\1/")'
 alias gm='git merge --no-ff $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
@@ -200,7 +201,8 @@ alias dk:neo4j="docker run -t -d -e NEO4J_AUTH=none -p 7474:7474 -p 7473:7473 -p
 alias dk:orientdb="docker run -e ORIENTDB_ROOT_PASSWORD=orientdb -t -d -p 2424:2424 -p 2480:2480 --name orientdb orientdb"
 alias dk:postgres-9.4="docker run -t -d -p 5432:5432 --name postgres-9-4 postgres:9.4.15"
 alias dk:postgres="docker run -t -d -p 5432:5432 --name postgres postgres"
-alias dk:redis="docker run -t -d -p 6379:6379 --name redis redis --bind 0.0.0.0"
+# alias dk:redis="docker run -t -d --rm -p 6379:6379 --name redis redis --bind 0.0.0.0"
+alias dk:redis="docker run -d --rm -it --network=container:$(hostname) --name=redis redis"
 
 alias dkc='docker-compose'
 alias dkc:up='docker-compose up'
@@ -364,6 +366,7 @@ alias clj-repl='clojure -Sdeps "{:deps {com.bhauman/rebel-readline {:mvn/version
 alias cljs-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept cljs.server.node/repl}" -R:cljs-canary -A:rebel-cljs -m cljs.main -re node -r; }; do_repl'
 alias cljs='clj -Sdeps "{:deps {org.clojure/clojurescript {:mvn/version \"1.9.946\"}}}" -m cljs.repl.node'
 alias rebel='clojure -A:rebel'
+alias vrepl='clojure -Avrepl'
 
 # ** [MAVEN SHORTCUTS ] ******************
 alias mc='mvn --quiet clean'

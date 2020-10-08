@@ -28,6 +28,8 @@ set undodir=~/.config/nvim/undo     " Undo temp file directory
 set foldmethod=syntax               " Fold based on indent/syntax
 set foldlevel=99                    " ... but don't close them automatically
 set noshowmode                      " Do not show current mode at the bottom
+set autowrite                       " Automatically write a file when leaving a modified buffer
+set history=500                     " Number of things to remember in history.
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 " }}
 
@@ -103,7 +105,6 @@ let g:coc_global_extensions = [
   \ 'coc-prettier',
   \ 'coc-python',
   \ 'coc-reason',
-  \ 'coc-rls',
   \ 'coc-rust-analyzer',
   \ 'coc-snippets',
   \ 'coc-solargraph',
@@ -121,7 +122,8 @@ Plug 'jparise/vim-graphql'
 Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']}
 Plug 'ap/vim-css-color'
 Plug 'mattn/emmet-vim', {
-  \ 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html', 'eruby', 'eelixir'] }
+  \ 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html', 'eruby',
+  \ 'eelixir', 'mustache','vue'] }
 let g:user_emmet_mode       = 'a'    " Enable all function in all mode.
 let g:user_emmet_leader_key = ','    " Using ,, to expand
 
@@ -316,7 +318,7 @@ nnoremap <leader>gc :Gcommit -v<CR>
 nnoremap <leader>gp :Dispatch Git push<CR>
 nnoremap <leader>gl :Glog<cr>
 nnoremap <leader>ga :silent !git add % &<cr><cr>
-nnoremap <Leader>gac :silent !git add -A<CR>:Gcommit<CR>
+nnoremap <Leader>gac :silent !git add -A -v<CR>:Gcommit<CR>
 " Diffget from the left pane (merge branch)
 nnoremap gdh :diffget //2<CR>
 " Diffget from right pane (target branch)
@@ -377,7 +379,7 @@ Plug 'rhysd/vim-grammarous'        " Grammarous
 let g:grammarous#use_vim_spelllang = 1
 
 Plug 'easymotion/vim-easymotion'      " Make movement a lot faster and easier
-" " easymotion search behavior
+" easymotion search behavior
 " map  / <Plug>(easymotion-sn)
 " omap / <Plug>(easymotion-tn)
 " map  n <Plug>(easymotion-next)
@@ -401,7 +403,7 @@ let base16colorspace=256
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
 
 Plug 'Yggdroot/indentLine'          " Show indentation lines
-let g:indentLine_char = '·'  " Other options ┆│┊︙¦⋮
+let g:indentLine_char = '·'         " Other options ┆│┊︙¦⋮
 
 Plug 'itchyny/lightline.vim' " wombat codedark
 let g:lightline = {
@@ -430,20 +432,38 @@ call plug#end()
 
 " **[ 3) UI Tweaks #ui-tweaks ] *********************
 set background=dark
-" colorscheme base16-default-dark
 colorscheme base16-tomorrow-night
 " colorscheme base16-onedark
-" colorscheme base16-phd
-" colorscheme base16-porple
 " colorscheme base16-snazzy
 " colorscheme codedark
 " colorscheme tender
 
 " **[ 4) Navigation #navigation ]*****************
+" Unbind the cursor keys in insert, normal and visual modes.
 nnoremap <Left>  :echo "ಠ_ಠ!"<cr>
 nnoremap <Right> :echo "ಠ_ಠ!"<cr>
 nnoremap <Up>    :echo "ಠ_ಠ!"<cr>
 nnoremap <Down>  :echo "ಠ_ಠ!"<cr>
+
+" Insert mode shortcut
+inoremap <C-h> <BS>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
+
+" Emacs like movement in Insert mode
+inoremap <C-c> <ESC>
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+inoremap <C-d> <Del>
+
+" Use shift-H and shift-L for move to beginning/end of line. alt map 0 ^
+nnoremap H ^
+nnoremap L $
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-t> <C-R>=expand("%:p:h") . "/" <CR>
 
 " Quick window navigation
 nnoremap <silent> <C-h> <C-w>h
@@ -460,7 +480,7 @@ if has("nvim")
   " Quit terminal Exit/Navigation
   tnoremap jk <C-\><C-n>
   nnoremap <silent><bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
-  nnoremap <leader>st :split term://$SHELL<CR>
+  nnoremap <leader>' :split term://$SHELL<CR>
 endif
 " }}
 
@@ -507,23 +527,6 @@ nnoremap sv :vsplit<CR><C-w>w
 " Automatic pane split layouts
 nnoremap <leader>3 :vsplit<CR>:bn<CR>:vsplit<CR>:bn<CR>
 nnoremap <leader>4 :vnew<CR>:bn<CR>:vnew<CR>:bn<CR><C-W><C-L><C-W><C-L>:split<CR>:bn<CR>
-
-" Use shift-H and shift-L for move to beginning/end of line. alt map 0 ^
-nnoremap H ^
-nnoremap L $
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
-cnoremap <C-t> <C-R>=expand("%:p:h") . "/" <CR>
-
-" Emacs like movement in Insert mode
-inoremap <C-c> <ESC>
-inoremap <C-a> <Home>
-inoremap <C-e> <End>
-inoremap <C-f> <Right>
-inoremap <C-b> <Left>
-inoremap <C-d> <Del>
-inoremap <C-n> <Down>
-inoremap <C-p> <Up>
 
 " Remap j and k to move cursor as usual through wrapped lines
 nnoremap j gj
@@ -626,6 +629,11 @@ endfunction
 
 nmap <silent> ;z :call ToggleZoomPane()<CR>
 
+" Magnify the current split
+noremap <leader>m <C-w>_
+" Restore split windows
+noremap <leader>r <C-w>=
+
 " CoC settings {{{
 " Use <tab> to trigger completion
 function! s:check_back_space() abort
@@ -707,8 +715,8 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 command! -nargs=+ F execute 'silent grep!' <q-args> | cw | redraw!
 
-" Hit Ctrl+A to select all in current buffer
-nnoremap <C-a> ggVG
+" Hit Ctrl+A/<leader>sa to select all in current buffer
+nnoremap <leader>sa ggVG
 
 " Open in TeXShop
 nnoremap <leader>tx :!open -a TeXShop %<cr><cr>
@@ -831,7 +839,7 @@ augroup Terminal
 
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew $MYVIMRC
-  command! Loadrc source $MYVIMRC | redraw | echo 'Init reloaded'
+  command! Loadrc source $MYVIMRC | redraw | echo 'Init reloaded' | :PlugInstall<CR>
   command! PU PlugClean! | PlugUpdate! | PlugUpgrade
 augroup END
 

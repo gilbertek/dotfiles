@@ -121,7 +121,7 @@ export GIT_EDITOR=$EDITOR # git uses the default editor
 export VISUAL=nvim
 
 # Setting ripgrep as the default source for fzf
-export FZF_DEFAULT_OPTS='--height 50% --inline-info --border --cycle'
+export FZF_DEFAULT_OPTS='-m --height 50% --inline-info --border --cycle'
 export FZF_DEFAULT_COMMAND='rg --files --column --ignore-vcs'
 export FZF_CTRL_T_OPTS="--preview 'bat --color \"always\" {}'"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -255,6 +255,7 @@ MESSAGE=(
 	"Why complicate life? We just have one Life. Keep it simple"
 	"think positive. talk positive. feel positive"
 	"if opportunity does not knock, build a door"
+  "A clever person solves a problem. A wise person avoids it. ~Albert Einstein"
 )
 RANDOM=$$$(date +%s)
 echo ${MESSAGE[$RANDOM % ${#MESSAGE[@]}]}
