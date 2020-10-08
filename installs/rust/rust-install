@@ -2,7 +2,7 @@
 # Set default channel
 # rustup default <stable> | <nightly>
 
-RUST_VERSION=1.44.0
+RUST_VERSION=1.46.0
 
 asdf install rust $RUST_VERSION
 asdf global rust $RUST_VERSION
@@ -11,8 +11,8 @@ rustup self update
 rustup update
 
 # rustup component add rls # Use rust-analyzer instead
-rustup component add rust-src
-rustup component add rust-analysis
+# rustup component add rust-src
+# rustup component add rust-analysis
 
 # install rust analyzer
 if [[ $OSTYPE == "darwin"* ]]; then
@@ -26,12 +26,12 @@ chmod +x ~/.local/bin/rust-analyzer
 
 # Racer - code completion for Rust use nightly
 cargo uninstall racer 2> /dev/null
-rustup toolchain add nightly
-rustup component add rls --toolchain nightly
-cargo +nightly install racer
+# rustup toolchain add nightly
+# rustup component add rls --toolchain nightly
+# cargo +nightly install racer
 
 # Generate a new Rust project by leveraging a pre-existing git repository as a template.
-cargo install cargo-generate
+# cargo install cargo-generate
 
 # WebAssembly
 # cargo install wasm-pack
@@ -55,4 +55,4 @@ fi
 asdf reshim rust
 
 # Test racer on the command line:
-racer complete std::io::B
+# racer complete std::io::B

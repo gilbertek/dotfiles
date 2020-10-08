@@ -1,0 +1,60 @@
+# Docs: https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md#configuration-file
+
+# Don't let ripgrep vomit really long lines to my terminal, and show a preview.
+--max-columns=150
+--max-columns-preview
+
+# Search case-insensitively if pattern is all lowercase
+--smart-case
+
+# Allow search hidden files
+--hidden
+
+# Sort by file path
+--sort=path
+
+# Follow symbolic links
+--follow
+
+# Always show line numbers for matches
+--line-number
+
+# Do the right thing with color output
+--color=auto
+
+# Show context by default
+--context=3
+
+# Using glob patterns to include/exclude files or folders
+--glob=!*.min.{css,js}
+
+# Always ignore Git/SVC directory
+--glob=!.{git,hg,svn}
+
+# Always ignore node_modules
+--glob=!node_modules/
+
+--glob=!{.ctags-exclude,tags}
+
+# Exclude rails directories
+--glob=!{log/*.log,tmp,logs,debug,target,cache,vendor/*}
+
+# Exclude elixir directories
+--glob=!{_build,deps,dist,doc,}
+--glob=!.elixir_ls/*
+--glob=!priv/static/*
+
+# JavaScript
+--glob=!*.map
+--glob=!*junit*
+--glob=!*jquery*.js
+
+# python
+--glob=!{env,venv,locale,.ropeproject,CACHE,*.pyc}
+
+# test artifacts
+--glob=!coverage/*
+
+--glob=!cscope.out
+
+--glob=!.gradle/

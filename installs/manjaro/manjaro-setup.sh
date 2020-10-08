@@ -103,6 +103,10 @@ for package in "${PACKAGES[@]}"; do
   install "$package"
 done
 
+# 4. Install some key packages
+
+# sudo pacman -S adobe-source-sans-pro-fonts aspell-en enchant gst-libav gst-plugins-good hunspell-en icedtea-web jre8-openjdk languagetool libmythes mythes-en pkgstats ttf-anonymous-pro ttf-bitstream-vera ttf-dejavu ttf-droid ttf-gentium ttf-liberation ttf-ubuntu-font-family
+
 # sudo pacman -S awesome openssh \
 #   lxappearance-gtk3 nodejs python jq wget \
 #   pulseaudio pavucontrol picom firefox curl xorg-xinit xorg-server \
