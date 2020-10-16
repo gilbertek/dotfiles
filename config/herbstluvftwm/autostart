@@ -27,12 +27,13 @@ hc keybind $Mod-Shift-c close
 hc keybind $Mod-Return spawn alacritty
 
 # Apps
-hc keybind $Mod-w spawn firefox
+hc keybind $Mod-w       spawn firefox
+hc keybind $Mod-Mod1-c  spawn chromium
 hc keybind $Mod-Mod1-e  spawn neomutt
 hc keybind $Mod-Mod1-n  spawn alacritty -e newsboat
 hc keybind $Mod-Mod1-w  spawn alacritty -e weechat
 hc keybind $Mod-Mod1-t  spawn alacritty -e tmux
-hc keybind $Mod-d spawn dmenu_run -l \
+hc keybind $Mod-d       spawn dmenu_run -l \
   6 -fn "Hack Nerd Font 1M:size=18" -nb '#212121' \
   -nf '#b3e5fc' -sb black -sf '#f7f7f7' -p '>'
 
@@ -172,7 +173,7 @@ hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
 hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' manage=off
 
 # window-tag rules
-hc rule class~'(firefox|Chromium|Google-chrome)' tag='1' switchtag=on focus=on
+hc rule class~'(firefox|chromium|Google-chrome)' tag='1' switchtag=on focus=on
 hc rule class~'alacritty'         tag='2' focus=on
 hc rule class~'(Evolution|Geary)' tag='5' focus=on
 hc rule class~'vlc'               tag='6' focus=on

@@ -363,6 +363,8 @@ nnoremap <leader>h :History<cr>
 nnoremap <silent><C-p> :Files<CR>
 nnoremap <silent><C-g> :GFiles<CR>
 nnoremap <silent><C-f> :Rg<cr>
+nnoremap // :BLines!<CR>
+nnoremap ?? :Rg!<CR>
 
 " Use ripgrep for :grep command
 if executable('rg')
@@ -849,6 +851,7 @@ augroup Terminal
   " Always enter terminal in insert mode
   autocmd BufWinEnter,WinEnter,TermOpen term://* startinsert
   autocmd TermOpen * setlocal nonumber norelativenumber
+  autocmd FileType python nnoremap <buffer> <cr> :silent w<bar>only<bar>vsp<bar>term ipython -i %<CR>
 
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew $MYVIMRC
