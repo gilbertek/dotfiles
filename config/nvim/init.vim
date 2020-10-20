@@ -251,7 +251,7 @@ let g:NERDTreeMinimalUI   = 1
 let g:NERDTreeDirArrows   = 1
 let g:NERDTreeQuitOnOpen  = 1         " Closes NerdTree when opening a file
 nnoremap <leader>nf     :NERDTreeFind<CR>
-nnoremap <leader>n      :NERDTreeToggle<CR>
+nnoremap <leader>n      :NERDTreeToggle \| NerdTreeMirror<CR>
 
 Plug 'tomtom/tcomment_vim'                  " Better commenting
 map <silent> <Leader>cc :TComment<CR>
