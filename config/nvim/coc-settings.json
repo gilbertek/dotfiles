@@ -52,6 +52,15 @@
       "filetypes": ["sh", "bash"],
       "ignoredRootPaths": ["~"]
     },
+    "clojure-lsp": {
+      "command": "bash",
+      "args": ["-c", "$HOME/.config/lsp/clojure/clojure-lsp"],
+      "filetypes": ["clojure"],
+      "rootPatterns": ["project.clj", "build.boot", "deps.edn"],
+      "additionalSchemes": ["jar", "zipfile"],
+      "trace.server": "verbose",
+      "initializationOptions": {}
+    },
     "dart": {
       "enable": true,
       "command": "dart_language_server",
@@ -64,7 +73,6 @@
         }
       }
     },
-
     "dhall": {
       "command": "dhall-lsp-server",
       "filetypes": ["dhall"],
