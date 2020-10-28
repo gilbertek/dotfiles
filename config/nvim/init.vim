@@ -36,11 +36,11 @@ set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 " Plugins and configurations {{
 call plug#begin()
 Plug 'sheerun/vim-polyglot'
-let g:polyglot_disabled               = ['elm']
-let g:haskell_enable_quantification   = 1
-let g:haskell_enable_pattern_synonyms = 1
-let g:haskell_enable_typeroles        = 1
-Plug 'andys8/vim-elm-syntax', { 'for': [ 'elm' ] }
+let g:polyglot_disabled                  = ['elm']
+let g:haskell_enable_quantification      = 1
+let g:haskell_enable_pattern_synonyms    = 1
+let g:haskell_enable_typeroles           = 1
+Plug 'andys8/vim-elm-syntax',            { 'for': ['elm'] }
 Plug 'bfrg/vim-cpp-modern'
 
 " --- vim go (polyglot) settings.
@@ -60,22 +60,16 @@ let g:go_highlight_variable_declarations = 1
 let g:go_auto_sameids                    = 1
 
 " Clojure & Lisp development plugins
-Plug 'wlangstroth/vim-racket', {'for': ['scheme', 'racket']}
+Plug 'wlangstroth/vim-racket',           {'for': ['scheme', 'racket']}
 Plug 'guns/vim-clojure-static'
-Plug 'guns/vim-sexp' | Plug 'tpope/vim-sexp-mappings-for-regular-people'
-let g:clojure_align_multiline_strings = 1
 Plug 'tpope/vim-fireplace'
-Plug 'clojure-vim/async-clj-omni'  " Provides completion through deoplete or ncm
-Plug 'eraserhd/parinfer-rust',     { 'for': ['clojure'], 'do': 'cargo build --release' }
-Plug 'humorless/vim-kibit',        { 'for': ['clojure', 'clojurescript'] }
-Plug 'guns/vim-slamhound',         { 'for': ['clojure', 'clojurescript'] }
-Plug 'venantius/vim-cljfmt',       { 'for': ['clojure', 'clojurescript'] }
-let g:clj_fmt_autosave = 1
-" Plug 'Olical/conjure',           {'tag': 'v3.0.0'}
-Plug 'luochen1990/rainbow'          " Rainbow parenthesis
+Plug 'clojure-vim/async-clj-omni'        " Provides completion through deoplete or ncm
+Plug 'eraserhd/parinfer-rust',           { 'for': ['clojure'], 'do': 'cargo build --release' }
+" Plug 'Olical/conjure',                 {'tag': 'v4.7.0'}
+Plug 'luochen1990/rainbow'
 let g:rainbow_active = 1
 
-Plug 'elixir-lang/vim-elixir',  { 'for': 'elixir' }
+Plug 'elixir-lang/vim-elixir',              { 'for': 'elixir' }
 Plug 'vim-erlang/vim-erlang-tags',          { 'for': 'erlang' }
 Plug 'vim-erlang/vim-erlang-omnicomplete',  { 'for': 'erlang' }
 Plug 'vim-erlang/vim-erlang-compiler'
@@ -182,8 +176,12 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'jpalardy/vim-slime'
 let g:slime_target = 'neovim'
 let g:slime_vimterminal_config = { "vertical": v:true, "term_finish": "close" }
-" let g:slime_target = "tmux"
-" let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_pane": ":.2"}
+if exists('$TMUX')
+  let g:slime_target = "tmux"
+  let g:slime_paste_file = "$HOME/.slime_paste"
+  let g:slime_python_ipython = 1
+  let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_pane": ":.2"}
+endif
 
 Plug 'ntpeters/vim-better-whitespace'
 let g:strip_whitespace_on_save = 1

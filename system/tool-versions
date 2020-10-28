@@ -6,3 +6,4 @@ java adopt-openjdk-13.0.1+9
 nodejs 14.13.0
 golang 1.15.2
 lua 5.3.5
+clojure 1.10.1
