@@ -1,6 +1,6 @@
 " config/nvim/init.vim
 
-" General UI options {{
+" 1. General Config options: ----------------------  {{{
 let g:mapleader = ","
 set relativenumber                  " Set relative number
 set number                          " Precede each line with its line number.
@@ -31,9 +31,9 @@ set noshowmode                      " Do not show current mode at the bottom
 set autowrite                       " Automatically write a file when leaving a modified buffer
 set history=500                     " Number of things to remember in history.
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
-" }}
+" }}}
 
-" Plugins and configurations {{
+" 2. Plugins and configurations: ----------------------  {{{
 call plug#begin()
 Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled                  = ['elm']
@@ -63,15 +63,14 @@ let g:go_auto_sameids                    = 1
 Plug 'wlangstroth/vim-racket',           {'for': ['scheme', 'racket']}
 Plug 'guns/vim-clojure-static'
 Plug 'tpope/vim-fireplace'
-Plug 'clojure-vim/async-clj-omni'        " Provides completion through deoplete or ncm
 Plug 'eraserhd/parinfer-rust',           { 'for': ['clojure'], 'do': 'cargo build --release' }
 " Plug 'Olical/conjure',                 {'tag': 'v4.7.0'}
 Plug 'luochen1990/rainbow'
 let g:rainbow_active = 1
 
-Plug 'elixir-lang/vim-elixir',              { 'for': 'elixir' }
-Plug 'vim-erlang/vim-erlang-tags',          { 'for': 'erlang' }
-Plug 'vim-erlang/vim-erlang-omnicomplete',  { 'for': 'erlang' }
+Plug 'elixir-lang/vim-elixir',             { 'for': 'elixir' }
+Plug 'vim-erlang/vim-erlang-tags',         { 'for': 'erlang' }
+Plug 'vim-erlang/vim-erlang-omnicomplete', { 'for': 'erlang' }
 Plug 'vim-erlang/vim-erlang-compiler'
 let g:erlang_tags_ignore = '_build'
 
@@ -96,7 +95,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'thoughtbot/vim-rspec'
 let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
-Plug 'neoclide/coc.nvim',    { 'branch': 'release' } " Language Server Protocol support
+Plug 'neoclide/coc.nvim',    {'do': 'yarn install --frozen-lockfile'}
 let g:coc_global_extensions = [
   \ 'coc-elixir',
   \ 'coc-eslint',
@@ -113,6 +112,7 @@ let g:coc_global_extensions = [
   \ 'coc-rust-analyzer',
   \ 'coc-snippets',
   \ 'coc-solargraph',
+  \ 'coc-svelte',
   \ 'coc-tsserver',
   \ ]
 let g:coc_snippet_next = '<tab>'
@@ -176,7 +176,8 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'jpalardy/vim-slime'
 let g:slime_target = 'neovim'
 let g:slime_vimterminal_config = { "vertical": v:true, "term_finish": "close" }
-if exists('$TMUX')
+
+if exists("$TMUX")
   let g:slime_target = "tmux"
   let g:slime_paste_file = "$HOME/.slime_paste"
   let g:slime_python_ipython = 1
@@ -396,6 +397,10 @@ Plug 'easymotion/vim-easymotion'      " Make movement a lot faster and easier
 " map  N <Plug>(easymotion-prev)
 
 Plug 'metakirby5/codi.vim'            " The interactive scratchpad for hackers.
+highlight CodiVirtualText guifg='#98C379'
+let g:codi#virtual_text_prefix = "❯ "
+let g:codi#aliases = { 'javascript.jsx': 'javascript' }
+
 Plug 'ryanoasis/vim-devicons'         " Pretty icons everywhere
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'fmoralesc/vim-tutor-mode'       " Interactive Vim tutorials
@@ -436,19 +441,19 @@ Plug 'epilande/vim-react-snippets'
 Plug 'SirVer/ultisnips'               " Track the snippets engine.
 Plug 'honza/vim-snippets'             " Snippets are separated from the engine.
 " }}
-"""" 2.4) End Code completion & Navigation #code-navigation
 call plug#end()
-"" Plugin configuration that has to run after plug#end
+" }}}
 
-" **[ 3) UI Tweaks #ui-tweaks ] *********************
+" 3. UI Tweaks: ------------------------- {{{
 set background=dark
 colorscheme base16-tomorrow-night
 " colorscheme base16-onedark
 " colorscheme base16-snazzy
 " colorscheme codedark
 " colorscheme tender
+" }}}
 
-" **[ 4) Navigation #navigation ]*****************
+" 4. Navigation: --------------------------- {{{
 " Unbind the cursor keys in insert, normal and visual modes.
 nnoremap <Left>  :echo "ಠ_ಠ!"<cr>
 nnoremap <Right> :echo "ಠ_ಠ!"<cr>
@@ -480,41 +485,37 @@ nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j
 nnoremap <silent> <C-k> <C-w>k
 nnoremap <silent> <C-l> <C-w>l
+" }}}
 
-" Neovim terminal {{
+" 5. Terminal: ----------------------  {{{
 if has("nvim")
-  " Quit terminal Exit/Navigation
   tnoremap jk <C-\><C-n>
+
+  " Navigate Between Terminal And Window: ----------------------  {{{
+  tnoremap <C-h> <C-\><C-n><C-w>h
+  tnoremap <C-j> <C-\><C-n><C-w>j
+  tnoremap <C-k> <C-\><C-n><C-w>k
+  tnoremap <C-l> <C-\><C-n><C-w>l
+  " }}}
+
+  " Toggle Terminal: ----------------------  {{{
   nnoremap <silent><bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
   nnoremap <leader>' :split term://$SHELL<CR>
+  " close terminal buffer without showing the exit status of the shell
+  autocmd TermClose term://* call feedkeys("\<cr>")
+  " }}}
 endif
-" }}
+" }}}
 
-" Tab navigation keymaps
+" 6. Tab/Buffer navigation keymaps: -------------------- {{{
 nnoremap <silent>tn :tabnew<CR>
 nnoremap <leader>te :tabedit %<cr>
 
 " Switch tab
 nnoremap <Tab> :tabnext<CR>
 nnoremap <S-Tab> :tabprev<CR>
-
-" Resize window Alt + Arrow
-nnoremap <silent> <A-Left>  :vertical resize +5<CR>
-nnoremap <silent> <A-Right> :vertical resize -5<CR>
-nnoremap <silent> <A-Down>  :resize +5<CR>
-nnoremap <silent> <A-Up>    :resize -5<CR>
-
-" Move and format selection with J K
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-
-" Place the two screens up and down
-map sv <C-w>t<C-w>H
-map sh <C-w>t<C-w>K
-
-" Rotate screens
-noremap srh <C-w>b<C-w>K
-noremap srv <C-w>b<C-w>H
+nnoremap <silent> ]t :tabprev<CR>
+nnoremap <silent> [t :tabnext<CR>
 
 " quickfix
 nnoremap [q :cprevious<CR>
@@ -527,12 +528,29 @@ nnoremap ]l :lnext<CR>
 " Buffer nav
 nnoremap <silent>[b :bprevious<CR>
 nnoremap <silent>]b :bnext<CR>
+" }}}
 
-" Jum to the last edited file
-nnoremap <leader><leader> <C-^>
+" 7. Resize window Alt + Arrow: ----------------------------- {{{
+nnoremap <silent> <A-Left>  :vertical resize +5<CR>
+nnoremap <silent> <A-Right> :vertical resize -5<CR>
+nnoremap <silent> <A-Down>  :resize +5<CR>
+nnoremap <silent> <A-Up>    :resize -5<CR>
+" }}}
 
-" Search and replace
-nnoremap <leader>S :%s//gI<Left><Left><Left>
+" 8. Move and format selection with J K: -------------------------------- {{{
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+" }}}
+
+" 9. Screen manipulation: --------------------------------- {{{
+" Rotate screens
+noremap srh <C-w>b<C-w>K
+noremap srv <C-w>b<C-w>H
+
+" Magnify the current split
+noremap <leader>m <C-w>_
+" Restore split windows
+noremap <leader>r <C-w>=
 
 " Quick horizontal splits
 nnoremap ss :split<CR><C-w>w
@@ -541,6 +559,13 @@ nnoremap sv :vsplit<CR><C-w>w
 " Automatic pane split layouts
 nnoremap <leader>3 :vsplit<CR>:bn<CR>:vsplit<CR>:bn<CR>
 nnoremap <leader>4 :vnew<CR>:bn<CR>:vnew<CR>:bn<CR><C-W><C-L><C-W><C-L>:split<CR>:bn<CR>
+" }}}
+
+" Jum to the last edited file
+nnoremap <leader><leader> <C-^>
+
+" Search and replace
+nnoremap <leader>S :%s//gI<Left><Left><Left>
 
 " Remap j and k to move cursor as usual through wrapped lines
 nnoremap j gj
@@ -599,7 +624,7 @@ nnoremap <leader>Q :bp!\|bd!#<cr>
 " Quick-save
 nnoremap <leader>w     :w<CR>
 nnoremap <silent><C-S> :update<CR>
-command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+" command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
 
 " find merge conflict markers
 nnoremap <silent><leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
@@ -630,26 +655,7 @@ nnoremap <leader>O :!open .<cr>
 nnoremap + <c-a>
 nnoremap - <c-x>
 
-function ToggleZoomPane()
-  if winnr('$') > 1
-    tab split
-  else
-    let tabcount = tabpagenr('$')
-    let currenttab = tabpagenr()
-    if tabcount > 1 && currenttab == tabcount
-      quit
-    end
-  end
-endfunction
-
-nmap <silent> ;z :call ToggleZoomPane()<CR>
-
-" Magnify the current split
-noremap <leader>m <C-w>_
-" Restore split windows
-noremap <leader>r <C-w>=
-
-" CoC settings {{{
+" CoC settings: ------------------------- {{{
 " Use <tab> to trigger completion
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -726,7 +732,7 @@ command! -nargs=0 Format :call CocAction('format')
 
 " Add `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-"}}}
+" }}}
 
 command! -nargs=+ F execute 'silent grep!' <q-args> | cw | redraw!
 
@@ -813,7 +819,6 @@ augroup Lisp-Family
   let g:clojure_align_multiline_strings = 1
   autocmd FileType clojure nnoremap <buffer><leader>e :Eval<CR>
   autocmd FileType clojure nnoremap <buffer><leader>rf :%Eval<cr>
-  autocmd FileType clojure,clojurescript nmap <Leader>sh :Slamhound<CR>
 
   command! CljsConnect :Piggieback (figwheel-sidecar.repl-api/repl-env)
   autocmd FileType clojure nnoremap <buffer> <Leader>rc :FireplaceConnect<cr>
@@ -827,7 +832,6 @@ augroup Lisp-Family
   autocmd FileType json syntax match Comment +\/\/.\+$+
 augroup END
 
-" Vim-Alchemist Mappings
 augroup OTP-Family
   autocmd!
   autocmd FileType elixir setlocal matchpairs=(:),{:},[:]
@@ -1026,4 +1030,4 @@ endif
 "     Insert mode:
 "       <CTRL-s>         - add a surround
 "       <CTRL-s><CTRL-s> - add a new line + surround + indent
-" vim: set sw=2 ts=2 sts=2 et tw=78 foldmarker={{,}} foldmethod=marker foldlevel=0:
+" vim: set sw=2 ts=2 sts=2 et tw=78 foldmarker={{{,}}} foldmethod=marker foldlevel=0

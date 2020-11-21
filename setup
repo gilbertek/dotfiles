@@ -107,6 +107,10 @@ if [ ! -d "$HOME/.config/espanso" ]; then
   mkdir -p ~/.config/espanso
 fi
 
+if [ ! -d "$HOME/.config/clojure" ]; then
+  mkdir -p ~/.config/clojure
+fi
+
 # neovim and vim config
 if [ ! -f "$HOME/.config/nvim/init.vim" ]; then
   ln -sfn "$DOTFILES/config/nvim/init.vim" "$HOME/.config/nvim/init.vim"
@@ -124,6 +128,9 @@ ln -sfn "$DOTFILES/config/ripgrep/ripgreprc" "$HOME/.config/ripgrep/ripgreprc"
 
 # Install espanso config
 ln -sfn "$DOTFILES/config/espanso/default.yml" "$HOME/.config/espanso/default.yml"
+
+# Clojure tools
+ln -sfn "$DOTFILES/config/clojure/deps.edn" "$HOME/.clojure/deps.edn"
 
 # mkdir -p ~/.sbt/1.3.10/plugins
 # ln -s "$DOTFILES/system/sbtplugins.sbt" ~/.sbt/1.3.10/plugins/dotfileplugins.sbt

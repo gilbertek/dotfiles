@@ -14,16 +14,6 @@ rustup update
 # rustup component add rust-src
 # rustup component add rust-analysis
 
-# install rust analyzer
-if [[ $OSTYPE == "darwin"* ]]; then
-   curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-mac \
-     -o ~/.local/bin/rust-analyzer
-else
-  curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux \
-    -o ~/.local/bin/rust-analyzer
-fi
-chmod +x ~/.local/bin/rust-analyzer
-
 # Racer - code completion for Rust use nightly
 cargo uninstall racer 2> /dev/null
 # rustup toolchain add nightly

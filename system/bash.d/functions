@@ -467,6 +467,8 @@ es-get-index-mapping() {
   curl -XGET "localhost:9200/${1}/_mapping?pretty"
 }
 
+function cheat(){ curl cheat.sh/"$@"; }
+
 # squashes the current changes into the previous commit
 fixup() {
   local OC=`git rev-parse HEAD`

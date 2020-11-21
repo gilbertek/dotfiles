@@ -177,6 +177,7 @@ hc rule class~'(firefox|chromium|Google-chrome)' tag='1' switchtag=on focus=on
 hc rule class~'alacritty'         tag='2' focus=on
 hc rule class~'(Evolution|Geary)' tag='5' focus=on
 hc rule class~'vlc'               tag='6' focus=on
+hc rule class~'zoom'              tag='7' switchtag=on focus=on
 
 hc set tree_style '╾│ ├└╼─┐'
 

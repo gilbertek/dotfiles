@@ -130,7 +130,8 @@ alias ga='git add -p'
 alias gci='git commit -m'
 alias gd='git diff'
 alias gwd="git diff --word-diff"
-# alias gco='git checkout $(git branch | grep -v $(git rev-parse --abbrev-ref HEAD) | fzf)'
+alias gco='git checkout'
+alias gcob='git checkout | fzf | xargs git checkout'
 alias gcp='git checkout -- $(git ls-files --modified | fzf --height=40% -m) >/dev/null'
 alias stash:p='git stash pop $(git stash list | fzf | cut -d=: -f1)'
 alias grb='git rebase -i $(git log --all --graph --oneline --decorate | fzf --reverse | sed -Ee "s/.* ([a-f0-9]{6,}) .*/\1/")'
@@ -356,6 +357,15 @@ alias tiga='tig ..@{u}'
 export BREAK_CHARS="\"#'(),;\`\\|"
 alias sbcl="rlwrap -b \$BREAK_CHARS sbcl"
 
+# ** [PACMAN SHORTCUTS ] ******************
+alias pacman='sudo pacman --color=auto'
+alias pac:in='pacman -S'    # install from repo
+alias pac:ins='pacman -U'   # install from file
+alias pac:rem='pacman -Rns' # remove package
+alias pac:re='pacman -R'    # remove keep config
+alias pac:cl='pacman -Sc'   # clean package cache
+alias pac:upg='pacman -Syu' # upgrade
+
 # ** [CLOJURE SHORTCUTS ] ******************
 alias shadow='shadow-cljs'
 alias shdw='shadow-cljs'
@@ -366,7 +376,7 @@ alias clj-repl='clojure -Sdeps "{:deps {com.bhauman/rebel-readline {:mvn/version
 alias cljs-repl='function do_repl { clojure -J-Dclojure.server.repl="{:port ${1:-5555} :accept cljs.server.node/repl}" -R:cljs-canary -A:rebel-cljs -m cljs.main -re node -r; }; do_repl'
 alias cljs='clj -Sdeps "{:deps {org.clojure/clojurescript {:mvn/version \"1.9.946\"}}}" -m cljs.repl.node'
 alias rebel='clojure -A:rebel'
-alias vrepl='clojure -Avrepl'
+alias repl='clojure -Arepl'
 
 # ** [MAVEN SHORTCUTS ] ******************
 alias mc='mvn --quiet clean'
