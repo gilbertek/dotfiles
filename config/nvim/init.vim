@@ -95,7 +95,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'thoughtbot/vim-rspec'
 let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
-Plug 'neoclide/coc.nvim',    {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
   \ 'coc-elixir',
   \ 'coc-eslint',
@@ -113,6 +113,7 @@ let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-solargraph',
   \ 'coc-svelte',
+  \ 'coc-tailwindcss',
   \ 'coc-tsserver',
   \ ]
 let g:coc_snippet_next = '<tab>'
@@ -227,8 +228,9 @@ let g:calendar_google_calendar = 1
 let g:calendar_google_task     = 1
 
 Plug 'vimwiki/vimwiki'
-let g:vimwiki_global_ext    = 0
-let g:vimwiki_use_calendar  = 1
+let g:vimwiki_global_ext     = 0
+let g:vimwiki_table_mappings = 0
+let g:vimwiki_use_calendar   = 1
 let g:vimwiki_list = [{
   \ 'path': '~/Projects/devnotes',
   \ 'syntax': 'markdown',
@@ -1030,4 +1032,4 @@ endif
 "     Insert mode:
 "       <CTRL-s>         - add a surround
 "       <CTRL-s><CTRL-s> - add a new line + surround + indent
-" vim: set sw=2 ts=2 sts=2 et tw=78 foldmarker={{{,}}} foldmethod=marker foldlevel=0
+" vim: set sw=2 ts=2 sts=2 et tw=78 foldmarker={{{,}}} foldmethod=marker foldlevel=0:

@@ -361,10 +361,20 @@ alias sbcl="rlwrap -b \$BREAK_CHARS sbcl"
 alias pacman='sudo pacman --color=auto'
 alias pac:in='pacman -S'    # install from repo
 alias pac:ins='pacman -U'   # install from file
-alias pac:rem='pacman -Rns' # remove package
+alias pac:rm='pacman -Rns' # remove package
 alias pac:re='pacman -R'    # remove keep config
 alias pac:cl='pacman -Sc'   # clean package cache
-alias pac:upg='pacman -Syu' # upgrade
+alias pac:clx='pacman -Scc'   # clean package cache
+alias pac:up='pacman -Syu'   # upgrade
+alias pac:fd='pacman -Ss'
+alias pac:fltr='pacman -Qs'
+alias sysctl='systemctl'
+
+# ** [PACMAN SHORTCUTS ] ******************
+alias yay:i='yay -Ps' # Print system statistic
+alias yay:up='yay -Syu' # Perform system upgrade
+alias yay:c='yay -Yc' # Clean unneeded dependencies
+alias yay:r='yay -Rns' # Remove a package
 
 # ** [CLOJURE SHORTCUTS ] ******************
 alias shadow='shadow-cljs'
@@ -401,6 +411,7 @@ fi
 
 # ** [ NVIM SHORTCUTS ] ******************
 alias nvu="nvim +PlugInstall +UpdateRemotePlugins +qa"
+alias sv='sudo nvim'
 
 # ** [ NETWORKING SHORTCUTS ] ******************
 

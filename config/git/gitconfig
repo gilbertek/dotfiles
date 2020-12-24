@@ -119,3 +119,5 @@
 	user            = gilbertek
 [hub]
   protocol        = https
+[init]
+	defaultBranch = main
