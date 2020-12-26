@@ -99,6 +99,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
   \ 'coc-elixir',
   \ 'coc-eslint',
+  \ 'coc-db',
   \ 'coc-flutter',
   \ 'coc-go',
   \ 'coc-java',
@@ -149,8 +150,11 @@ Plug 'tpope/vim-dotenv'
 Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
 " vim-dadbod-ui config {{{
-let g:db_ui_dotenv_variable_prefix = 'DBUI_'
 let g:db_ui_save_location = '~/.config/nvim/dbui'
+let g:db_ui_show_help = 0                                                       "Hide Press ? for help in dbui drawer
+let g:db_ui_win_position = 'right'                                              "Open DBUI drawer on right
+let g:db_ui_use_nerd_fonts = 1                                                  "Use nerd fonts for DBUI
+let g:db_async = 1                                                              "Use async for dadbod
 let g:db_ui_table_helpers = {
     \   'postgresql': {
     \     'Explain': 'EXPLAIN ANALYZE {last_query}'
@@ -160,6 +164,10 @@ let g:db_ui_table_helpers = {
     \   }
     \ }
 " }}}
+
+let g:dbs = {
+\  'dev': 'postgres://postgres@localhost:5432/postgres'
+\ }
 
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}              " Asynchronous execution library for Vim
 
@@ -228,9 +236,9 @@ let g:calendar_google_calendar = 1
 let g:calendar_google_task     = 1
 
 Plug 'vimwiki/vimwiki'
-let g:vimwiki_global_ext     = 0
-let g:vimwiki_table_mappings = 0
-let g:vimwiki_use_calendar   = 1
+let g:vimwiki_global_ext    = 0
+let g:vimwiki_use_calendar  = 1
+let g:vimwiki_key_mappings = { 'table_mappings': 0, }
 let g:vimwiki_list = [{
   \ 'path': '~/Projects/devnotes',
   \ 'syntax': 'markdown',
@@ -246,6 +254,13 @@ let g:vimwiki_list = [{
 " VimWiki Config
 autocmd BufWritePost ~/Dropbox/Personal/notes/* call AutoCommit()
 
+" https://github.com/vimwiki/vimwiki/issues/1021#issuecomment-715925455
+" should be in ~/.vim/ftplugin/vimwiki.vim
+" if str2nr(vimwiki#vars#get_global('key_mappings').table_mappings)
+"   inoremap <expr><buffer> <Tab> vimwiki#tbl#kbd_tab()
+"   inoremap <expr><buffer> <S-Tab> vimwiki#tbl#kbd_shift_tab()
+" endif
+
 Plug 'preservim/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
 let g:NERDTreeMinimalUI   = 1
@@ -255,7 +270,7 @@ nnoremap <leader>nf     :NERDTreeFind<CR>
 nnoremap <leader>n      :NERDTreeToggle \| NERDTreeMirror<CR>
 
 Plug 'tomtom/tcomment_vim'                  " Better commenting
-map <silent> <Leader>cc :TComment<CR>
+map <silent> <Leader>c :TComment<CR>
 map <silent> <leader>cl :TCommentInline<cr>
 " Adds 'gcp' comment current paragraph (block) using tComment's built-in <c-_>p
 nmap <silent><leader>cp <c-_>p
@@ -760,7 +775,7 @@ endfunction
 augroup general
   autocmd!
   autocmd BufLeave,FocusLost * :silent! wall
-  autocmd BufEnter,FocusGained * checktime
+  autocmd BufEnter,FocusGained * checktime  " Refresh file when vim gets focus
 
   autocmd BufReadPost,BufNewFile *.md,*.txt,COMMIT_EDITMSG setlocal spell textwidth=72 conceallevel=0
   " automatically add filename as header to markdown files

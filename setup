@@ -19,6 +19,8 @@ warning(){
   msg "\033[33mWarning:\033[0m ${1}${2}"
 }
 
+MACOS=$(test "`uname`" == "Darwin" && echo "x")
+
 _FILES=(
   tmux.conf
   tmux-osx.conf
@@ -41,6 +43,35 @@ fi
 
 if [ ! -d "$HOME/bin" ]; then
   mkdir -p "$HOME/bin"
+fi
+
+if [ ! -d "$HOME/.emacs.d" ]; then
+  mkdir -p "$HOME/.emacs.d"
+fi
+
+# Create Dirs
+if [ ! -d "$HOME/.config/nvim" ]; then
+  mkdir -p "$HOME/.config/nvim"
+fi
+
+if [ ! -d "$HOME/.config/git" ]; then
+  mkdir -p ~/.config/git
+fi
+
+if [ ! -d "$HOME/.config/ripgrep" ]; then
+  mkdir -p ~/.config/ripgrep
+fi
+
+if [ ! -d "$HOME/.config/alacritty" ]; then
+  mkdir -p ~/.config/alacritty
+fi
+
+if [ ! -d "$HOME/.config/espanso" ]; then
+  mkdir -p ~/.config/espanso
+fi
+
+if [ ! -d "$HOME/.config/clojure" ]; then
+  mkdir -p ~/.config/clojure
 fi
 
 create_bash_links() {
@@ -86,36 +117,14 @@ create_ruby_links() {
 
 echo -e "\nCreating config symlinks"
 
-# Create Dirs
-if [ ! -d "$HOME/.config/nvim" ]; then
-  mkdir -p "$HOME/.config/nvim"
-fi
-
-if [ ! -d "$HOME/.config/git" ]; then
-  mkdir -p ~/.config/git
-fi
-
-if [ ! -d "$HOME/.config/ripgrep" ]; then
-  mkdir -p ~/.config/ripgrep
-fi
-
-if [ ! -d "$HOME/.config/alacritty" ]; then
-  mkdir -p ~/.config/alacritty
-fi
-
-if [ ! -d "$HOME/.config/espanso" ]; then
-  mkdir -p ~/.config/espanso
-fi
-
-if [ ! -d "$HOME/.config/clojure" ]; then
-  mkdir -p ~/.config/clojure
-fi
-
 # neovim and vim config
 if [ ! -f "$HOME/.config/nvim/init.vim" ]; then
   ln -sfn "$DOTFILES/config/nvim/init.vim" "$HOME/.config/nvim/init.vim"
   ln -sfn "${DOTFILES}/config/nvim/coc-settings.json"  "$HOME/.config/nvim/coc-settings.json"
 fi
+
+# Emacs Config
+ln -sfn "$DOTFILES/emacs/init.el" "$HOME/.emacs.d/init.el"
 
 # Alacritty Config
 ln -sfn "$DOTFILES/config/alacritty/alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"

@@ -6,7 +6,7 @@ set -euo pipefail
 
 EXPECTED_ARGS=1
 E_BADARGS=65
-ROOTDIR="$HOME/Projects/JVMAPPS"
+ROOTDIR="$HOME/Projects/CLOJURE"
 
 if [ $# -ne $EXPECTED_ARGS ]
 then
@@ -25,12 +25,16 @@ if [[ -n "$1" ]]; then
 
     echo "${APP_DIR}"
 
-    tmux new-session -s $APP_NAME -n $APP_NAME -d
-    tmux send-keys -t $APP_NAME "sleep 5;$EDITOR ." C-m
+    tmux new-session -s "${APP_NAME}" -n "${APP_NAME}" -d
+    tmux send-keys -t "${APP_NAME}" "sleep 5;${EDITOR} ." C-m
 
-    tmux split-window -h -p 40 'lein repl'
+    tmux split-window -h -p 40 'clj -M:nrepl'
     tmux split-window -v
 
+    tmux new-window    -n portal 'clj -M:portal'
+    tmux new-window    -n reveal
+
+    tmux select-window 1
     tmux selectp -t 1
     tmux -2 attach-session
   fi
