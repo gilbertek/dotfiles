@@ -430,6 +430,8 @@ Plug 'ajh17/Spacegray.vim'
 Plug 'jacoborus/tender.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'rakr/vim-one'
+Plug 'arcticicestudio/nord-vim'
+Plug 'sainnhe/sonokai'
 Plug 'chriskempson/base16-vim'
 let base16colorspace=256
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
@@ -463,11 +465,19 @@ call plug#end()
 
 " 3. UI Tweaks: ------------------------- {{{
 set background=dark
-colorscheme base16-tomorrow-night
+" Available values: `'default'`, `'atlantis'`, `'andromeda'`, `'shusia'`, `'maia'`
+let g:sonokai_style = 'atlantis'
+let g:sonokai_enable_italic = 1
+let g:sonokai_disable_italic_comment = 1
+colorscheme sonokai
+
+" colorscheme base16-tomorrow-night
+" colorscheme base16-default-dark
 " colorscheme base16-onedark
 " colorscheme base16-snazzy
 " colorscheme codedark
 " colorscheme tender
+" colorscheme nord
 " }}}
 
 " 4. Navigation: --------------------------- {{{

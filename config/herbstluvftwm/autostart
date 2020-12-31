@@ -19,7 +19,7 @@ Mod=Mod4   # Use the super key as the main modifier
 # set horizontal tiling as default
 hc set_layout horizontal
 
-feh --no-fehbg --bg-scale ~/dotfiles/config/wallpapers/b3k2w.jpg
+feh -z --no-fehbg --bg-scale ~/dotfiles/config/wallpapers/*
 
 hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r reload
@@ -36,6 +36,12 @@ hc keybind $Mod-Mod1-t  spawn alacritty -e tmux
 hc keybind $Mod-d       spawn dmenu_run -l \
   6 -fn "Hack Nerd Font 1M:size=18" -nb '#212121' \
   -nf '#b3e5fc' -sb black -sf '#f7f7f7' -p '>'
+
+# Volume bindings
+# Smallest possible increment for volume
+hc keybind $Mod-Alt-j spawn amixer set Master,0 1%-
+hc keybind $Mod-Alt-k spawn amixer set Master,0 1%+
+hc keybind $Mod-Alt-l spawn amixer set Master,0 toggle
 
 # basic movement in tiling and floating mode
 # focusing clients
@@ -108,6 +114,9 @@ hc keybind $Mod-s       floating toggle
 hc keybind $Mod-f       fullscreen toggle
 hc keybind $Mod-Shift-f set_attr clients.focus.floating toggle
 hc keybind $Mod-p       pseudotile toggle
+
+hc keybind $Mod-u split vertical 0.5
+hc keybind $Mod-o split horizontal 0.5
 # The following cycles through the available layouts within a frame, but skips
 # layouts, if the layout change wouldn't affect the actual window positions.
 # I.e. if there are two windows within a frame, the grid layout is skipped.
@@ -174,6 +183,7 @@ hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' manage=off
 
 # window-tag rules
 hc rule class~'(firefox|chromium|Google-chrome)' tag='1' switchtag=on focus=on
+hc rule class~'(chromium|Google-chrome)' tag='5' switchtag=on focus=on
 hc rule class~'alacritty'         tag='2' focus=on
 hc rule class~'(Evolution|Geary)' tag='5' focus=on
 hc rule class~'vlc'               tag='6' focus=on
