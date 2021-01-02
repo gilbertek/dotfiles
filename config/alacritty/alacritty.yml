@@ -121,8 +121,9 @@ schemes:
       magenta: "0xba9cf3"
       cyan: "0xf69c5e"
       white: "0xe1e3e4"
+  # }}}
 
-  # Colors (Base16 Default Dark)
+  # {{{ Base16 Default Dark
   base16_default_dark: &base16_default_dark
     # Default colors
     primary:
@@ -155,8 +156,9 @@ schemes:
       magenta: '#ba8baf'
       cyan:    '#86c1b9'
       white:   '#f8f8f8'
+  # }}}
 
-colors: *sonokai_atlantis
+colors: *base16_default_dark
 
   # Indexed Colors
   #

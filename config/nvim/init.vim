@@ -269,11 +269,12 @@ let g:NERDTreeQuitOnOpen  = 1         " Closes NerdTree when opening a file
 nnoremap <leader>nf     :NERDTreeFind<CR>
 nnoremap <leader>n      :NERDTreeToggle \| NERDTreeMirror<CR>
 
-Plug 'tomtom/tcomment_vim'                  " Better commenting
-map <silent> <Leader>c :TComment<CR>
-map <silent> <leader>cl :TCommentInline<cr>
-" Adds 'gcp' comment current paragraph (block) using tComment's built-in <c-_>p
-nmap <silent><leader>cp <c-_>p
+Plug 'tpope/vim-commentary'
+nnoremap <Leader>c gcc
+nnoremap <C-/> :Commentary<cr>
+inoremap <C-/> :Commentary<cr>
+" Line comment command
+xmap <leader>c gc
 
 " Jump between quicklist, location items with ease, among other things
 Plug 'tpope/vim-unimpaired'
@@ -423,25 +424,20 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'fmoralesc/vim-tutor-mode'       " Interactive Vim tutorials
 Plug 'wakatime/vim-wakatime'
 " **[ 2.3) UI Plugins #ui-plugins ]********************
-Plug 'nightsense/cosmic_latte'
 Plug 'w0ng/vim-hybrid'
 let g:hybrid_reduced_contrast = 1
 Plug 'ajh17/Spacegray.vim'
-Plug 'jacoborus/tender.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'rakr/vim-one'
-Plug 'arcticicestudio/nord-vim'
-Plug 'sainnhe/sonokai'
 Plug 'chriskempson/base16-vim'
 let base16colorspace=256
-Plug 'sonph/onehalf', { 'rtp': 'vim' }
 
 Plug 'Yggdroot/indentLine'          " Show indentation lines
 let g:indentLine_char = '·'         " Other options ┆│┊︙¦⋮
 
 Plug 'itchyny/lightline.vim' " wombat codedark
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'codedark',
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
       \            [ 'cocstatus', 'fugitive', 'readonly', 'filename', 'modified' ] ]
@@ -459,25 +455,12 @@ let g:lightline = {
 Plug 'epilande/vim-react-snippets'
 Plug 'SirVer/ultisnips'               " Track the snippets engine.
 Plug 'honza/vim-snippets'             " Snippets are separated from the engine.
-" }}
 call plug#end()
 " }}}
 
 " 3. UI Tweaks: ------------------------- {{{
 set background=dark
-" Available values: `'default'`, `'atlantis'`, `'andromeda'`, `'shusia'`, `'maia'`
-let g:sonokai_style = 'atlantis'
-let g:sonokai_enable_italic = 1
-let g:sonokai_disable_italic_comment = 1
-colorscheme sonokai
-
-" colorscheme base16-tomorrow-night
-" colorscheme base16-default-dark
-" colorscheme base16-onedark
-" colorscheme base16-snazzy
-" colorscheme codedark
-" colorscheme tender
-" colorscheme nord
+colorscheme base16-classic-dark
 " }}}
 
 " 4. Navigation: --------------------------- {{{
@@ -543,6 +526,8 @@ nnoremap <Tab> :tabnext<CR>
 nnoremap <S-Tab> :tabprev<CR>
 nnoremap <silent> ]t :tabprev<CR>
 nnoremap <silent> [t :tabnext<CR>
+nnoremap <C-Right> :tabnext<CR>
+nnoremap <C-Left> :tabprev<CR>
 
 " quickfix
 nnoremap [q :cprevious<CR>
@@ -885,7 +870,7 @@ augroup Terminal
   " Reload & easy edit Neovim configuration
   command! Editrc tabnew $MYVIMRC
   command! Loadrc source $MYVIMRC | redraw | echo 'Init reloaded' | :PlugInstall<CR>
-  command! PU PlugClean! | PlugUpdate! | PlugUpgrade
+  command! PU PlugClean! | PlugUpdate! | PlugUpgrade | CocUpdate
 augroup END
 
 augroup Haskell-Maps

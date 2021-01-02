@@ -2,7 +2,7 @@
 ; COLORS                                                                       ;
 ;-------------------------------------------------------------------------------
 [colors]
-background          = #222
+background          = #202020
 foreground          = #dfdfdf
 background-alt      = #444
 foreground-alt      = #dddddd
