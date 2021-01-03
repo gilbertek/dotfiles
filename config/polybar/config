@@ -1,6 +1,23 @@
-;-------------------------------------------------------------------------------
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+;----------------------------------------------------------
 ; COLORS                                                                       ;
-;-------------------------------------------------------------------------------
+;----------------------------------------------------------
 [colors]
 background          = #202020
 foreground          = #dfdfdf
@@ -13,10 +30,9 @@ alert               = #bd2c40
 ;-------------------------------------------------------------------------------
 ; TOP BAR                                                                   ;
 ;-------------------------------------------------------------------------------
-[bar/top-bar]
-monitor             = ${env:MONITOR}
+[bar/topbar]
 enable-ipc          = true
-; monitor-fallback    = DP1
+monitor = ${env:MONITOR:eDP1}
 
 top                 = true
 width               = 100%
@@ -42,7 +58,7 @@ module-margin-right = 2
 
 modules-left        = workspaces xwindow
 modules-center      =
-modules-right       = network backlight bluetooth volume eth battery date powermenu
+modules-right       = backlight bluetooth volume wireless-network battery date powermenu
 
 font-0              = "Hack Nerd Font:size=10;0"
 font-1              = "Iosevka Nerd Font:size=10;0"
@@ -131,12 +147,15 @@ format-foreground         = ${colors.foreground}
 type  = internal/xwindow
 label = "%title:0:50:...%"
 
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
 ;-------------------------------------------------------------------------------
 ; NETWORK INFO                                                                 ;
 ;-------------------------------------------------------------------------------
-[module/network]
+[module/wired-network]
 type                            = internal/network
-interface                       = wlan1
+interface                       = eth1
 interval                        = 4.0
 
 format-connected                =  <label-connected>
@@ -145,7 +164,7 @@ label-connected                 = "%essid%"
 format-disconnected             = 
 format-disconnected-foreground  = ${colors.alert}
 
-[module/eth]
+[module/wireless-network]
 type                            = internal/network
 interface                       = wlp4s0
 interval                        = 4.0
@@ -294,7 +313,7 @@ click-left    = gbacklight
 ;-------------------------------------------------------------------------------
 ; POWER MENU                                                                   ;
 ;-------------------------------------------------------------------------------
-{{{powermenu
+; {{{powermenu
 [module/powermenu]
 type                   = custom/menu
 

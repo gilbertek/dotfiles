@@ -2,6 +2,7 @@
 
 " 1. General Config options: ----------------------  {{{
 let g:mapleader = ","
+let maplocalleader = ","
 set relativenumber                  " Set relative number
 set number                          " Precede each line with its line number.
 set diffopt+=vertical               " Vertical display with vimdiff
@@ -62,9 +63,9 @@ let g:go_auto_sameids                    = 1
 " Clojure & Lisp development plugins
 Plug 'wlangstroth/vim-racket',           {'for': ['scheme', 'racket']}
 Plug 'guns/vim-clojure-static'
-Plug 'tpope/vim-fireplace'
+" Plug 'tpope/vim-fireplace'
 Plug 'eraserhd/parinfer-rust',           { 'for': ['clojure'], 'do': 'cargo build --release' }
-" Plug 'Olical/conjure',                 {'tag': 'v4.7.0'}
+Plug 'Olical/conjure',                 {'tag': 'v4.11.0'}
 Plug 'luochen1990/rainbow'
 let g:rainbow_active = 1
 
@@ -109,7 +110,6 @@ let g:coc_global_extensions = [
   \ 'coc-omnisharp',
   \ 'coc-prettier',
   \ 'coc-python',
-  \ 'coc-reason',
   \ 'coc-rust-analyzer',
   \ 'coc-snippets',
   \ 'coc-solargraph',

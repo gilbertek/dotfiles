@@ -19,7 +19,7 @@ Mod=Mod4   # Use the super key as the main modifier
 # set horizontal tiling as default
 hc set_layout horizontal
 
-feh -z --no-fehbg --bg-scale ~/dotfiles/config/wallpapers/*
+feh -z --no-fehbg --bg-fill ~/dotfiles/config/wallpapers/*
 
 hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r reload

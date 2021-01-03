@@ -20,9 +20,9 @@
     "go",
     "python",
     "scala",
+    "svelte",
     "dart"
   ],
-  "coc.preferences.formatOnInsertLeave": true,
   "coc.preferences.formatOnType": true,
   "prettier.requireConfig": true,
   "prettier.eslintIntegration": true,
@@ -31,7 +31,6 @@
     "vue": ["javascript"]
   },
   "suggest.snippetIndicator": " ►",
-  // "suggest.snippetIndicator": "🍦",
   "python.formatting.provider": "black",
   "python.jediEnabled": false,
   "python.linting.mypyEnabled": true,
@@ -40,7 +39,6 @@
   "tsserver.formatOnType": false,
   "signature.target": "echo",
   "diagnostic.refreshOnInsertMode": false,
-  "diagnostic.refreshAfterSave": false,
   "diagnostic.maxWindowHeight": 20,
   "diagnostic.errorSign": "●",
   "diagnostic.warningSign": "",
