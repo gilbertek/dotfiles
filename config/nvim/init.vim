@@ -226,15 +226,12 @@ let g:gutentags_ctags_exclude    = [
       \ ]
 " }}} vim-gutentags "
 
-" vim-rooter {{ "
+" vim-rooter {{{ "
 Plug 'airblade/vim-rooter'
 let g:rooter_patterns = ['.root', '.git/', '*.sln']
-" }} vim-rooter "
+" }}} vim-rooter "
 
-Plug 'itchyny/calendar.vim' " Calendar integration
-let g:calendar_google_calendar = 1
-let g:calendar_google_task     = 1
-
+Plug 'mattn/calendar-vim' " Calendar integration
 Plug 'vimwiki/vimwiki'
 let g:vimwiki_global_ext    = 0
 let g:vimwiki_use_calendar  = 1

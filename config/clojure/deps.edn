@@ -181,10 +181,34 @@
   :nrepl {:extra-deps {nrepl/nrepl {:mvn/version "RELEASE"}}
           :main-opts ["-m" "nrepl.cmdline"]}
 
+
+  ;; rebel readline with nrepl for editor connection to REPL
+  ;; CIDER: run `cider-connect-clj` and expressions evaluated in rebel
+  ;; are also available from CIDER/Emacs/Spacemacs
+
+  ;; clj -M:nrepl-ide
+  :nrepl/ide
+  {:extra-deps {nrepl/nrepl                {:mvn/version "RELEASE"}
+                cider/cider-nrepl          {:mvn/version "RELEASE"}
+                com.bhauman/rebel-readline {:mvn/version "RELEASE"}}
+   :main-opts  ["-m" "nrepl.cmdline"
+                "--middleware" "[cider.nrepl/cider-middleware]"
+                "-i"
+                "-f" "rebel-readline.main/-main"]}
+
+
+  :nrepl/cljs
+  {:extra-deps {nrepl/nrepl       {:mvn/version "RELEASE"}
+                cider/cider-nrepl {:mvn/version "RELEASE"}
+                cider/piggieback  {:mvn/version "RELEASE"}}
+   :main-opts
+   ["-m" "nrepl.cmdline"
+    "--middleware" "[cider.nrepl/cider-middleware,cider.piggieback/wrap-cljs-repl]"]}
+
   ;; Run a Clojure repl with reveal and nrepl interactively
   ;; - see :inspect/reveal* for more reveal aliases
   ;; clj -M:reveal-nrepl
-  :reveal-nrepl
+  :reveal/nrepl
   {:extra-deps {vlaaad/reveal {:mvn/version "1.1.171"}
                 nrepl/nrepl   {:mvn/version "0.8.3"}}
    :main-opts  ["-m" "nrepl.cmdline"
@@ -197,13 +221,13 @@
 
   ;; - start a Socket REPL on an available port, and display that port:
   ;; - specify -r as well if you want a repl
-  ;; usage:   clj -M:socket-zero -r
-  :socket-zero {:jvm-opts ["-Dclojure.server.repl={:port,0,:accept,clojure.core.server/repl}"]
+  ;; usage:   clj -M:socket/zero -r
+  :socket/zero {:jvm-opts ["-Dclojure.server.repl={:port,0,:accept,clojure.core.server/repl}"]
                 :main-opts ["-e" "(.getLocalPort,(get-in,@#'clojure.core.server/servers,[\"repl\",:socket]))"]}
 
   ;; - start a Socket REPL on port 50123, that will submit everything to REBL:
   ;; - assumes you have REBL on your classpath (see :rebl below)
-  :socket-rebl {:extra-deps
+  :socket/rebl {:extra-deps
                 {seancorfield/socket-rebl
                  {:git/url "https://github.com/seancorfield/socket-rebl"
                   :sha "60dd65cb8d03a9cf5eba21081cdfad5e27f72a8b"}}
@@ -211,7 +235,7 @@
 
   ;; ClojureScript (browser) Socket REPL on port 58585:
   ;; clojure -M:repl/socket-cljs
-  :socket-browser
+  :socket/browser
   {:jvm-opts ["-Dclojure.server.repl={:port,58585,:accept,cljs.server.browser/repl}"]}
 
   ;; - start a Socket pREPL on port 40404:
@@ -223,12 +247,10 @@
                        org.clojure/core.async {:mvn/version "RELEASE"}}
           :main-opts ["--eval" "(require,'[clojure.core.async,:as,a])" "-m" "rebel-readline.main"]}
 
-
   ;; ClojureScript REPL - starts the default CLJS repl
   ;; https://github.com/bhauman/rebel-readline/tree/master/rebel-readline-cljs
-
-  ;; clojure -M:repl/rebel-cljs
-  :rebel-cljs
+  ;; cloj -M:rebel/cljs
+  :rebel/cljs
   {:extra-deps {com.bhauman/rebel-readline-cljs {:mvn/version "RELEASE"}}
    :main-opts  ["-m" "rebel-readline-cljs.main"]}
 
@@ -253,7 +275,7 @@
   :portal
   {:extra-deps {djblue/portal {:mvn/version "RELEASE"}}}
 
-  :portal-web
+  :portal/web
   {:extra-deps {djblue/portal             {:mvn/version "RELEASE"}
                 org.clojure/clojurescript {:mvn/version "RELEASE"}}
    :main-opts  ["-m" "cljs.main"]}

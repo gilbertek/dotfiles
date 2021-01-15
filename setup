@@ -19,8 +19,6 @@ warning(){
   msg "\033[33mWarning:\033[0m ${1}${2}"
 }
 
-MACOS=$(test "`uname`" == "Darwin" && echo "x")
-
 _FILES=(
   tmux.conf
   tmux-osx.conf
@@ -74,6 +72,9 @@ if [ ! -d "$HOME/.config/clojure" ]; then
   mkdir -p ~/.config/clojure
 fi
 
+if [ ! -d "$HOME/.config/ranger" ]; then
+  mkdir -p ~/.config/ranger
+fi
 create_bash_links() {
   for f in "${DOTFILES}"/system/bash.d/*; do
     ln -sfn  "$f"  ~/.bash.d
@@ -140,6 +141,12 @@ ln -sfn "$DOTFILES/config/espanso/default.yml" "$HOME/.config/espanso/default.ym
 
 # Clojure tools
 ln -sfn "$DOTFILES/config/clojure/deps.edn" "$HOME/.clojure/deps.edn"
+
+# Ranger config
+ln -sfn "$DOTFILES/config/ranger/rc.conf" "$HOME/.config/ranger/rc.conf"
+
+# Dunst config
+ln -sfn "$DOTFILES/config/dunst/dunstrc" "$HOME/.config/dunst/dunstrc"
 
 # mkdir -p ~/.sbt/1.3.10/plugins
 # ln -s "$DOTFILES/system/sbtplugins.sbt" ~/.sbt/1.3.10/plugins/dotfileplugins.sbt
