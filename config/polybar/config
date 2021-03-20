@@ -19,14 +19,20 @@
 ; COLORS                                                                       ;
 ;----------------------------------------------------------
 [colors]
-background          = #00000000
-foreground          = #dfdfdf
-background-alt      = #4c566a
-foreground-alt      = #dddddd
-primary             = #ffb52a
-secondary           = #e60053
-alert               = #bd2c40
-
+; background          = #00000000
+; foreground          = #dfdfdf
+; background-alt      = #4c566a
+; foreground-alt      = #dddddd
+; primary             = #ffb52a
+; secondary           = #e60053
+; alert               = #bd2c40
+background = #282a36
+background-alt = #444
+foreground = #dfdfdf
+foreground-alt = #555
+primary = #8be9fd
+secondary = #ffb86c
+alert = #bd93f9
 ;-------------------------------------------------------------------------------
 ; TOP BAR                                                                   ;
 ;-------------------------------------------------------------------------------
@@ -57,7 +63,7 @@ module-margin-right = 2
 
 modules-left        = workspaces xwindow
 modules-center      =
-modules-right       = backlight bluetooth pulseaudio wireless-network battery date powermenu
+modules-right       = filesystem backlight bluetooth pulseaudio wireless-network battery date powermenu
 
 font-0              = "Hack Nerd Font:size=10;0"
 font-1              = Iosevka Nerd Font:style=Medium:size=16;4
@@ -149,6 +155,29 @@ label       = "%title:0:50:...%"
 [module/xkeyboard]
 type        = internal/xkeyboard
 blacklist-0 = num lock
+
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-underline = ${colors.primary}
+
+label-layout = %name%
+label-layout-underline = ${colors.primary}
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.secondary}
+label-indicator-underline = ${colors.secondary}
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /
+
+label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %free%
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
+
 ;-------------------------------------------------------------------------------
 ; NETWORK INFO                                                                 ;
 ;-------------------------------------------------------------------------------
@@ -296,6 +325,12 @@ label-song-ellipsis = true
 ;
 ; click-left = playerctl play-pause
 ;}}}
+
+[module/weather]
+type = custom/script
+interval = 3600
+format = ⛅ <label>°F
+exec = $XDG_CONFIG_HOME/bin/weather
 
 [settings]
 screenchange-reload = true

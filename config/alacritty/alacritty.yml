@@ -70,52 +70,20 @@ font:
     style: Bold Italic
   size: 10.0
 
-  # Offset is the extra space around each character. `offset.y` can be thought of
-  # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
   offset:
    x: 0
    y: 0
 
-  # Glyph offset determines the locations of the glyphs within their cells with
-  # the default being at the bottom. Increasing `x` moves the glyph to the right,
-  # increasing `y` moves the glyph upward.
   glyph_offset:
    x: 0
    y: 0
 
-  use_thin_strokes: false
+  use_thin_strokes: true
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
 
 schemes:
-  # Colors Sonokai Atlantis
-  sonokai_atlantis: &sonokai_atlantis
-    primary:
-      background: "0x2a2f38"
-      foreground: "0xe1e3e4"
-
-    normal:
-      black: "0x181a1c"
-      red: "0xff6578"
-      green: "0x9dd274"
-      yellow: "0xeacb64"
-      blue: "0x72cce8"
-      magenta: "0xba9cf3"
-      cyan: "0xf69c5e"
-      white: "0xe1e3e4"
-
-    bright:
-      black: "0x181a1c"
-      red: "0xff6578"
-      green: "0x9dd274"
-      yellow: "0xeacb64"
-      blue: "0x72cce8"
-      magenta: "0xba9cf3"
-      cyan: "0xf69c5e"
-      white: "0xe1e3e4"
-  # }}}
-
   # {{{ Base16 Default Dark
   base16_default_dark: &base16_default_dark
     # Default colors
@@ -151,7 +119,125 @@ schemes:
       white:   '#f8f8f8'
   # }}}
 
-colors: *base16_default_dark
+  # {{{
+  iceberg: &iceberg
+    primary:
+      background: '0x161821'
+      foreground: '0xd2d4de'
+    normal:
+      black:   '0x161821'
+      red:     '0xe27878'
+      green:   '0xb4be82'
+      yellow:  '0xe2a478'
+      blue:    '0x84a0c6'
+      magenta: '0xa093c7'
+      cyan:    '0x89b8c2'
+      white:   '0xc6c8d1'
+    bright:
+      black:   '0x6b7089'
+      red:     '0xe98989'
+      green:   '0xc0ca8e'
+      yellow:  '0xe9b189'
+      blue:    '0x91acd1'
+      magenta: '0xada0d3'
+      cyan:    '0x95c4ce'
+      white:   '0xd2d4de'
+  # }}}
+
+  # {{{
+  nord: &nord
+     primary:
+       background: '0x2E3440'
+       foreground: '0xD8DEE9'
+     normal:
+       black:   '0x3B4252'
+       red:     '0xBF616A'
+       green:   '0xA3BE8C'
+       yellow:  '0xEBCB8B'
+       blue:    '0x81A1C1'
+       magenta: '0xB48EAD'
+       cyan:    '0x88C0D0'
+       white:   '0xE5E9F0'
+     bright:
+       black:   '0x4C566A'
+       red:     '0xBF616A'
+       green:   '0xA3BE8C'
+       yellow:  '0xEBCB8B'
+       blue:    '0x81A1C1'
+       magenta: '0xB48EAD'
+       cyan:    '0x8FBCBB'
+       white:   '0xECEFF4'
+  # }}}
+
+  # {{{
+  one_dark: &one_dark
+    primary:
+      background: '0x282c34'
+      foreground: '0xabb2bf'
+    normal:
+      # NOTE: Use '0x131613' for the `black` color if you'd like to see
+      # black text on the background.
+      black:   '0x282c34'
+      red:     '0xe06c75'
+      green:   '0x98c379'
+      yellow:  '0xd19a66'
+      blue:    '0x61afef'
+      magenta: '0xc678dd'
+      cyan:    '0x56b6c2'
+      white:   '0xabb2bf'
+    bright:
+      black:   '0x5c6370'
+      red:     '0xe06c75'
+      green:   '0x98c379'
+      yellow:  '0xd19a66'
+      blue:    '0x61afef'
+      magenta: '0xc678dd'
+      cyan:    '0x56b6c2'
+      white:   '0xffffff'
+  # }}}
+
+  # {{
+  moonfly: &moonfly
+    # Default colors
+    primary:
+      background:        '#080808'
+      foreground:        '#b2b2b2'
+      bright_foreground: '#eeeeee'
+
+    # Cursor colors
+    cursor:
+      text:   '#080808'
+      cursor: '#9e9e9e'
+
+    # Selection colors
+    selection:
+      text:       '#080808'
+      background: '#b2ceee'
+
+    # Normal colors
+    normal:
+      black:   '#323437'
+      red:     '#ff5454'
+      green:   '#8cc85f'
+      yellow:  '#e3c78a'
+      blue:    '#80a0ff'
+      magenta: '#d183e8'
+      cyan:    '#79dac8'
+      white:   '#a1aab8'
+
+    # Bright colors
+    bright:
+      black:   '#7c8f8f'
+      red:     '#ff5189'
+      green:   '#36c692'
+      yellow:  '#bfbf97'
+      blue:    '#74b2ff'
+      magenta: '#ae81ff'
+      cyan:    '#85dc85'
+      white:   '#e2637f'
+  # }}
+
+colors: *iceberg
 
   # Indexed Colors
   #
@@ -188,11 +274,6 @@ live_config_reload: true
 alt_send_esc: true
 
 mouse:
-  # Click settings
-  #
-  # The `double_click` and `triple_click` settings control the time
-  # alacritty should wait for accepting multiple clicks as one double
-  # or triple click.
   double_click: { threshold: 300 }
   triple_click: { threshold: 300 }
 
@@ -205,105 +286,8 @@ mouse_bindings:
 
 # Key bindings
 key_bindings:
-  - { key: Paste,                                action: Paste          }
-  - { key: Copy,                                 action: Copy           }
-  #- { key: L,         mods: Control,             action: ClearLogNotice }
-  #- { key: L,         mods: Control, mode: ~Vi,  chars: "\x0c"          }
-  #- { key: PageUp,    mods: Shift,   mode: ~Alt, action: ScrollPageUp,  }
-  #- { key: PageDown,  mods: Shift,   mode: ~Alt, action: ScrollPageDown }
-  #- { key: Home,      mods: Shift,   mode: ~Alt, action: ScrollToTop,   }
-  #- { key: End,       mods: Shift,   mode: ~Alt, action: ScrollToBottom }
-
-  # Vi Mode
-  #- { key: Space,  mods: Shift|Control, mode: Vi, action: ScrollToBottom          }
-  #- { key: Space,  mods: Shift|Control,           action: ToggleViMode            }
-  #- { key: Escape,                      mode: Vi, action: ClearSelection          }
-  #- { key: I,                           mode: Vi, action: ScrollToBottom          }
-  #- { key: I,                           mode: Vi, action: ToggleViMode            }
-  #- { key: C,      mods: Control,       mode: Vi, action: ToggleViMode            }
-  #- { key: Y,      mods: Control,       mode: Vi, action: ScrollLineUp            }
-  #- { key: E,      mods: Control,       mode: Vi, action: ScrollLineDown          }
-  #- { key: G,                           mode: Vi, action: ScrollToTop             }
-  #- { key: G,      mods: Shift,         mode: Vi, action: ScrollToBottom          }
-  #- { key: B,      mods: Control,       mode: Vi, action: ScrollPageUp            }
-  #- { key: F,      mods: Control,       mode: Vi, action: ScrollPageDown          }
-  #- { key: U,      mods: Control,       mode: Vi, action: ScrollHalfPageUp        }
-  #- { key: D,      mods: Control,       mode: Vi, action: ScrollHalfPageDown      }
-  #- { key: Y,                           mode: Vi, action: Copy                    }
-  #- { key: Y,                           mode: Vi, action: ClearSelection          }
-  #- { key: Copy,                        mode: Vi, action: ClearSelection          }
-  #- { key: V,                           mode: Vi, action: ToggleNormalSelection   }
-  #- { key: V,      mods: Shift,         mode: Vi, action: ToggleLineSelection     }
-  #- { key: V,      mods: Control,       mode: Vi, action: ToggleBlockSelection    }
-  #- { key: V,      mods: Alt,           mode: Vi, action: ToggleSemanticSelection }
-  #- { key: Return,                      mode: Vi, action: Open                    }
-  #- { key: K,                           mode: Vi, action: Up                      }
-  #- { key: J,                           mode: Vi, action: Down                    }
-  #- { key: H,                           mode: Vi, action: Left                    }
-  #- { key: L,                           mode: Vi, action: Right                   }
-  #- { key: Up,                          mode: Vi, action: Up                      }
-  #- { key: Down,                        mode: Vi, action: Down                    }
-  #- { key: Left,                        mode: Vi, action: Left                    }
-  #- { key: Right,                       mode: Vi, action: Right                   }
-  #- { key: Key0,                        mode: Vi, action: First                   }
-  #- { key: Key4,   mods: Shift,         mode: Vi, action: Last                    }
-  #- { key: Key6,   mods: Shift,         mode: Vi, action: FirstOccupied           }
-  #- { key: H,      mods: Shift,         mode: Vi, action: High                    }
-  #- { key: M,      mods: Shift,         mode: Vi, action: Middle                  }
-  #- { key: L,      mods: Shift,         mode: Vi, action: Low                     }
-  #- { key: B,                           mode: Vi, action: SemanticLeft            }
-  #- { key: W,                           mode: Vi, action: SemanticRight           }
-  #- { key: E,                           mode: Vi, action: SemanticRightEnd        }
-  #- { key: B,      mods: Shift,         mode: Vi, action: WordLeft                }
-  #- { key: W,      mods: Shift,         mode: Vi, action: WordRight               }
-  #- { key: E,      mods: Shift,         mode: Vi, action: WordRightEnd            }
-  #- { key: Key5,   mods: Shift,         mode: Vi, action: Bracket                 }
-  #- { key: Slash,                       mode: Vi, action: SearchForward           }
-  #- { key: Slash,  mods: Shift,         mode: Vi, action: SearchBackward          }
-  #- { key: N,                           mode: Vi, action: SearchNext              }
-  #- { key: N,      mods: Shift,         mode: Vi, action: SearchPrevious          }
-
-  # (Windows, Linux, and BSD only)
-  #- { key: V,              mods: Control|Shift,           action: Paste            }
-  #- { key: C,              mods: Control|Shift,           action: Copy             }
-  #- { key: F,              mods: Control|Shift,           action: SearchForward    }
-  #- { key: B,              mods: Control|Shift,           action: SearchBackward   }
-  #- { key: C,              mods: Control|Shift, mode: Vi, action: ClearSelection   }
-  #- { key: Insert,         mods: Shift,                   action: PasteSelection   }
-  #- { key: Key0,           mods: Control,                 action: ResetFontSize    }
-  #- { key: Equals,         mods: Control,                 action: IncreaseFontSize }
-  #- { key: Plus,           mods: Control,                 action: IncreaseFontSize }
-  #- { key: NumpadAdd,      mods: Control,                 action: IncreaseFontSize }
-  #- { key: Minus,          mods: Control,                 action: DecreaseFontSize }
-  #- { key: NumpadSubtract, mods: Control,                 action: DecreaseFontSize }
-
-  # (Windows only)
-  #- { key: Return,   mods: Alt,           action: ToggleFullscreen }
-
-  # (macOS only)
-  #- { key: K,              mods: Command, mode: ~Vi, chars: "\x0c"            }
-  #- { key: Key0,           mods: Command,            action: ResetFontSize    }
-  #- { key: Equals,         mods: Command,            action: IncreaseFontSize }
-  #- { key: Plus,           mods: Command,            action: IncreaseFontSize }
-  #- { key: NumpadAdd,      mods: Command,            action: IncreaseFontSize }
-  #- { key: Minus,          mods: Command,            action: DecreaseFontSize }
-  #- { key: NumpadSubtract, mods: Command,            action: DecreaseFontSize }
-  #- { key: K,              mods: Command,            action: ClearHistory     }
-  #- { key: V,              mods: Command,            action: Paste            }
-  #- { key: C,              mods: Command,            action: Copy             }
-  #- { key: C,              mods: Command, mode: Vi,  action: ClearSelection   }
-  #- { key: H,              mods: Command,            action: Hide             }
-  #- { key: M,              mods: Command,            action: Minimize         }
-  #- { key: Q,              mods: Command,            action: Quit             }
-  #- { key: W,              mods: Command,            action: Quit             }
-  #- { key: N,              mods: Command,            action: SpawnNewInstance }
-  #- { key: F,              mods: Command|Control,    action: ToggleFullscreen }
-  #- { key: F,              mods: Command,            action: SearchForward    }
-  #- { key: B,              mods: Command,            action: SearchBackward   }
+  - { key: V,         mods: Control|Shift,          action: Paste }
+  - { key: C,         mods: Control|Shift,          action: Copy  }
 
 debug:
-  # Display the time it takes to redraw each frame.
-  #render_timer: false
-
-  # Keep the log file after quitting Alacritty.
   persistent_logging: false

@@ -2,7 +2,7 @@
 
 set -eo pipefail
 
-release="2021.01.03-00.42.23"
+release="2021.01.22-13.04.28"
 
 curl -L https://github.com/snoe/clojure-lsp/releases/download/${release}/clojure-lsp \
   -o ~/.local/bin/clojure-lsp

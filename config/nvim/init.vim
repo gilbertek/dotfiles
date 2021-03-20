@@ -114,10 +114,10 @@ let g:coc_global_extensions = [
   \ 'coc-snippets',
   \ 'coc-solargraph',
   \ 'coc-svelte',
-  \ 'coc-tailwindcss',
   \ 'coc-tsserver',
   \ ]
 let g:coc_snippet_next = '<tab>'
+Plug 'rodrigore/coc-tailwind-intellisense', {'do': 'npm install'}
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'Shougo/echodoc.vim'
 let g:echodoc#enable_at_startup = 1
@@ -129,7 +129,7 @@ Plug 'valloric/MatchTagAlways', {'for': ['html', 'xhtml', 'xml', 'jinja']}
 Plug 'ap/vim-css-color'
 Plug 'mattn/emmet-vim', {
   \ 'for': ['javascript', 'javascript.jsx', 'css', 'scss', 'html', 'eruby',
-  \ 'eelixir', 'mustache','vue'] }
+  \ 'eelixir', 'mustache', 'vue', 'svelte', 'typescriptreact', 'typescript'] }
 let g:user_emmet_mode       = 'a'    " Enable all function in all mode.
 let g:user_emmet_leader_key = ','    " Using ,, to expand
 
@@ -371,7 +371,8 @@ Plug 'majutsushi/tagbar'                                  " Tagbar: a class outl
 nnoremap <leader>] :TagbarToggle<CR>
 
 "fuzzy search integration
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 nnoremap <leader>b :Buffers<cr>
 nnoremap <leader>h :History<cr>
 nnoremap <silent><C-p> :Files<CR>
@@ -426,15 +427,17 @@ let g:hybrid_reduced_contrast = 1
 Plug 'ajh17/Spacegray.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'rakr/vim-one'
+Plug 'bluz71/vim-moonfly-colors'
+Plug 'cocopon/iceberg.vim'
 Plug 'chriskempson/base16-vim'
 let base16colorspace=256
 
 Plug 'Yggdroot/indentLine'          " Show indentation lines
 let g:indentLine_char = '·'         " Other options ┆│┊︙¦⋮
 
-Plug 'itchyny/lightline.vim' " wombat codedark
+Plug 'itchyny/lightline.vim' " wombat codedark one
 let g:lightline = {
-      \ 'colorscheme': 'codedark',
+      \ 'colorscheme': 'moonfly',
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
       \            [ 'cocstatus', 'fugitive', 'readonly', 'filename', 'modified' ] ]
@@ -449,15 +452,19 @@ let g:lightline = {
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())' },
       \ }
 
-Plug 'epilande/vim-react-snippets'
-Plug 'SirVer/ultisnips'               " Track the snippets engine.
-Plug 'honza/vim-snippets'             " Snippets are separated from the engine.
+" Plug 'epilande/vim-react-snippets'
+" Plug 'SirVer/ultisnips'               " Track the snippets engine.
+" Plug 'honza/vim-snippets'             " Snippets are separated from the engine.
 call plug#end()
 " }}}
 
 " 3. UI Tweaks: ------------------------- {{{
 set background=dark
-colorscheme base16-classic-dark
+" colorscheme base16-classic-dark
+" colorscheme base16-onedark
+colorscheme base16-horizon-dark
+" colorscheme moonfly
+
 " }}}
 
 " 4. Navigation: --------------------------- {{{
@@ -503,6 +510,17 @@ if has("nvim")
   tnoremap <C-j> <C-\><C-n><C-w>j
   tnoremap <C-k> <C-\><C-n><C-w>k
   tnoremap <C-l> <C-\><C-n><C-w>l
+
+  "Terminal Mappings
+  "https://neovim.io/doc/user/nvim_terminal_emulator.html
+  tnoremap <A-h> <C-\><C-n><C-w>h
+  tnoremap <A-j> <C-\><C-n><C-w>j
+  tnoremap <A-k> <C-\><C-n><C-w>k
+  tnoremap <A-l> <C-\><C-n><C-w>l
+  nnoremap <A-h> <C-w>h
+  nnoremap <A-j> <C-w>j
+  nnoremap <A-k> <C-w>k
+  nnoremap <A-l> <C-w>l
   " }}}
 
   " Toggle Terminal: ----------------------  {{{
@@ -826,14 +844,14 @@ augroup Lisp-Family
   autocmd!
   " Line up doc strings vertically
   let g:clojure_align_multiline_strings = 1
-  autocmd FileType clojure nnoremap <buffer><leader>e :Eval<CR>
-  autocmd FileType clojure nnoremap <buffer><leader>rf :%Eval<cr>
+  " autocmd FileType clojure nnoremap <buffer><leader>e :Eval<CR>
+  " autocmd FileType clojure nnoremap <buffer><leader>rf :%Eval<cr>
 
   command! CljsConnect :Piggieback (figwheel-sidecar.repl-api/repl-env)
   autocmd FileType clojure nnoremap <buffer> <Leader>rc :FireplaceConnect<cr>
 
-  autocmd FileType clojure nnoremap <C-e> :%Eval<CR>
-  autocmd FileType clojure nnoremap <Leader>E :%Eval<CR>
+  " autocmd FileType clojure nnoremap <C-e> :%Eval<CR>
+  " autocmd FileType clojure nnoremap <Leader>E :%Eval<CR>
   au FileType clojure nmap <Leader>R cqp(require 'clojure.tools.namespace.repl) (clojure.tools.namespace.repl/refresh)<CR>
   autocmd FileType clojure nnoremap <leader>pp :let parinfer_mode = "paren"<CR>:echo 'Switched to paren mode'<CR>
   autocmd FileType clojure nnoremap <leader>pi :let parinfer_mode = "indent"<CR>:echo 'Switched to indent mode'<CR>

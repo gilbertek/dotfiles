@@ -262,6 +262,9 @@ alias pg:stop="pg_ctl -D /usr/local/var/postgres stop -s -m fast"
 alias pg:status="pg_ctl -D /usr/local/var/postgres status"
 # alias parity='development restore production --app vive-production'
 
+# ** [ MongoDB ALIASES ] ******************
+alias mg:kill='mongo admin --eval "db.shutdownServer()"'
+
 # ** [ Mysql ALIASES ] ******************
 alias mysql:start="mysql.server start"
 alias mysql:stop="mysql.server stop"
