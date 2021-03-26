@@ -195,6 +195,9 @@ if command -v rustc &>/dev/null; then
   export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 fi
 
+# JAVA Config
+export JAVA_HOME=$(asdf where java)
+
 # OPAM configuration
 . $HOME/.asdf/installs/ocaml/4.07.0/opam-init/init.sh > /dev/null 2> /dev/null || true
 

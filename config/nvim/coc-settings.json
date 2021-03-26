@@ -143,12 +143,6 @@
           "editorMode": true
         }
       }
-    },
-    "typescript": {
-      "command": "typescript-language-server",
-      "args": ["--stdio"],
-      "filetypes": ["typescript"],
-      "rootPatterns": ["tsconfig.json", "package.json"]
     }
   }
 }

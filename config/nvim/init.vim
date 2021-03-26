@@ -59,6 +59,7 @@ let g:go_highlight_generate_tags         = 1
 let g:go_highlight_format_strings        = 1
 let g:go_highlight_variable_declarations = 1
 let g:go_auto_sameids                    = 1
+let g:dart_style_guide                   = 1
 
 " Clojure & Lisp development plugins
 Plug 'wlangstroth/vim-racket',           {'for': ['scheme', 'racket']}
@@ -111,7 +112,6 @@ let g:coc_global_extensions = [
   \ 'coc-prettier',
   \ 'coc-python',
   \ 'coc-rust-analyzer',
-  \ 'coc-snippets',
   \ 'coc-solargraph',
   \ 'coc-svelte',
   \ 'coc-tsserver',
@@ -199,11 +199,16 @@ let g:strip_whitespace_confirm = 0
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'janko-m/vim-test'                     " Run tests with varying granularity
-nmap <silent> <leader>t :wa\|:TestNearest<CR>
-nmap <silent> <leader>T :wa\|:TestFile<CR>
-nmap <silent> <leader>l :wa\|:TestLast<CR>
-nmap <silent> <leader>g :wa\|:TestVisit<CR>
-let test#strategy = 'neovim'
+let test#javascript#jest#executable = 'CI=true yarn test --colors'
+nmap <silent> <leader>t  :wa\|:TestNearest<CR>
+nmap <silent> <leader>T  :wa\|:TestFile<CR>
+nmap <silent> <leader>tl :wa\|:TestLast<CR>
+nmap <silent> <leader>ts :wa\|:TestSuite<CR>
+if has("nvim")
+    let test#strategy = "neovim"
+else
+    let test#strategy = "vimterminal"
+endif
 
 " vim-gutentags {{{ "
 Plug 'ludovicchabant/vim-gutentags'         " Easily manage tags files
@@ -422,8 +427,6 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'fmoralesc/vim-tutor-mode'       " Interactive Vim tutorials
 Plug 'wakatime/vim-wakatime'
 " **[ 2.3) UI Plugins #ui-plugins ]********************
-Plug 'w0ng/vim-hybrid'
-let g:hybrid_reduced_contrast = 1
 Plug 'ajh17/Spacegray.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'rakr/vim-one'
@@ -433,7 +436,7 @@ Plug 'chriskempson/base16-vim'
 let base16colorspace=256
 
 Plug 'Yggdroot/indentLine'          " Show indentation lines
-let g:indentLine_char = '·'         " Other options ┆│┊︙¦⋮
+let g:indentLine_char  = '▏'        " Other options ┆│┊︙¦⋮.
 
 Plug 'itchyny/lightline.vim' " wombat codedark one
 let g:lightline = {
@@ -452,19 +455,22 @@ let g:lightline = {
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())' },
       \ }
 
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 " Plug 'epilande/vim-react-snippets'
-" Plug 'SirVer/ultisnips'               " Track the snippets engine.
-" Plug 'honza/vim-snippets'             " Snippets are separated from the engine.
+imap <expr> <C-j> vsnip#available(1) ? "<Plug>(vsnip-expand-or-jump)" : "<C-j>"
+imap <expr> <C-k> vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)"      : "<C-k>"
+
+" Insert mode snippet completion mapping - '<Control-s>'
+inoremap <silent> <C-s> <C-r>=snippets#Complete()<CR>
 call plug#end()
 " }}}
 
 " 3. UI Tweaks: ------------------------- {{{
 set background=dark
-" colorscheme base16-classic-dark
-" colorscheme base16-onedark
 colorscheme base16-horizon-dark
+" colorscheme spacegray
 " colorscheme moonfly
-
 " }}}
 
 " 4. Navigation: --------------------------- {{{
@@ -532,7 +538,10 @@ if has("nvim")
 endif
 " }}}
 
-" 6. Tab/Buffer navigation keymaps: -------------------- {{{
+" 6. Tab/Tag/Buffer navigation keymaps: -------------------- {{{
+" Tag completion
+inoremap <C-]> <C-x><C-]>
+
 nnoremap <silent>tn :tabnew<CR>
 nnoremap <leader>te :tabedit %<cr>
 

@@ -57,18 +57,18 @@ scrolling:
 #  JetBrainsMono Nerd Font/ Hack Nerd Font / Fira Code Nerd Font / Iosevka Nerd Font
 font:
   normal:
-    family: Hack Nerd Font
+    family: Iosevka Nerd Font
     style: Regular
   bold:
-    family: Hack Nerd Font
+    family: Iosevka Nerd Font
     style: Bold
   italic:
-    family: Hack Nerd Font
+    family: Iosevka Nerd Font
     style: Italic
   bold_italic:
-    family: Hack Nerd Font
+    family: Iosevka Nerd Font
     style: Bold Italic
-  size: 10.0
+  size: 11.5
 
   offset:
    x: 0
@@ -196,7 +196,7 @@ schemes:
       white:   '0xffffff'
   # }}}
 
-  # {{
+  # {{{
   moonfly: &moonfly
     # Default colors
     primary:
@@ -235,7 +235,7 @@ schemes:
       magenta: '#ae81ff'
       cyan:    '#85dc85'
       white:   '#e2637f'
-  # }}
+  # }}}
 
 colors: *iceberg
 
