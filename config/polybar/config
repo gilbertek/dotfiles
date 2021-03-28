@@ -19,20 +19,41 @@
 ; COLORS                                                                       ;
 ;----------------------------------------------------------
 [colors]
-; background          = #00000000
-; foreground          = #dfdfdf
-; background-alt      = #4c566a
-; foreground-alt      = #dddddd
-; primary             = #ffb52a
-; secondary           = #e60053
-; alert               = #bd2c40
-background = #282a36
-background-alt = #444
-foreground = #dfdfdf
-foreground-alt = #555
-primary = #8be9fd
-secondary = #ffb86c
-alert = #bd93f9
+; Nord Theme
+; background = #282a36
+; background-alt = #444
+; foreground = #dfdfdf
+; foreground-alt = #555
+; primary = #8be9fd
+; secondary = #ffb86c
+; accent = #bd93f9
+
+; Moonfly Theme
+; background      = #080808
+; blackground-alt = #323437
+; foreground      = #b2b2b2
+; foreground-alt  = #eeeeee
+; accent           = #ff5454
+; primary         = #a1aab8
+; secondary       = #d183e8
+
+; background      = #0f0f0f
+; blackground-alt = #282a36
+; foreground      = #f0f0f0
+; foreground-alt  = #F1F1F3
+; accent          = #9ec49f
+; primary         = #f37f97
+; secondary       = #ffa3c3
+
+; Material Ocean Theme
+background      = #0f111A
+foreground      = #D8DEE9
+blackground-alt = #4C566A
+foreground-alt  = #E5E9F0
+accent          = #A3BE8C
+primary         = #BF616A
+secondary       = #A48EAD
+
 ;-------------------------------------------------------------------------------
 ; TOP BAR                                                                   ;
 ;-------------------------------------------------------------------------------
@@ -47,9 +68,9 @@ height              = 38
 background          = ${colors.background}
 foreground          = ${colors.foreground}
 
-underline-color     = ${colors.alert}
+underline-color     = ${colors.accent}
 underline-size      = 3
-overline-color      = ${colors.alert}
+overline-color      = ${colors.accent}
 overline-size       = 3
 
 border-size         = 0
@@ -63,10 +84,16 @@ module-margin-right = 2
 
 modules-left        = workspaces xwindow
 modules-center      =
-modules-right       = filesystem backlight bluetooth pulseaudio wireless-network battery date powermenu
+modules-right       = memory backlight bluetooth pulseaudio wireless-network battery date powermenu
 
 font-0              = "Hack Nerd Font:size=10;0"
 font-1              = Iosevka Nerd Font:style=Medium:size=16;4
+
+; separator = "|"
+separator-background = ${colors.background}
+separator-foreground = ${colors.foreground-alt}
+separator-padding = 0
+separator-font = 7
 
 tray-position       = none
 tray-padding        = 4
@@ -74,9 +101,6 @@ tray-maxsize        = 0
 
 cursor-click        = pointer
 cursor-scroll       = ns-resize
-
-scroll-up           = herbstclient use_index -1
-scroll-down         = herbstclient use_index +1
 
 ;-------------------------------------------------------------------------------
 ; CALENDAR DATE                                                                ;
@@ -117,33 +141,14 @@ label-occupied-foreground = ${colors.foreground}
 
 label-urgent              = %name%
 label-urgent-foreground   = ${colors.foreground}
-label-urgent-background   = ${colors.alert}
-label-urgent-underline    = ${colors.alert}
+label-urgent-background   = ${colors.accent}
+label-urgent-underline    = ${colors.accent}
 label-urgent-padding      = 2
 
 label-empty               = %name%
 label-empty-foreground    = ${colors.foreground}
 label-empty-padding       = 2
 format-foreground         = ${colors.foreground}
-
-; [module/workspaces]
-; type                        = internal/xworkspaces
-;
-; pin-workspaces              = false
-;
-; enable-click                = true
-; enable-scroll               = false
-;
-; format-padding              = 0
-; format                      = "<label-state>"
-;
-; label-active                = " "
-; label-active-padding-right  = 0
-; label-active-padding-left   = 0
-;
-; label-empty                 = " "
-; label-empty-padding-right   = 0
-; label-empty-padding-left    = 0
 
 ;-------------------------------------------------------------------------------
 ; WINDOW TITLE                                                                 ;
@@ -163,6 +168,15 @@ format-prefix-underline = ${colors.primary}
 label-layout = %name%
 label-layout-underline = ${colors.primary}
 
+indicator-icon-0 = caps lock; וּ
+indicator-icon-2 = num lock; 
+
+
+label-indicator-on-capslock = וּ
+label-indicator-off-capslock =
+label-indicator-on-numlock = 
+label-indicator-off-numlock =
+
 label-indicator-padding = 2
 label-indicator-margin = 1
 label-indicator-background = ${colors.secondary}
@@ -178,6 +192,42 @@ label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %free%
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
 
+[module/cpu]
+type = internal/cpu
+interval = 5
+
+click-left = "$TERMINAL" -e htop &
+
+format-prefix = "  "
+format-prefix-background = ${colors.background}
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-padding = 0
+format-prefix-font = 2
+
+label = "%percentage:2%% "
+label-background = ${colors.background}
+label-foreground = ${colors.foreground}
+label-padding = 0
+label-font = 1
+
+[module/memory]
+type = internal/memory
+interval = 5
+
+click-right = "$TERMINAL" -e htop &
+
+format-prefix = ""
+format-prefix-background = ${colors.background}
+format-prefix-foreground = ${colors.foreground-alt}
+format-prefix-padding = 1
+format-prefix-font = 5
+
+label = "%percentage_used%% "
+label-background = ${colors.background}
+label-foreground = ${colors.foreground}
+label-padding = 0
+label-font = 1
+
 ;-------------------------------------------------------------------------------
 ; NETWORK INFO                                                                 ;
 ;-------------------------------------------------------------------------------
@@ -186,11 +236,24 @@ type                            = internal/network
 interface                       = eth1
 interval                        = 4.0
 
-format-connected                =  <label-connected>
+format-connected = "<label-connected>"
+format-connected-background = ${colors.background}
+format-connected-foreground = ${colors.background-alt}
+format-connected-padding = 1
+format-connected-font = 2
+
+; format-connected                =  <label-connected>
 label-connected                 = "%essid%"
 
-format-disconnected             = 
-format-disconnected-foreground  = ${colors.alert}
+format-disconnected = "<label-disconnected>"
+; format-disconnected             = 
+format-disconnected-foreground  = ${colors.accent}
+
+label-disconnected = "%ifname%"
+label-disconnected-background = ${colors.background}
+label-disconnected-foreground = ${colors.foreground}
+label-disconnected-padding = 1
+label-disconnected-font = 1
 
 [module/wireless-network]
 type                            = internal/network
@@ -203,7 +266,7 @@ label-connected                 = "%essid%"
 
 format-disconnected             = 睊
 ; format-disconnected             = ﲁ
-format-disconnected-foreground  = ${colors.alert}
+format-disconnected-foreground  = ${colors.accent}
 
 ; bluetooth{{{
 [module/bluetooth]
@@ -214,21 +277,81 @@ click-left                      = blueman-manager
 ;-------------------------------------------------------------------------------
 ; BATTERY STATUS                                                               ;
 ;-------------------------------------------------------------------------------
+; [module/battery]
+; type               = internal/battery
+; full-at            = 96
+
+; ; Battery and adapter
+; battery            = BAT0
+; adapter            = AC0
+
+; format-full-prefix = " "
+; format-full        = <label-full>
+
+; ; Charging label
+; label-discharging  =  %percentage%%
+; label-charging     = %percentage%%
+; label-full         = %percentage%%
+
+
 [module/battery]
-type               = internal/battery
-full-at            = 96
+type = internal/battery
+battery = BAT0
+adapter = ACAD
+full-at = 99
 
-; Battery and adapter
-battery            = BAT0
-adapter            = AC0
+ramp-capacity-0 = ""
+ramp-capacity-background = ${colors.background}
+ramp-capacity-foreground = ${colors.background-alt}
+ramp-capacity-padding = 0
+ramp-capacity-font = 2
 
-format-full-prefix = " "
-format-full        = <label-full>
+label-full = "%percentage%% "
+label-full-background = ${colors.background}
+label-full-foreground = ${colors.foreground}
+label-full-padding = 0
+label-full-font = 1
 
-; Charging label
-label-discharging  =  %percentage%%
-label-charging     = %percentage%%
-label-full         = %percentage%%
+format-full-prefix = ""
+format-full-prefix-background = ${colors.background}
+format-full-prefix-foreground = ${colors.background-alt}
+format-full-prefix-padding = 1
+format-full-prefix-font = 2
+
+label-charging = "%percentage%% "
+label-charging-background = ${colors.background}
+label-charging-foreground = ${colors.foreground}
+label-charging-padding = 0
+label-charging-font = 1
+
+animation-charging-0 = ""
+
+format-charging = "<animation-charging><label-charging>"
+
+animation-charging-background = ${colors.background}
+animation-charging-foreground = ${colors.background-alt}
+animation-charging-padding = 1
+animation-charging-font = 2
+
+label-discharging = "%percentage%% "
+label-discharging-background = ${colors.background}
+label-discharging-foreground = ${colors.foreground}
+label-discharging-padding = 0
+label-discharging-font = 1
+
+animation-discharging-0 = ""
+animation-discharging-1 = ""
+animation-discharging-2 = ""
+animation-discharging-3 = ""
+animation-discharging-4 = ""
+animation-discharging-framerate = 1000
+
+format-discharging = "<animation-discharging><label-discharging>"
+
+animation-discharging-background = ${colors.background}
+animation-discharging-foreground = ${colors.background-alt}
+animation-discharging-padding = 1
+animation-discharging-font = 2
 
 ;-------------------------------------------------------------------------------
 ; VOLUME STATUS                                                                ;

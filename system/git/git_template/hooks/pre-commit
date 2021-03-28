@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+
+if git rev-parse --verify HEAD >/dev/null 2>&1
+then
+    against=HEAD
+else
+    # Initial commit: diff against an empty tree object
+    against=$(git hash-object -t tree /dev/null)
+fi
+
+# If you want to allow non-ASCII filenames set this variable to true.
+allownonascii=$(git config --bool hooks.allownonascii)
+
+# Redirect output to stderr.
+exec 1>&2
+
+
+# Cross platform projects tend to avoid non-ASCII filenames; prevent
+# them from being added to the repository. We exploit the fact that the
+# printable range starts at the space character and ends with tilde.
+if [ "$allownonascii" != "true" ] &&
+        # Note that the use of brackets around a tr range is ok here, (it's
+        # even required, for portability to Solaris 10's /usr/bin/tr), since
+        # the square bracket bytes happen to fall in the designated range.
+        test $(git diff --cached --name-only --diff-filter=A -z $against |
+          LC_ALL=C tr -d '[ -~]\0' | wc -c) != 0
+then
+        cat <<\EOF
+Error: Attempt to add a non-ASCII file name.
+This can cause problems if you want to work with people on other platforms.
+To be portable it is advisable to rename the file.
+If you know what you are doing you can disable this check using:
+  git config hooks.allownonascii true
+EOF
+        exit 1
+fi
+
+# If there are whitespace errors, print the offending file names and fail.
+exec git diff-index --check --cached $against --
+
+
+
+
+
+# filter=ACMR shows only added, changed, modified, or renamed files.
+# Get only java files and prepend the root directory to make the paths absolute.
+# Only format files in src/main/java and src/test/java (src/test/test-project contains java files that need to be left alone)
+changed_java_files=($(git diff --cached --name-only --diff-filter=ACMR src/main/java src/test/java \
+    | grep ".*java$" \
+    | sed "s:^:${root_dir}/:"))
+# If we have changed java files, format them!
+if [ ${#changed_java_files[@]} -gt 0 ]; then
+    # Do the formatting, stage the changes, and print out which files were changed.
+    eval ${formatter_cmd} ${formatter_args} "${changed_java_files[@]}"
+    git add "${changed_java_files[@]}"
+    echo "${changed_java_files[@]}" | xargs basename | sed "s/^/	Formatting: /"
+fi
+
+echo "Finished formatting."
+
+
+patch_filename=$(mktemp -t commit_hook_changes.XXXXXXX)
+git diff --exit-code --binary --ignore-submodules --no-color > "$patch_filename"
+has_unstaged_changes=$?
+
+if [ $has_unstaged_changes -ne 0 ]; then
+    # Unstaged changes have been found
+    if [ ! -f "$patch_filename" ]; then
+        echo "Failed to create a patch file"
+        exit 1
+    else
+        echo "Stashing unstaged changes in $patch_filename."
+        git checkout -- .
+    fi
+fi
+
+quit() {
+    if [ $has_unstaged_changes -ne 0 ]; then
+        git apply "$patch_filename"
+        if [ $? -ne 0 ]; then
+            git checkout -- .
+            git apply --whitespace=nowarm --ignore-whitespace "$patch_filename"
+        fi
+    fi
+
+    exit $1
+}
+
+# Redirect output to stderr.
+exec 1>&2
+
+files_with_nocommit=$(git diff --cached --name-only --diff-filter=ACM \
+  $against | xargs -I{} grep -i "nocommit" -l {} | tr '\n' ' ')
+
+if [ "x${files_with_nocommit}x" != "xx" ]; then
+    tput setaf 1
+    echo "File being committed with 'nocommit' in it:"
+    IFS=$'\n'
+    for f in $(git diff --cached --name-only --diff-filter=ACM $against | xargs -I{} grep -i "nocommit" -l {}); do
+        echo $f
+    done
+    tput sgr0
+    quit 1
+fi
+
+quit 0

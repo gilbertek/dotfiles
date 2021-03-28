@@ -1,0 +1,52 @@
+set font "Iosevka Nerd Font 12"
+
+set window-title-home-tilde "true"
+set statusbar-basename "true"
+set selection-clipboard "clipboard"
+
+set sandbox "none"
+set statusbar-h-padding "0"
+set statusbar-v-padding "0"
+set page-padding "1"
+
+map i "recolor"
+map p "print"
+
+set guioptions ""
+
+set default-bg "#171717"
+set default-fg "#d0d0d0"
+
+set statusbar-fg "#171717"
+set statusbar-bg "#d0d0d0"
+
+set statusbar-basename "true"
+
+set inputbar-bg "#171717"
+set inputbar-fg "#d0d0d0"
+
+set notification-bg "#171717"
+set notification-fg "#d0d0d0"
+
+set notification-error-bg "#171717"
+set notification-error-fg "#d68787"
+
+set notification-warning-bg "#171717"
+set notification-warning-fg "#d68787"
+
+set highlight-color "#d8af5f"
+set highlight-active-color "#85add4"
+
+set completion-bg "#171717"
+set completion-fg "#85add4"
+
+set completion-highlight-fg "#d0d0d0"
+set completion-highlight-bg "#85add4"
+
+set recolor-lightcolor "#171717"
+set recolor-darkcolor "#d0d0d0"
+
+set recolor "true"
+set recolor-keephue "true"
+
+# vim:ft=conf

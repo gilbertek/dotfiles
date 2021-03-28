@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-set -euo pipefail
-
-station=KLGA
-
-url=https://tgftp.nws.noaa.gov/data/observations/metar/decoded/$station.TXT
-
-curl --silent $url | awk '/Temperature/{print int($2)}'

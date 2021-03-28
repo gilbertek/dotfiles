@@ -1,5 +1,12 @@
 " config/nvim/init.vim
 
+if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
+  echo "Downloading junegunn/vim-plug to manage plugins..."
+  silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
+  silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
+  autocmd VimEnter * PlugInstall
+endif
+
 " 1. General Config options: ----------------------  {{{
 let g:mapleader = ","
 let maplocalleader = ","
@@ -427,10 +434,11 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'fmoralesc/vim-tutor-mode'       " Interactive Vim tutorials
 Plug 'wakatime/vim-wakatime'
 " **[ 2.3) UI Plugins #ui-plugins ]********************
-Plug 'ajh17/Spacegray.vim'
 Plug 'tomasiser/vim-code-dark'
 Plug 'rakr/vim-one'
 Plug 'bluz71/vim-moonfly-colors'
+Plug 'haishanh/night-owl.vim'
+Plug 'hzchirs/vim-material'                             " material color themes
 Plug 'cocopon/iceberg.vim'
 Plug 'chriskempson/base16-vim'
 let base16colorspace=256
@@ -468,9 +476,18 @@ call plug#end()
 
 " 3. UI Tweaks: ------------------------- {{{
 set background=dark
-colorscheme base16-horizon-dark
-" colorscheme spacegray
+" colorscheme base16-onedark
 " colorscheme moonfly
+
+" Themeing
+let g:material_style='oceanic'
+set background=dark
+colorscheme vim-material
+
+" " colors for git (especially the gutter)
+" hi DiffAdd  guibg=#0f111a guifg=#43a047
+" hi DiffChange guibg=#0f111a guifg=#fdd835
+" hi DiffRemoved guibg=#0f111a guifg=#e53935
 " }}}
 
 " 4. Navigation: --------------------------- {{{
