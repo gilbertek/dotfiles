@@ -1,6 +1,7 @@
 # ~/.bashrc
 
-[ -f "${HOME}/.bash_profile" ] && source ${HOME}/.bash_profile
+[[ -f ~/.bash_profile ]] && source ~/.bash_profile
+[[ -f ~/.profile ]] && source ~/.profile
 
 [[ $- != *i* ]] && return
 

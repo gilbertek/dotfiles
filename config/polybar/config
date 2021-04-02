@@ -7,12 +7,10 @@
 ;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
 ;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
 ;
-;
 ;   To learn more about how to configure Polybar
 ;   go to https://github.com/polybar/polybar
 ;
 ;   The README contains a lot of information
-;
 ;==========================================================
 
 ;----------------------------------------------------------
@@ -84,7 +82,7 @@ module-margin-right = 2
 
 modules-left        = workspaces xwindow
 modules-center      =
-modules-right       = memory backlight bluetooth pulseaudio wireless-network battery date powermenu
+modules-right       = weather backlight bluetooth pulseaudio wireless-network battery date powermenu
 
 font-0              = "Hack Nerd Font:size=10;0"
 font-1              = Iosevka Nerd Font:style=Medium:size=16;4
@@ -277,81 +275,21 @@ click-left                      = blueman-manager
 ;-------------------------------------------------------------------------------
 ; BATTERY STATUS                                                               ;
 ;-------------------------------------------------------------------------------
-; [module/battery]
-; type               = internal/battery
-; full-at            = 96
-
-; ; Battery and adapter
-; battery            = BAT0
-; adapter            = AC0
-
-; format-full-prefix = " "
-; format-full        = <label-full>
-
-; ; Charging label
-; label-discharging  =  %percentage%%
-; label-charging     = %percentage%%
-; label-full         = %percentage%%
-
-
 [module/battery]
-type = internal/battery
-battery = BAT0
-adapter = ACAD
-full-at = 99
+type               = internal/battery
+full-at            = 96
 
-ramp-capacity-0 = ""
-ramp-capacity-background = ${colors.background}
-ramp-capacity-foreground = ${colors.background-alt}
-ramp-capacity-padding = 0
-ramp-capacity-font = 2
+; Battery and adapter
+battery            = BAT0
+adapter            = AC0
 
-label-full = "%percentage%% "
-label-full-background = ${colors.background}
-label-full-foreground = ${colors.foreground}
-label-full-padding = 0
-label-full-font = 1
+format-full-prefix = " "
+format-full        = <label-full>
 
-format-full-prefix = ""
-format-full-prefix-background = ${colors.background}
-format-full-prefix-foreground = ${colors.background-alt}
-format-full-prefix-padding = 1
-format-full-prefix-font = 2
-
-label-charging = "%percentage%% "
-label-charging-background = ${colors.background}
-label-charging-foreground = ${colors.foreground}
-label-charging-padding = 0
-label-charging-font = 1
-
-animation-charging-0 = ""
-
-format-charging = "<animation-charging><label-charging>"
-
-animation-charging-background = ${colors.background}
-animation-charging-foreground = ${colors.background-alt}
-animation-charging-padding = 1
-animation-charging-font = 2
-
-label-discharging = "%percentage%% "
-label-discharging-background = ${colors.background}
-label-discharging-foreground = ${colors.foreground}
-label-discharging-padding = 0
-label-discharging-font = 1
-
-animation-discharging-0 = ""
-animation-discharging-1 = ""
-animation-discharging-2 = ""
-animation-discharging-3 = ""
-animation-discharging-4 = ""
-animation-discharging-framerate = 1000
-
-format-discharging = "<animation-discharging><label-discharging>"
-
-animation-discharging-background = ${colors.background}
-animation-discharging-foreground = ${colors.background-alt}
-animation-discharging-padding = 1
-animation-discharging-font = 2
+; Charging label
+label-discharging  =  %percentage%%
+label-charging     = %percentage%%
+label-full         = %percentage%%
 
 ;-------------------------------------------------------------------------------
 ; VOLUME STATUS                                                                ;
@@ -453,7 +391,7 @@ label-song-ellipsis = true
 type = custom/script
 interval = 3600
 format = ⛅ <label>°F
-exec = $XDG_CONFIG_HOME/bin/weather
+exec = $XDG_CONFIG_HOME/polybar/scripts/weather
 
 [settings]
 screenchange-reload = true

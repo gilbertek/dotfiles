@@ -26,6 +26,20 @@ bkp(){
   fi
 }
 
+_FILES=(
+  tmux.conf
+  tmux-osx.conf
+  tmux-linux.conf
+  editorconfig
+  prettierrc
+  eslintrc
+  ctags
+  tool-versions
+  bashrc
+  bash_profile
+  profile
+)
+
 echo -e "\nCreating dotfile symlinks"
 
 # Setup bash.d directory
@@ -45,6 +59,24 @@ fi
 create_bash_links() {
   for f in "${DOTFILES}"/system/bash.d/*; do
     ln -sfn  "$f"  ~/.bash.d
+  done
+}
+
+create_tool_links() {
+  for file in "${_FILES[@]}"; do
+    filename=".$(basename $file '.symlink')"
+    target="$HOME/$filename"
+
+    if [ -e "$target" ] && [ ! -d "$target" ]; then
+      warning "${filename} alreadly exists in your home directory. Are you sure to overwrite it? ([y]/n)"
+      read -r -n 1;
+      msg ""
+      if [[ ! $REPLY ]] || [[ $REPLY =~ ^[Yy]$ ]]; then
+        ln -snf "${DOTFILES}/system/${file}" "${target}"
+      fi
+    else
+      ln -snf "${DOTFILES}/system/${file}" "${target}"
+    fi
   done
 }
 
@@ -78,7 +110,29 @@ for d in "${DOTFILES}"/config/* ; do
   ln -s "$d" ~/.config/
 done
 
-# Emacs Config
+# Local shared
+echo -e "\nCreating .local/share symlinks"
+mkdir -p ~/.local/share
+mkdir -p ~/dotfiles_backup/local/share
+for d in "${DOTFILES}"/local/share/* ; do
+  filename=$(echo "$d" | rev | cut -d"/" -f 1 | rev)
+  echo "$filename"
+  # bkp ~/.local/share/"$filename" ~/dotfiles_backup/local/share
+  # ln -s "$d" ~/.local/share
+done
+
+# Applications
+# echo -e "\nCreating .local/share/application symlinks"
+# mkdir -p ~/.local/share/applications
+# mkdir -p ~/dotfiles_backup/local/share/applications
+# for d in "${DOTFILES}"/local/share/applications/* ; do
+#   filename=$(echo "$d" | rev | cut -d"/" -f 1 | rev)
+#   echo "$filename"
+#   # bkp ~/.local/share/applications/"$filename" ~/dotfiles_backup/local/share/applications
+#   # ln -s "$d" ~/.local/share/applications/
+# done
+
+# Emacs Cofig
 ln -sfn "$DOTFILES/system/emacs/init.el" "$HOME/.emacs.d/init.el"
 
 # Git and Hub config
@@ -92,6 +146,7 @@ if [ ! -f "$HOME/.cargo/config" ]; then
 fi
 
 create_bash_links
+create_tool_links
 create_bin_links
 create_ruby_links
 

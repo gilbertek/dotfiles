@@ -10,6 +10,10 @@ sudo pacman -S --noconfirm base-devel cmake zlib openssl expac wget fakeroot jsh
 # Install/Activate Graphical Firewall
 # sudo pacman -S gufw
 
+# Install packages
+echo "Running update"
+sudo pacman --noconfirm --needed -S $(cat ~/dotfiles/installs/manjaro/non-aur.txt)
+yay -S --noconfirm --needed $(cat ~/dotfiles/installs/manjaro/aur.txt)
 
 # Set up firewall
 sudo pacman -S ufw

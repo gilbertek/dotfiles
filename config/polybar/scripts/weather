@@ -2,7 +2,11 @@
 
 set -euo pipefail
 
-station=KLGA
+# NEW YORK LA GUARDIA AIRPORT , NY, United States (KLGA) 40-47N 73-53W 11M
+# station=KLGA
+
+# KENNEDY INTERNATIONAL AIRPORT , NY, United States (KJFK) 40-38N 073-46W 9M
+station=KJFK
 
 url=https://tgftp.nws.noaa.gov/data/observations/metar/decoded/$station.TXT
 

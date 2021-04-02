@@ -1,0 +1,12 @@
+brscan4
+espanso
+linux-latest
+nerd-fonts-droid-sans-mono
+nerd-fonts-fira-code
+nerd-fonts-hack
+nerd-fonts-inconsolata
+nerd-fonts-iosevka
+nerd-fonts-jetbrains-mono
+orage
+xdg-su
+zoom
