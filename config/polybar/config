@@ -85,8 +85,7 @@ modules-center      =
 modules-right       = weather backlight bluetooth pulseaudio wireless-network battery date powermenu
 
 font-0              = "Iosevka Nerd Font:size=10;0"
-font-1              = "Noto Color Emoji:size=10:scale=10;1"
-; font-1              = Iosevka Nerd Font:style=Medium:size=16;4
+font-1              = Iosevka Nerd Font:style=Medium:size=16;4
 
 separator            = ::
 ; separator            = /
