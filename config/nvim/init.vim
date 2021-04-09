@@ -279,7 +279,7 @@ nnoremap <leader>nf     :NERDTreeFind<CR>
 nnoremap <leader>n      :NERDTreeToggle \| NERDTreeMirror<CR>
 
 Plug 'tpope/vim-commentary'
-nnoremap <Leader>c gcc
+nmap <Leader>c gcc
 nnoremap <C-/> :Commentary<cr>
 inoremap <C-/> :Commentary<cr>
 " Line comment command
@@ -436,6 +436,7 @@ Plug 'wakatime/vim-wakatime'
 " **[ 2.3) UI Plugins #ui-plugins ]********************
 Plug 'tomasiser/vim-code-dark'
 Plug 'rakr/vim-one'
+Plug 'joshdick/onedark.vim'
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'haishanh/night-owl.vim'
 Plug 'hzchirs/vim-material'                             " material color themes
@@ -448,7 +449,7 @@ let g:indentLine_char  = '▏'        " Other options ┆│┊︙¦⋮.
 
 Plug 'itchyny/lightline.vim' " wombat codedark one
 let g:lightline = {
-      \ 'colorscheme': 'moonfly',
+      \ 'colorscheme': 'onedark',
       \ 'active': {
       \   'left': [[ 'mode', 'paste' ],
       \            [ 'cocstatus', 'fugitive', 'readonly', 'filename', 'modified' ] ]
@@ -478,11 +479,14 @@ call plug#end()
 set background=dark
 " colorscheme base16-onedark
 " colorscheme moonfly
+colorscheme onedark
+highlight EndOfBuffer ctermfg=black ctermbg=black
+hi EndOfBuffer guifg=#282C34
 
 " Themeing
-let g:material_style='oceanic'
-set background=dark
-colorscheme vim-material
+" let g:material_style='oceanic'
+" set background=dark
+" colorscheme vim-material
 
 " " colors for git (especially the gutter)
 " hi DiffAdd  guibg=#0f111a guifg=#43a047
@@ -813,7 +817,12 @@ augroup general
   autocmd BufLeave,FocusLost * :silent! wall
   autocmd BufEnter,FocusGained * checktime  " Refresh file when vim gets focus
 
-  autocmd BufReadPost,BufNewFile *.md,*.txt,COMMIT_EDITMSG setlocal spell textwidth=72 conceallevel=0
+  " autocmd BufReadPost,BufNewFile *.md,*.txt,COMMIT_EDITMSG setlocal spell textwidth=72 conceallevel=0
+
+  " enable spell only if file type is normal text
+  let spellable = ['markdown', 'gitcommit', 'txt', 'text', 'liquid', 'rst']
+  autocmd BufEnter * if index(spellable, &ft) < 0 | set nospell | else | set spell | endif
+
   " automatically add filename as header to markdown files
   autocmd BufNewFile *.md execute "normal i## \<C-r>=expand(\"%:t:r\")\<CR>"
   autocmd BufEnter PULLREQ_EDITMSG setlocal filetype=gitcommit
@@ -909,6 +918,7 @@ augroup Terminal
   autocmd FileType python nnoremap <buffer> <cr> :silent w<bar>only<bar>vsp<bar>term ipython -i %<CR>
 
   " Reload & easy edit Neovim configuration
+  autocmd Bufwritepost init.vim source $MYVIMRC
   command! Editrc tabnew $MYVIMRC
   command! Loadrc source $MYVIMRC | redraw | echo 'Init reloaded' | :PlugInstall<CR>
   command! PU PlugClean! | PlugUpdate! | PlugUpgrade | CocUpdate

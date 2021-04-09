@@ -1,0 +1,12 @@
+Include configs/*
+IdentityFile ~/.ssh/id_rsa
+ServerAliveInterval 240
+
+Host bitbucket.org
+HostName bitbucket.org
+User git
+IdentityFile ~/.ssh/id_rsa_bb
+IdentitiesOnly yes
+PreferredAuthentications publickey
+
+# vim: ft:sshconfig cc=80 tw=79 ts=4 sw=4 sts=4 et sr

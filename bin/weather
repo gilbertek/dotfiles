@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+location=${1:-"New York"}
+curl -s wttr.in/"$location"

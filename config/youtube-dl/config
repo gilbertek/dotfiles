@@ -1,17 +1,24 @@
 # Do not use the Last-modified header to set the file modification time.
 --no-mtime
 
+--abort-on-error
+
 # Save under ~/Downloads directory.
---output ~/Downloads/%(title)s.%(ext)s
+--output ~/Videos/ytubes/%(title)s.%(ext)s
 
 # Escape all kind of weird characters in file name.
 --restrict-filenames
+
+# Always select best quality media
+--format 'bestvideo[height<=720]+bestaudio/best[height<=720]'
+
+# Video selection
+--download-archive ".youtube-dl"
 
 --yes-playlist
 
 # --geo-bypass
 # --write-sub
 # --output "%(extractor_key)s_%(uploader)s/%(upload_date)s_%(title)s_%(id)s.%(ext)s"
-# --download-archive ".youtube-dl"
 # --rm-cache-dir
-# --cookies /home/rok/Downloads/35db6c4a-f4eb-4c82-8551-ec74f8d44564.txt
+# --cookies /home/gilbertek/Downloads/35db6c4a-f4eb-4c82-8551-ec74f8d44564.txt

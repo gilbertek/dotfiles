@@ -40,8 +40,9 @@
   "signature.target": "echo",
   "diagnostic.refreshOnInsertMode": false,
   "diagnostic.maxWindowHeight": 20,
-  "diagnostic.errorSign": "●",
-  "diagnostic.warningSign": "",
+  "diagnostic.errorSign": "✘",
+  "diagnostic.warningSign": "⚠",
+  "diagnostic.infoSign": "",
   "diagnostic.virtualText": true,
   "diagnostic.checkCurrentLine": true,
   "languageserver": {

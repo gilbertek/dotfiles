@@ -68,6 +68,13 @@ alias c='clear'
 alias e='$EDITOR'
 alias v='$VISUAL'
 alias h='history'
+alias r=ranger
+
+# Get error messages from journalctl
+alias jctl="journalctl -p 3 -xb"
+
+alias screencast='ffmpeg -f x11grab -r 50 -s 1366x768 -i :0.0 -acodec aac -vcodec libx264 -crf 0 screencast.mkv'
+
 alias curl="curl -sL" # Avoid progress bar and follow redirects
 alias topdir="du -sh */ | sort -rh | head -5"
 alias nom="rm -rf node_modules; npm cache clean; npm i"
@@ -115,12 +122,12 @@ unset jscbin;
 alias mktar="tar -pvczf"
 alias untar="tar -zxvf"
 
-alias stream="youtube-dl -q -o- $1 | vlc -"
-
 # Requires asciinema and svg-term
 # brew install asciinema
 # npm install -g svg-term-cli
 alias record="asciinema rec /tmp/temp.cast --overwrite && cat /tmp/temp.cast | svg-term > recording.svg"
+
+alias scanner='gscan2pdf > /dev/null'
 
 # ** [ GIT ALIASES ] ******************
 alias gs='git status'
@@ -291,8 +298,10 @@ alias es:di="curl -XDELETE 'http://localhost:9200/_all'" # delete indexes
 
 # ** [ YOUTUBE-DL SHORTCUTS ] ******************
 # youtube downloader
-alias yt-video="youtube-dl -citk --max-quality mp4 --write-auto-sub --write-sub --sub-lang en,es"
-alias yt-audio="youtube-dl -citk --max-quality mp3 --audio-format mp3 --extract-audio --audio-format mp3 --audio-quality 192k"
+alias yt='youtube-dl'
+alias stream="youtube-dl -q -o- $1 | vlc -"
+alias yt-audio='youtube-dl --extract-audio --add-metadata --xattrs --embed-thumbnail --audio-quality 0 --audio-format mp3'
+alias yt-video='youtube-dl --merge-output-format mp4 -f "bestvideo+bestaudio[ext=m4a]/best" --embed-thumbnail --add-metadata'
 
 # ** [ MACOS SHORTCUTS ] ******************
 alias mac-clean-logs='sudo rm -rf /private/var/log/asl/*.asl'
@@ -364,6 +373,7 @@ alias pacman='sudo pacman --color=auto'
 alias pac:in='pacman -S'    # install from repo
 alias pac:ins='pacman -U'   # install from file
 alias pac:rm='pacman -Rns' # remove package
+# alias pac:rmo="pacman -Rns $(pacman -Qtdq)"
 alias pac:re='pacman -R'    # remove keep config
 alias pac:cl='pacman -Sc'   # clean package cache
 alias pac:clx='pacman -Scc'   # clean package cache

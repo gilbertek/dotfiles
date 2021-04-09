@@ -154,10 +154,10 @@ handle_image() {
             exit 7;;
 
         ## Video
-        # video/*)
-        #     # Thumbnail
-        #     ffmpegthumbnailer -i "${FILE_PATH}" -o "${IMAGE_CACHE_PATH}" -s 0 && exit 6
-        #     exit 1;;
+        video/*)
+            # Thumbnail
+            ffmpegthumbnailer -i "${FILE_PATH}" -o "${IMAGE_CACHE_PATH}" -s 0 && exit 6
+            exit 1;;
 
         # PDF
         application/pdf)
@@ -280,6 +280,26 @@ handle_mime() {
             ## Preview as markdown conversion
             pandoc -s -t markdown -- "${FILE_PATH}" && exit 5
             exit 1;;
+
+        # OpenDocument
+        odt|ods|odp|sxw)
+            # Preview as text conversion
+            odt2txt "${FILE_PATH}" && exit 5
+            exit 1;;
+
+        # HTML
+        htm|html|xhtml)
+            # Preview as text conversion
+            w3m -dump "${FILE_PATH}" && exit 5
+            lynx -dump -- "${FILE_PATH}" && exit 5
+            elinks -dump "${FILE_PATH}" && exit 5
+            ;; # Continue with next handler on failure
+
+        ## JSON
+        json)
+            jq --color-output . "${FILE_PATH}" && exit 5
+            python -m json.tool -- "${FILE_PATH}" && exit 5
+            ;;
 
         ## XLS
         *ms-excel)

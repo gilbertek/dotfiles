@@ -61,7 +61,7 @@ monitor             = ${env:MONITOR:eDP1}
 
 top                 = true
 width               = 100%
-height              = 38
+height              = 34
 
 background          = ${colors.background}
 foreground          = ${colors.foreground}
@@ -77,21 +77,24 @@ border-color        = ${colors.primary}
 padding-left        = 2
 padding-right       = 2
 
-module-margin-left  = 0
+module-margin-left  = 2
 module-margin-right = 2
 
 modules-left        = workspaces xwindow
 modules-center      =
 modules-right       = weather backlight bluetooth pulseaudio wireless-network battery date powermenu
 
-font-0              = "Hack Nerd Font:size=10;0"
-font-1              = Iosevka Nerd Font:style=Medium:size=16;4
+font-0              = "Iosevka Nerd Font:size=10;0"
+font-1              = "Noto Color Emoji:size=10:scale=10;1"
+; font-1              = Iosevka Nerd Font:style=Medium:size=16;4
 
-; separator = "|"
+separator            = ::
+; separator            = /
+; separator            = |
 separator-background = ${colors.background}
-separator-foreground = ${colors.foreground-alt}
-separator-padding = 0
-separator-font = 7
+separator-foreground = ${colors.blackground-alt}
+separator-padding    = 0
+separator-font       = 5
 
 tray-position       = none
 tray-padding        = 4
@@ -190,23 +193,35 @@ label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %free%
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
 
+; [module/cpu]
+; type = internal/cpu
+; interval = 5
+
+; click-left = "$TERMINAL" -e htop &
+
+; format-prefix = "  "
+; format-prefix-background = ${colors.background}
+; format-prefix-foreground = ${colors.foreground-alt}
+; format-prefix-padding = 0
+; format-prefix-font = 2
+
+; label = "%percentage:2%% "
+; label-background = ${colors.background}
+; label-foreground = ${colors.foreground}
+; label-padding = 0
+; label-font = 1
+
 [module/cpu]
 type = internal/cpu
-interval = 5
+interval = 2.5
 
-click-left = "$TERMINAL" -e htop &
+format-prefix = "  "
+format = <label>
 
-format-prefix = "  "
-format-prefix-background = ${colors.background}
-format-prefix-foreground = ${colors.foreground-alt}
-format-prefix-padding = 0
-format-prefix-font = 2
+label = CPU %percentage%%
 
-label = "%percentage:2%% "
-label-background = ${colors.background}
-label-foreground = ${colors.foreground}
-label-padding = 0
-label-font = 1
+format-background = #2b2f37
+format-foreground = #989cff
 
 [module/memory]
 type = internal/memory
@@ -266,30 +281,61 @@ format-disconnected             = 睊
 ; format-disconnected             = ﲁ
 format-disconnected-foreground  = ${colors.accent}
 
-; bluetooth{{{
+; bluetooth {{{
 [module/bluetooth]
-type                            = custom/text
-content                         = 
+type        = custom/script
+interval    = 4
+
+content                         = 
 click-left                      = blueman-manager
 
-;-------------------------------------------------------------------------------
-; BATTERY STATUS                                                               ;
-;-------------------------------------------------------------------------------
+; exec        = bluetoothctl show | grep -q "Powered: yes" && echo  || echo 
+; click-right = pgrep blueman-manager && pkill blueman-manager ||  blueman-manager
+; click-left  = bluetoothctl show | grep -q "Powered: yes" && bluetoothctl power off || bluetoothctl power on
+; }}}
+
+; BATTERY STATUS {{{
 [module/battery]
-type               = internal/battery
-full-at            = 96
+type                          = internal/battery
+battery                       = BAT0
+adapter                       = AC0
+full-at                       = 98
 
-; Battery and adapter
-battery            = BAT0
-adapter            = AC0
+label-charging                = "%percentage%%"
+label-charging-background     = ${colors.background}
+label-charging-foreground     = ${colors.foreground}
 
-format-full-prefix = " "
-format-full        = <label-full>
+label-discharging             = "%percentage%%"
+label-discharging-background  = ${colors.background}
+label-discharging-foreground  = ${colors.foreground}
 
-; Charging label
-label-discharging  =  %percentage%%
-label-charging     = %percentage%%
-label-full         = %percentage%%
+format-charging               = <animation-charging>  <label-charging>
+format-charging-background    = ${colors.background}
+format-charging-foreground    = ${colors.foreground}
+
+format-discharging            = <ramp-capacity>  <label-discharging>
+format-discharging-background = ${colors.background}
+format-discharging-foreground = ${colors.foreground}
+
+label-full-background         = ${colors.background}
+label-full-foreground         = ${colors.foreground}
+format-full-prefix            = " "
+format-full-prefix-foreground = ${colors.foreground}
+format-full-prefix-background = ${colors.background}
+
+ramp-capacity-0               = 
+ramp-capacity-1               = 
+ramp-capacity-2               = 
+ramp-capacity-3               = 
+ramp-capacity-4               = 
+ramp-capacity-foreground      = ${colors.foreground}
+ramp-capacity-background      = ${colors.background}
+
+animation-charging-0          = 
+animation-charging-framerate  = 3600
+animation-charging-foreground = ${colors.foreground}
+animation-charging-background = ${colors.background}
+; }}}
 
 ;-------------------------------------------------------------------------------
 ; VOLUME STATUS                                                                ;
@@ -311,20 +357,70 @@ ramp-headphones-0      = 
 
 scroll-up              = pulsemixer --change-volume +1
 scroll-down            = pulsemixer --change-volume -1
+
+[module/volume]
+type = custom/script
+exec = amixer get Master | awk '$0~/%/{print $4}' | tr -d '[]'
+format = <label>
+internal = 5.0
+label = %output%
+label-foreground = #BF616A
+label-padding = 1
+
+[module/volume2]
+;https://github.com/jaagr/polybar/wiki/Module:-volume
+type                           = internal/volume
+format-volume                  = "<label-volume>  <bar-volume>"
+
+label-volume                   = " "
+label-volume-foreground        = #a9b665
+label-muted                    = muted
+
+bar-volume-width               = 10
+bar-volume-foreground-0        = #a9b665
+bar-volume-foreground-1        = #a9b665
+bar-volume-foreground-2        = #a9b665
+bar-volume-foreground-3        = #a9b665
+bar-volume-foreground-4        = #a9b665
+bar-volume-foreground-5        = #a9b665
+bar-volume-foreground-6        = #a9b665
+bar-volume-gradient            = false
+bar-volume-indicator           = 
+bar-volume-indicator-font      = 0
+bar-volume-fill                = 
+bar-volume-fill-font           = 0
+bar-volume-empty               = 
+bar-volume-empty-font          = 0
+bar-volume-empty-foreground    = ${colors.foreground}
+format-volume-foreground       = ${colors.foreground}
+format-volume-background       = ${colors.background}
+format-muted-prefix            = "  "
+format-muted-prefix-foreground = "#ea6962"
+format-muted-foreground        = ${colors.foreground}
+format-muted-background        = ${colors.background}
 ;-------------------------------------------------------------------------------
 ; BACKLIGHT BRIGHTNESS                                                         ;
 ;-------------------------------------------------------------------------------
-[module/backlight]
-type          = internal/backlight
+; [module/backlight]
+; type          = internal/backlight
 
-format        = <label>
-label         = " %percentage%%"
-card          = intel_backlight
-bar-width     = 10
-bar-indicator = |
-bar-fill      = ─
-bar-empty     = ─
-click-left    = gbacklight
+; format        = <label>
+; label         = " %percentage%%"
+; card          = intel_backlight
+; bar-width     = 10
+; bar-indicator = |
+; bar-fill      = ─
+; bar-empty     = ─
+; click-left    = gbacklight
+
+[module/backlight]
+type                     = internal/xbacklight
+format                   = <label>
+format-prefix            = "  "
+label                    = %percentage%
+format-prefix-foreground = ${colors.foreground}
+label-foreground         = ${colors.foreground-alt}
+format-padding           = 1
 
 ;-------------------------------------------------------------------------------
 ; POWER MENU                                                                   ;
@@ -336,7 +432,7 @@ type                   = custom/menu
 expand-right           = true
 format-spacing         = 1
 
-label-open             = 
+label-open             = 襤
 label-open-foreground  = ${colors.foreground}
 label-close            = cancel
 label-close-foreground = ${colors.secondary}
@@ -366,17 +462,27 @@ menu-3-0-exec          = herbstclient quit
 ;-------------------------------------------------------------------------------
 
 [module/mpd]
-type = internal/mpd
-format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
-
-icon-prev = 
-icon-stop = 
-icon-play = 
-icon-pause = 
-icon-next = 
-
-label-song-maxlen = 25
-label-song-ellipsis = true
+;https://github.com/jaagr/polybar/wiki/Module:-mpd
+type                              = internal/mpd
+;format-online                    = "<label-song>   <icon-prev>  <icon-stop>  <toggle>  <icon-next>"
+format-online                     = "<label-song>  <bar-progress>"
+;format-online                    = "<label-song>  <bar-progress> <icon-prev>  <icon-stop>  <toggle>  <icon-next>"
+icon-prev                         = 
+icon-stop                         = 
+icon-play                         = 
+icon-pause                        = 
+icon-next                         = 
+label-song-maxlen                 = 40
+label-song-ellipsis               = true
+bar-progress-width                = 10
+bar-progress-indicator            = 
+bar-progress-fill                 = 
+bar-progress-empty                = 
+bar-progress-fill-foreground      = #ff0
+bar-progress-fill-background      = ${colors.background}
+bar-progress-indicator-foreground = ${colors.foreground}
+format-online-foreground          = ${colors.foreground}
+format-online-background          = ${colors.background}
 
 ; [module/music]
 ; type = custom/script
@@ -387,19 +493,32 @@ label-song-ellipsis = true
 ; click-left = playerctl play-pause
 ;}}}
 
+[module/pacman-updates]
+type                     = custom/script
+;exec                    = pacman -Qu | wc -l
+exec                     = checkupdates | wc -l
+interval                 = 1000
+label                    = Repo: %output%
+format-foreground        = ${colors.foreground}
+format-background        = ${colors.background}
+format-prefix            = "  "
+format-prefix-foreground = #FFBB00
+format-underline         = #FFBB00
+
 [module/weather]
-type = custom/script
-interval = 3600
-format = ⛅ <label>°F
-exec = $XDG_CONFIG_HOME/polybar/scripts/weather
+type                     = custom/script
+interval                 = 3600
+format-prefix            = "  "
+label                    = %output% °F
+format-prefix-foreground = ${colors.foreground}
+exec                     = $XDG_CONFIG_HOME/polybar/scripts/weather
 
 [settings]
-screenchange-reload = true
-;compositing-background = xor
-;compositing-background = screen
-;compositing-foreground = source
-;compositing-border = over
-;pseudo-transparency = false
+screenchange-reload    = true
+compositing-background = screen
+compositing-foreground = source
+compositing-border     = over
+pseudo-transparency    = false
 
 [global/wm]
 margin-top    = 5
