@@ -27,15 +27,15 @@
   "prettier.requireConfig": true,
   "prettier.eslintIntegration": true,
   "prettier.singleQuote": true,
-  "snippets.extends": {
-    "vue": ["javascript"]
-  },
   "suggest.snippetIndicator": " ►",
-  "python.formatting.provider": "black",
+  "clangd.enabled": true,
+    "clangd.arguments": ["--clang-tidy", "--completion-style=detailed", "--fallback-style=google", "--header-insertion=iwyu", "--suggest-missing-includes"],
+  "clangd.semanticHighlighting": true,
+  "python.formatting.provider": "yapf",
   "python.jediEnabled": false,
   "python.linting.mypyEnabled": true,
+  "rust-analyzer.server.path": "rust-analyzer",
   "rust-analyzer.checkOnSave.command": "clippy",
-  "rust-analyzer.serverPath": "~/.local/bin/rust-analyzer",
   "tsserver.formatOnType": false,
   "signature.target": "echo",
   "diagnostic.refreshOnInsertMode": false,
@@ -116,11 +116,6 @@
     "lua": {
       "command": "lua-lsp",
       "filetypes": ["lua"]
-    },
-    "metals": {
-      "command": "metals-vim",
-      "rootPatterns": ["build.sbt"],
-      "filetypes": ["scala", "sbt"]
     },
     "nim": {
       "command": "nimlsp",

@@ -1,5 +1,5 @@
 [global]
-font = Iosevka Nerd Font 11
+font = Iosevka Nerd Font 12
 
 # Allow a small subset of html markup:
 #   <b>bold</b>
@@ -179,28 +179,25 @@ history = mod4+grave
 context = mod4+shift+period
 
 [urgency_low]
-# IMPORTANT: colors have to be defined in quotation marks.
-# Otherwise the "#" and following would be interpreted as a comment.
-frame_color = "#3B7C87"
-foreground = "#3B7C87"
-background = "#191311"
-#background = "#2B313C"
-timeout = 4
+    # IMPORTANT: colors have to be defined in quotation marks.
+    # Otherwise the "#" and following would be interpreted as a comment.
+    background = "#0B0D13"
+    foreground = "#d4d6d9"
+    frame_color = "#3B7C87"
+    timeout = 5
+    # Icon for notifications with low urgency, uncomment to enable
+    #icon = /path/to/icon
 
 [urgency_normal]
-frame_color = "#5B8234"
-foreground = "#5B8234"
-background = "#191311"
-#background = "#2B313C"
-timeout = 6
+    background = "#0B0D13"
+    foreground = "#d4d6d9"
+    timeout = 5
 
 [urgency_critical]
-frame_color = "#B7472A"
-foreground = "#B7472A"
-background = "#191311"
-#background = "#2B313C"
-timeout = 8
-
+    background = "#0B0D13"
+    foreground = "#d4d6d9"
+    frame_color = "#fabd2f"
+    timeout = 0
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.
@@ -254,4 +251,4 @@ timeout = 8
 #    summary = *twitter.com*
 #    urgency = normal
 #
-# vim: ft=cfg
+# vim: ft=cfg ts=4

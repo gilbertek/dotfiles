@@ -187,6 +187,10 @@ gt() { git checkout -b "$1" -t origin/"$1"; }
 
 scoreboard() { git log | grep Author | sort | uniq -ci | sort -r; }
 
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
 # ** [ DOCKER ALIASES ] ******************
 alias dk='docker'
 alias dk:i='docker image'
@@ -286,6 +290,7 @@ alias memcached:start="memcached -d"
 alias memcached:stop="memcached stop"
 
 # ** [ TMUX ALIASES ] ******************
+alias tmux="tmux -f ${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf"
 alias tmx:l='tmux list-sessions'
 alias tmx:a="tmux attach-session -t ${1}"
 alias tmx:k="tmux kill-session -t $1"

@@ -95,25 +95,75 @@ separator-foreground = ${colors.blackground-alt}
 separator-padding    = 0
 separator-font       = 5
 
-tray-position       = none
-tray-padding        = 4
-tray-maxsize        = 0
-
 cursor-click        = pointer
 cursor-scroll       = ns-resize
+
+; App Menu {{{
+[module/appmenu]
+type = custom/text
+content = 
+content-background = ${colors.background}
+content-foreground = ${colors.foreground}
+content-padding = 1
+
+; click-left = rofi -show drun -location 7 -yoffset -100 -xoffset 30
+
+; scroll-up = echo scroll up
+; scroll-down = echo scroll down
+; }}}
+
+; firefox {{{
+[module/firefox]
+type = custom/text
+content = 
+content-background = ${colors.bg}
+content-foreground = ${colors.fg}
+
+click-left = firefox-developer-edition
+; }}}
+
+; chrome {{{
+[module/chrome]
+type = custom/text
+content = 
+content-background = ${colors.bg}
+content-foreground = ${colors.fg}
+
+click-left = optirun chromium
+; }}}
+
+; telegram {{{
+[module/telegram]
+type = custom/text
+content = 切
+content-background = ${colors.bg}
+content-foreground = ${colors.fg}
+
+click-left = telegram-desktop
+; }}}
+
+; zathura {{{
+[module/zathura]
+type = custom/text
+content = 
+content-background = ${colors.bg}
+content-foreground = ${colors.fg}
+
+click-left = zathura
+; }}}
 
 ;-------------------------------------------------------------------------------
 ; CALENDAR DATE                                                                ;
 ;-------------------------------------------------------------------------------
 [module/date]
 type                = internal/date
-interval            = 5.0
+interval            = 5
 date                = %a
 time                = %R
 
 date-alt            = %A, %d %B %Y
 time-alt            = %r
-label               =  %date% %time%
+label               =  %date% %time%
 
 ;-------------------------------------------------------------------------------
 ; WORKSPACES                                                                   ;
@@ -192,6 +242,7 @@ label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %free%
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
 
+; CPU {{{
 ; [module/cpu]
 ; type = internal/cpu
 ; interval = 5
@@ -221,7 +272,9 @@ label = CPU %percentage%%
 
 format-background = #2b2f37
 format-foreground = #989cff
+; }}}
 
+; Memory {{{
 [module/memory]
 type = internal/memory
 interval = 5
@@ -239,10 +292,9 @@ label-background = ${colors.background}
 label-foreground = ${colors.foreground}
 label-padding = 0
 label-font = 1
+; }}}
 
-;-------------------------------------------------------------------------------
-; NETWORK INFO                                                                 ;
-;-------------------------------------------------------------------------------
+; NETWORK INFO {{{
 [module/wired-network]
 type                            = internal/network
 interface                       = eth1
@@ -259,13 +311,16 @@ label-connected                 = "%essid%"
 
 format-disconnected = "<label-disconnected>"
 ; format-disconnected             = 
-format-disconnected-foreground  = ${colors.accent}
+format-disconnected-foreground  = ${colors.primary}
 
 label-disconnected = "%ifname%"
 label-disconnected-background = ${colors.background}
 label-disconnected-foreground = ${colors.foreground}
 label-disconnected-padding = 1
 label-disconnected-font = 1
+
+; click-left = alacritty -e nmtui-connect
+; click-right = alacritty -e nmtui-edit
 
 [module/wireless-network]
 type                            = internal/network
@@ -278,19 +333,22 @@ label-connected                 = "%essid%"
 
 format-disconnected             = 睊
 ; format-disconnected             = ﲁ
-format-disconnected-foreground  = ${colors.accent}
+format-disconnected-foreground  = ${colors.primary}
+; }}}
 
 ; bluetooth {{{
 [module/bluetooth]
+type       = custom/text
+interval   = 4
+content    = 
+click-left = blueman-manager
+
+[module/bluetooth2]
 type        = custom/script
 interval    = 4
-
-content                         = 
-click-left                      = blueman-manager
-
-; exec        = bluetoothctl show | grep -q "Powered: yes" && echo  || echo 
-; click-right = pgrep blueman-manager && pkill blueman-manager ||  blueman-manager
-; click-left  = bluetoothctl show | grep -q "Powered: yes" && bluetoothctl power off || bluetoothctl power on
+exec        = bluetoothctl show | grep -q "Powered: yes" && echo  || echo 
+click-right = pgrep blueman-manager && pkill blueman-manager ||  blueman-manager
+click-left  = bluetoothctl show | grep -q "Powered: yes" && bluetoothctl power off || bluetoothctl power on
 ; }}}
 
 ; BATTERY STATUS {{{
@@ -336,18 +394,18 @@ animation-charging-foreground = ${colors.foreground}
 animation-charging-background = ${colors.background}
 ; }}}
 
-;-------------------------------------------------------------------------------
-; VOLUME STATUS                                                                ;
-;-------------------------------------------------------------------------------
-[module/pulseaudio]
+; VOLUME STATUS {{{
+[module/volume]
+;https://github.com/jaagr/polybar/wiki/Module:-volume
 type                   = internal/pulseaudio
-
-format-volume          = <ramp-volume>
-; label-volume = VOL %percentage%%
-; label-volume-foreground = ${root.foreground}
+format-volume          = <ramp-volume> <label-volume>
+format-volume-font     = 10
+format-volume-padding  = 0
+label-volume           = %percentage%%
 
 label-muted            = 婢
-label-muted-foreground = ${colors.muted}
+label-muted-foreground = ${colors.primary}
+label-muted-padding    = 2
 
 ramp-volume-0          = 
 ramp-volume-1          = 
@@ -356,50 +414,30 @@ ramp-headphones-0      = 
 
 scroll-up              = pulsemixer --change-volume +1
 scroll-down            = pulsemixer --change-volume -1
+; }}}
 
-[module/volume]
-type = custom/script
-exec = amixer get Master | awk '$0~/%/{print $4}' | tr -d '[]'
-format = <label>
-internal = 5.0
-label = %output%
-label-foreground = #BF616A
-label-padding = 1
+; Pulse Audio {{{
+[module/pulseaudio]
+type         = internal/pulseaudio
+sink         = alsa_output.pci-0000_00_1b.0.analog-stereo
 
-[module/volume2]
-;https://github.com/jaagr/polybar/wiki/Module:-volume
-type                           = internal/volume
-format-volume                  = "<label-volume>  <bar-volume>"
+format       = <label-volume>
+label-volume = 墳 %percentage%%
+label-muted  = 
+click-right  = pavucontrol
+; }}}
 
-label-volume                   = " "
-label-volume-foreground        = #a9b665
-label-muted                    = muted
+; Alsa Mixer {{{
+[module/alsa]
+type = custom/text
+content = 
+content-background = ${colors.background}
+content-foreground = ${colors.foreground}
 
-bar-volume-width               = 10
-bar-volume-foreground-0        = #a9b665
-bar-volume-foreground-1        = #a9b665
-bar-volume-foreground-2        = #a9b665
-bar-volume-foreground-3        = #a9b665
-bar-volume-foreground-4        = #a9b665
-bar-volume-foreground-5        = #a9b665
-bar-volume-foreground-6        = #a9b665
-bar-volume-gradient            = false
-bar-volume-indicator           = 
-bar-volume-indicator-font      = 0
-bar-volume-fill                = 
-bar-volume-fill-font           = 0
-bar-volume-empty               = 
-bar-volume-empty-font          = 0
-bar-volume-empty-foreground    = ${colors.foreground}
-format-volume-foreground       = ${colors.foreground}
-format-volume-background       = ${colors.background}
-format-muted-prefix            = "  "
-format-muted-prefix-foreground = "#ea6962"
-format-muted-foreground        = ${colors.foreground}
-format-muted-background        = ${colors.background}
-;-------------------------------------------------------------------------------
-; BACKLIGHT BRIGHTNESS                                                         ;
-;-------------------------------------------------------------------------------
+click-left = alacritty -e alsamixer
+;}}}
+
+; BACKLIGHT BRIGHTNESS {{{
 ; [module/backlight]
 ; type          = internal/backlight
 
@@ -421,10 +459,11 @@ format-prefix-foreground = ${colors.foreground}
 label-foreground         = ${colors.foreground-alt}
 format-padding           = 1
 
-;-------------------------------------------------------------------------------
-; POWER MENU                                                                   ;
-;-------------------------------------------------------------------------------
-; {{{powermenu
+; scroll-up = light -U 5
+; scroll-down = light -A 5
+; }}}
+
+; Powermenu {{{
 [module/powermenu]
 type                   = custom/menu
 
@@ -454,14 +493,11 @@ menu-2-0-exec          = poweroff
 
 menu-3-0               = logout?
 menu-3-0-exec          = herbstclient quit
-;}}}
+; }}}
 
-;-------------------------------------------------------------------------------
-; MUSIC STATUS                                                                 ;
-;-------------------------------------------------------------------------------
-
+; MUSIC STATUS {{{
 [module/mpd]
-;https://github.com/jaagr/polybar/wiki/Module:-mpd
+; https://github.com/jaagr/polybar/wiki/Module:-mpd
 type                              = internal/mpd
 ;format-online                    = "<label-song>   <icon-prev>  <icon-stop>  <toggle>  <icon-next>"
 format-online                     = "<label-song>  <bar-progress>"
@@ -490,7 +526,7 @@ format-online-background          = ${colors.background}
 ; interval = 1
 ;
 ; click-left = playerctl play-pause
-;}}}
+; }}}
 
 [module/pacman-updates]
 type                     = custom/script
@@ -504,6 +540,7 @@ format-prefix            = "  "
 format-prefix-foreground = #FFBB00
 format-underline         = #FFBB00
 
+; Weather {{{
 [module/weather]
 type                     = custom/script
 interval                 = 3600
@@ -511,16 +548,20 @@ format-prefix            = "  "
 label                    = %output% °F
 format-prefix-foreground = ${colors.foreground}
 exec                     = $XDG_CONFIG_HOME/polybar/scripts/weather
+; }}}
 
+; Settings {{{
 [settings]
 screenchange-reload    = true
-compositing-background = screen
-compositing-foreground = source
-compositing-border     = over
-pseudo-transparency    = false
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+;pseudo-transparency = fals
 
 [global/wm]
 margin-top    = 5
 margin-bottom = 5
+; }}}
 
 ; vim:ft=dosini

@@ -27,9 +27,6 @@ bkp(){
 }
 
 _FILES=(
-  tmux.conf
-  tmux-osx.conf
-  tmux-linux.conf
   editorconfig
   prettierrc
   eslintrc
@@ -149,6 +146,7 @@ create_bash_links
 create_tool_links
 create_bin_links
 create_ruby_links
+rm -rf ~/dotfiles_backup
 
 ret="$?"
 success "Dotfiles have been configured! 🤘"

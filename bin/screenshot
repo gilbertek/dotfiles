@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# needs bash for pipefail option
+# set pipefail to get exit code of screenshot
+set -o pipefail
+
+# start selection mode and pipe screenshot to clipboard
+# maim -us | xclip -selection clipboard -t image/png &&
+#     dunstify -r 632448 -t 3000 "  screenshot copied"
+
+# vim: filetype=sh

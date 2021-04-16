@@ -106,6 +106,7 @@ let g:rspec_command = 'Dispatch rspec --format Fuubar --color {spec}'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
+  \ 'coc-clangd',
   \ 'coc-elixir',
   \ 'coc-eslint',
   \ 'coc-db',
