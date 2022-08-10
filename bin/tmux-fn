@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+tmux new-session -s WOOW -n EDITR -d
+
+tmux new-window -t WOOW -n Weather -d
+tmux new-window -t WOOW -n Matrix -d
+
+# Send commands
+tmux send-keys -t WOOW:EDITR "echo hello" Enter
+tmux send-keys -t WOOW:Weather "curl wttr.in" Enter
+
+tmux select-window -t WOOW:Matrix
+tmux split-window -h
+tmux split-window -v
+tmux split-window -h
+
+tmux select-window -t WOOW:EDITR
+tmux -u attach -t WOOW
+

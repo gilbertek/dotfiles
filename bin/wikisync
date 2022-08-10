@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+rclone sync /home/gilbertek/Documents/VimWiki GoogleDrive-vw:vimwiki ; echo "$(date) - Google Drive Push" >> /home/gilbertek/cronlog
