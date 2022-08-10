@@ -5,24 +5,22 @@
 
 [[ $- != *i* ]] && return
 
-# Bash won't get SIGWINCH if another process is in the foreground.
-# Enable checkwinsize so that bash will check the terminal size when
-# it regains control.  #65623
-# http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
-shopt -s checkwinsize
-
 bind "set completion-ignore-case on"            # Case-Insensitive Auto Completion
 bind "set show-all-if-ambiguous on"             # Display matches for ambiguous patterns
+set -o vi                                       # vim key binds
+
+## SHOPT
 shopt -s histappend                             # Append to history from all terminals in realtime
-shopt -s cdspell                                # spelling error correction
 shopt -s nocaseglob                             # Case-insensitive globbing (for pathname expansion)
-shopt -s expand_aliases
-shopt -s cmdhist
+shopt -s autocd                                 # Change to named directory
+shopt -s cdspell                                # Autocorrects cd misspellings
+shopt -s cmdhist                                # Save multi-line commands in history as single line
 shopt -s dotglob
 shopt -s extglob
-HISTCONTROL="ignoredups:ignorespace:erasedups"  # ignore duplicates(store command once)
-# export QT_SELECT=4
+shopt -s expand_aliases                         # Expand aliases
+shopt -s checkwinsize                           # Checks term size when bash regains control
 
+HISTCONTROL="ignoredups:ignorespace:erasedups"  # Ignore duplicates(store command once)
 HISTSIZE=-1
 HISTFILESIZE=-1
 HISTIGNORE="&:[ ]*:ll:ls:c:h:cd:pwd:exit:quit:reset" # Don't record some commands
@@ -30,6 +28,15 @@ HISTIGNORE="&:[ ]*:ll:ls:c:h:cd:pwd:exit:quit:reset" # Don't record some command
 for file in $HOME/.{aliases,functions}; do
     [ -f "${file}" ] && source "${file}"
 done;
+
+### EXPORTS
+export TERM="xterm-256color"                      # getting proper colors
+
+### "bat" as manpager
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+# Persistent history in Elixir repl IEx
+export ERL_AFLAGS="-kernel shell_history enabled"
 
 # Add `~/bin` to the `$PATH`
 if [ -d "$HOME/bin" ] ; then
@@ -149,11 +156,6 @@ export PATH=~/.local/bin:$PATH
 GHC_PATH=`stack path | grep compiler-bin | sed -e 's/compiler-bin: //'`
 export PATH="$PATH:$GHC_PATH"
 
-# Persistent history in Elixir repl IEx
-export ERL_AFLAGS="-kernel shell_history enabled"
-
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-
 # Ensure ssh agent is running
 if [ -z "$SSH_AUTH_SOCK" ] ; then
   eval `ssh-agent -s`
@@ -164,6 +166,7 @@ if command -v xclip >/dev/null; then
   alias pbcopy='xclip -sel clip -i'
   alias pbpaste='xclip -sel clip -o'
 fi
+
 # Make neovim the default editor
 export EDITOR=nvim
 export GIT_EDITOR=$EDITOR # git uses the default editor

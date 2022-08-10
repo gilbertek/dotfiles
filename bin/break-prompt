@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# vim: filetype=sh
+
+#   remindbreak [WORK_TIME [BREAK_TIME]]
+# timer that notifies when time for break/work
+# time format follows sleep(1)
+
+break_sound="/home/gilbertek/media/audio/sfx/bell_1.ogg"
+work_sound="$break_sound"
+
+[ -z "$1" ] && work_time="50m" || work_time="$1"
+[ -z "$2" ] && break_time="10m" || break_time="$2"
+
+work_msg="work time!"
+break_msg="break time!"
+
+work_msg_f=" > $work_msg (next break in $work_time)"
+break_msg_f=" > $break_msg (back to work in $break_time)"
+
+echo "work time: $work_time"
+echo "break time: $break_time"
+echo "starting..."
+echo
+
+while true; do
+    paplay "$work_sound" &
+    echo "$work_msg_f"
+    notify-send "$work_msg"
+    sleep "$work_time"
+
+    paplay "$break_sound" &
+    echo "$break_msg_f"
+    notify-send "$break_msg"
+    sleep "$break_time"
+done

@@ -83,6 +83,10 @@
   unignore  = update-index --no-assume-unchanged
   ignored   = !git ls-files -v | grep "^[[:lower:]]"
   contributors = shortlog --summary --numbered
+	lol = log --oneline --graph --decorate --all
+	ec = config --global -e
+	sw = switch
+	swc = switch -c
 [branch]
   autosetuprebase = always
   autosetupmerge  = true

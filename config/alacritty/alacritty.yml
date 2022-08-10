@@ -5,8 +5,14 @@
 # These configuration files will be loaded in order, replacing values in files
 # loaded earlier with those loaded later in the chain. The file itself will
 # always be loaded last.
-# import:
-#   - ~/dotfiles/config/alacritty/themes/onedark.yml
+import:
+  - ~/dotfiles/config/alacritty/themes/uya.yml
+  # - ~/dotfiles/config/alacritty/themes/materialocean.yml
+  # - ~/dotfiles/config/alacritty/themes/tokionight.yml
+  # - ~/dotfiles/config/alacritty/themes/onedark.yml
+
+env:
+  TERM: 'xterm-256color'
 
 window:
   dimensions:
@@ -20,6 +26,12 @@ window:
   decorations: none
   dynamic_title: true
 
+  # Background opacity
+  #
+  # Window opacity as a floating point number from `0.0` to `1.0`.
+  # The value `0.0` is completely transparent and `1.0` is opaque.
+  opacity: 0.6
+
 scrolling:
   history: 10000
   multiplier: 3
@@ -28,7 +40,7 @@ scrolling:
 #  JetBrainsMono Nerd Font/ Hack Nerd Font / Fira Code Nerd Font / Iosevka Nerd Font
 font:
   normal:
-    family: Iosevka Nerd Font
+    family: Victor Mono Nerd Font
     style: Regular
   bold:
     family: Iosevka Nerd Font
@@ -36,10 +48,7 @@ font:
   italic:
     family: Iosevka Nerd Font
     style: Italic
-  bold_italic:
-    family: Iosevka Nerd Font
-    style: Bold Italic
-  size: 11.0
+  size: 10.0
 
   offset:
    x: 0
@@ -204,45 +213,13 @@ schemes:
       white:      '0xE5E9F0'
   # }}}
 
-  # {{{
-  # https://github.com/pradyungn/Mountain
-  mountain: &mountain
-    primary:
-      background: '0x0f0f0f'
-      foreground: '0xf0f0f0'
-
-    normal:
-      black:   '0x262626'
-      red:     '0xac8a8c'
-      green:   '0x8aac8b'
-      yellow:  '0xaca98a'
-      blue:    '0x8f8aac'
-      magenta: '0xac8aac'
-      cyan:    '0x8aabac'
-      white:   '0xe7e7e7'
-      orange:  '0xc6a679' #Here for reference
-
-    bright:
-      black:   '0x4c4c4c'
-      red:     '0xc49ea0'
-      green:   '0x9ec49f'
-      yellow:  '0xc4c19e'
-      blue:    '0xa39ec4'
-      magenta: '0xc49ec4'
-      cyan:    '0x9ec3c4'
-      white:   '0xf5f5f5'
-      orange:  '0xceb188' #Here for reference
-  # }}}
-
-colors: *material_ocean
+# colors: *material_ocean
 
 # Bell
 bell:
   animation: EaseOutExpo
   duration: 50
   color: '#f2b8c5'
-
-background_opacity: 0.9
 
 selection:
   # This string contains all characters that are used as separators for "semantic words" in Alacritty.

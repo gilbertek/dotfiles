@@ -1,9 +1,9 @@
-elixir 1.11.4
-rust 1.51.0
+elixir 1.13.4
+rust 1.62.1
 ruby 2.7.2
-erlang 23.3.1
+erlang 25.0.2
 java adopt-openjdk-13.0.1+9
-nodejs 15.8.0
-golang 1.16.3
-lua 5.4.2
-clojure 1.10.3.822
+nodejs 16.13.0
+golang 1.18.4
+lua 5.4.3
+clojure 1.11.1.1149

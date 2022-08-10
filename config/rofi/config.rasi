@@ -1,0 +1,75 @@
+configuration {
+  display-drun: "Applications:";
+  display-window: "Windows:";
+  display-ssh: "SSH";
+  show-icons: true;
+  drun-display-format: "{icon} {name}";
+}
+
+* {
+  background-color: #11121dee;
+  foreground: #a0a8cd;
+  window-bordercolor: #4a5057;
+  color: @foreground;
+  separator-color: @window-bordercolor;
+}
+
+window {
+  background-color: @background-color;
+  transparency: "real";
+  height: 53%;
+  width: 40%;
+  border-color: @window-bordercolor;
+  border: 2;
+  border-radius: 5px;
+  /* margin: 30px 10px 10px 10px; */
+}
+
+mainbox {
+  background-color: transparent;
+  padding: 30px 30px 30px 30px;
+}
+
+inputbar {
+  background-color: transparent;
+  padding: 5px 10px 25px 10px;
+}
+prompt {
+  background-color: transparent;
+  text-color: #ffffff;
+  padding: 0px 10px 0px 0px;
+}
+entry {
+  background-color: transparent;
+  text-color: #ffffff;
+}
+
+listview {
+  background-color: transparent;
+  padding: 0px 5px 0px 5px;
+  spacing: 0.2em;
+  columns: 1;
+}
+
+element {
+  background-color: transparent;
+  padding: 5px 2px 5px 2px;
+}
+
+element-icon {
+  size: 35px;
+  border: 0px;
+}
+
+element-text {
+  expand: true;
+  vertical-align: 0.5;
+}
+
+element selected {
+  border-radius: 2px;
+  background-color: #9fbbf3;
+  color: @background-color;
+}
+
+/* vim: set ft=css: */

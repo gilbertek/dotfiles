@@ -1,4 +1,3 @@
-# vim:filetype=bash
 # ~/.functions
 
 # Create a new directory and enter it
@@ -630,3 +629,5 @@ function todos {
     ag ${*:1} '(\bTODO\b|\bFIX(ME)?\b|\bREFACTOR\b)' ${LOCAL_DIR}
   fi
 }
+
+# vim:filetype=bash

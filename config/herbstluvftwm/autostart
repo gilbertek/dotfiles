@@ -25,7 +25,7 @@ hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-c close
 hc keybind $Mod-q       close
-hc keybind $Mod-Return  spawn alacritty
+hc keybind $Mod-Return  spawn "${TERMINAL:-alacritty}" # use your $TERMINAL with xterm as fallback
 
 # Apps
 hc keybind $Mod-w       spawn firefox-developer-edition
@@ -34,9 +34,10 @@ hc keybind $Mod-Mod1-e  spawn neomutt
 hc keybind $Mod-Mod1-n  spawn alacritty -e newsboat
 hc keybind $Mod-Mod1-w  spawn alacritty -e weechat
 hc keybind $Mod-Mod1-t  spawn alacritty -e tmux
-hc keybind $Mod-d       spawn dmenu_run -l \
-  6 -fn "Hack Nerd Font 1M:size=18" -nb '#212121' \
-  -nf '#b3e5fc' -sb black -sf '#f7f7f7' -p '>'
+hc keybind $Mod-d       spawn rofi -show drun -show-icons
+
+# Take Screenshot
+# hc keybind Mod1-p spawn scrot -s ~/Pictures/Screenshots/scrotShot.jpg
 
 # Volume bindings
 # Smallest possible increment for volume
@@ -99,7 +100,7 @@ for i in "${!tag_names[@]}" ; do
     if ! [ -z "$key" ] ; then
         hc keybind "$Mod-$key" use_index "$i"
 
-        # Move apps from workspace x to y
+        # Move apps from workspace x to y => Mod + Shift + 2
         hc keybind "$Mod-Shift-$key" move_index "$i"
     fi
 done

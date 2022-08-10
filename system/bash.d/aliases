@@ -44,7 +44,7 @@ alias j12="export JAVA_HOME=/usr/libexec/java_home -v 10; java -version"
 alias j8="export JAVA_HOME=/usr/libexec/java_home -v 1.8; java -version"
 
 # ** [ Some Conveniences ] *************
-alias mkdir='mkdir -p'
+alias mkdir='mkdir -pv'
 alias paths='echo -e ${PATH//:/\\n}' # Pretty-print of some PATH variables
 alias rmr="rm -rf"
 alias ports="lsof -i -P"
@@ -57,6 +57,10 @@ else
     alias pbcopy='xsel --clipboard --input'
     alias pbpaste='xsel --clipboard --output'
 fi
+
+alias xclip="xclip -selection c"
+# alias find="fd"
+# alias grep="rg"
 alias ll='ls -lhAv'
 alias l='ls -CF'
 alias lsnew="ls -rtl"           # list by new
@@ -69,6 +73,13 @@ alias e='$EDITOR'
 alias v='$VISUAL'
 alias h='history'
 alias r=ranger
+
+## get top process eating memory
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+
+## get top process eating cpu ##
+alias pscpu='ps auxf | sort -nr -k 3'
+alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
 
 # Get error messages from journalctl
 alias jctl="journalctl -p 3 -xb"
@@ -83,8 +94,10 @@ alias yom="rm -rf node_modules; yarn"
 # Add simulator to start the iOS simulator
 alias simulator="open -a Simulator"
 
-alias mount_usb="sudo mount /dev/sdb1 /mnt/usb"
-alias umount_usb="sudo umount /mnt/usb"
+alias mnt="udisksctl mount -b"
+alias unmnt="udisksctl unmount -b"
+alias mount_usb="sudo mount /dev/sdb1 /mnt/usb-drive"
+alias umount_usb="sudo umount /mnt/usb-drive"
 alias mount_pi=" sudo mount.cifs //pi/BigDrive /mnt/pi -o user=pi"
 alias umount_pi=" sudo umount /mnt/pi"
 
@@ -112,6 +125,7 @@ alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias watch="watch --color"
 alias reload="exec $SHELL -l" # Reload the shell (i.e. invoke as a login shell)
 alias www="python -m SimpleHTTPServer 8000"
+alias wifi.ls="nmcli d wifi list"
 
 # JavaScriptCore REPL
 jscbin="/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc";
@@ -128,6 +142,18 @@ alias untar="tar -zxvf"
 alias record="asciinema rec /tmp/temp.cast --overwrite && cat /tmp/temp.cast | svg-term > recording.svg"
 
 alias scanner='gscan2pdf > /dev/null'
+
+# Bluetooth Soundcore Liberty Air
+# alias btconnect='bluetoothctl power on && sleep 1 && bluetoothctl connect 98:52:3D:DE:81:7C'
+
+# Bluetooth Soundcore Life P2
+alias btconnect='bluetoothctl power on && sleep 1 && bluetoothctl connect E8:07:BF:A6:4D:CE'
+
+alias usb="ls /dev/sd* | grep sda | fzf | xargs -I {} sudo mount "{}" /mnt/usb-drive"
+# ls /dev/sd* | grep -v sda | rofi -show run dmenu | xargs -I {} sudo mount "{}" ~/mnt/
+
+# Show all logs in /var/log
+alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' ' -f1 | sed -e's/:$//g' | grep -v '[0-9]$' | xargs tail -f"
 
 # ** [ GIT ALIASES ] ******************
 alias gs='git status'
@@ -290,10 +316,12 @@ alias memcached:start="memcached -d"
 alias memcached:stop="memcached stop"
 
 # ** [ TMUX ALIASES ] ******************
-alias tmux="tmux -f ${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf"
+TMUX_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf"
+alias tmx="tmux -u -f $TMUX_CONFIG new"
 alias tmx:l='tmux list-sessions'
-alias tmx:a="tmux attach-session -t ${1}"
+alias tmx:a="tmux -u -f $TMUX_CONFIG attach"
 alias tmx:k="tmux kill-session -t $1"
+alias tmx:e="$EDITOR $TMUX_CONFIG"
 alias mux='TERM=screen-256color tmuxinator'
 
 # ** [ ELASTIC SEARCH ALIASES ] ******************
@@ -319,7 +347,9 @@ alias ipy='ipython'
 #Elm
 alias epi="elm package install"
 
-alias emacs='emacs -nw'
+# Emacs config
+alias emacs='emacsclient --socket-name=term -t --alternate-editor=""'   #default to terminal emacs
+# alias emacs='emacs -nw'
 
 # ** [ KUBECTL SHORTCUTS ] ******************
 alias k='kubectl'
@@ -382,7 +412,8 @@ alias pac:rm='pacman -Rns' # remove package
 alias pac:re='pacman -R'    # remove keep config
 alias pac:cl='pacman -Sc'   # clean package cache
 alias pac:clx='pacman -Scc'   # clean package cache
-alias pac:up='pacman -Syu'   # upgrade
+alias pac:up='pacman -Syuu'   # upgrade
+alias pam:up='pamac upgrade -a'   # upgrade
 alias pac:fd='pacman -Ss'
 alias pac:fltr='pacman -Qs'
 alias sysctl='systemctl'

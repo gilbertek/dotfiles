@@ -39,6 +39,7 @@ set noshowmode                      " Do not show current mode at the bottom
 set autowrite                       " Automatically write a file when leaving a modified buffer
 set history=500                     " Number of things to remember in history.
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+set path=.,,**
 " }}}
 
 " 2. Plugins and configurations: ----------------------  {{{
@@ -125,7 +126,7 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ ]
 let g:coc_snippet_next = '<tab>'
-Plug 'rodrigore/coc-tailwind-intellisense', {'do': 'npm install'}
+" Plug 'rodrigore/coc-tailwind-intellisense', {'do': 'npm install'}
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'Shougo/echodoc.vim'
 let g:echodoc#enable_at_startup = 1
@@ -441,6 +442,8 @@ Plug 'joshdick/onedark.vim'
 Plug 'bluz71/vim-moonfly-colors'
 Plug 'haishanh/night-owl.vim'
 Plug 'hzchirs/vim-material'                             " material color themes
+Plug 'ghifarit53/tokyonight-vim'
+Plug 'tomasr/molokai'
 Plug 'cocopon/iceberg.vim'
 Plug 'chriskempson/base16-vim'
 let base16colorspace=256
@@ -478,11 +481,24 @@ call plug#end()
 
 " 3. UI Tweaks: ------------------------- {{{
 set background=dark
-" colorscheme base16-onedark
+" colorscheme base16-horizon-dark
 " colorscheme moonfly
-colorscheme onedark
-highlight EndOfBuffer ctermfg=black ctermbg=black
-hi EndOfBuffer guifg=#282C34
+
+" colorscheme onedark
+" highlight EndOfBuffer ctermfg=black ctermbg=black
+" hi EndOfBuffer guifg=#282C34
+
+" let g:tokyonight_style = 'night' " available: night, storm
+" let g:tokyonight_enable_italic = 1
+" colorscheme tokyonight
+
+colorscheme uya
+
+" status line colors "
+hi User1 ctermfg=black ctermbg=red guifg=#0F1419 guibg=#FC6A67
+hi User3 ctermfg=black ctermbg=blue guifg=#0F1419 guibg=#FC8F67
+hi User4 ctermfg=black ctermbg=yellow guifg=#0F1419 guibg=#FFD866
+hi User7 ctermfg=black ctermbg=yellow cterm=bold guifg=#0F1419 guibg=#FFD866 gui=bold
 
 " Themeing
 " let g:material_style='oceanic'
@@ -554,8 +570,6 @@ if has("nvim")
   " Toggle Terminal: ----------------------  {{{
   nnoremap <silent><bslash> :48vsplit term://$SHELL<bar>startinsert<CR>
   nnoremap <leader>' :split term://$SHELL<CR>
-  " close terminal buffer without showing the exit status of the shell
-  autocmd TermClose term://* call feedkeys("\<cr>")
   " }}}
 endif
 " }}}
@@ -570,8 +584,8 @@ nnoremap <leader>te :tabedit %<cr>
 " Switch tab
 nnoremap <Tab> :tabnext<CR>
 nnoremap <S-Tab> :tabprev<CR>
-nnoremap <silent> ]t :tabprev<CR>
-nnoremap <silent> [t :tabnext<CR>
+nnoremap <silent> [t :tabprev<CR>
+nnoremap <silent> ]t :tabnext<CR>
 nnoremap <C-Right> :tabnext<CR>
 nnoremap <C-Left> :tabprev<CR>
 
@@ -914,14 +928,18 @@ augroup END
 augroup Terminal
   autocmd!
   " Always enter terminal in insert mode
-  autocmd BufWinEnter,WinEnter,TermOpen term://* startinsert
+  autocmd TermOpen * startinsert
   autocmd TermOpen * setlocal nonumber norelativenumber
-  autocmd FileType python nnoremap <buffer> <cr> :silent w<bar>only<bar>vsp<bar>term ipython -i %<CR>
+
+  " Close terminal buffer without showing the exit status of the shell
+  autocmd TermClose term://* call feedkeys("\<cr>")
+  autocmd FileType java nnoremap <leader>r :silent w<bar>only<bar>:48vsp<bar>term javac %:p;echo "[Compiled]\n";java %:p<CR>
+  autocmd FileType python nnoremap <leader>r :silent w<bar>only<bar>48vsp<bar>term ipython -i %<CR>
 
   " Reload & easy edit Neovim configuration
   autocmd Bufwritepost init.vim source $MYVIMRC
   command! Editrc tabnew $MYVIMRC
-  command! Loadrc source $MYVIMRC | redraw | echo 'Init reloaded' | :PlugInstall<CR>
+  command! Loadrc source $MYVIMRC | redraw | :PlugInstall<CR>
   command! PU PlugClean! | PlugUpdate! | PlugUpgrade | CocUpdate
 augroup END
 
