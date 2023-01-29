@@ -1,4 +1,7 @@
 local elixir = require("elixir")
+local lsp = require("lsp-zero")
+local elixir_opts = lsp.build_options('elixir', {})
+
 local on_attach = require("gilbertek.lsp_handlers").on_attach
 local capabilities = require("gilbertek.lsp_handlers").capabilities
 
@@ -22,6 +25,7 @@ require('lspconfig').elixirls.setup {
         suggestSpecs = false
     }),
 
+    -- on_attach = elixir_opts.attach,
     on_attach = on_attach,
     capabilities = capabilities
 }

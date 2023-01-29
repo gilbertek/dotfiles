@@ -8,6 +8,8 @@ local term_opts = { silent = true }
 -- remap the key used to leave insert mode
 keymap("i", "jk", "<ESC>", default_opts)
 keymap("t", "jk", "<C-\\><C-n>", default_opts)
+-- <leader>jk to clear notifications
+keymap({ "n", "v", "x" }, "jk", ":Dismiss<CR>", default_opts)
 
 -- Use Esc to quit builtin terminal
 -- keymap("t", "<Esc>", [[<c-\><c-n>]])

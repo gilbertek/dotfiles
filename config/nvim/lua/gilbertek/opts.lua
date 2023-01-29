@@ -70,6 +70,13 @@ for _, provider in pairs { "python3", "node", "ruby", "perl" } do
     vim.g[string.format("loaded_%s_provider", provider)] = 0
 end
 
+-- [[ Python support]]
+if vim.fn.has('unix') then
+    vim.g.python3_host_prog = '/usr/bin/python3'
+elseif vim.fn.has('win32') then
+    -- g.python3_host_prog = 'C:/scoop/apps/miniconda3/current/python.exe'
+    -- g.python_host_prog	= 'C:/scoop/apps/miniconda2/current/envs/nvimpy2/python.exe'
+end
 -- if vim.fn.has 'wsl' == 1 then
 --   vim.g.clipboard = {
 --     copy = {

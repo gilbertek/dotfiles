@@ -22,7 +22,7 @@ autocmd({ "TextYankPost" }, {
     -- group = augroup("HighlightYank", { clear = true }),
     group = highlight_group,
     callback = function()
-        vim.highlight.on_yank({ higroup="IncSearch", timeout=500, on_visual=true })
+        vim.highlight.on_yank({ higroup = "IncSearch", timeout = 500, on_visual = true })
 
         -- This is a workaround for clipboard not working in WSL
         -- see https://github.com/neovim/neovim/issues/19204#issuecomment-1173722375
@@ -101,28 +101,28 @@ autocmd({ "FocusGained", "CursorHold" }, {
 
 -- enable spellcheck when opening specific file types
 autocmd("FileType", {
-	pattern = "markdown,tex,latex",
-	callback = function()
-		vim.o.spell = true
-	end,
+    pattern = "markdown,tex,latex",
+    callback = function()
+        vim.o.spell = true
+    end,
 })
 
 -- save buffer when changing focus
 autocmd("FocusLost,BufLeave", {
-	pattern = "*",
-	callback = function()
-		if vim.bo.modified then
-			vim.cmd("silent! update")
-		end
-	end,
+    pattern = "*",
+    callback = function()
+        if vim.bo.modified then
+            vim.cmd("silent! update")
+        end
+    end,
 })
 
 autocmd({ "TermOpen" }, {
-  pattern = "*",
-	callback = function()
-		-- TODO is there a lua native way to do this?
-		vim.cmd("setlocal nonumber norelativenumber scrolloff=0")
-	end,
+    pattern = "*",
+    callback = function()
+        -- TODO is there a lua native way to do this?
+        vim.cmd("setlocal nonumber norelativenumber scrolloff=0")
+    end,
 })
 
 autocmd({ "InsertEnter" }, { command = "set norelativenumber", pattern = "*" })
@@ -130,8 +130,8 @@ autocmd({ "InsertLeave" }, { command = "set relativenumber", pattern = "*" })
 
 -- Copy filename path
 command("CopyPath", function()
-	vim.fn.setreg("*", vim.fn.expand("%"))
-end, {desc = "Copy filename path"})
+    vim.fn.setreg("*", vim.fn.expand("%"))
+end, { desc = "Copy filename path" })
 
 -- json
 command("JsonDecodeFormat", "%!jq -r | jq", { desc = "Format json file" })
@@ -140,10 +140,24 @@ command("JsonDecodeFormat", "%!jq -r | jq", { desc = "Format json file" })
 -- https://vonheikemen.github.io/devlog/es/tools/configuring-neovim-using-lua/
 -- vim.keymap.set("n", "<F1>", 'yW:lua require"utils".wat(x18")<CR>') -- explore settings with F1
 function Wat(key)
-	print(vim.inspect(key))
+    print(vim.inspect(key))
+end
+
+-- Generate a UUID and insert it into the buffer
+function InsertUUID()
+    local uuid = vim.fn.system('uuidgen'):gsub('\n', ''):lower()
+    local line = vim.fn.getline('.')
+    vim.schedule(function()
+        vim.fn.setline('.', vim.fn.strpart(line, 0, vim.fn.col('.')) .. uuid .. vim.fn.strpart(line, vim.fn.col('.')))
+    end)
 end
 
 -- [[ Plugins settings ]]
+-- Nvim-notify
+function Dismiss()
+    require("notify").dismiss({ pending = true, silent = true })
+end
+
 -- Emmet
 g.user_emmet_mode       = 'a' -- Enable all function in all mode.
 g.user_emmet_leader_key = ',' -- Using ,, to expand
