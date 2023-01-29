@@ -9,6 +9,7 @@ config/msmtp/config
 config/isync/mbsyncrc
 config/calcurse/caldav/config
 config/wakatime/wakatime.cfg
+config/nvim/plugin
 config/nvim/plugged
 config/nvim/autoload
 config/nvim/undo
