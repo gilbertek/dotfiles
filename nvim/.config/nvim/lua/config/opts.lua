@@ -1,0 +1,50 @@
+local opt = vim.opt
+
+-- Set Neovim to use the system clipboard
+opt.clipboard = "unnamedplus"
+
+-- Some execution-related settings
+opt.modelines = 0
+opt.maxmempattern = 2500
+-- Line number settings
+opt.number = true
+opt.relativenumber = true
+
+-- Set cursor line settings
+opt.wrap = true
+opt.cursorline = true
+opt.breakindent = true
+opt.linebreak = true
+
+-- Always show the sign column
+opt.signcolumn = "yes"
+
+-- Add a color column at 80 characters
+opt.colorcolumn = "80"
+-- Always show 8 lines of "context" above and below the cursor
+opt.scrolloff = 8
+
+-- Configure tab settings
+opt.tabstop = 4
+opt.softtabstop = 4
+opt.shiftwidth = 4
+opt.expandtab = true
+opt.shiftround = true
+
+-- Setup smarter search settings
+opt.ignorecase = true
+opt.smartcase = true
+opt.hlsearch = false
+
+-- Use global statusline
+opt.laststatus = 3
+
+-- Redraw the screen less during computationally intensive tasks
+opt.lazyredraw = true
+
+-- Force vertical splits to always open on the right
+opt.splitright = true
+opt.completeopt = { "menu", "menuone", "noselect" }
+
+-- Set title for tabbed environments
+opt.title = true
