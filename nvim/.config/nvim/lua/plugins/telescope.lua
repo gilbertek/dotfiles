@@ -6,11 +6,11 @@ return {
     lazy = false,
     dependencies = { 'nvim-lua/plenary.nvim' },
     keys = {
-      { "<leader>ff", function() require("telescope.builtin").find_files() end,          desc = "Telescope find files" },
-      { "<leader>fg", function() require("telescope.builtin").live_grep() end,           desc = "Telescope live grep" },
-      { "<leader>fb", function() require("telescope.builtin").buffers() end,             desc = "Telescope buffers" },
-      { "<leader>fh", function() require("telescope.builtin").help_tags() end,           desc = "Telescope help tags" },
-      { "<leader>ft", function() require("telescope.builtin").git_files() end,           desc = "Telescope git files" },
+      { "<leader>sf", function() require("telescope.builtin").find_files() end,          desc = "Telescope find files" },
+      { "<leader>sg", function() require("telescope.builtin").live_grep() end,           desc = "Telescope live grep" },
+      { "<leader>sb", function() require("telescope.builtin").buffers() end,             desc = "Telescope buffers" },
+      { "<leader>sh", function() require("telescope.builtin").help_tags() end,           desc = "Telescope help tags" },
+      { "<leader>st", function() require("telescope.builtin").git_files() end,           desc = "Telescope git files" },
       { "<leader>gd", "<cmd>Telescope lsp_definitions<CR>",                              desc = "LSP definitions" },
       { "<leader>gr", "<cmd>Telescope lsp_references<CR>",                               desc = "LSP references" },
       { "<leader>gi", function() require("telescope.builtin").lsp_implementations() end, desc = "LSP implementations" },
@@ -28,5 +28,16 @@ return {
         desc = "Telescope find all files"
       },
     },
+  },
+
+{
+    'MagicDuck/grug-far.nvim',
+    config = function()
+      require('grug-far').setup({
+        -- options, see Configuration section below
+        -- there are no required options atm
+        -- engine = 'ripgrep' is default, but 'astgrep' can be specified
+      })
+    end,
   },
 }

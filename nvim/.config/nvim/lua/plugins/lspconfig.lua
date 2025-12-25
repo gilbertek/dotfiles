@@ -3,8 +3,20 @@ return {
    {
       'neovim/nvim-lspconfig',
       dependencies = {
+{
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+          library = {
+            -- See the configuration section for more details
+            -- Load luvit types when the `vim.uv` word is found
+            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+          },
+        },
+      },
       },
       config = function()
+local opts = { noremap = true, silent = true, buffer = bufnr }
          -- https://github.com/neovim/nvim-lspconfig#Keybindings-and-completion
          -- rounded borders for floating stuff
          local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
@@ -18,23 +30,32 @@ return {
          -- after the language server attaches to the current buffer
          local on_attach = function()
             vim.lsp.inlay_hint.enable(true)
-            vim.api.nvim_buf_set_option(0, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+-- Format the current buffer on save
+        if client.supports_method("textDocument/formatting") then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            group = vim.api.nvim_create_augroup("Format", { clear = true }),
+            buffer = bufnr,
+            callback = function() vim.lsp.buf.format({ bufnr = bufnr, id = client.id }) end,
+          })
+        end
+
             vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = 0 })
             vim.keymap.set({"n", "v"}, '<leader>ca', vim.lsp.buf.code_action, { buffer = 0 })
             vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = 0 })
             vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format, { buffer = 0 })
             vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
-            vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { buffer = 0 })
+            vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { buffer = 0 })
             vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = 0 })
-            vim.keymap.set('n', 'gR', vim.lsp.buf.references, { buffer = 0 })
+            vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = 0 })
             vim.keymap.set('n', "<leader>li",
             function()
                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-            end
+            end, opts)
             vim.keymap.set("i", "<C-h>", function() 
                 vim.lsp.buf.signature_help()
-            end, {})
-         )
+            end, opts)
+        end
 
          -- Levels by name: "TRACE" (0), "DEBUG", "INFO", "WARN", "ERROR", "OFF" (5)
          vim.lsp.set_log_level(4)
@@ -42,7 +63,6 @@ return {
          -- Add borders to :LspInfo floating window
          -- https://neovim.discourse.group/t/lspinfo-window-border/1566/2
          require('lspconfig.ui.windows').default_options.border = 'rounded'
-      end
   end
 }
 
