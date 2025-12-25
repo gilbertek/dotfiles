@@ -89,3 +89,30 @@ map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 map("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
 
 
+-- close window
+map('n', '<leader>c', ':close<cr>', {silent = true})
+
+-- rewrite entire document
+map('n', 'cA', 'ggcG')
+
+-- redo
+map('n', 'U', '<C-r>')
+
+-- toggle spelling
+map('n', '<leader>d', ':set spell!<cr>')
+
+-- conjure: evaluations
+map('n', '<leader>e', ':%ConjureEval<cr>')
+-- map('n', '<leader>f', ':ConjureEvalCurrentForm<cr>')
+
+-- clojure: (1) Creates conjure log in right-hand window (2) launches REPL in new tab
+map('n', '<leader>CL', ':ConjureLogVSplit<cr><C-w>L:tabnew<cr>:term<cr>ibash ~/.clojure/startserver.sh<Enter><C-\\><C-n>:tabprevious<cr><C-w>h')
+
+-- get rid of weird location list error
+map('n', '<esc>', '<nop>')
+
+-- 'Q' is some macro playback key. I don't use this.
+map('n', 'Q', '<Nop>')
+
+-- place semicolon at end of current line
+map('n', '<leader>;', 'mY:s/$/;<cr>:noh<cr>`Y', {silent = true})

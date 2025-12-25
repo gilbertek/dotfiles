@@ -3,6 +3,7 @@
 # Install dotfiles symlinks.
 set -e
 
+REPO_URL="https://github.com/gilbertek/dotfiles"
 DOTFILES="$HOME/dotfiles"
 
 msg() {
