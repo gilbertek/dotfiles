@@ -34,6 +34,7 @@ map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
+map('n', '<leader>x', ':bdelete<cr>', {silent = true})
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
@@ -80,7 +81,6 @@ map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
 map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
 map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
-
 -- quit
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit All" })
 map("i", "jk", "<Esc>")
@@ -89,7 +89,6 @@ map("i", "jk", "<Esc>")
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 map("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
-
 
 -- close window
 map('n', '<leader>c', ':close<cr>', {silent = true})
@@ -117,4 +116,38 @@ map('n', '<esc>', '<nop>')
 map('n', 'Q', '<Nop>')
 
 -- place semicolon at end of current line
-map('n', '<leader>;', 'mY:s/$/;<cr>:noh<cr>`Y', {silent = true})
+map('n', '<leader>;', 'mY:s/$/;<cr>:noh<cr>`Y', default_opts)
+
+-- override delete in the void register 
+map('n', 'd', '"_d', default_opts)
+
+-- override copy to system clipboard register
+map('n', 'y', '"+y', default_opts)
+
+-- select all
+map("n", "<C-a>", "ggVG", { desc = "select all", noremap = true, silent = true })
+
+-- cut to system clipboard (normal mode)
+map("n", "<C-x>", '"+d', { desc = "cut to system clipboard", noremap = true, silent = true })
+
+-- copy to system clipboard (normal mode)
+map("n", "<C-c>", '"+y', { desc = "copy to system clipboard", noremap = true, silent = true })
+
+-- paste from system clipboard (normal mode)
+map("n", "<C-v>", '"+p', { desc = "paste from system clipboard", noremap = true, silent = true })
+
+-- cut to system clipboard (visual mode)
+map("x", "<C-x>", '"+d', { desc = "cut to system clipboard", noremap = true, silent = true })
+
+-- copy to system clipboard (visual mode)
+map("x", "<C-c>", '"+y', { desc = "copy to system clipboard", noremap = true, silent = true })
+
+-- paste from system clipboard (visual mode)
+map("v", "<C-v>", '"+p', { desc = "paste from system clipboard", noremap = true, silent = true })
+
+-- copy the whole paragraph to sys clipboard
+vim.api.nvim_set_keymap('n', 'yap', '"+yap', { noremap = true, silent = true })
+
+-- paste from system clipboard (insert mode)
+map("i", "<C-v>", '<Esc>"+pa', { desc = "paste from system clipboard", noremap = true, silent = true })
+

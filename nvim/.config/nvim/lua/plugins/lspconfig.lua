@@ -15,7 +15,7 @@ return {
         },
       },
       },
-      config = function()
+      config = function(bufnr)
 local opts = { noremap = true, silent = true, buffer = bufnr }
          -- https://github.com/neovim/nvim-lspconfig#Keybindings-and-completion
          -- rounded borders for floating stuff
@@ -40,19 +40,25 @@ local opts = { noremap = true, silent = true, buffer = bufnr }
           })
         end
 
-            vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = 0 })
-            vim.keymap.set({"n", "v"}, '<leader>ca', vim.lsp.buf.code_action, { buffer = 0 })
-            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = 0 })
-            vim.keymap.set('n', '<leader>lf', vim.lsp.buf.format, { buffer = 0 })
-            vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = 0 })
-            vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { buffer = 0 })
-            vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = 0 })
-            vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = 0 })
-            vim.keymap.set('n', "<leader>li",
+        -- We create a function that lets us more easily define mappings specific
+        -- for LSP related items. It sets the mode, buffer and description for us each time.
+        local map = function(keys, func, desc)
+          vim.keymap.set("n", keys, func, { buffer = bufnr.buf, desc = "LSP: " .. desc })
+        end
+
+            map('n', 'gD', vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+            map({"n", "v"}, '<leader>ca', vim.lsp.buf.code_action, "[C]ode [A]ction")
+            map('n', 'gd', vim.lsp.buf.definition, "[G]oto [D]efinition")
+            map('n', '<leader>lf', vim.lsp.buf.format, "[L]SP [F]ormat")
+            map('n', 'K', vim.lsp.buf.hover, "Hover Documentation")
+            map('n', 'gl', vim.diagnostic.open_float, { buffer = 0 })
+            map('n', '<leader>rn', vim.lsp.buf.rename, "[R]ename")
+            map('n', 'gr', vim.lsp.buf.references, "[G]oto [R]eferences")
+            map('n', "<leader>li",
             function()
                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
             end, opts)
-            vim.keymap.set("i", "<C-h>", function() 
+            map("i", "<C-h>", function() 
                 vim.lsp.buf.signature_help()
             end, opts)
         end

@@ -9,13 +9,12 @@ return {
 		"saadparwaiz1/cmp_luasnip", -- for autocompletion
 		"rafamadriz/friendly-snippets", -- useful snippets
 		"onsails/lspkind.nvim", -- vs-code like pictograms
+"hrsh7th/cmp-nvim-lsp-signature-help", -- LSP signature help source
 	},
 
 	config = function()
 		local cmp = require("cmp")
-
 		local luasnip = require("luasnip")
-
 		local lspkind = require("lspkind")
 
 		-- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
@@ -62,5 +61,20 @@ return {
 				}),
 			},
 		})
+ -- Use buffer source for `/` in command mode
+            cmp.setup.cmdline('/', {
+                sources = {
+                    { name = 'buffer' }
+                }
+            })
+
+            -- Use cmdline & path source for `:` in command mode
+            cmp.setup.cmdline(':', {
+                sources = cmp.config.sources({
+                    { name = 'path' }
+                }, {
+                    { name = 'cmdline' }
+                })
+            })
 	end,
 }
