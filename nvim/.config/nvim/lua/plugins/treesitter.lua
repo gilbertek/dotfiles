@@ -5,39 +5,35 @@ return {
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
     config = function()
-      require("nvim-treesitter").setup {
-        -- Uma lista de nomes de parsers para manter instalados ou "all"
+      require("nvim-treesitter").setup({
         ensure_installed = {
-          "lua", "vim", "vimdoc", "python", "javascript", "typescript",
-          "html", "css", "json", "bash", "markdown", "markdown_inline",
-          "java", "c", "cpp",
+          "lua",
+          "vim",
+          "vimdoc",
+          "python",
+          "javascript",
+          "typescript",
+          "html",
+          "css",
+          "json",
+          "bash",
+          "markdown",
+          "markdown_inline",
+          "java",
+          "c",
+          "cpp",
         },
-        
-        -- Instalar parsers de forma síncrona (aplica-se apenas a `ensure_installed`)
+
         sync_install = false,
-        
-        -- Instalação automática de parsers em tempo real
         auto_install = true,
-        
-        -- Lista de parsers para ignorar instalar (para "all")
-        ignore_install = {},
-        
+
         highlight = {
           enable = true,
-          
-          -- Desabilitar para arquivos grandes
-          disable = function(_, _)
-            return false
-          end,
-          
-          -- Definir isso como true vai rodar `:h syntax` e tree-sitter ao mesmo tempo
           additional_vim_regex_highlighting = false,
         },
-        
-        -- Indent com Tree-sitter
+
         indent = { enable = true },
-        
-        -- Incrementar seleção com Tree-sitter
+
         incremental_selection = {
           enable = true,
           keymaps = {
@@ -47,41 +43,40 @@ return {
             node_decremental = "<BS>",
           },
         },
+      })
+    end,
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("treesitter-context").setup({
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = false,
+          multiline_threshold = 1,
+        },
+      })
+    end,
+  },
+  {
+    "https://gitlab.com/HiPhish/rainbow-delimiters.nvim",
+    config = function()
+      local rainbow_delimiters = require("rainbow-delimiters")
+
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [""] = rainbow_delimiters.strategy["global"],
+          vim = rainbow_delimiters.strategy["local"],
+        },
+        query = {
+          [""] = "rainbow-delimiters",
+        },
+        -- highlight = rainbow_highlight_names,
       }
     end,
   },
-  
-{
-  'nvim-treesitter/nvim-treesitter-context',
-  dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-  },
-  config = function()
-    require('treesitter-context').setup {
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-        multiline_threshold = 1
-      },
-    }
-  end,
-},
- {
-  'https://gitlab.com/HiPhish/rainbow-delimiters.nvim',
-  config = function()
-    local rainbow_delimiters = require('rainbow-delimiters')
-
-    vim.g.rainbow_delimiters = {
-      strategy = {
-        [''] = rainbow_delimiters.strategy['global'],
-        vim = rainbow_delimiters.strategy['local'],
-      },
-      query = {
-        [''] = 'rainbow-delimiters',
-      },
-      -- highlight = rainbow_highlight_names,
-    }
-  end,
-},
- }
-
+}

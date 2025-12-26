@@ -1,44 +1,58 @@
 return {
   {
-    'mfussenegger/nvim-lint',
+    "mfussenegger/nvim-lint",
     config = function()
-      require('lint').linters_by_ft = {
-        cpp = { 'cpplint' },
-        c = { 'cpplint' },
+      require("lint").linters_by_ft = {
+        cpp = { "cpplint" },
+        c = { "cpplint" },
       }
-      vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
-        callback = function() require('lint').try_lint() end,
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = function()
+          require("lint").try_lint()
+        end,
       })
     end,
   },
--- does not work... kept as a record
-{
-  url = "https://gitlab.com/schrieveslaach/sonarlint.nvim",
-  enable = false,
-  ft = { "java" },
-  dependencies = {
-    "mfussenegger/nvim-jdtls",
-  },
-  config = function()
-    local mason_path = os.getenv("MASON")
-    local mason_bin_path = mason_path .. "/bin"
-    require("sonarlint").setup({
-      server = {
-        cmd = {
-          mason_bin_path .. "/sonarlint-language-server",
-          "-stdio",
-          "-analyzers",
-          -- vim.fn.expand(mason_path .. "/share/sonarlint-analyzers/sonarpython.jar"),
-          -- vim.fn.expand(mason_path .. "/share/sonarlint-analyzers/sonarcfamily.jar"),
-          vim.fn.expand(mason_path .. "/share/sonarlint-analyzers/sonarjava.jar"),
+
+  {
+    "https://gitlab.com/schrieveslaach/sonarlint.nvim",
+    ft = { "java", "python", "cpp", "typescript", "typescriptreact", "html" },
+    dependencies = { "mfussenegger/nvim-jdtls" },
+    opts = {
+      handlers = {},
+    },
+    config = function()
+      require("sonarlint").setup({
+        server = {
+          -- root_dir = require("jdtls.setup").find_root({ "gradlew", ".git", "pom.xml", "mvnw" }),
+          -- autostart = true,
+          cmd = {
+            "sonarlint-language-server",
+            -- Ensure that sonarlint-language-server uses stdio channel
+            "-stdio",
+            "-analyzers",
+            -- paths to the analyzers you need, using those for python and java in this example
+            vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarpython.jar"),
+            vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarcfamily.jar"),
+            vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjava.jar"),
+            vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjs.jar"),
+            vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarhtml.jar"),
+          },
+          settings = {
+            sonarlint = {
+              pathToCompileCommands = vim.fn.getcwd() .. "/compile_commands.json",
+            },
+          },
         },
-      },
-      filetypes = {
-        -- "python",
-        -- "cpp",
-        "java",
-      },
-    })
-  end,
-}
+        filetypes = {
+          -- Tested and working
+          "python",
+          "cpp",
+          "java",
+          "typescript",
+          "html",
+        },
+      })
+    end,
+  },
 }

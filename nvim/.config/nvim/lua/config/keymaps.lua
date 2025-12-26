@@ -34,7 +34,7 @@ map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
 map("n", "<leader>`", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
-map('n', '<leader>x', ':bdelete<cr>', {silent = true})
+map("n", "<leader>x", ":bdelete<cr>", { silent = true })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
@@ -91,38 +91,42 @@ map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 map("n", "<leader>wd", "<C-W>c", { desc = "Delete Window", remap = true })
 
 -- close window
-map('n', '<leader>c', ':close<cr>', {silent = true})
+map("n", "<leader>c", ":close<cr>", { silent = true })
 
 -- rewrite entire document
-map('n', 'cA', 'ggcG')
+map("n", "cA", "ggcG")
 
 -- redo
-map('n', 'U', '<C-r>')
+map("n", "U", "<C-r>")
 
 -- toggle spelling
-map('n', '<leader>d', ':set spell!<cr>')
+map("n", "<leader>d", ":set spell!<cr>")
 
 -- conjure: evaluations
-map('n', '<leader>e', ':%ConjureEval<cr>')
+map("n", "<leader>e", ":%ConjureEval<cr>")
 -- map('n', '<leader>f', ':ConjureEvalCurrentForm<cr>')
 
 -- clojure: (1) Creates conjure log in right-hand window (2) launches REPL in new tab
-map('n', '<leader>CL', ':ConjureLogVSplit<cr><C-w>L:tabnew<cr>:term<cr>ibash ~/.clojure/startserver.sh<Enter><C-\\><C-n>:tabprevious<cr><C-w>h')
+map(
+  "n",
+  "<leader>CL",
+  ":ConjureLogVSplit<cr><C-w>L:tabnew<cr>:term<cr>ibash ~/.clojure/startserver.sh<Enter><C-\\><C-n>:tabprevious<cr><C-w>h"
+)
 
 -- get rid of weird location list error
-map('n', '<esc>', '<nop>')
+map("n", "<esc>", "<nop>")
 
 -- 'Q' is some macro playback key. I don't use this.
-map('n', 'Q', '<Nop>')
+map("n", "Q", "<Nop>")
 
 -- place semicolon at end of current line
-map('n', '<leader>;', 'mY:s/$/;<cr>:noh<cr>`Y', default_opts)
+map("n", "<leader>;", "mY:s/$/;<cr>:noh<cr>`Y", default_opts)
 
--- override delete in the void register 
-map('n', 'd', '"_d', default_opts)
+-- override delete in the void register
+map("n", "d", '"_d', default_opts)
 
 -- override copy to system clipboard register
-map('n', 'y', '"+y', default_opts)
+map("n", "y", '"+y', default_opts)
 
 -- select all
 map("n", "<C-a>", "ggVG", { desc = "select all", noremap = true, silent = true })
@@ -146,8 +150,7 @@ map("x", "<C-c>", '"+y', { desc = "copy to system clipboard", noremap = true, si
 map("v", "<C-v>", '"+p', { desc = "paste from system clipboard", noremap = true, silent = true })
 
 -- copy the whole paragraph to sys clipboard
-vim.api.nvim_set_keymap('n', 'yap', '"+yap', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "yap", '"+yap', { noremap = true, silent = true })
 
 -- paste from system clipboard (insert mode)
 map("i", "<C-v>", '<Esc>"+pa', { desc = "paste from system clipboard", noremap = true, silent = true })
-
