@@ -9,14 +9,17 @@ return {
     },
   },
 
-  { "mason-org/mason-lspconfig.nvim" },
   {
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    "mason-org/mason-lspconfig.nvim",
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+      "neovim/nvim-lspconfig",
+    },
     config = function()
-      require("mason-tool-installer").setup({
-
+      require("mason-lspconfig").setup({
         ensure_installed = {
-          -- LSP servers
+          "lua_ls",
+          "rust_analyzer",
           "lua_ls",
           -- "gopls",
           -- "glsl_analyzer",
@@ -25,14 +28,23 @@ return {
           "html",
           -- "tsserver",
           -- "ts_ls",
-          -- "bashls",
+          "bashls",
           "jsonls",
           -- "pyright",
-          -- "rust_analyzer",
           -- "emmet_ls", -- seem to automatically start for some reason
           "yamlls",
           "angularls",
           -- "intelephense"
+        },
+        automatic_enable = true,
+      })
+    end,
+  },
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    config = function()
+      require("mason-tool-installer").setup({
+        ensure_installed = {
           -- linter
           "clang-format",
           -- "golangci-lint",
@@ -43,7 +55,7 @@ return {
           -- "goimports-reviser",
           -- "golines",
 
-          "bash-language-server",
+          -- "sonarlint-language-server",
           "google-java-format",
           "stylua",
           "shellcheck",
@@ -51,7 +63,6 @@ return {
           "java-test",
           "java-debug-adapter",
           "markdown-toc",
-          "sonarlint-language-server",
         },
         -- if set to true this will check each tool for updates. If updates
         -- are available the tool will be updated. This setting does not
