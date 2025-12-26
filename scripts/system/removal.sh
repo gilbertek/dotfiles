@@ -12,7 +12,7 @@ PKG_LIST=(1password-beta 1password-cli signal-desktop)
 
 for app in "${APP_LIST[@]}"; do
     echo "Removing $app" app
-    omarchi-webapp-remove "$app"
+    # omarchi-webapp-remove "$app"
 done
 
 for pkg in "${PKG_LIST[@]}"; do

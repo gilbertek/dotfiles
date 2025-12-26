@@ -18,6 +18,7 @@ return {
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = {
+          "clang",
           "lua_ls",
           "rust_analyzer",
           "lua_ls",
@@ -34,6 +35,7 @@ return {
           -- "emmet_ls", -- seem to automatically start for some reason
           "yamlls",
           "angularls",
+          "vtsls",
           -- "intelephense"
         },
         automatic_enable = true,

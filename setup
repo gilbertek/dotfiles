@@ -27,6 +27,9 @@ bkp() {
     fi
 }
 
+# Make sure we run the script from the $HOME directory
+cd ~
+
 # Check if the repository already exists
 if [[ -d "${REPO_NAME}" ]]; then
     echo "Repository ${REPO_NAME}already exists. Skipping clone..."
