@@ -1,20 +1,29 @@
 return {
   {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
+    'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
     config = function()
-      require("lualine").setup()
+      require('lualine').setup({
+        options = {
+          icons_enabled = true,
+          theme = 'nord', -- Set theme based on environment variable
+          -- Some useful glyphs:
+          -- https://www.nerdfonts.com/cheat-sheet
+          --        
+          section_separators = { left = '', right = '' },
+          component_separators = { left = '', right = '' },
+          disabled_filetypes = { 'alpha', 'neo-tree' },
+          always_divide_middle = true,
+        },
+      })
     end,
   },
   {
-    "kyazdani42/nvim-web-devicons",
+    'kyazdani42/nvim-web-devicons',
     lazy = true,
   },
-  -- {
-  --   "nvim-tree/nvim-tree.lua",
-  --   cmd = { "NvimTreeToggle", "NvimTreeFindFile" },
-  --   config = function()
-  --     require("nvim-tree").setup()
-  --   end,
-  -- },
+  {
+    -- Hints keybinds
+    'folke/which-key.nvim',
+  },
 }

@@ -1,77 +1,75 @@
 return {
   {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      { "hrsh7th/cmp-nvim-lsp" },
-      {
-        "folke/lazydev.nvim",
-        ft = "lua", -- only load on lua files
-        opts = {
-          library = {
-            -- See the configuration section for more details
-            -- Load luvit types when the `vim.uv` word is found
-            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-          },
-        },
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
       },
     },
-    config = function(bufnr)
-      local opts = { noremap = true, silent = true, buffer = bufnr }
-      -- https://github.com/neovim/nvim-lspconfig#Keybindings-and-completion
-      -- rounded borders for floating stuff
-      local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-      function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-        opts = opts or {}
-        opts.border = "rounded"
-        return orig_util_open_floating_preview(contents, syntax, opts, ...)
-      end
+  },
+  {
+    -- Main LSP Configuration
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      { "j-hui/fidget.nvim", opts = {} },
+      { "hrsh7th/cmp-nvim-lsp" },
+    },
+    config = function()
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+        callback = function(event)
+          local map = function(keys, func, desc, mode)
+            mode = mode or "n"
+            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+          end
 
-      -- Use an on_attach function to only map the following keys
-      -- after the language server attaches to the current buffer
-      local on_attach = function(buffer)
-        print(buffer)
-        vim.lsp.inlay_hint.enable(true)
+          map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+          map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+          map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+          map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+          map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+          map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+          map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+          map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+          map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-        -- Format the current buffer on save
-        if buffer.client.supports_method("textDocument/formatting") then
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            group = vim.api.nvim_create_augroup("Format", { clear = true }),
-            buffer = bufnr,
-            callback = function()
-              vim.lsp.buf.format({ bufnr = bufnr, id = client.id })
-            end,
-          })
-        end
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client and client.supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+            local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+              buffer = event.buf,
+              group = highlight_augroup,
+              callback = vim.lsp.buf.document_highlight,
+            })
 
-        -- We create a function that lets us more easily define mappings specific
-        -- for LSP related items. It sets the mode, buffer and description for us each time.
-        local map = function(keys, func, desc)
-          vim.keymap.set("n", keys, func, { buffer = bufnr.buf, desc = "LSP: " .. desc })
-        end
+            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+              buffer = event.buf,
+              group = highlight_augroup,
+              callback = vim.lsp.buf.clear_references,
+            })
 
-        map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-        map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-        map("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-        map("<leader>lf", vim.lsp.buf.format, "[L]SP [F]ormat")
-        map("K", vim.lsp.buf.hover, "Hover Documentation")
-        map("gl", vim.diagnostic.open_float, { buffer = 0 })
-        map("<leader>rn", vim.lsp.buf.rename, "[R]ename")
-        map("gr", vim.lsp.buf.references, "[G]oto [R]eferences")
-        map("<leader>li", function()
-          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-        end, opts)
-        vim.keymap.set("i", "<C-h>", function()
-          vim.lsp.buf.signature_help()
-        end, opts)
-      end
+            vim.api.nvim_create_autocmd("LspDetach", {
+              group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+              callback = function(event2)
+                vim.lsp.buf.clear_references()
+                vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+              end,
+            })
+          end
 
-      -- Add borders to :LspInfo floating window
-      -- https://neovim.discourse.group/t/lspinfo-window-border/1566/2
-      require("lspconfig.ui.windows").default_options.border = "rounded"
+          if client and client.supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint) then
+            map("<leader>th", function()
+              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+            end, "[T]oggle Inlay [H]ints")
+          end
+        end,
+      })
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-      -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       vim.lsp.config("*", {
         capabilities = capabilities,

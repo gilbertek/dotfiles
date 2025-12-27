@@ -10,6 +10,18 @@ return {
     "rafamadriz/friendly-snippets", -- useful snippets
     "onsails/lspkind.nvim", -- vs-code like pictograms
     "hrsh7th/cmp-nvim-lsp-signature-help", -- LSP signature help source
+    {
+      "L3MON4D3/LuaSnip",
+      build = (function()
+        -- Build Step is needed for regex support in snippets.
+        -- This step is not supported in many windows environments.
+        -- Remove the below condition to re-enable on windows.
+        if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+          return
+        end
+        return "make install_jsregexp"
+      end)(),
+    },
   },
 
   config = function()
@@ -48,6 +60,11 @@ return {
       }),
       -- sources for autocompletion
       sources = cmp.config.sources({
+        {
+          name = "lazydev",
+          -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
+          group_index = 0,
+        },
         { name = "nvim_lsp" },
         { name = "luasnip" }, -- snippets
         { name = "buffer" }, -- text within current buffer
