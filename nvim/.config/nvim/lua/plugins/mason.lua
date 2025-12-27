@@ -13,12 +13,14 @@ return {
     "mason-org/mason-lspconfig.nvim",
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },
-      "neovim/nvim-lspconfig",
+      { "neovim/nvim-lspconfig" },
     },
     config = function()
+      require("mason").setup()
       require("mason-lspconfig").setup({
         ensure_installed = {
           "clangd",
+          "basedpyright",
           "lua_ls",
           "rust_analyzer",
           "lua_ls",
@@ -31,7 +33,6 @@ return {
           -- "ts_ls",
           "bashls",
           "jsonls",
-          -- "pyright",
           -- "emmet_ls", -- seem to automatically start for some reason
           "yamlls",
           "angularls",
