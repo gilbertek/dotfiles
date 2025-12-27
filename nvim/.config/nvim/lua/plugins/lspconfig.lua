@@ -1,8 +1,8 @@
 return {
-
   {
     "neovim/nvim-lspconfig",
     dependencies = {
+      { "hrsh7th/cmp-nvim-lsp" },
       {
         "folke/lazydev.nvim",
         ft = "lua", -- only load on lua files
@@ -28,11 +28,12 @@ return {
 
       -- Use an on_attach function to only map the following keys
       -- after the language server attaches to the current buffer
-      local on_attach = function()
+      local on_attach = function(buffer)
+        print(buffer)
         vim.lsp.inlay_hint.enable(true)
 
         -- Format the current buffer on save
-        if client.supports_method("textDocument/formatting") then
+        if buffer.client.supports_method("textDocument/formatting") then
           vim.api.nvim_create_autocmd("BufWritePre", {
             group = vim.api.nvim_create_augroup("Format", { clear = true }),
             buffer = bufnr,
@@ -48,28 +49,33 @@ return {
           vim.keymap.set("n", keys, func, { buffer = bufnr.buf, desc = "LSP: " .. desc })
         end
 
-        map("n", "gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-        map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-        map("n", "gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-        map("n", "<leader>lf", vim.lsp.buf.format, "[L]SP [F]ormat")
-        map("n", "K", vim.lsp.buf.hover, "Hover Documentation")
-        map("n", "gl", vim.diagnostic.open_float, { buffer = 0 })
-        map("n", "<leader>rn", vim.lsp.buf.rename, "[R]ename")
-        map("n", "gr", vim.lsp.buf.references, "[G]oto [R]eferences")
-        map("n", "<leader>li", function()
+        map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+        map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+        map("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
+        map("<leader>lf", vim.lsp.buf.format, "[L]SP [F]ormat")
+        map("K", vim.lsp.buf.hover, "Hover Documentation")
+        map("gl", vim.diagnostic.open_float, { buffer = 0 })
+        map("<leader>rn", vim.lsp.buf.rename, "[R]ename")
+        map("gr", vim.lsp.buf.references, "[G]oto [R]eferences")
+        map("<leader>li", function()
           vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
         end, opts)
-        map("i", "<C-h>", function()
+        vim.keymap.set("i", "<C-h>", function()
           vim.lsp.buf.signature_help()
         end, opts)
       end
 
-      -- Levels by name: "TRACE" (0), "DEBUG", "INFO", "WARN", "ERROR", "OFF" (5)
-      vim.lsp.set_log_level(4)
-
       -- Add borders to :LspInfo floating window
       -- https://neovim.discourse.group/t/lspinfo-window-border/1566/2
       require("lspconfig.ui.windows").default_options.border = "rounded"
+
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+      -- local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      vim.lsp.config("*", {
+        capabilities = capabilities,
+      })
     end,
   },
 }

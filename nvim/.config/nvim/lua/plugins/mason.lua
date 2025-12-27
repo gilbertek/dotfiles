@@ -18,7 +18,7 @@ return {
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = {
-          "clang",
+          "clangd",
           "lua_ls",
           "rust_analyzer",
           "lua_ls",
@@ -37,6 +37,8 @@ return {
           "angularls",
           "vtsls",
           -- "intelephense"
+          "ruff",
+          "zls",
         },
         automatic_enable = true,
       })
