@@ -1,57 +1,58 @@
 return {
   {
-    "mason-org/mason.nvim",
+    'mason-org/mason.nvim',
     opts = {
       registries = {
-        "github:mason-org/mason-registry",
-        "github:Crashdummyy/mason-registry",
+        'github:mason-org/mason-registry',
+        'github:Crashdummyy/mason-registry',
       },
     },
   },
 
   {
-    "mason-org/mason-lspconfig.nvim",
+    'mason-org/mason-lspconfig.nvim',
     dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
-      { "neovim/nvim-lspconfig" },
+      { 'mason-org/mason.nvim', opts = {} },
+      { 'neovim/nvim-lspconfig' },
     },
     config = function()
-      require("mason").setup()
-      require("mason-lspconfig").setup({
+      require('mason').setup()
+      require('mason-lspconfig').setup({
         ensure_installed = {
-          "clangd",
-          "basedpyright",
-          "lua_ls",
-          "rust_analyzer",
-          "lua_ls",
-          -- "gopls",
-          -- "glsl_analyzer",
-          "svelte",
-          "cssls",
-          "html",
+          'angularls',
+          'clangd',
+          'basedpyright',
+          'bashls',
+          'cssls',
+          'elixir_ls',
+          'erlang_ls,'
+          'html',
           -- "tsserver",
           -- "ts_ls",
-          "bashls",
-          "jsonls",
+          'jsonls',
+          'lua_ls',
+          'rust_analyzer',
+          -- "gopls",
+          -- "glsl_analyzer",
+          'svelte',
           -- "emmet_ls", -- seem to automatically start for some reason
-          "yamlls",
-          "angularls",
-          "vtsls",
+          'yamlls',
+          'vtsls',
           -- "intelephense"
-          "ruff",
-          "zls",
+          'ruff',
+          'zls',
         },
         automatic_enable = true,
       })
     end,
   },
   {
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
     config = function()
-      require("mason-tool-installer").setup({
+      require('mason-tool-installer').setup({
         ensure_installed = {
           -- linter
-          "clang-format",
+          'clang-format',
           -- "golangci-lint",
           -- "protolint",
 
@@ -61,13 +62,13 @@ return {
           -- "golines",
 
           -- "sonarlint-language-server",
-          "google-java-format",
-          "stylua",
-          "shellcheck",
-          "shfmt",
-          "java-test",
-          "java-debug-adapter",
-          "markdown-toc",
+          'google-java-format',
+          'stylua',
+          'shellcheck',
+          'shfmt',
+          'java-test',
+          'java-debug-adapter',
+          'markdown-toc',
         },
         -- if set to true this will check each tool for updates. If updates
         -- are available the tool will be updated. This setting does not
