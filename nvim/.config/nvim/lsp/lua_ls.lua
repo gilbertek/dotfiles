@@ -3,14 +3,14 @@ return {
   settings = {
     Lua = {
       completion = {
-        callSnippet = "Both",
+        callSnippet = 'Both',
       },
       globals = {
-        "stacktrace",
+        'stacktrace',
       },
       hint = {
         enable = true,
-        arrayIndex = "Disable",
+        arrayIndex = 'Disable',
       },
       telemetry = {
         enable = false,

@@ -6,6 +6,15 @@ set -e
 REPO_URL="https://github.com/gilbertek/dotfiles"
 REPO_NAME="dotfiles"
 
+BACKUP_SUFFIX=".bak.$(date +%s)"
+
+MODULES=(
+    nvim
+    # ghostty
+    # starship
+    # hypr
+)
+
 msg() {
     printf '%b\n' "$1" >&2
 }
@@ -20,22 +29,49 @@ warning() {
     msg "\033[33mWarning:\033[0m ${1}${2}"
 }
 
-bkp() {
-    if [ -e "$1" ]; then
-        rm -rf "$2"
-        mv "$1" "$2"
+backup_file() {
+    local path="$1"
+    if [ -e "$path" ]; then
+        local backup="${path}${BACKUP_SUFFIX}"
+        echo "Backing up $path -> $backup"
+        mv "$path" "$backup"
     fi
 }
 
-# Make sure we run the script from the $HOME directory
-cd ~
+check_conflicts() {
+    local module="$1"
+    echo "Checking for conflicts in module: $module"
+
+    cd "${REPO_NAME}"
+
+    # Detect conflict using stow dry-run
+    local conflicts
+    conflicts=$(stow -nv "${module}" 2>&1 | grep -o "over existing target [^ ]*" | awk '{print $4}' || true)
+
+    for file in $conflicts; do
+        backup_file "${HOME}/${file}"
+    done
+}
 
 # Check if the repository already exists
 if [[ -d "${REPO_NAME}" ]]; then
-    echo "Repository ${REPO_NAME}already exists. Skipping clone..."
+    echo "Repository ${REPO_NAME} already exists. Skipping clone..."
 else
     git clone "${REPO_URL}"
 fi
+
+install_modules() {
+    echo "Installing dotfile modules via stow..."
+    # Make sure we run the script from the $HOME directory
+    cd "${HOME}/${REPO_NAME}"
+
+    for module in "${MODULES[@]}"; do
+        check_conflicts "${module}"
+
+        echo "Installing $module"
+        stow "${module}"
+    done
+}
 
 # Check if the clone was successful
 if [[ $? -eq 0 ]]; then

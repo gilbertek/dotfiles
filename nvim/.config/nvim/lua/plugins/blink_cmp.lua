@@ -1,21 +1,21 @@
 return {
   {
-    "Saghen/blink.cmp",
-    version = "1.*",
-    dependencies = { "rafamadriz/friendly-snippets" },
+    'Saghen/blink.cmp',
+    version = '1.*',
+    dependencies = { 'rafamadriz/friendly-snippets' },
     enabled = false,
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
       keymap = {
-        preset = "enter",
-        ["<C-p>"] = { "show", "select_prev", "fallback" },
-        ["<C-n>"] = { "show", "select_next", "fallback" },
+        preset = 'enter',
+        ['<C-p>'] = { 'show', 'select_prev', 'fallback' },
+        ['<C-n>'] = { 'show', 'select_next', 'fallback' },
       },
       cmdline = {
         enabled = true,
         keymap = {
-          preset = "cmdline",
+          preset = 'cmdline',
         },
       },
       completion = {

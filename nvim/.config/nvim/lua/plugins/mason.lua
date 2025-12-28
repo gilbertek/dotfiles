@@ -25,6 +25,7 @@ return {
           'bashls',
           'cssls',
           'elixirls',
+          -- "emmet_ls", -- seem to automatically start for some reason
           -- 'erlang_ls',
           -- 'gleam',
           -- "gopls",
@@ -37,12 +38,11 @@ return {
           'jsonls',
           'lua_ls',
           'protols',
-          'roslyn_ls',
+          -- 'roslyn_ls',
           'ruff',
           'rust_analyzer',
           'svelte',
           'taplo',
-          -- "emmet_ls", -- seem to automatically start for some reason
           'yamlls',
           'vtsls',
           -- "intelephense"

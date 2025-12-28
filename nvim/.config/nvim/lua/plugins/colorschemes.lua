@@ -1,7 +1,7 @@
 return {
   -- add colorscheme
   {
-    "folke/tokyonight.nvim",
+    'folke/tokyonight.nvim',
     lazy = true,
     priority = 1000,
     opts = {
@@ -14,7 +14,7 @@ return {
     },
   },
   {
-    "oxfist/night-owl.nvim",
+    'oxfist/night-owl.nvim',
     lazy = true,
     priority = 1000,
     opts = {
@@ -26,79 +26,79 @@ return {
     },
   },
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
+    'catppuccin/nvim',
+    name = 'catppuccin',
     lazy = true,
     priority = 1000,
     opts = {
-      flavour = "mocha",
+      flavour = 'mocha',
       transparent_background = false,
     },
   },
   {
-    "marko-cerovac/material.nvim",
+    'marko-cerovac/material.nvim',
     lazy = true,
     priority = 1000,
     config = function()
-      vim.g.material_style = "deep ocean"
-      require("material").setup({
+      vim.g.material_style = 'deep ocean'
+      require('material').setup({
         disable = {
           background = false,
         },
-        lualine_style = "stealth",
+        lualine_style = 'stealth',
       })
     end,
   },
   {
-    "bluz71/vim-moonfly-colors",
-    name = "moonfly",
+    'bluz71/vim-moonfly-colors',
+    name = 'moonfly',
     lazy = false,
     priority = 1000,
   },
   {
-    "rebelot/kanagawa.nvim",
+    'rebelot/kanagawa.nvim',
     lazy = true,
     priority = 1000,
     opts = {
       -- transparent = true,
       terminalColors = false,
-      theme = "lotus", -- Load "wave" theme when 'background' option is not set
+      theme = 'lotus', -- Load "wave" theme when 'background' option is not set
     },
   },
   {
-    "shaunsingh/moonlight.nvim",
+    'shaunsingh/moonlight.nvim',
     lazy = true,
     priority = 1000,
   },
   {
-    "loctvl842/monokai-pro.nvim",
+    'loctvl842/monokai-pro.nvim',
     lazy = true,
     config = function()
-      require("monokai-pro").setup({
+      require('monokai-pro').setup({
         transparent_background = false,
         terminal_colors = false,
-        filter = "spectrum", -- classic | octagon | pro | machine | ristretto | spectrum
+        filter = 'spectrum', -- classic | octagon | pro | machine | ristretto | spectrum
         -- Enable this will disable filter option
         day_night = {
           enable = true, -- turn off by default
-          day_filter = "machine", -- classic | octagon | pro | machine | ristretto | spectrum
-          night_filter = "spectrum", -- classic | octagon | pro | machine | ristretto | spectrum
+          day_filter = 'machine', -- classic | octagon | pro | machine | ristretto | spectrum
+          night_filter = 'spectrum', -- classic | octagon | pro | machine | ristretto | spectrum
         },
         overridePalette = function(filter)
           return {
-            dimmed3 = "#b3b3b3", -- change color of comments
+            dimmed3 = '#b3b3b3', -- change color of comments
           }
         end,
       })
     end,
   },
   {
-    "polirritmico/monokai-nightasty.nvim",
+    'polirritmico/monokai-nightasty.nvim',
     lazy = false,
     priority = 1000,
     opts = {
-      dark_style_background = "dark", -- default, dark, transparent, #color
-      light_style_background = "default", -- default, dark, transparent, #color
+      dark_style_background = 'dark', -- default, dark, transparent, #color
+      light_style_background = 'default', -- default, dark, transparent, #color
       -- Style to be applied to different syntax groups. See `:help nvim_set_hl`
       hl_styles = {
         keywords = { italic = true },
@@ -106,7 +106,7 @@ return {
       },
     },
     config = function(_, opts)
-      require("monokai-nightasty").setup(opts)
+      require('monokai-nightasty').setup(opts)
       -- require("which-key").add({
       --   -- momokai-nightasty
       --   {
@@ -119,7 +119,7 @@ return {
     end,
   },
   {
-    "tiagovla/tokyodark.nvim",
+    'tiagovla/tokyodark.nvim',
     lazy = true,
     priority = 1000,
     opts = {
@@ -128,26 +128,26 @@ return {
       terminal_colors = false,
     },
     config = function(_, opts)
-      require("tokyodark").setup(opts) -- calling setup is optional
+      require('tokyodark').setup(opts) -- calling setup is optional
       vim.cmd([[colorscheme tokyodark]])
     end,
   },
   {
-    "diegoulloao/neofusion.nvim",
+    'diegoulloao/neofusion.nvim',
     lazy = true,
     priority = 1000,
     config = true,
     opts = { transparent_mode = true },
   },
   {
-    "cvigilv/patana.nvim",
+    'cvigilv/patana.nvim',
     lazy = true,
     priority = 1000,
     config = function() end,
   },
   {
-    "rose-pine/neovim",
-    name = "rose-pine",
+    'rose-pine/neovim',
+    name = 'rose-pine',
     opts = {
       enable = {
         terminal = true,
@@ -158,73 +158,73 @@ return {
     },
   },
   {
-    "0xstepit/flow.nvim",
+    '0xstepit/flow.nvim',
     lazy = false,
     priority = 1000,
     opts = {
       transparent = true,
-      fluo_color = "pink",
-      mode = "desaturate",
+      fluo_color = 'pink',
+      mode = 'desaturate',
       aggressive_spell = false,
     },
   },
   {
-    "EdenEast/nightfox.nvim",
+    'EdenEast/nightfox.nvim',
   },
   {
-    "aliqyan-21/darkvoid.nvim",
+    'aliqyan-21/darkvoid.nvim',
   },
   {
-    "ray-x/starry.nvim",
+    'ray-x/starry.nvim',
     opts = {
       style = {
-        name = "emerald",
+        name = 'emerald',
       },
     },
   },
   {
-    "comfysage/evergarden",
+    'comfysage/evergarden',
     priority = 1000, -- Colorscheme plugin is loaded first before any other plugins
     opts = {
       transparent_background = false,
-      variant = "hard", -- 'hard'|'medium'|'soft'
+      variant = 'hard', -- 'hard'|'medium'|'soft'
       overrides = {}, -- add custom overrides
     },
   },
   {
-    "AlexvZyl/nordic.nvim",
+    'AlexvZyl/nordic.nvim',
     lazy = false,
     priority = 1000,
   },
   {
-    "sam4llis/nvim-tundra",
+    'sam4llis/nvim-tundra',
   },
   {
-    "zaldih/themery.nvim",
+    'zaldih/themery.nvim',
     lazy = false,
     config = function()
-      require("themery").setup({
+      require('themery').setup({
         themes = {
-          "kanagawa",
-          "night-owl",
-          "tokyonight",
-          "catppuccin",
-          "material",
-          "moonfly",
-          "moonlight",
-          "monokai-pro",
-          "tokyodark",
-          "neofusion",
-          "patana",
-          "monokai-nightasty",
-          "rose-pine",
-          "flow",
-          "nightfox",
-          "darkvoid",
-          "nordic",
-          "starry",
-          "evergarden",
-          "tundra",
+          'kanagawa',
+          'night-owl',
+          'tokyonight',
+          'catppuccin',
+          'material',
+          'moonfly',
+          'moonlight',
+          'monokai-pro',
+          'tokyodark',
+          'neofusion',
+          'patana',
+          'monokai-nightasty',
+          'rose-pine',
+          'flow',
+          'nightfox',
+          'darkvoid',
+          'nordic',
+          'starry',
+          'evergarden',
+          'tundra',
         },
       })
     end,

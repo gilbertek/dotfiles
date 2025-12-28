@@ -1,40 +1,40 @@
 return {
-  "hrsh7th/nvim-cmp",
-  event = "InsertEnter",
+  'hrsh7th/nvim-cmp',
+  event = 'InsertEnter',
   dependencies = {
-    "windwp/nvim-autopairs", -- make sure autopairs loads before cmp
-    "hrsh7th/cmp-buffer", -- source for text in buffer
-    "hrsh7th/cmp-path", -- source for file system paths
-    "L3MON4D3/LuaSnip", -- snippet engine
-    "saadparwaiz1/cmp_luasnip", -- for autocompletion
-    "rafamadriz/friendly-snippets", -- useful snippets
-    "onsails/lspkind.nvim", -- vs-code like pictograms
-    "hrsh7th/cmp-nvim-lsp-signature-help", -- LSP signature help source
+    'windwp/nvim-autopairs', -- make sure autopairs loads before cmp
+    'hrsh7th/cmp-buffer', -- source for text in buffer
+    'hrsh7th/cmp-path', -- source for file system paths
+    'L3MON4D3/LuaSnip', -- snippet engine
+    'saadparwaiz1/cmp_luasnip', -- for autocompletion
+    'rafamadriz/friendly-snippets', -- useful snippets
+    'onsails/lspkind.nvim', -- vs-code like pictograms
+    'hrsh7th/cmp-nvim-lsp-signature-help', -- LSP signature help source
     {
-      "L3MON4D3/LuaSnip",
+      'L3MON4D3/LuaSnip',
       build = (function()
         -- Build Step is needed for regex support in snippets.
         -- This step is not supported in many windows environments.
         -- Remove the below condition to re-enable on windows.
-        if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+        if vim.fn.has('win32') == 1 or vim.fn.executable('make') == 0 then
           return
         end
-        return "make install_jsregexp"
+        return 'make install_jsregexp'
       end)(),
     },
   },
 
   config = function()
-    local cmp = require("cmp")
-    local luasnip = require("luasnip")
-    local lspkind = require("lspkind")
+    local cmp = require('cmp')
+    local luasnip = require('luasnip')
+    local lspkind = require('lspkind')
 
     -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
-    require("luasnip.loaders.from_vscode").lazy_load()
+    require('luasnip.loaders.from_vscode').lazy_load()
 
     cmp.setup({
       completion = {
-        completeopt = "menu,menuone,preview,noselect",
+        completeopt = 'menu,menuone,preview,noselect',
       },
       snippet = { -- configure how nvim-cmp interacts with snippet engine
         expand = function(args)
@@ -42,55 +42,55 @@ return {
         end,
       },
       mapping = cmp.mapping.preset.insert({
-        ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
-        ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
-        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
-        ["<C-e>"] = cmp.mapping.abort(), -- close completion window
-        ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept LSP suggestion with Enter
-        ["<C-y>"] = cmp.mapping.confirm({ select = true }), -- Accept LSP suggestion with Ctrl+y
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
+        ['<C-k>'] = cmp.mapping.select_prev_item(), -- previous suggestion
+        ['<C-j>'] = cmp.mapping.select_next_item(), -- next suggestion
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(), -- show completion suggestions
+        ['<C-e>'] = cmp.mapping.abort(), -- close completion window
+        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept LSP suggestion with Enter
+        ['<C-y>'] = cmp.mapping.confirm({ select = true }), -- Accept LSP suggestion with Ctrl+y
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
           if luasnip.jumpable(-1) then
             luasnip.jump(-1)
           else
             fallback()
           end
-        end, { "i", "s" }),
+        end, { 'i', 's' }),
       }),
       -- sources for autocompletion
       sources = cmp.config.sources({
         {
-          name = "lazydev",
+          name = 'lazydev',
           -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
           group_index = 0,
         },
-        { name = "nvim_lsp" },
-        { name = "luasnip" }, -- snippets
-        { name = "buffer" }, -- text within current buffer
-        { name = "path" }, -- file system paths
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' }, -- snippets
+        { name = 'buffer' }, -- text within current buffer
+        { name = 'path' }, -- file system paths
       }),
       -- configure lspkind for vs-code like pictograms in completion menu
       formatting = {
         format = lspkind.cmp_format({
           maxwidth = 50,
-          ellipsis_char = "...",
+          ellipsis_char = '...',
         }),
       },
     })
     -- Use buffer source for `/` in command mode
-    cmp.setup.cmdline("/", {
+    cmp.setup.cmdline('/', {
       sources = {
-        { name = "buffer" },
+        { name = 'buffer' },
       },
     })
 
     -- Use cmdline & path source for `:` in command mode
-    cmp.setup.cmdline(":", {
+    cmp.setup.cmdline(':', {
       sources = cmp.config.sources({
-        { name = "path" },
+        { name = 'path' },
       }, {
-        { name = "cmdline" },
+        { name = 'cmdline' },
       }),
     })
   end,

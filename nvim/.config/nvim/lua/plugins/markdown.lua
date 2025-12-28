@@ -1,25 +1,25 @@
 return {
   {
-    "AckslD/nvim-FeMaco.lua",
+    'AckslD/nvim-FeMaco.lua',
     config = function()
-      require("femaco").setup()
+      require('femaco').setup()
     end,
   },
   {
-    "wallpants/github-preview.nvim",
-    cmd = { "GithubPreviewToggle" },
-    keys = { "<leader>mpt" },
+    'wallpants/github-preview.nvim',
+    cmd = { 'GithubPreviewToggle' },
+    keys = { '<leader>mpt' },
     opts = {
       -- config goes here
     },
     config = function(_, opts)
-      local gpreview = require("github-preview")
+      local gpreview = require('github-preview')
       gpreview.setup(opts)
 
       local fns = gpreview.fns
-      vim.keymap.set("n", "<leader>mpt", fns.toggle)
-      vim.keymap.set("n", "<leader>mps", fns.single_file_toggle)
-      vim.keymap.set("n", "<leader>mpd", fns.details_tags_toggle)
+      vim.keymap.set('n', '<leader>mpt', fns.toggle)
+      vim.keymap.set('n', '<leader>mps', fns.single_file_toggle)
+      vim.keymap.set('n', '<leader>mpd', fns.details_tags_toggle)
     end,
   },
   -- {
@@ -30,14 +30,14 @@ return {
   --   },
   -- },
   {
-    "HakonHarnes/img-clip.nvim",
-    event = "VeryLazy",
+    'HakonHarnes/img-clip.nvim',
+    event = 'VeryLazy',
     opts = {
       -- add options here
       -- or leave it empty to use the default settings
     },
     keys = {
-      { "<leader><C-p>", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
+      { '<leader><C-p>', '<cmd>PasteImage<cr>', desc = 'Paste image from system clipboard' },
     },
   },
 }

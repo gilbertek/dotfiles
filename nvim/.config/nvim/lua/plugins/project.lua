@@ -1,17 +1,17 @@
 return {
-  "DrKJeff16/project.nvim",
+  'DrKJeff16/project.nvim',
   -- Use "dir" for testing local plugin. Use :Lazy to check where plugin was loaded
   -- dir = "<local directory>",
   -- dev = true,
   dependencies = {
-    "nvim-lua/plenary.nvim",
-    "nvim-telescope/telescope.nvim",
-    "ibhagwan/fzf-lua",
+    'nvim-lua/plenary.nvim',
+    'nvim-telescope/telescope.nvim',
+    'ibhagwan/fzf-lua',
   },
   config = function()
     -- https://github.com/DrKJeff16/project.nvim/issues/24
     vim.g.project_lsp_nowarn = 1
-    require("project").setup({
+    require('project').setup({
       -- NOTE:
       -- CWD switches back to the previous project if the selected project root cannot be found.
       -- LSP is loaded asynchrously so it's always going to fail to find the root on the
@@ -30,15 +30,15 @@ return {
       use_lsp = false,
       -- silent_chdir = false, -- for debugging
       patterns = {
-        ".git",
-        ".obsidian",
-        "go.mod",
+        '.git',
+        '.obsidian',
+        'go.mod',
       },
     })
-    require("telescope").load_extension("projects")
+    require('telescope').load_extension('projects')
 
-    local exts = require("telescope").extensions
-    vim.keymap.set("n", "<leader>sp", exts.projects.projects, { desc = "[S]earch [P]rojects" })
+    local exts = require('telescope').extensions
+    vim.keymap.set('n', '<leader>sp', exts.projects.projects, { desc = '[S]earch [P]rojects' })
   end,
   -- opts = {},
 }
