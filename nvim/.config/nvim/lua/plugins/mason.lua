@@ -24,22 +24,28 @@ return {
           'basedpyright',
           'bashls',
           'cssls',
-          'elixir_ls',
-          'erlang_ls,'
+          'elixirls',
+          -- 'erlang_ls',
+          -- 'gleam',
+          -- "gopls",
+          -- "glsl_analyzer",
+          -- 'gradle_ls',
           'html',
           -- "tsserver",
           -- "ts_ls",
+          -- 'jdtls',
           'jsonls',
           'lua_ls',
+          'protols',
+          'roslyn_ls',
+          'ruff',
           'rust_analyzer',
-          -- "gopls",
-          -- "glsl_analyzer",
           'svelte',
+          'taplo',
           -- "emmet_ls", -- seem to automatically start for some reason
           'yamlls',
           'vtsls',
           -- "intelephense"
-          'ruff',
           'zls',
         },
         automatic_enable = true,
@@ -83,6 +89,4 @@ return {
       })
     end,
   },
-
-  -- { 'j-hui/fidget.nvim', opts = {} },
 }

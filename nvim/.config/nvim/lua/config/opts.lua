@@ -1,7 +1,7 @@
 local opt = vim.opt
 
 -- Set Neovim to use the system clipboard
-opt.clipboard = "unnamedplus"
+opt.clipboard = 'unnamedplus'
 
 -- Some execution-related settings
 opt.modelines = 0
@@ -17,10 +17,10 @@ opt.breakindent = true
 opt.linebreak = true
 
 -- Always show the sign column
-opt.signcolumn = "yes"
+opt.signcolumn = 'yes'
 
 -- Add a color column at 80 characters
-opt.colorcolumn = "80"
+opt.colorcolumn = '80'
 -- Always show 8 lines of "context" above and below the cursor
 opt.scrolloff = 8
 
@@ -44,7 +44,8 @@ opt.lazyredraw = true
 
 -- Force vertical splits to always open on the right
 opt.splitright = true
-opt.completeopt = { "menu", "menuone", "noselect" }
+opt.completeopt = { 'menu', 'menuone', 'noselect' }
 
 -- Set title for tabbed environments
 opt.title = true
+opt.termguicolors = true
