@@ -75,6 +75,7 @@ return {
           'java-test',
           'java-debug-adapter',
           'markdown-toc',
+          'delve',
         },
         -- if set to true this will check each tool for updates. If updates
         -- are available the tool will be updated. This setting does not
