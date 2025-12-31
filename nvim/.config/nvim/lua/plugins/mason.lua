@@ -28,7 +28,7 @@ return {
           -- "emmet_ls", -- seem to automatically start for some reason
           -- 'erlang_ls',
           -- 'gleam',
-          -- "gopls",
+          'gopls',
           -- "glsl_analyzer",
           -- 'gradle_ls',
           'html',
